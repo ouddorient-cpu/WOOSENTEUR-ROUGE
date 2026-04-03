@@ -1,0 +1,46 @@
+{
+  "placeholderImages": [
+    {
+      "id": "logo",
+      "description": "WooSenteur text logo",
+      "imageUrl": "https://images.unsplash.com/photo-1684976849784-cdf289cbccda?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw2fHxsb2dvJTIwdGV4dHxlbnwwfHx8fDE3NjU4NzY5Njl8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "logo text"
+    },
+    {
+      "id": "product1",
+      "description": "A bottle of perfume on a silk cloth",
+      "imageUrl": "https://images.unsplash.com/photo-1523293182086-7651a899d37f?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxwZXJmdW1lJTIwYm90dGxlfGVufDB8fHx8MTc2NTgyMzI3M3ww&ixlib=rb-4.1.0&q=80&w=600",
+      "imageHint": "perfume bottle"
+    },
+    {
+      "id": "product2",
+      "description": "A minimalist bottle of perfume",
+      "imageUrl": "https://images.unsplash.com/photo-1608721279136-cd41b752fa41?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw4fHxwZXJmdW1lJTIwYm90dGxlfGVufDB8fHx8MTc2NTgyMzI3M3ww&ixlib=rb-4.1.0&q=80&w=600",
+      "imageHint": "perfume bottle"
+    },
+    {
+      "id": "product3",
+      "description": "A dark, elegant bottle of perfume",
+      "imageUrl": "https://images.unsplash.com/photo-1615160460524-432433ba1b8f?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw5fHxwZXJmdW1lJTIwYm90dGxlfGVufDB8fHx8MTc2NTgyMzI3M3ww&ixlib=rb-4.1.0&q=80&w=600",
+      "imageHint": "perfume bottle"
+    },
+    {
+      "id": "product4",
+      "description": "A floral-scented perfume bottle with flowers",
+      "imageUrl": "https://images.unsplash.com/photo-1594035910387-fea47794261f?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw2fHxwZXJmdW1lJTIwYm90dGxlfGVufDB8fHx8MTc2NTgyMzI3M3ww&ixlib=rb-4.1.0&q=80&w=600",
+      "imageHint": "perfume bottle"
+    },
+    {
+      "id": "product_default",
+      "description": "Default product image",
+      "imageUrl": "https://images.unsplash.com/photo-1594035910387-fea47794261f?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw2fHxwZXJmdW1lJTIwYm90dGxlfGVufDB8fHx8MTc2NTgyMzI3M3ww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "perfume bottle"
+    },
+    {
+      "id": "avatar",
+      "description": "User avatar placeholder",
+      "imageUrl": "https://images.unsplash.com/photo-1750535135451-7c20e24b60c1?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw3fHxwZXJzb24lMjBhdmF0YXJ8ZW58MHx8fHwxNzY1ODI5NzM4fDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "person avatar"
+    }
+  ]
+}

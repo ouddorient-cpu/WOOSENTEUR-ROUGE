@@ -1,0 +1,209 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  font-family: 'PT Sans', sans-serif;
+  overflow-x: hidden;
+  width: 100%;
+  font-size: 16px;
+  line-height: 1.75;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+p {
+  font-size: 1rem;
+  line-height: 1.75;
+}
+
+.text-sm {
+  font-size: 0.9rem !important;
+  line-height: 1.65 !important;
+}
+
+.text-xs {
+  font-size: 0.8rem !important;
+  line-height: 1.6 !important;
+}
+
+html {
+  overflow-x: hidden;
+}
+
+@layer base {
+  :root {
+    --background: 30 20% 98%;
+    /* Crème poudré très léger */
+    --foreground: 20 20% 12%;
+    /* Noir anthracite chaud */
+
+    --card: 0 0% 100%;
+    --card-foreground: 20 20% 12%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 20 20% 12%;
+
+    --primary: 38 62% 48%;
+    /* Or / Ambre élégant */
+    --primary-foreground: 30 20% 98%;
+
+    --secondary: 25 35% 25%;
+    /* Brun Ombre / Terre */
+    --secondary-foreground: 30 20% 98%;
+
+    --muted: 30 10% 94%;
+    --muted-foreground: 20 10% 45%;
+
+    --accent: 38 62% 96%;
+    /* Or très clair pour les hovers */
+    --accent-foreground: 38 62% 25%;
+
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 98%;
+
+    --warning: 38 96% 58%;
+    --warning-foreground: 38 96% 28%;
+
+    --border: 30 15% 88%;
+    /* Bordure crème foncée */
+    --input: 30 15% 88%;
+    --ring: 38 62% 48%;
+
+    --radius: 0.75rem;
+
+    /* Chart colors - Luxe palette */
+    --chart-1: 38 62% 48%; /* Gold */
+    --chart-2: 25 35% 25%; /* Earth */
+    --chart-3: 15 40% 35%; /* Rust */
+    --chart-4: 38 40% 65%; /* Soft Gold */
+    --chart-5: 25 20% 50%; /* Taupe */
+  }
+
+  .dark {
+    --background: 20 15% 4%;
+    /* Noir Absolu / Ebène */
+    --foreground: 30 10% 95%;
+
+    --card: 20 15% 7%;
+    /* Gris Ebène profond */
+    --card-foreground: 30 10% 95%;
+
+    --popover: 20 15% 6%;
+    --popover-foreground: 30 10% 95%;
+
+    --primary: 38 62% 58%;
+    /* Or éclatant pour le sombre */
+    --primary-foreground: 20 15% 4%;
+
+    --secondary: 25 30% 40%;
+    --secondary-foreground: 30 10% 95%;
+
+    --muted: 20 15% 12%;
+    --muted-foreground: 30 5% 65%;
+
+    --accent: 38 50% 15%;
+    --accent-foreground: 38 62% 85%;
+
+    --destructive: 0 63% 31%;
+    --destructive-foreground: 0 0% 98%;
+
+    --warning: 38 96% 58%;
+    --warning-foreground: 38 96% 88%;
+
+    --border: 20 15% 15%;
+    --input: 20 15% 15%;
+    --ring: 38 62% 58%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
+@layer utilities {
+  .text-gradient {
+    @apply bg-clip-text text-transparent bg-gradient-to-r from-primary to-secondary;
+  }
+
+  .studio-card {
+    @apply bg-white/60 dark:bg-card/60 backdrop-blur-md border border-primary/20 shadow-xl shadow-primary/5 transition-all duration-300;
+  }
+
+  .studio-input {
+    @apply bg-white/80 dark:bg-background/40 border-primary/20 focus:border-primary/50 focus:ring-primary/20 transition-all;
+  }
+
+  .bg-dots {
+    background-image: radial-gradient(hsl(var(--primary) / 0.1) 1px, transparent 1px);
+    background-size: 20px 20px;
+  }
+
+  /* Quadrillage tech — remplace bg-dots dans les sections clés */
+  .bg-grid {
+    background-image:
+      linear-gradient(hsl(var(--primary) / 0.055) 1px, transparent 1px),
+      linear-gradient(90deg, hsl(var(--primary) / 0.055) 1px, transparent 1px);
+    background-size: 32px 32px;
+  }
+
+  /* Glassmorphism card — tech SaaS clair */
+  .glass-card {
+    background: linear-gradient(135deg, rgba(255,255,255,0.88) 0%, rgba(235,242,255,0.78) 100%);
+    @apply backdrop-blur-sm border border-white/80 shadow-sm;
+  }
+
+  /* Section label pill — "Pourquoi ?", "Pour qui ?", "Comment ?" */
+  .section-label {
+    @apply inline-block text-xs font-bold uppercase tracking-widest text-primary bg-primary/10 px-4 py-1.5 rounded-full border border-primary/20;
+  }
+}
+
+/* Scrolling proof ticker */
+@keyframes ticker-scroll {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+
+.ticker-scroll {
+  animation: ticker-scroll 32s linear infinite;
+  will-change: transform;
+}
+
+.ticker-scroll:hover {
+  animation-play-state: paused;
+}
+
+/* NProgress loader bar styles */
+#nprogress {
+  pointer-events: none;
+}
+
+#nprogress .bar {
+  background: linear-gradient(to right, hsl(var(--primary)), hsl(var(--secondary)));
+  position: fixed;
+  z-index: 9999;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 3px;
+}
+
+#nprogress .peg {
+  display: block;
+  position: absolute;
+  right: 0px;
+  width: 100px;
+  height: 100%;
+  box-shadow: 0 0 10px hsl(var(--primary)), 0 0 5px hsl(var(--primary));
+  opacity: 1;
+  -webkit-transform: rotate(3deg) translate(0px, -4px);
+  -ms-transform: rotate(3deg) translate(0px, -4px);
+  transform: rotate(3deg) translate(0px, -4px);
+}

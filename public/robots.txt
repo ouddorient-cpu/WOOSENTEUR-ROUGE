@@ -1,0 +1,8 @@
+# See https://www.robotstxt.org/robotstxt.html for syntax and directives
+
+User-agent: *
+Disallow: /auth/
+Disallow: /dashboard/
+Disallow: /api/
+
+Sitemap: https://woosenteur.fr/sitemap.xml

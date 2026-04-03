@@ -5,7 +5,6 @@ runConfig:
   concurrency: 80
 
 env:
-  # Firebase Web Config (valeurs publiques)
   - variable: NEXT_PUBLIC_FIREBASE_API_KEY
     value: AIzaSyD3vbVYfTY52BXGsjybq-WM-dzUEiQJVOI
 
@@ -26,10 +25,3 @@ env:
 
   - variable: NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY
     value: pk_live_51SjlzeAIq9NC7F5auCgm8m2QD3aQ3myNockeSayCfDDut8wZeqTxitT7g50gR9zfXLU4BFeESt5qGBAcjCGqCMfB00EnOdP7H7
-
-  # Secrets serveur — à configurer dans Secret Manager ou via les paramètres du backend Firebase
-  - variable: FIREBASE_ADMIN_PRIVATE_KEY
-    secret: FIREBASE_ADMIN_PRIVATE_KEY
-
-  - variable: FIREBASE_ADMIN_CLIENT_EMAIL
-    secret: FIREBASE_ADMIN_CLIENT_EMAIL

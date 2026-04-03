@@ -5,27 +5,31 @@ runConfig:
   concurrency: 80
 
 env:
+  # Firebase Web Config (valeurs publiques)
   - variable: NEXT_PUBLIC_FIREBASE_API_KEY
-    secret: NEXT_PUBLIC_FIREBASE_API_KEY
+    value: AIzaSyD3vbVYfTY52BXGsjybq-WM-dzUEiQJVOI
+
   - variable: NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN
-    secret: NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN
+    value: studio-2957055289-b4c78.firebaseapp.com
+
   - variable: NEXT_PUBLIC_FIREBASE_PROJECT_ID
-    secret: NEXT_PUBLIC_FIREBASE_PROJECT_ID
+    value: studio-2957055289-b4c78
+
   - variable: NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET
-    secret: NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET
+    value: studio-2957055289-b4c78.firebasestorage.app
+
   - variable: NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID
-    secret: NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID
+    value: "329200137078"
+
   - variable: NEXT_PUBLIC_FIREBASE_APP_ID
-    secret: NEXT_PUBLIC_FIREBASE_APP_ID
+    value: 1:329200137078:web:726a24ac5fdfbbc6028057
+
+  - variable: NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY
+    value: pk_live_51SjlzeAIq9NC7F5auCgm8m2QD3aQ3myNockeSayCfDDut8wZeqTxitT7g50gR9zfXLU4BFeESt5qGBAcjCGqCMfB00EnOdP7H7
+
+  # Secrets serveur — à configurer dans Secret Manager ou via les paramètres du backend Firebase
   - variable: FIREBASE_ADMIN_PRIVATE_KEY
     secret: FIREBASE_ADMIN_PRIVATE_KEY
+
   - variable: FIREBASE_ADMIN_CLIENT_EMAIL
     secret: FIREBASE_ADMIN_CLIENT_EMAIL
-  - variable: STRIPE_SECRET_KEY
-    secret: STRIPE_SECRET_KEY
-  - variable: STRIPE_WEBHOOK_SECRET
-    secret: STRIPE_WEBHOOK_SECRET
-  - variable: NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY
-    secret: NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY
-  - variable: GOOGLE_GENAI_API_KEY
-    secret: GOOGLE_GENAI_API_KEY

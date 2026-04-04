@@ -9,7 +9,7 @@
  */
 
 import { ai } from '@/ai/genkit';
-import { z } from 'zod';
+import { z } from 'genkit';
 
 function checkApiKey() {
   const key = process.env.GOOGLE_GENAI_API_KEY || process.env.GEMINI_API_KEY;

@@ -116,7 +116,7 @@ const Hero = () => {
             initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.5, delay: 0.18 }}
-            className="relative hidden lg:block"
+            className="relative"
           >
             <div className="relative rounded-2xl overflow-hidden border border-border/60 shadow-[0_24px_60px_-12px_rgba(0,0,0,0.1)] bg-card">
               {/* Browser chrome */}
@@ -142,7 +142,7 @@ const Hero = () => {
             <motion.div
               animate={{ y: [0, -7, 0] }}
               transition={{ duration: 3.5, repeat: Infinity, ease: 'easeInOut' }}
-              className="absolute -bottom-5 -left-5 bg-white dark:bg-card border border-border/70 shadow-xl rounded-2xl px-4 py-3 flex items-center gap-3"
+              className="hidden lg:flex absolute -bottom-5 -left-5 bg-white dark:bg-card border border-border/70 shadow-xl rounded-2xl px-4 py-3 items-center gap-3"
             >
               <div className="h-9 w-9 rounded-xl bg-green-500/15 flex items-center justify-center">
                 <Check className="h-4 w-4 text-green-500" />
@@ -157,7 +157,7 @@ const Hero = () => {
             <motion.div
               animate={{ y: [0, 6, 0] }}
               transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut', delay: 0.8 }}
-              className="absolute -top-5 -right-4 bg-white dark:bg-card border border-border/70 shadow-xl rounded-2xl px-4 py-3"
+              className="hidden lg:block absolute -top-5 -right-4 bg-white dark:bg-card border border-border/70 shadow-xl rounded-2xl px-4 py-3"
             >
               <p className="text-[10px] font-semibold text-muted-foreground uppercase tracking-wider">Généré en</p>
               <p className="text-base font-extrabold text-primary leading-tight">2 min 34 s ⚡</p>
@@ -167,7 +167,7 @@ const Hero = () => {
             <motion.div
               animate={{ y: [0, -10, 0] }}
               transition={{ duration: 2.8, repeat: Infinity, ease: 'easeInOut', delay: 0.4 }}
-              className="absolute -bottom-10 right-6 flex flex-col items-end gap-1"
+              className="hidden lg:flex absolute -bottom-10 right-6 flex-col items-end gap-1"
             >
               <div className="bg-white dark:bg-card border border-primary/20 shadow-lg rounded-2xl rounded-br-sm px-3 py-1.5 text-xs font-semibold text-primary whitespace-nowrap self-center mb-1">
                 Salut, moi c&apos;est Woody ! 👋

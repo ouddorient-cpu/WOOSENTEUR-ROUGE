@@ -5,7 +5,7 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
 import { useUser } from '@/firebase/auth/use-user';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import {
@@ -1520,7 +1520,11 @@ export default function MarketingPage() {
   const router = useRouter();
   const { toast } = useToast();
 
-  const [activeMode, setActiveMode] = useState<'campaign' | 'dupe' | 'facebook'>('campaign');
+  const searchParamsHook = useSearchParams();
+  const modeParam = searchParamsHook.get('mode') as 'campaign' | 'dupe' | 'facebook' | null;
+  const [activeMode, setActiveMode] = useState<'campaign' | 'dupe' | 'facebook'>(
+    modeParam && ['campaign', 'dupe', 'facebook'].includes(modeParam) ? modeParam : 'campaign'
+  );
   const [step, setStep] = useState<GenerationStep>('form');
   const [progress, setProgress] = useState(0);
   const [progressMessage, setProgressMessage] = useState('Préparation...');

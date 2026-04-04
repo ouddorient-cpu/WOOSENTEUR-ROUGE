@@ -2,7 +2,6 @@
 
 import { motion } from 'framer-motion';
 import Footer from '@/components/footer';
-import Features from '@/components/landing/Features';
 import Faq from '@/components/landing/Faq';
 import FinalCta from '@/components/landing/FinalCta';
 import HowItWorks from '@/components/landing/HowItWorks';
@@ -200,8 +199,6 @@ export default function HomePage() {
         <Hero />
         {/* Proof ticker */}
         <SocialProofTicker />
-        {/* 2. Pourquoi ? */}
-        <Features />
         {/* 2b. Section éditoriale narrative */}
         <EditoSection />
         {/* 3. Pour qui ? */}

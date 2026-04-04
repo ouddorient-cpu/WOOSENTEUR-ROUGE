@@ -134,7 +134,7 @@ const Hero = () => {
                 muted
                 loop
                 playsInline
-                className="w-full"
+                className="w-full max-h-[360px] object-cover object-top"
               />
             </div>
 

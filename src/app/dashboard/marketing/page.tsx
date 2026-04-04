@@ -528,8 +528,20 @@ const DupeModeSection: React.FC = () => {
   const handleNativeShare = async (idx: number) => {
     const v = dupeResult?.variants[idx];
     if (!v) return;
+    const imageUrl = overlayImages[idx];
     if (navigator.share) {
-      try { await navigator.share({ title: v.solutionBottom, text: v.fullCaption }); } catch (_) {}
+      try {
+        if (imageUrl) {
+          const res = await fetch(imageUrl);
+          const blob = await res.blob();
+          const file = new File([blob], 'woosenteur-visuel.png', { type: 'image/png' });
+          if (navigator.canShare && navigator.canShare({ files: [file] })) {
+            await navigator.share({ files: [file], title: v.solutionBottom, text: v.fullCaption });
+            return;
+          }
+        }
+        await navigator.share({ title: v.solutionBottom, text: v.fullCaption });
+      } catch (_) {}
     } else {
       handleCopyCaption(idx, v.fullCaption);
     }
@@ -700,13 +712,8 @@ const DupeModeSection: React.FC = () => {
                   </div>
                 </CardHeader>
                 <CardContent className="space-y-3">
-                  {/* Preview text layout */}
-                  <div className="rounded-xl overflow-hidden border bg-muted/30">
-                    {/* Top hook band preview */}
-                    <div className="bg-[#0A0A0F] px-3 py-2 border-l-2 border-red-500">
-                      <p className="text-white text-xs font-bold leading-snug">{v.hookTop}</p>
-                    </div>
-                    {/* Center: product image or placeholder */}
+                  {/* Product image — fully visible */}
+                  <div className="rounded-xl overflow-hidden border bg-muted/20">
                     {uploadedImage ? (
                       overlayImages[idx] ? (
                         <div className="relative aspect-square">
@@ -719,15 +726,15 @@ const DupeModeSection: React.FC = () => {
                           />
                         </div>
                       ) : (
-                        <div className="relative aspect-square bg-muted">
+                        <div className="relative aspect-square bg-white">
                           <Image
                             src={uploadedImage}
                             alt="Product"
                             fill
-                            className="object-contain"
+                            className="object-contain p-2"
                             unoptimized
                           />
-                          <div className="absolute inset-0 flex items-center justify-center bg-black/30">
+                          <div className="absolute inset-0 flex items-center justify-center bg-black/20 opacity-0 hover:opacity-100 transition-opacity">
                             <Button
                               size="sm"
                               variant="secondary"
@@ -745,25 +752,31 @@ const DupeModeSection: React.FC = () => {
                         </div>
                       )
                     ) : (
-                      <div className="aspect-square bg-muted/50 flex items-center justify-center">
+                      <div className="aspect-square bg-muted/30 flex items-center justify-center">
                         <div className="text-center text-muted-foreground">
                           <ImageIcon className="h-8 w-8 mx-auto mb-1" />
                           <p className="text-xs">Uploadez une photo</p>
                         </div>
                       </div>
                     )}
-                    {/* Bottom solution band preview */}
-                    <div
-                      className="px-3 py-2 border-l-2 border-green-500"
-                      style={{ backgroundColor: accentColor }}
-                    >
-                      <p className="text-white text-xs font-bold leading-snug">{v.solutionBottom}</p>
-                      {v.priceTag && (
-                        <span className="inline-block mt-1 bg-yellow-300 text-black text-xs font-bold px-2 py-0.5 rounded-full">
-                          {v.priceTag}
-                        </span>
-                      )}
+                  </div>
+
+                  {/* Text bands below the image */}
+                  <div className="rounded-xl overflow-hidden border bg-slate-800/90">
+                    <div className="px-3 py-2">
+                      <p className="text-slate-100 text-xs font-semibold leading-snug">{v.hookTop}</p>
                     </div>
+                  </div>
+                  <div
+                    className="rounded-xl overflow-hidden border px-3 py-2"
+                    style={{ backgroundColor: accentColor + 'ee' }}
+                  >
+                    <p className="text-white text-xs font-semibold leading-snug">{v.solutionBottom}</p>
+                    {v.priceTag && (
+                      <span className="inline-block mt-1 bg-amber-200 text-slate-800 text-xs font-bold px-2 py-0.5 rounded-full">
+                        {v.priceTag}
+                      </span>
+                    )}
                   </div>
 
                   {/* Caption preview */}
@@ -818,7 +831,7 @@ const DupeModeSection: React.FC = () => {
                       onClick={() => handleNativeShare(idx)}
                     >
                       <Share2 className="h-3.5 w-3.5" />
-                      Partager la légende
+                      Partager
                     </Button>
                   </div>
                 </CardContent>

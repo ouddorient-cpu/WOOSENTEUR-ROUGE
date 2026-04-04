@@ -535,7 +535,7 @@ const DupeModeSection: React.FC = () => {
           const res = await fetch(imageUrl);
           const blob = await res.blob();
           const file = new File([blob], 'woosenteur-visuel.png', { type: 'image/png' });
-          if (navigator.canShare && navigator.canShare({ files: [file] })) {
+          if ((navigator as any).canShare && (navigator as any).canShare({ files: [file] })) {
             await navigator.share({ files: [file], title: v.solutionBottom, text: v.fullCaption });
             return;
           }

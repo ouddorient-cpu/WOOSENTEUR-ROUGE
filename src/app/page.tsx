@@ -128,13 +128,13 @@ const Hero = () => {
                   Woosenteur — Générateur de fiches produits
                 </span>
               </div>
-              <Image
-                src="https://res.cloudinary.com/dzagwz94z/image/upload/v1767178954/ChatGPT_Image_31_d%C3%A9c._2025_12_01_35_as1mxu.png"
-                alt="Exemple de fiche produit SEO générée par Woosenteur"
-                width={600}
-                height={480}
+              <video
+                src="https://res.cloudinary.com/dzagwz94z/video/upload/v1766425678/WooSenteur___Fiches_Beaut%C3%A9_c2vxga.mp4"
+                autoPlay
+                muted
+                loop
+                playsInline
                 className="w-full"
-                priority
               />
             </div>
 

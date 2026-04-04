@@ -2,7 +2,7 @@
 import { useState, useEffect, useCallback } from 'react';
 
 const STORAGE_KEY = 'woosenteur_trial_credits';
-const MAX_TRIAL_CREDITS = 5;
+const MAX_TRIAL_CREDITS = 1;
 
 export function useTrialCredits() {
   const [creditsUsed, setCreditsUsed] = useState(0);

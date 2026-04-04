@@ -1,9 +1,9 @@
 
 'use client';
 import Link from 'next/link';
-import { usePathname, useRouter } from 'next/navigation';
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { getAuth, signOut } from 'firebase/auth';
-import { Home, Package, Sparkles, FileUp, User as UserIcon, LogOut, CreditCard, PanelLeft, Shield, Users, Megaphone } from 'lucide-react';
+import { Home, Package, Sparkles, FileUp, User as UserIcon, LogOut, CreditCard, PanelLeft, Shield, Users, Megaphone, Flame, Share2 } from 'lucide-react';
 import Logo from './logo';
 import { Button } from './ui/button';
 import { cn } from '@/lib/utils';
@@ -28,7 +28,17 @@ import { Separator } from './ui/separator';
 
 const NavLink = ({ href, icon, label, isMobile = false }: { href: string; icon: React.ReactNode; label: string; isMobile?: boolean }) => {
     const pathname = usePathname();
-    const isActive = pathname === href;
+    const searchParams = useSearchParams();
+
+    const [hrefPath, hrefQuery] = href.split('?');
+    let isActive: boolean;
+    if (hrefQuery) {
+        const hrefParams = new URLSearchParams(hrefQuery);
+        isActive = pathname === hrefPath &&
+            Array.from(hrefParams.entries()).every(([k, v]) => searchParams.get(k) === v);
+    } else {
+        isActive = pathname === hrefPath;
+    }
 
     if (isMobile) {
         return (
@@ -74,8 +84,13 @@ const navItems = [
     { href: "/dashboard", icon: <Home className="h-5 w-5" />, label: "Tableau de bord" },
     { href: "/dashboard/products", icon: <Package className="h-5 w-5" />, label: "Catalogue" },
     { href: "/dashboard/generate", icon: <Sparkles className="h-5 w-5" />, label: "Générateur IA" },
-    { href: "/dashboard/marketing", icon: <Megaphone className="h-5 w-5" />, label: "Marketing" },
     { href: "/dashboard/import", icon: <FileUp className="h-5 w-5" />, label: "Import/Export" },
+];
+
+const marketingNavItems = [
+    { href: "/dashboard/marketing?mode=campaign", icon: <Megaphone className="h-5 w-5" />, label: "Campagne Publicitaire" },
+    { href: "/dashboard/marketing?mode=dupe", icon: <Flame className="h-5 w-5 text-orange-500" />, label: "Mode Dupe Viral" },
+    { href: "/dashboard/marketing?mode=facebook", icon: <Share2 className="h-5 w-5 text-blue-500" />, label: "Posts Facebook" },
 ];
 
 const adminNavItems = [
@@ -114,7 +129,11 @@ export const MobileNav = () => {
                             <span className="font-headline text-xl">Woosenteur v2</span>
                         </Link>
                         {navItems.map(item => <NavLink key={item.href} {...item} isMobile />)}
-                        
+
+                        <Separator className="my-2" />
+                        <div className="px-4 text-xs font-semibold text-muted-foreground uppercase tracking-wider">Marketing</div>
+                        {marketingNavItems.map(item => <NavLink key={item.href} {...item} isMobile />)}
+
                         {isSuperAdmin && (
                             <>
                                 <Separator className="my-2" />
@@ -189,6 +208,9 @@ export default function DashboardSidebar() {
                     <span className="sr-only">Woosenteur v2</span>
                 </Link>
                 {navItems.map(item => <NavLink key={item.href} {...item} />)}
+
+                <Separator className="my-1 w-8" />
+                {marketingNavItems.map(item => <NavLink key={item.href} {...item} />)}
 
                 {isSuperAdmin && (
                     <>

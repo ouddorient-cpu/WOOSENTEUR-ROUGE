@@ -8,11 +8,12 @@ const plugins: GenkitPlugin[] = [];
 
 if (geminiApiKey && !geminiApiKey.includes('your_api_key_here')) {
     plugins.push(googleAI({ apiKey: geminiApiKey }));
+    console.log('✅ Google AI plugin loaded. Key prefix:', geminiApiKey.substring(0, 8) + '...');
 } else {
-    console.warn("⚠️ WARNING: GOOGLE_GENAI_API_KEY is not configured in .env file. AI features will be disabled.");
+    console.error('❌ GOOGLE_GENAI_API_KEY manquante ou invalide — IA désactivée.');
 }
 
 export const ai = genkit({
   plugins: plugins,
-  model: 'googleai/gemini-1.5-flash',
+  model: 'googleai/gemini-2.0-flash',
 });

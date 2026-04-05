@@ -12,12 +12,6 @@ import { useDoc } from '@/firebase';
 import { UserProfile } from '@/lib/types';
 import { Badge } from './ui/badge';
 import {
-    Tooltip,
-    TooltipContent,
-    TooltipProvider,
-    TooltipTrigger,
-} from "@/components/ui/tooltip"
-import {
     Sheet,
     SheetContent,
     SheetTrigger,
@@ -58,25 +52,16 @@ const NavLink = ({ href, icon, label, isMobile = false }: { href: string; icon: 
     }
 
     return (
-        <TooltipProvider>
-            <Tooltip>
-                <TooltipTrigger asChild>
-                    <Link
-                        href={href}
-                        className={cn(
-                            "flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8",
-                             isActive && "bg-gradient-to-r from-primary to-secondary text-primary-foreground shadow-lg"
-                        )}
-                    >
-                        {icon}
-                        <span className="sr-only">{label}</span>
-                    </Link>
-                </TooltipTrigger>
-                 <TooltipContent side="right" align="center">
-                    <p>{label}</p>
-                </TooltipContent>
-            </Tooltip>
-        </TooltipProvider>
+        <Link
+            href={href}
+            className={cn(
+                "flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium text-muted-foreground transition-colors hover:bg-muted hover:text-foreground w-full",
+                isActive && "bg-gradient-to-r from-primary to-secondary text-primary-foreground shadow-md hover:text-primary-foreground"
+            )}
+        >
+            <span className="shrink-0">{icon}</span>
+            <span className="truncate">{label}</span>
+        </Link>
     );
 };
 
@@ -88,8 +73,8 @@ const navItems = [
 ];
 
 const marketingNavItems = [
-    { href: "/dashboard/marketing?mode=campaign", icon: <Megaphone className="h-5 w-5" />, label: "Campagne Publicitaire" },
-    { href: "/dashboard/marketing?mode=dupe", icon: <Flame className="h-5 w-5 text-orange-500" />, label: "Mode Dupe Viral" },
+    { href: "/dashboard/marketing?mode=campaign", icon: <Megaphone className="h-5 w-5" />, label: "Campagne Pub." },
+    { href: "/dashboard/marketing?mode=dupe", icon: <Flame className="h-5 w-5 text-orange-500" />, label: "Dupe Viral" },
     { href: "/dashboard/marketing?mode=facebook", icon: <Share2 className="h-5 w-5 text-blue-500" />, label: "Posts Facebook" },
 ];
 
@@ -104,13 +89,13 @@ export const MobileNav = () => {
 
     const userProfilePath = user ? `users/${user.uid}` : null;
     const { data: userProfile } = useDoc<UserProfile>(userProfilePath);
-    
+
     const handleSignOut = async () => {
         const auth = getAuth();
         await signOut(auth);
         router.push('/');
     };
-    
+
     const isSuperAdmin = userProfile?.isUnlimited || userProfile?.role === 'superadmin';
 
     return (
@@ -201,38 +186,70 @@ export default function DashboardSidebar() {
     };
 
     return (
-        <aside className="fixed inset-y-0 left-0 z-10 hidden w-14 flex-col border-r bg-background sm:flex">
-             <nav className="flex flex-col items-center gap-4 px-2 sm:py-5">
-                <Link href="/" className="group flex h-9 w-9 shrink-0 items-center justify-center gap-2 rounded-full bg-gradient-to-tr from-primary to-secondary text-lg font-semibold text-primary-foreground md:h-8 md:w-8 md:text-base">
-                    <Logo className="h-5 w-5 transition-all group-hover:scale-110" />
-                    <span className="sr-only">Woosenteur v2</span>
+        <aside className="fixed inset-y-0 left-0 z-10 hidden w-52 flex-col border-r bg-background sm:flex">
+            {/* Logo */}
+            <div className="flex h-14 items-center border-b px-4">
+                <Link href="/" className="flex items-center gap-2">
+                    <Logo className="h-7 w-7" />
+                    <span className="font-headline text-base font-bold text-foreground">Woosenteur</span>
                 </Link>
+            </div>
+
+            {/* Main nav */}
+            <nav className="flex flex-col gap-1 px-3 py-4 flex-1 overflow-y-auto">
                 {navItems.map(item => <NavLink key={item.href} {...item} />)}
 
-                <Separator className="my-1 w-8" />
+                <div className="mt-3 mb-1 px-3">
+                    <p className="text-[10px] font-semibold text-muted-foreground uppercase tracking-wider">Marketing</p>
+                </div>
                 {marketingNavItems.map(item => <NavLink key={item.href} {...item} />)}
 
                 {isSuperAdmin && (
                     <>
                         <Separator className="my-2" />
+                        <div className="px-3 mb-1">
+                            <p className="text-[10px] font-semibold text-muted-foreground uppercase tracking-wider">Admin</p>
+                        </div>
                         {adminNavItems.map(item => <NavLink key={item.href} {...item} />)}
                     </>
                 )}
             </nav>
-            <nav className="mt-auto flex flex-col items-center gap-4 px-2 sm:py-5">
-                 <NavLink href="/dashboard/profile" icon={<UserIcon className="h-5 w-5" />} label="Profil" />
-                 <TooltipProvider>
-                    <Tooltip>
-                        <TooltipTrigger asChild>
-                             <Button variant="ghost" size="icon" className="h-9 w-9 md:h-8 md:w-8" onClick={handleSignOut}>
-                                <LogOut className="h-5 w-5" />
-                                <span className="sr-only">Déconnexion</span>
-                            </Button>
-                        </TooltipTrigger>
-                        <TooltipContent side="right">Déconnexion</TooltipContent>
-                    </Tooltip>
-                </TooltipProvider>
-            </nav>
+
+            {/* Bottom nav */}
+            <div className="border-t px-3 py-4 space-y-1">
+                <NavLink href="/dashboard/profile" icon={<UserIcon className="h-5 w-5" />} label="Profil" />
+                <button
+                    onClick={handleSignOut}
+                    className="flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium text-muted-foreground transition-colors hover:bg-muted hover:text-foreground w-full"
+                >
+                    <LogOut className="h-5 w-5 shrink-0" />
+                    <span>Déconnexion</span>
+                </button>
+
+                {/* Credits */}
+                <div className="mt-3 pt-3 border-t">
+                    {isSuperAdmin ? (
+                        <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-amber-50 border border-amber-200">
+                            <Shield className="h-4 w-4 text-amber-600 shrink-0" />
+                            <span className="text-xs font-bold text-amber-700">ADMIN</span>
+                        </div>
+                    ) : (
+                        <div className="px-3 py-2 rounded-lg bg-muted/50">
+                            <div className="flex items-center justify-between">
+                                <span className="text-xs text-muted-foreground">Crédits</span>
+                                <span className="text-xs font-bold text-foreground flex items-center gap-1">
+                                    <CreditCard className="h-3 w-3" />
+                                    {userProfile?.creditBalance ?? 0}
+                                </span>
+                            </div>
+                            <div className="flex items-center justify-between mt-1">
+                                <Badge variant="secondary" className="text-[10px] capitalize px-1.5">{userProfile?.subscriptionPlan || 'Gratuit'}</Badge>
+                                <Link href="/pricing" className="text-[10px] text-primary hover:underline">Changer</Link>
+                            </div>
+                        </div>
+                    )}
+                </div>
+            </div>
         </aside>
     );
 }

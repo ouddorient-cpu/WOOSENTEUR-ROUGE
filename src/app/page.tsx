@@ -129,7 +129,7 @@ const Hero = () => {
                 </span>
               </div>
               <video
-                src="https://res.cloudinary.com/dzagwz94z/video/upload/v1766425678/WooSenteur___Fiches_Beaut%C3%A9_c2vxga.mp4"
+                src="https://res.cloudinary.com/dzagwz94z/video/upload/v1766425674/Vid%C3%A9o_sans_titre_R%C3%A9alis%C3%A9e_avec_Clipchamp_1_gx07qt.mp4"
                 autoPlay
                 muted
                 loop

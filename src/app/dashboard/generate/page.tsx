@@ -512,7 +512,7 @@ const ResultColumn: React.FC<ResultColumnProps> = ({
           </CardContent>
         </Card>
 
-        {step === 'export' && (
+        {(step === 'preview' || step === 'export') && (
           <Card ref={exportCardRef}>
             <CardHeader>
               <CardTitle className="text-gradient">4. Export</CardTitle>

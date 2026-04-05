@@ -33,7 +33,7 @@ export default function DashboardLayout({
   return (
     <div className="flex min-h-screen w-full flex-col bg-muted/40">
         <DashboardSidebar />
-        <div className="flex flex-1 flex-col sm:gap-4 sm:py-4 sm:pl-14">
+        <div className="flex flex-1 flex-col sm:gap-4 sm:py-4 sm:pl-52">
             <MobileNav />
             <main className="flex-grow p-4 pb-24 sm:px-6 sm:pt-0 md:gap-8">
                 {children}

@@ -574,8 +574,8 @@ const generateProductDescriptionFlow = ai.defineFlow(
             throw new Error("Votre clé API pour le service IA a expiré ou est invalide. Veuillez la renouveler dans Google AI Studio.");
         }
 
-        if (errorMessage.includes('model') || errorMessage.includes('Model not found') || errorMessage.includes('not found')) {
-            throw new Error("Le modèle IA configuré n'est pas disponible. Veuillez vérifier la configuration.");
+        if (errorMessage.includes('Model not found') || errorMessage.includes('Could not find model')) {
+            throw new Error("Le modèle IA n'est pas disponible: " + errorMessage.substring(0, 150));
         }
 
         if (errorMessage.includes('quota') || errorMessage.includes('RESOURCE_EXHAUSTED')) {

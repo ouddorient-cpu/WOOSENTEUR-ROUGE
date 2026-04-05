@@ -34,7 +34,7 @@ const Hero = () => {
       <div className="absolute bottom-[-10%] right-[-5%] w-[35%] h-[45%] bg-secondary/5 blur-[130px] rounded-full pointer-events-none" />
 
       <div className="container mx-auto px-4 md:px-6 relative z-10">
-        <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center max-w-6xl mx-auto">
+        <div className="grid lg:grid-cols-[1fr_420px] gap-12 lg:gap-16 items-center max-w-6xl mx-auto">
 
           {/* Left column — copy */}
           <motion.div
@@ -134,7 +134,7 @@ const Hero = () => {
                 muted
                 loop
                 playsInline
-                className="w-full aspect-video object-contain bg-black"
+                className="w-full h-auto"
               />
             </div>
 

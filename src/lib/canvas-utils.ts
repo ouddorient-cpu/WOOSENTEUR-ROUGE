@@ -271,8 +271,8 @@ export async function createDupeOverlay(
         if (!ctx) { reject(new Error('Canvas context unavailable')); return; }
 
         // ── Band heights ──────────────────────────────────────────────────────
-        const topBandH  = Math.round(H * 0.22);   // ~22% for hook
-        const botBandH  = Math.round(H * 0.26);   // ~26% for solution
+        const topBandH  = Math.round(H * 0.15);   // ~15% for hook
+        const botBandH  = Math.round(H * 0.18);   // ~18% for solution
         const centerH   = H - topBandH - botBandH; // remaining for photo
 
         // ── 1. Draw product image in center (cover fill) ───────────────────
@@ -310,7 +310,7 @@ export async function createDupeOverlay(
         // Hook text — centered, white, bold
         ctx.textAlign = 'center';
         ctx.textBaseline = 'middle';
-        const hookFontSize = Math.round(W * 0.054);
+        const hookFontSize = Math.round(W * 0.043);
         ctx.font = `800 ${hookFontSize}px -apple-system, "Helvetica Neue", Arial, sans-serif`;
         ctx.fillStyle = '#FFFFFF';
 
@@ -348,7 +348,7 @@ export async function createDupeOverlay(
         ctx.shadowColor = 'rgba(0,0,0,0.4)';
         ctx.shadowBlur = 4;
 
-        const solFontSize = Math.round(W * 0.056);
+        const solFontSize = Math.round(W * 0.044);
         ctx.font = `800 ${solFontSize}px -apple-system, "Helvetica Neue", Arial, sans-serif`;
         ctx.fillStyle = '#FFFFFF';
         ctx.textAlign = 'center';

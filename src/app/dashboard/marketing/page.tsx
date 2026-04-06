@@ -42,7 +42,7 @@ import Link from 'next/link';
 import { Rocket } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Timestamp } from 'firebase/firestore';
-import { createAdComposite, createDupeOverlay, createFacebookPostVisual, createFacebookPollVisual, createFacebookFlashVisual } from '@/lib/canvas-utils';
+import { createAdComposite, createDupeOverlay, createFacebookPostVisual, createFacebookPollVisual, createFacebookFlashVisual, createBeforeAfterCanvas } from '@/lib/canvas-utils';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { generateDupeText } from '@/ai/flows/generate-dupe-text';
 import type { DupeTextOutput } from '@/ai/flows/generate-dupe-text';
@@ -433,6 +433,14 @@ const DupeModeSection: React.FC = () => {
   const [overlayImages, setOverlayImages] = useState<Record<number, string>>({});
   const [creatingOverlay, setCreatingOverlay] = useState<number | null>(null);
   const [copiedCaption, setCopiedCaption] = useState<number | null>(null);
+  // Feature 1 — Format
+  const [dupeFormat, setDupeFormat] = useState<'instagram_post' | 'instagram_story'>('instagram_post');
+  // Feature 2 — AI Background
+  const [generatedBg, setGeneratedBg] = useState<string | null>(null);
+  const [isGeneratingBg, setIsGeneratingBg] = useState(false);
+  // Feature 3 — Before/After
+  const [beforeAfterImg, setBeforeAfterImg] = useState<string | null>(null);
+  const [isCreatingBeforeAfter, setIsCreatingBeforeAfter] = useState(false);
 
   const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -450,6 +458,55 @@ const DupeModeSection: React.FC = () => {
     const reader = new FileReader();
     reader.onload = (ev) => setUploadedImage(ev.target?.result as string);
     reader.readAsDataURL(file);
+  };
+
+  const handleGenerateBackground = async () => {
+    if (!dupeProductName.trim()) {
+      toast({ variant: 'destructive', title: 'Nom manquant', description: 'Entrez le nom de votre produit d\'abord.' });
+      return;
+    }
+    setIsGeneratingBg(true);
+    try {
+      const prompt = encodeURIComponent(
+        `luxury perfume bottle product photography ${dupeProductName} elegant background silk marble pink light studio`
+      );
+      const url = `https://image.pollinations.ai/prompt/${prompt}?width=1080&height=1080&nologo=true&model=flux&seed=${Date.now()}`;
+      const res = await fetch(url);
+      if (!res.ok) throw new Error('Échec de la génération');
+      const blob = await res.blob();
+      const objectUrl = URL.createObjectURL(blob);
+      setGeneratedBg(objectUrl);
+      setUploadedImage(null);
+      setOverlayImages({});
+      toast({ title: 'Fond IA généré !', description: 'Vous pouvez régénérer pour un autre résultat.' });
+    } catch (err: any) {
+      toast({ variant: 'destructive', title: 'Erreur', description: err.message });
+    } finally {
+      setIsGeneratingBg(false);
+    }
+  };
+
+  const handleBeforeAfter = async () => {
+    const imageSource = uploadedImage || generatedBg;
+    if (!imageSource || !dupeResult) return;
+    setIsCreatingBeforeAfter(true);
+    try {
+      const img = await createBeforeAfterCanvas(imageSource, {
+        luxuryBrand: dupeResult.detectedOriginal,
+        luxuryPrice: originalPrice.trim() || '120€',
+        dupeName: dupeProductName,
+        dupePrice: dupePrice.trim() || '35€',
+        hookText: `Même parfum. ${dupeResult.variants[0]?.priceTag || 'Prix 4× moins cher.'}`,
+        accentColor,
+        format: dupeFormat,
+      });
+      setBeforeAfterImg(img);
+      toast({ title: 'Before/After créé !', description: 'Visuel viral prêt à publier.' });
+    } catch (err: any) {
+      toast({ variant: 'destructive', title: 'Erreur', description: err.message });
+    } finally {
+      setIsCreatingBeforeAfter(false);
+    }
   };
 
   const handleGenerate = async () => {
@@ -481,15 +538,17 @@ const DupeModeSection: React.FC = () => {
   };
 
   const handleCreateOverlay = async (idx: number) => {
-    if (!uploadedImage || !dupeResult) return;
+    const imageSource = uploadedImage || generatedBg;
+    if (!imageSource || !dupeResult) return;
     const v = dupeResult.variants[idx];
     setCreatingOverlay(idx);
     try {
-      const img = await createDupeOverlay(uploadedImage, {
+      const img = await createDupeOverlay(imageSource, {
         hookTop: v.hookTop,
         solutionBottom: v.solutionBottom,
         priceTag: v.priceTag || undefined,
         accentColor,
+        format: dupeFormat,
       });
       setOverlayImages(prev => ({ ...prev, [idx]: img }));
       toast({ title: 'Visuel créé !', description: 'Téléchargez et partagez.' });
@@ -501,7 +560,7 @@ const DupeModeSection: React.FC = () => {
   };
 
   const handleAllOverlays = async () => {
-    if (!uploadedImage || !dupeResult) return;
+    if (!(uploadedImage || generatedBg) || !dupeResult) return;
     for (let i = 0; i < dupeResult.variants.length; i++) {
       await handleCreateOverlay(i);
     }
@@ -562,10 +621,10 @@ const DupeModeSection: React.FC = () => {
           <CardHeader className="pb-3">
             <CardTitle className="text-base">📸 Photo de votre produit</CardTitle>
             <CardDescription className="text-xs">
-              Uploadez la photo de votre flacon — elle sera intégrée au visuel final.
+              Uploadez la photo de votre flacon, ou générez un fond IA gratuit.
             </CardDescription>
           </CardHeader>
-          <CardContent>
+          <CardContent className="space-y-3">
             <input
               ref={fileInputRef}
               type="file"
@@ -573,9 +632,30 @@ const DupeModeSection: React.FC = () => {
               onChange={handleFileSelect}
               className="hidden"
             />
-            {!uploadedImage ? (
+            {/* AI Background button */}
+            <Button
+              variant="outline"
+              size="sm"
+              className="w-full gap-2 border-dashed border-purple-400 text-purple-700 hover:bg-purple-50"
+              onClick={handleGenerateBackground}
+              disabled={isGeneratingBg}
+            >
+              {isGeneratingBg ? (
+                <><Loader2 className="h-3.5 w-3.5 animate-spin" /> Génération en cours (~5s)...</>
+              ) : generatedBg ? (
+                <><RefreshCw className="h-3.5 w-3.5" /> Régénérer le fond IA</>
+              ) : (
+                <><Sparkles className="h-3.5 w-3.5" /> Générer un fond IA — Gratuit</>
+              )}
+            </Button>
+            <div className="flex items-center gap-2">
+              <div className="flex-1 h-px bg-border" />
+              <span className="text-xs text-muted-foreground">ou</span>
+              <div className="flex-1 h-px bg-border" />
+            </div>
+            {!(uploadedImage || generatedBg) ? (
               <div
-                className={`border-2 border-dashed rounded-xl flex flex-col items-center justify-center py-10 cursor-pointer transition-colors ${isDragging ? 'border-primary bg-primary/10' : 'hover:bg-muted/40'}`}
+                className={`border-2 border-dashed rounded-xl flex flex-col items-center justify-center py-8 cursor-pointer transition-colors ${isDragging ? 'border-primary bg-primary/10' : 'hover:bg-muted/40'}`}
                 onDragOver={(e) => { e.preventDefault(); setIsDragging(true); }}
                 onDragLeave={() => setIsDragging(false)}
                 onDrop={handleDrop}
@@ -589,17 +669,22 @@ const DupeModeSection: React.FC = () => {
               <div className="space-y-3">
                 <div className="relative aspect-square rounded-xl overflow-hidden bg-muted">
                   <Image
-                    src={uploadedImage}
+                    src={uploadedImage || generatedBg!}
                     alt="Product"
                     fill
                     className="object-contain"
                     unoptimized
                   />
+                  {generatedBg && !uploadedImage && (
+                    <div className="absolute top-2 left-2 bg-purple-600 text-white text-[10px] font-bold px-2 py-0.5 rounded-full">
+                      ✨ IA
+                    </div>
+                  )}
                   <Button
                     size="icon"
                     variant="destructive"
                     className="absolute top-2 right-2 h-7 w-7"
-                    onClick={() => { setUploadedImage(null); setOverlayImages({}); }}
+                    onClick={() => { setUploadedImage(null); setGeneratedBg(null); setOverlayImages({}); setBeforeAfterImg(null); }}
                   >
                     <X className="h-3.5 w-3.5" />
                   </Button>
@@ -616,11 +701,18 @@ const DupeModeSection: React.FC = () => {
                         title={c.label}
                         className={`h-7 w-7 rounded-full border-2 transition-transform ${accentColor === c.value ? 'border-white scale-110 shadow-md' : 'border-transparent'}`}
                         style={{ backgroundColor: c.value }}
-                        onClick={() => { setAccentColor(c.value); setOverlayImages({}); }}
+                        onClick={() => { setAccentColor(c.value); setOverlayImages({}); setBeforeAfterImg(null); }}
                       />
                     ))}
                   </div>
                 </div>
+                {/* Upload another photo */}
+                <button
+                  onClick={() => fileInputRef.current?.click()}
+                  className="w-full text-xs text-muted-foreground hover:text-foreground underline underline-offset-2 text-center"
+                >
+                  Utiliser une autre photo
+                </button>
               </div>
             )}
           </CardContent>
@@ -664,6 +756,24 @@ const DupeModeSection: React.FC = () => {
                 <Input placeholder="Ex : 49€" value={dupePrice} onChange={e => setDupePrice(e.target.value)} />
               </div>
             </div>
+            {/* Format toggle */}
+            <div>
+              <p className="text-xs font-medium mb-1.5">Format du visuel</p>
+              <div className="flex gap-2">
+                <button
+                  onClick={() => { setDupeFormat('instagram_post'); setOverlayImages({}); setBeforeAfterImg(null); }}
+                  className={`flex-1 flex items-center justify-center gap-1.5 rounded-lg border py-2 text-xs font-medium transition-colors ${dupeFormat === 'instagram_post' ? 'border-primary bg-primary text-primary-foreground' : 'border-border hover:bg-muted'}`}
+                >
+                  📸 Carré 1:1
+                </button>
+                <button
+                  onClick={() => { setDupeFormat('instagram_story'); setOverlayImages({}); setBeforeAfterImg(null); }}
+                  className={`flex-1 flex items-center justify-center gap-1.5 rounded-lg border py-2 text-xs font-medium transition-colors ${dupeFormat === 'instagram_story' ? 'border-primary bg-primary text-primary-foreground' : 'border-border hover:bg-muted'}`}
+                >
+                  📱 Story 9:16
+                </button>
+              </div>
+            </div>
             <Button
               className="w-full"
               onClick={handleGenerate}
@@ -693,7 +803,7 @@ const DupeModeSection: React.FC = () => {
                 Référence détectée : <strong>{dupeResult.detectedOriginal}</strong>
               </p>
             </div>
-            {uploadedImage && Object.keys(overlayImages).length < 3 && (
+            {(uploadedImage || generatedBg) && Object.keys(overlayImages).length < 3 && (
               <Button variant="outline" size="sm" onClick={handleAllOverlays} disabled={creatingOverlay !== null}>
                 <Sparkles className="h-3.5 w-3.5 mr-1.5" />
                 Créer les 3 visuels
@@ -714,7 +824,7 @@ const DupeModeSection: React.FC = () => {
                 <CardContent className="space-y-3">
                   {/* Product image — fully visible */}
                   <div className="rounded-xl overflow-hidden border bg-muted/20">
-                    {uploadedImage ? (
+                    {(uploadedImage || generatedBg) ? (
                       overlayImages[idx] ? (
                         <div className="relative aspect-square">
                           <Image
@@ -728,7 +838,7 @@ const DupeModeSection: React.FC = () => {
                       ) : (
                         <div className="relative aspect-square bg-white">
                           <Image
-                            src={uploadedImage}
+                            src={uploadedImage || generatedBg!}
                             alt="Product"
                             fill
                             className="object-contain p-2"
@@ -755,7 +865,7 @@ const DupeModeSection: React.FC = () => {
                       <div className="aspect-square bg-muted/30 flex items-center justify-center">
                         <div className="text-center text-muted-foreground">
                           <ImageIcon className="h-8 w-8 mx-auto mb-1" />
-                          <p className="text-xs">Uploadez une photo</p>
+                          <p className="text-xs">Uploadez une photo ou générez un fond IA</p>
                         </div>
                       </div>
                     )}
@@ -807,7 +917,7 @@ const DupeModeSection: React.FC = () => {
                           <Download className="h-3.5 w-3.5 mr-1" />
                           Image
                         </Button>
-                      ) : uploadedImage ? (
+                      ) : (uploadedImage || generatedBg) ? (
                         <Button
                           size="sm"
                           variant="default"
@@ -838,6 +948,81 @@ const DupeModeSection: React.FC = () => {
               </Card>
             ))}
           </div>
+
+          {/* Before/After */}
+          <Card className="border-2 border-dashed border-orange-300">
+            <CardContent className="pt-4">
+              <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+                <div>
+                  <p className="font-semibold text-sm flex items-center gap-2">
+                    <Zap className="h-4 w-4 text-orange-500" />
+                    Visuel Before/After viral
+                  </p>
+                  <p className="text-xs text-muted-foreground mt-0.5">
+                    Côte à côte : produit luxe vs votre dupe — format très partagé sur TikTok/Reels
+                  </p>
+                </div>
+                <Button
+                  size="sm"
+                  variant="outline"
+                  className="shrink-0 gap-2 border-orange-400 text-orange-700 hover:bg-orange-50"
+                  onClick={handleBeforeAfter}
+                  disabled={isCreatingBeforeAfter || !(uploadedImage || generatedBg)}
+                >
+                  {isCreatingBeforeAfter ? (
+                    <><Loader2 className="h-3.5 w-3.5 animate-spin" /> Création...</>
+                  ) : (
+                    <><Zap className="h-3.5 w-3.5" /> Créer le Before/After</>
+                  )}
+                </Button>
+              </div>
+              {!(uploadedImage || generatedBg) && (
+                <p className="text-xs text-muted-foreground mt-2">⬆ Uploadez une photo ou générez un fond IA pour activer.</p>
+              )}
+              {beforeAfterImg && (
+                <div className="mt-4 space-y-2">
+                  <div className="relative rounded-xl overflow-hidden border">
+                    <Image
+                      src={beforeAfterImg}
+                      alt="Before/After"
+                      width={1080}
+                      height={dupeFormat === 'instagram_story' ? 1920 : 1080}
+                      className="w-full h-auto"
+                      unoptimized
+                    />
+                  </div>
+                  <div className="flex gap-2">
+                    <Button
+                      size="sm"
+                      variant="outline"
+                      className="flex-1 text-xs"
+                      onClick={() => {
+                        const a = document.createElement('a');
+                        a.href = beforeAfterImg;
+                        a.download = `before-after-${dupeProductName}.png`;
+                        document.body.appendChild(a);
+                        a.click();
+                        document.body.removeChild(a);
+                      }}
+                    >
+                      <Download className="h-3.5 w-3.5 mr-1.5" />
+                      Télécharger
+                    </Button>
+                    <Button
+                      size="sm"
+                      variant="outline"
+                      className="flex-1 text-xs"
+                      onClick={handleBeforeAfter}
+                      disabled={isCreatingBeforeAfter}
+                    >
+                      <RefreshCw className="h-3.5 w-3.5 mr-1.5" />
+                      Régénérer
+                    </Button>
+                  </div>
+                </div>
+              )}
+            </CardContent>
+          </Card>
         </div>
       )}
     </div>

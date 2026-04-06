@@ -406,6 +406,199 @@ function hexToRgba(hex: string, alpha: number): string {
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
+// BEFORE/AFTER CANVAS — Luxe vs Dupe side-by-side viral visual
+// Layout: dark left panel (luxury) | product photo right | VS badge center
+// ─────────────────────────────────────────────────────────────────────────────
+
+export interface BeforeAfterOptions {
+  luxuryBrand: string;    // "MISS DIOR"
+  luxuryPrice: string;    // "130€"
+  dupeName: string;       // "SO CANDID"
+  dupePrice: string;      // "35€"
+  hookText?: string;      // "Même fragrance. 4x moins cher."
+  accentColor?: string;   // bottom band color
+  format?: 'instagram_post' | 'instagram_story';
+}
+
+export async function createBeforeAfterCanvas(
+  imageSource: string,
+  options: BeforeAfterOptions
+): Promise<string> {
+  return new Promise((resolve, reject) => {
+    const img = new window.Image();
+    img.crossOrigin = 'anonymous';
+
+    img.onload = () => {
+      try {
+        const W = 1080;
+        const H = options.format === 'instagram_story' ? 1920 : 1080;
+        const canvas = document.createElement('canvas');
+        canvas.width = W;
+        canvas.height = H;
+        const ctx = canvas.getContext('2d');
+        if (!ctx) { reject(new Error('Canvas unavailable')); return; }
+
+        const topH   = Math.round(H * 0.10);   // hook band
+        const botH   = Math.round(H * 0.12);   // bottom band
+        const midH   = H - topH - botH;         // panels area
+        const halfW  = Math.round(W / 2);
+        const accent = options.accentColor || '#5B21B6';
+
+        // ── 1. TOP BAND ───────────────────────────────────────────────────
+        ctx.fillStyle = 'rgba(8,8,12,0.95)';
+        ctx.fillRect(0, 0, W, topH);
+        ctx.fillStyle = '#FF3B3B';
+        ctx.fillRect(0, 0, 6, topH);
+
+        const hookText = options.hookText || `${options.luxuryBrand} à ${options.luxuryPrice} vs ${options.dupeName} à ${options.dupePrice}`;
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        const hookFS = Math.round(W * 0.036);
+        ctx.font = `700 ${hookFS}px -apple-system,"Helvetica Neue",Arial,sans-serif`;
+        ctx.fillStyle = '#FFFFFF';
+        ctx.shadowColor = 'rgba(0,0,0,0.5)';
+        ctx.shadowBlur = 4;
+        ctx.fillText(hookText.toUpperCase(), W / 2, topH / 2);
+        ctx.shadowBlur = 0;
+
+        // ── 2. LEFT PANEL — Luxury (dark gradient) ────────────────────────
+        const leftGrad = ctx.createLinearGradient(0, topH, halfW, topH + midH);
+        leftGrad.addColorStop(0, '#0d0d0d');
+        leftGrad.addColorStop(1, '#1a1a2e');
+        ctx.fillStyle = leftGrad;
+        ctx.fillRect(0, topH, halfW, midH);
+
+        // "LUXE" watermark
+        ctx.save();
+        ctx.globalAlpha = 0.06;
+        ctx.font = `900 ${Math.round(W * 0.18)}px serif`;
+        ctx.fillStyle = '#FFFFFF';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText('LUXE', halfW / 2, topH + midH / 2);
+        ctx.restore();
+
+        // Luxury brand name
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        const brandFS = Math.round(W * 0.052);
+        ctx.font = `800 ${brandFS}px "Helvetica Neue",Arial,sans-serif`;
+        ctx.fillStyle = '#F5E6C8'; // gold-ish
+        ctx.shadowColor = 'rgba(0,0,0,0.8)';
+        ctx.shadowBlur = 8;
+        ctx.fillText(options.luxuryBrand.toUpperCase(), halfW / 2, topH + midH * 0.42);
+        ctx.shadowBlur = 0;
+
+        // Luxury price — strikethrough style
+        const luxPriceFS = Math.round(W * 0.048);
+        ctx.font = `700 ${luxPriceFS}px "Helvetica Neue",Arial,sans-serif`;
+        ctx.fillStyle = '#FF4444';
+        ctx.fillText(options.luxuryPrice, halfW / 2, topH + midH * 0.60);
+
+        // Strikethrough line over price
+        const priceMetrics = ctx.measureText(options.luxuryPrice);
+        const lineX = halfW / 2 - priceMetrics.width / 2;
+        const lineY = topH + midH * 0.60;
+        ctx.beginPath();
+        ctx.strokeStyle = '#FF4444';
+        ctx.lineWidth = 3;
+        ctx.moveTo(lineX - 4, lineY);
+        ctx.lineTo(lineX + priceMetrics.width + 4, lineY);
+        ctx.stroke();
+
+        // ── 3. RIGHT PANEL — Dupe product photo ───────────────────────────
+        ctx.save();
+        ctx.beginPath();
+        ctx.rect(halfW, topH, halfW, midH);
+        ctx.clip();
+        const scale = Math.max(halfW / img.width, midH / img.height);
+        const ix = halfW + (halfW - img.width * scale) / 2;
+        const iy = topH + (midH - img.height * scale) / 2;
+        ctx.drawImage(img, ix, iy, img.width * scale, img.height * scale);
+
+        // Slight dark overlay for text readability
+        const rightOverlay = ctx.createLinearGradient(halfW, topH + midH * 0.5, halfW, topH + midH);
+        rightOverlay.addColorStop(0, 'rgba(0,0,0,0)');
+        rightOverlay.addColorStop(1, 'rgba(0,0,0,0.65)');
+        ctx.fillStyle = rightOverlay;
+        ctx.fillRect(halfW, topH, halfW, midH);
+        ctx.restore();
+
+        // Dupe product name
+        ctx.textAlign = 'center';
+        ctx.font = `800 ${Math.round(W * 0.044)}px "Helvetica Neue",Arial,sans-serif`;
+        ctx.fillStyle = '#FFFFFF';
+        ctx.shadowColor = 'rgba(0,0,0,0.9)';
+        ctx.shadowBlur = 10;
+        ctx.fillText(options.dupeName.toUpperCase(), halfW + halfW / 2, topH + midH * 0.75);
+
+        // Dupe price — green pill
+        ctx.shadowBlur = 0;
+        const dupePriceFS = Math.round(W * 0.044);
+        ctx.font = `700 ${dupePriceFS}px "Helvetica Neue",Arial,sans-serif`;
+        const dpMetrics = ctx.measureText(options.dupePrice);
+        const pillW = dpMetrics.width + dupePriceFS * 1.8;
+        const pillH = dupePriceFS * 1.6;
+        const pillX = halfW + halfW / 2 - pillW / 2;
+        const pillY = topH + midH * 0.82;
+        ctx.fillStyle = '#22C55E';
+        roundRect(ctx, pillX, pillY, pillW, pillH, pillH / 2);
+        ctx.fill();
+        ctx.fillStyle = '#FFFFFF';
+        ctx.textBaseline = 'middle';
+        ctx.fillText(options.dupePrice, halfW + halfW / 2, pillY + pillH / 2);
+
+        // ── 4. DIVIDER LINE ───────────────────────────────────────────────
+        ctx.fillStyle = 'rgba(255,255,255,0.15)';
+        ctx.fillRect(halfW - 1, topH, 2, midH);
+
+        // ── 5. VS BADGE ───────────────────────────────────────────────────
+        const vsR = Math.round(W * 0.048);
+        const vsX = halfW;
+        const vsY = topH + midH / 2;
+
+        ctx.shadowColor = 'rgba(0,0,0,0.5)';
+        ctx.shadowBlur = 12;
+        ctx.beginPath();
+        ctx.arc(vsX, vsY, vsR, 0, Math.PI * 2);
+        ctx.fillStyle = '#FFFFFF';
+        ctx.fill();
+        ctx.shadowBlur = 0;
+
+        ctx.fillStyle = '#0d0d0d';
+        ctx.font = `900 ${Math.round(vsR * 0.9)}px "Helvetica Neue",Arial,sans-serif`;
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText('VS', vsX, vsY);
+
+        // ── 6. BOTTOM BAND ────────────────────────────────────────────────
+        const botGrad = ctx.createLinearGradient(0, H - botH, 0, H);
+        botGrad.addColorStop(0, hexToRgba(accent, 1));
+        botGrad.addColorStop(1, hexToRgba(accent, 0.85));
+        ctx.fillStyle = botGrad;
+        ctx.fillRect(0, H - botH, W, botH);
+
+        // Left label: "MARQUE LUXE" | Right label: "ALTERNATIVE"
+        const labFS = Math.round(W * 0.024);
+        ctx.font = `600 ${labFS}px "Helvetica Neue",Arial,sans-serif`;
+        ctx.fillStyle = 'rgba(255,255,255,0.8)';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText('💰 PRIX LUXE', halfW / 2, H - botH / 2);
+        ctx.fillText('✅ MÊME RÉSULTAT', halfW + halfW / 2, H - botH / 2);
+
+        resolve(canvas.toDataURL('image/png'));
+      } catch (e) {
+        reject(e);
+      }
+    };
+
+    img.onerror = () => reject(new Error('Impossible de charger l\'image.'));
+    img.src = imageSource;
+  });
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
 // FACEBOOK POST VISUAL — 1200×628
 // Layout: product photo (background, cover) + bottom gradient + text overlay
 // ─────────────────────────────────────────────────────────────────────────────

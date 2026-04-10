@@ -20,6 +20,7 @@ import ScrollProgress from '@/components/landing/ScrollProgress';
 import SocialProofTicker from '@/components/landing/SocialProofTicker';
 import OwnProductMode from '@/components/landing/OwnProductMode';
 import EditoSection from '@/components/landing/EditoSection';
+import AdPowerSection from '@/components/landing/AdPowerSection';
 import Image from 'next/image';
 
 const Hero = () => {
@@ -204,6 +205,8 @@ export default function HomePage() {
         <Features />
         {/* 2b. Section éditoriale narrative */}
         <EditoSection />
+        {/* 2c. Studio pub IA — fonctions dashboard */}
+        <AdPowerSection />
         {/* 3. Pour qui ? */}
         <ForWho />
         {/* 3b. Produit sans marque — nouvelle fonctionnalité */}

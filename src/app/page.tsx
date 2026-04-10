@@ -1,6 +1,7 @@
 'use client';
 
 import { motion } from 'framer-motion';
+import { useRef } from 'react';
 import Footer from '@/components/footer';
 import Faq from '@/components/landing/Faq';
 import FinalCta from '@/components/landing/FinalCta';
@@ -14,17 +15,19 @@ import { Rocket, Check, Sparkles, ArrowRight } from 'lucide-react';
 import Link from 'next/link';
 import Header from '@/components/header';
 import Pricing from '@/components/landing/Pricing';
-import TrialGenerator from '@/components/landing/TrialGenerator';
 import ScrollProgress from '@/components/landing/ScrollProgress';
 import SocialProofTicker from '@/components/landing/SocialProofTicker';
 import OwnProductMode from '@/components/landing/OwnProductMode';
 import EditoSection from '@/components/landing/EditoSection';
 import AdPowerSection from '@/components/landing/AdPowerSection';
-import Image from 'next/image';
+import HeroProductForm from '@/components/landing/HeroProductForm';
 
 const Hero = () => {
-  const scrollToTrial = () => {
-    document.getElementById('essai-gratuit')?.scrollIntoView({ behavior: 'smooth' });
+  const heroInputRef = useRef<HTMLInputElement>(null);
+
+  const focusHeroInput = () => {
+    heroInputRef.current?.focus();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   return (
@@ -72,7 +75,7 @@ const Hero = () => {
                 <Button
                   size="lg"
                   className="bg-primary hover:bg-primary/90 text-white px-8 py-6 text-base rounded-full shadow-lg shadow-primary/25 font-semibold"
-                  onClick={scrollToTrial}
+                  onClick={focusHeroInput}
                 >
                   <Rocket className="mr-2 h-4 w-4" />
                   Générer ma 1ère fiche — Gratuit
@@ -112,38 +115,20 @@ const Hero = () => {
             </div>
           </motion.div>
 
-          {/* Right column — product mockup */}
+          {/* Right column — Hero product form */}
           <motion.div
             initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.5, delay: 0.18 }}
-            className="relative"
+            className="relative hidden lg:block"
           >
-            <div className="relative rounded-2xl overflow-hidden border border-border/60 shadow-[0_24px_60px_-12px_rgba(0,0,0,0.1)] bg-card">
-              {/* Browser chrome */}
-              <div className="h-9 bg-muted/60 flex items-center gap-1.5 px-4 border-b border-border/50">
-                <div className="h-2.5 w-2.5 rounded-full bg-red-400/80" />
-                <div className="h-2.5 w-2.5 rounded-full bg-yellow-400/80" />
-                <div className="h-2.5 w-2.5 rounded-full bg-green-400/80" />
-                <span className="ml-3 text-[11px] text-muted-foreground font-mono tracking-wide">
-                  Woosenteur — Générateur de fiches produits
-                </span>
-              </div>
-              <video
-                src="https://res.cloudinary.com/dzagwz94z/video/upload/v1766425674/Vid%C3%A9o_sans_titre_R%C3%A9alis%C3%A9e_avec_Clipchamp_1_gx07qt.mp4"
-                autoPlay
-                muted
-                loop
-                playsInline
-                className="w-full h-auto"
-              />
-            </div>
+            <HeroProductForm inputRef={heroInputRef} />
 
             {/* Floating SEO score badge */}
             <motion.div
               animate={{ y: [0, -7, 0] }}
               transition={{ duration: 3.5, repeat: Infinity, ease: 'easeInOut' }}
-              className="hidden lg:flex absolute -bottom-5 -left-5 bg-white dark:bg-card border border-border/70 shadow-xl rounded-2xl px-4 py-3 items-center gap-3"
+              className="absolute -bottom-5 -left-5 bg-white dark:bg-card border border-border/70 shadow-xl rounded-2xl px-4 py-3 flex items-center gap-3"
             >
               <div className="h-9 w-9 rounded-xl bg-green-500/15 flex items-center justify-center">
                 <Check className="h-4 w-4 text-green-500" />
@@ -158,29 +143,10 @@ const Hero = () => {
             <motion.div
               animate={{ y: [0, 6, 0] }}
               transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut', delay: 0.8 }}
-              className="hidden lg:block absolute -top-5 -right-4 bg-white dark:bg-card border border-border/70 shadow-xl rounded-2xl px-4 py-3"
+              className="absolute -top-5 -right-4 bg-white dark:bg-card border border-border/70 shadow-xl rounded-2xl px-4 py-3"
             >
               <p className="text-[10px] font-semibold text-muted-foreground uppercase tracking-wider">Généré en</p>
-              <p className="text-base font-extrabold text-primary leading-tight">2 min 34 s ⚡</p>
-            </motion.div>
-
-            {/* Woody mascot — floating with speech bubble */}
-            <motion.div
-              animate={{ y: [0, -10, 0] }}
-              transition={{ duration: 2.8, repeat: Infinity, ease: 'easeInOut', delay: 0.4 }}
-              className="hidden lg:flex absolute -bottom-10 right-6 flex-col items-end gap-1"
-            >
-              <div className="bg-white dark:bg-card border border-primary/20 shadow-lg rounded-2xl rounded-br-sm px-3 py-1.5 text-xs font-semibold text-primary whitespace-nowrap self-center mb-1">
-                Salut, moi c&apos;est Woody ! 👋
-              </div>
-              <Image
-                src="/woody-white.png"
-                alt="Woody — mascotte Woosenteur"
-                width={100}
-                height={100}
-                style={{ width: 100, height: 'auto' }}
-                className="drop-shadow-xl"
-              />
+              <p className="text-base font-extrabold text-primary leading-tight">~30 s ⚡</p>
             </motion.div>
           </motion.div>
 
@@ -216,8 +182,7 @@ export default function HomePage() {
         <Testimonials />
         {/* Comparatif */}
         <Comparatif />
-        {/* Trial + Pricing */}
-        <TrialGenerator />
+        {/* Pricing */}
         <Pricing />
         <Faq />
         <FinalCta />

@@ -88,13 +88,6 @@ const Hero = () => {
                 Voir les prix →
                 <ArrowRight className="h-3.5 w-3.5 group-hover:translate-x-0.5 transition-transform" />
               </Link>
-              <Link
-                href="/v2"
-                className="group flex items-center gap-1.5 text-sm font-bold text-primary hover:text-primary/80 transition-colors bg-primary/5 px-3 py-1.5 rounded-full"
-              >
-                Comparer V2 (Bêta)
-                <Sparkles className="h-3.5 w-3.5 ml-1" />
-              </Link>
             </div>
 
             <p className="mt-3 text-sm text-muted-foreground">

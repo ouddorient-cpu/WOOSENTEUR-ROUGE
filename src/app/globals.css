@@ -33,31 +33,29 @@ html {
 
 @layer base {
   :root {
-    --background: 30 20% 98%;
-    /* Crème poudré très léger */
-    --foreground: 20 20% 12%;
-    /* Noir anthracite chaud */
+    --background: 0 0% 99%;
+    --foreground: 224 30% 10%;
 
     --card: 0 0% 100%;
-    --card-foreground: 20 20% 12%;
+    --card-foreground: 224 30% 10%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 20 20% 12%;
+    --popover-foreground: 224 30% 10%;
 
-    --primary: 38 62% 48%;
-    /* Or / Ambre élégant */
-    --primary-foreground: 30 20% 98%;
+    --primary: 346 84% 46%;
+    /* Rouge vif */
+    --primary-foreground: 0 0% 100%;
 
-    --secondary: 25 35% 25%;
-    /* Brun Ombre / Terre */
-    --secondary-foreground: 30 20% 98%;
+    --secondary: 263 70% 50%;
+    /* Violet */
+    --secondary-foreground: 0 0% 100%;
 
-    --muted: 30 10% 94%;
-    --muted-foreground: 20 10% 45%;
+    --muted: 220 14% 95%;
+    --muted-foreground: 220 10% 46%;
 
-    --accent: 38 62% 96%;
-    /* Or très clair pour les hovers */
-    --accent-foreground: 38 62% 25%;
+    --accent: 346 84% 96%;
+    /* Rouge très clair pour les hovers */
+    --accent-foreground: 346 84% 30%;
 
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 0 0% 98%;
@@ -65,45 +63,43 @@ html {
     --warning: 38 96% 58%;
     --warning-foreground: 38 96% 28%;
 
-    --border: 30 15% 88%;
-    /* Bordure crème foncée */
-    --input: 30 15% 88%;
-    --ring: 38 62% 48%;
+    --border: 220 14% 90%;
+    --input: 220 14% 90%;
+    --ring: 346 84% 46%;
 
     --radius: 0.75rem;
 
-    /* Chart colors - Luxe palette */
-    --chart-1: 38 62% 48%; /* Gold */
-    --chart-2: 25 35% 25%; /* Earth */
-    --chart-3: 15 40% 35%; /* Rust */
-    --chart-4: 38 40% 65%; /* Soft Gold */
-    --chart-5: 25 20% 50%; /* Taupe */
+    /* Chart colors */
+    --chart-1: 346 84% 46%; /* Rouge */
+    --chart-2: 263 70% 50%; /* Violet */
+    --chart-3: 221 70% 25%; /* Bleu marine */
+    --chart-4: 346 60% 65%; /* Rose */
+    --chart-5: 263 50% 70%; /* Mauve */
   }
 
   .dark {
-    --background: 20 15% 4%;
-    /* Noir Absolu / Ebène */
-    --foreground: 30 10% 95%;
+    --background: 224 30% 5%;
+    --foreground: 220 10% 95%;
 
-    --card: 20 15% 7%;
-    /* Gris Ebène profond */
-    --card-foreground: 30 10% 95%;
+    --card: 224 25% 8%;
+    --card-foreground: 220 10% 95%;
 
-    --popover: 20 15% 6%;
-    --popover-foreground: 30 10% 95%;
+    --popover: 224 25% 7%;
+    --popover-foreground: 220 10% 95%;
 
-    --primary: 38 62% 58%;
-    /* Or éclatant pour le sombre */
-    --primary-foreground: 20 15% 4%;
+    --primary: 346 84% 58%;
+    /* Rouge éclatant sombre */
+    --primary-foreground: 0 0% 100%;
 
-    --secondary: 25 30% 40%;
-    --secondary-foreground: 30 10% 95%;
+    --secondary: 263 60% 60%;
+    /* Violet clair sombre */
+    --secondary-foreground: 0 0% 100%;
 
-    --muted: 20 15% 12%;
-    --muted-foreground: 30 5% 65%;
+    --muted: 224 20% 14%;
+    --muted-foreground: 220 8% 65%;
 
-    --accent: 38 50% 15%;
-    --accent-foreground: 38 62% 85%;
+    --accent: 346 60% 15%;
+    --accent-foreground: 346 84% 85%;
 
     --destructive: 0 63% 31%;
     --destructive-foreground: 0 0% 98%;
@@ -111,9 +107,9 @@ html {
     --warning: 38 96% 58%;
     --warning-foreground: 38 96% 88%;
 
-    --border: 20 15% 15%;
-    --input: 20 15% 15%;
-    --ring: 38 62% 58%;
+    --border: 224 20% 16%;
+    --input: 224 20% 16%;
+    --ring: 346 84% 58%;
   }
 }
 
@@ -129,7 +125,10 @@ html {
 
 @layer utilities {
   .text-gradient {
-    @apply bg-clip-text text-transparent bg-gradient-to-r from-primary to-secondary;
+    background: linear-gradient(135deg, #e11d48 0%, #7c3aed 50%, #1e3a8a 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
   }
 
   .studio-card {
@@ -186,7 +185,7 @@ html {
 }
 
 #nprogress .bar {
-  background: linear-gradient(to right, hsl(var(--primary)), hsl(var(--secondary)));
+  background: linear-gradient(to right, #e11d48, #7c3aed, #1e3a8a);
   position: fixed;
   z-index: 9999;
   top: 0;

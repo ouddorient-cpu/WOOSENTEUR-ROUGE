@@ -100,12 +100,6 @@ const HowItWorks = () => (
           >
             <WoodyPose pose="whispering" width={90} className="drop-shadow-lg" />
           </motion.div>
-          <div className="glass-card dark:bg-card dark:border-primary/20 shadow-md rounded-2xl rounded-tl-sm px-5 py-3 max-w-xs">
-            <p className="text-sm font-medium text-foreground flex items-center gap-2 flex-wrap">
-              Simple non ? Je m&apos;occupe de tout — vous vous concentrez sur votre cœur de métier.
-              <WoodyEmoji mood="excited" size={28} />
-            </p>
-          </div>
         </motion.div>
       </div>
     </div>

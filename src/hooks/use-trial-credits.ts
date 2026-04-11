@@ -1,10 +1,23 @@
 'use client';
 import { useState, useEffect, useCallback } from 'react';
+import { useUser } from '@/firebase/auth/use-user';
+import { useDoc } from '@/firebase';
+import type { UserProfile } from '@/lib/types';
 
 const STORAGE_KEY = 'woosenteur_trial_credits';
-const MAX_TRIAL_CREDITS = 1;
+const MAX_TRIAL_CREDITS = 5;
 
 export function useTrialCredits() {
+  const { user } = useUser();
+  const { data: profile } = useDoc<UserProfile>(user ? `users/${user.uid}` : null);
+
+  const isAdmin =
+    !!user &&
+    (profile?.role === 'admin' ||
+      profile?.role === 'superadmin' ||
+      profile?.isUnlimited === true ||
+      user.email === 'abderelmalki@gmail.com');
+
   const [creditsUsed, setCreditsUsed] = useState(0);
   const [isHydrated, setIsHydrated] = useState(false);
 
@@ -18,12 +31,13 @@ export function useTrialCredits() {
         }
       }
     } catch {
-      // localStorage unavailable (e.g. private browsing)
+      // localStorage unavailable
     }
     setIsHydrated(true);
   }, []);
 
   const consumeCredit = useCallback(() => {
+    if (isAdmin) return creditsUsed; // pas de décompte pour l'admin
     const newCount = creditsUsed + 1;
     setCreditsUsed(newCount);
     try {
@@ -32,7 +46,18 @@ export function useTrialCredits() {
       // Silently fail
     }
     return newCount;
-  }, [creditsUsed]);
+  }, [creditsUsed, isAdmin]);
+
+  if (isAdmin) {
+    return {
+      creditsUsed: 0,
+      creditsRemaining: Infinity,
+      canGenerate: true,
+      consumeCredit,
+      isLimitReached: false,
+      isHydrated,
+    };
+  }
 
   return {
     creditsUsed,

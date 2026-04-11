@@ -32,7 +32,7 @@ export const metadata: Metadata = {
     default: 'Woosenteur v2 | IA pour Fiches Produits SEO Automatisées',
     template: '%s | Woosenteur v2 AI',
   },
-  description: 'Générez n\'importe quelle fiche produit optimisée SEO en 3 min. Notre IA rédige un contenu unique pour WooCommerce, Shopify, et plus. Boostez votre trafic organique.',
+  description: 'Générez n\'importe quelle fiche produit optimisée SEO en 3 min. Notre agent rédige un contenu unique pour WooCommerce, Shopify, et plus. Boostez votre trafic organique.',
   keywords: ['IA fiche produit', 'générateur de contenu IA', 'SEO e-commerce', 'optimisation fiche produit', 'Woosenteur v2', 'Abderrahmane El Malki', 'France', 'Maroc'],
   authors: [{ name: 'Abderrahmane El Malki', url: 'https://www.linkedin.com/in/abderrahman-elmalki-44a887253/' }],
   creator: 'Abderrahmane El Malki',

@@ -55,19 +55,19 @@ const Hero = () => {
             >
               <span className="inline-flex items-center gap-2 bg-primary/10 text-primary px-4 py-1.5 rounded-full text-sm font-semibold border border-primary/20">
                 <Sparkles className="h-3.5 w-3.5" />
-                IA spécialisée e-commerce · WooCommerce &amp; Shopify
+                Agent spécialisé e-commerce · WooCommerce &amp; Shopify
               </span>
             </motion.div>
 
             <h1 className="font-headline text-4xl md:text-5xl lg:text-[3.2rem] font-bold tracking-tight leading-[1.1] text-foreground">
               Tes fiches produits rédigées{' '}
-              <span className="text-gradient">par une IA</span>
+              <span className="text-gradient">par notre agent</span>
               {' '}qui connaît{' '}
               <span className="text-gradient">le SEO e-commerce.</span>
             </h1>
 
             <p className="mt-5 text-lg md:text-xl text-foreground/75 leading-relaxed max-w-lg">
-              Tu décris ton produit, l&apos;IA rédige une fiche structurée pour Google — titre, méta, slug, balises alt, description longue. Sans agence, sans rédacteur.
+              Tu décris ton produit, notre agent rédige une fiche structurée pour Google — titre, méta, slug, balises alt, description longue. Sans agence, sans rédacteur.
             </p>
 
             <div className="mt-8 flex flex-col sm:flex-row items-start sm:items-center gap-4">

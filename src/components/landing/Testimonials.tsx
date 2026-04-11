@@ -17,7 +17,7 @@ const testimonials = [
     boutique: 'French Avenue',
     url: 'https://www.frenchavenue.fr',
     rating: 5,
-    text: "Un outil exceptionnel. Le design de notre boutique est épuré, professionnel, et les fiches produits générées par l'IA sont parfaitement optimisées. Un vrai gain de temps pour gérer notre catalogue.",
+    text: "Un outil exceptionnel. Le design de notre boutique est épuré, professionnel, et les fiches produits générées par notre agent sont parfaitement optimisées. Un vrai gain de temps pour gérer notre catalogue.",
     category: 'Mode & Beauté',
   },
 ];
@@ -94,7 +94,7 @@ const Testimonials = () => (
         className="mt-12 text-center"
       >
         <p className="text-sm text-muted-foreground">
-          Rejoignez les boutiques qui génèrent leurs fiches produits avec l'IA
+          Rejoignez les boutiques qui génèrent leurs fiches produits avec notre agent
         </p>
       </motion.div>
     </div>

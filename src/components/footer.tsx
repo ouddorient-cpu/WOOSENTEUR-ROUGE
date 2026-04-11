@@ -12,7 +12,7 @@ const Footer = () => {
                     <div>
                         <p className="font-headline text-lg font-bold">Woosenteur v2</p>
                         <p className="mt-2 text-sm text-muted-foreground">
-                            Fiches produits SEO optimisées par IA pour WooCommerce et Shopify.
+                            Fiches produits SEO optimisées par notre agent pour WooCommerce et Shopify.
                         </p>
                         <a
                             href="mailto:contact@woosenteur.fr"

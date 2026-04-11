@@ -29,7 +29,7 @@ const tools = [
     icon: <ImageIcon className="h-5 w-5" />,
     color: 'bg-violet-500/10 text-violet-500',
     badge: 'IA visuelle',
-    title: 'Visuels pub générés par IA',
+    title: 'Visuels pub générés par notre agent',
     description:
       'FLUX génère des images publicitaires premium à partir de ton flacon. 3 styles : Luxe, Clean, Fun. Format carré, story ou bannière.',
   },

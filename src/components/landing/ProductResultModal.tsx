@@ -4,8 +4,8 @@ import React, { useState, useCallback } from 'react';
 import { motion } from 'framer-motion';
 import {
   Download, Star, ShoppingCart, Link as LinkIcon, Image as ImageIcon,
-  Search, Globe, Mail, CheckCircle2, ArrowRight, Sparkles, Loader2,
-  Tag, Rocket, ExternalLink, X,
+  Search, Mail, CheckCircle2, ArrowRight, Sparkles, Loader2,
+  Tag, Rocket, X,
 } from 'lucide-react';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
@@ -62,7 +62,6 @@ export default function ProductResultModal({
   const { toast } = useToast();
   const [captureEmail, setCaptureEmail] = useState('');
   const [captureStatus, setCaptureStatus] = useState<'idle' | 'sending' | 'done'>('idle');
-  const [storeUrl, setStoreUrl] = useState('');
 
   const handleDownloadCsv = useCallback(async () => {
     if (!product) return;
@@ -301,40 +300,6 @@ export default function ProductResultModal({
             </div>
           )}
 
-          {/* Voir ma boutique */}
-          <div className="rounded-xl border border-primary/20 bg-primary/5 p-3 space-y-2">
-            <p className="text-xs font-semibold text-primary flex items-center gap-1.5">
-              <Globe className="h-3.5 w-3.5" />
-              Voir votre produit dans votre vraie boutique
-            </p>
-            <p className="text-xs text-muted-foreground">
-              Entrez votre domaine WooCommerce — on ouvre directement la page produit générée.
-            </p>
-            <div className="flex gap-2">
-              <Input
-                type="url"
-                placeholder="https://votre-boutique.fr"
-                value={storeUrl}
-                onChange={(e) => setStoreUrl(e.target.value)}
-                className="text-sm h-9"
-              />
-              <Button
-                size="sm"
-                disabled={!storeUrl.trim()}
-                onClick={() => {
-                  const base = storeUrl.startsWith('http')
-                    ? storeUrl.replace(/\/$/, '')
-                    : `https://${storeUrl.replace(/\/$/, '')}`;
-                  const slug = product?.seo?.slug || 'produit';
-                  window.open(`${base}/produit/${slug}`, '_blank');
-                }}
-                className="shrink-0 h-9 px-3 gap-1.5 whitespace-nowrap font-semibold"
-              >
-                <ExternalLink className="h-3.5 w-3.5" />
-                Voir ma boutique
-              </Button>
-            </div>
-          </div>
 
           {/* Actions */}
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">

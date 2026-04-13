@@ -8,7 +8,7 @@
  */
 
 import { ai } from '@/ai/genkit';
-import { z } from 'zod';
+import { z } from 'genkit';
 
 // 1. Define Input Schema
 const ValidateImageInputSchema = z.object({

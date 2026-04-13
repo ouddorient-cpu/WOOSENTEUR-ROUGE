@@ -26,7 +26,7 @@ const FounderIntro = () => {
                     {/* Replaced p tag with Card component and added studio-card class */}
                     <Card className="studio-card overflow-hidden border-none max-w-5xl mx-auto shadow-2xl mt-4 p-6">
                         <p className="text-lg text-muted-foreground">
-                            J'ai créé cet outil après avoir passé des heures à rédiger des fiches produits pour l'e-commerce, jonglant entre les sites de fournisseurs et les outils SEO. Aujourd'hui, notre IA vous fait gagner un temps précieux avec des fiches produits structurées pour Rank Math — titre, méta, slug, JSON-LD, tout est généré.
+                            J'ai créé cet outil après avoir passé des heures à rédiger des fiches produits pour l'e-commerce, jonglant entre les sites de fournisseurs et les outils SEO. Aujourd'hui, notre agent vous fait gagner un temps précieux avec des fiches produits structurées pour Rank Math — titre, méta, slug, JSON-LD, tout est généré.
                         </p>
                     </Card>
                     <Button variant="link" asChild className="mt-4 text-lg px-0">

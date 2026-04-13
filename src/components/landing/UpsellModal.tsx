@@ -43,81 +43,68 @@ export default function UpsellModal({ open, onClose, creditsUsed }: UpsellModalP
               <div
                 className="px-6 py-8 text-center text-white"
                 style={{
-                  background: 'linear-gradient(135deg, #8B5CF6 0%, #F59E0B 50%, #EF4444 100%)',
+                  background: 'linear-gradient(135deg, #8B5CF6 0%, #F59E0B 100%)',
                 }}
               >
-                <div className="text-4xl mb-3">🚀</div>
+                <div className="text-4xl mb-3">🎉</div>
                 <DialogTitle className="text-2xl font-bold text-white leading-tight">
-                  Bravo ! Vos {creditsUsed} fiches gratuites sont prêtes !
+                  Votre fiche est prête !
                 </DialogTitle>
                 <DialogDescription className="text-white/90 mt-2 text-sm">
-                  Passez au Standard pour scaler vos ventes e-commerce.
+                  Créez votre compte gratuit et obtenez <strong className="text-white">5 fiches complètes</strong> offertes.
                 </DialogDescription>
               </div>
 
               {/* Body */}
               <div className="p-6 space-y-5">
-                {/* Feature comparison */}
-                <div className="space-y-3">
-                  <div className="flex items-center justify-between text-xs font-semibold text-muted-foreground uppercase tracking-wider px-1">
-                    <span>Fonctionnalité</span>
-                    <div className="flex gap-6">
-                      <span>Standard</span>
-                      <span>Gratuit</span>
-                    </div>
-                  </div>
-                  {features.map((feature, i) => (
-                    <div
-                      key={i}
-                      className="flex items-center justify-between py-2 px-3 rounded-lg bg-muted/50 text-sm"
-                    >
-                      <span className="font-medium">{feature.text}</span>
-                      <div className="flex gap-10">
-                        <Check className="h-5 w-5 text-green-500 shrink-0" />
-                        {feature.free ? (
-                          <Check className="h-5 w-5 text-green-500 shrink-0" />
-                        ) : (
-                          <X className="h-5 w-5 text-red-400 shrink-0" />
-                        )}
-                      </div>
+                {/* What you get with free account */}
+                <div className="space-y-2">
+                  {[
+                    '5 fiches produits complètes offertes',
+                    'Slug SEO + Tags + FAQ Schema + JSON-LD',
+                    'Publication WooCommerce en 1 clic',
+                    'Historique de vos générations',
+                    'Sans carte bancaire',
+                  ].map((item, i) => (
+                    <div key={i} className="flex items-center gap-3 py-1.5 px-3 rounded-lg bg-green-50 text-sm">
+                      <Check className="h-4 w-4 text-green-600 shrink-0" />
+                      <span className="font-medium text-green-900">{item}</span>
                     </div>
                   ))}
                 </div>
 
                 {/* CTAs */}
-                <div className="space-y-3 pt-2">
+                <div className="space-y-3 pt-1">
                   <Button
                     asChild
                     size="lg"
-                    className="w-full bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 text-white font-bold shadow-lg shadow-amber-500/25"
+                    className="w-full bg-gradient-to-r from-violet-600 to-amber-500 hover:opacity-90 text-white font-bold shadow-lg text-base"
                   >
-                    <Link href="/pricing">
+                    <Link href="/signup">
                       <Star className="mr-2 h-4 w-4" />
-                      Choisir Standard 9,99€
+                      Créer mon compte — 5 fiches gratuites
                     </Link>
                   </Button>
 
-                  <Button asChild variant="outline" size="lg" className="w-full">
+                  <Button asChild variant="outline" size="sm" className="w-full text-muted-foreground">
                     <Link href="/pricing">
-                      Voir tous les plans
+                      Voir les plans payants (dès 9,99€/mois)
                     </Link>
                   </Button>
 
-                  {creditsUsed < 5 && (
-                    <button
-                      onClick={onClose}
-                      className="w-full text-sm text-muted-foreground hover:text-foreground transition-colors py-2"
-                    >
-                      Continuer gratuit
-                    </button>
-                  )}
+                  <button
+                    onClick={onClose}
+                    className="w-full text-xs text-muted-foreground hover:text-foreground transition-colors py-1"
+                  >
+                    Non merci, continuer sans compte
+                  </button>
                 </div>
 
                 {/* Footer */}
                 <div className="pt-3 border-t space-y-2 text-center">
                   <p className="text-xs text-muted-foreground flex items-center justify-center gap-1.5">
                     <ShieldCheck className="h-3.5 w-3.5 text-green-500" />
-                    Garantie 14 jours satisfait ou remboursé
+                    Inscription en 30 secondes · Sans engagement
                   </p>
                   <p className="text-xs italic text-muted-foreground">
                     &ldquo;Boosté mes ventes +47% en 1 mois !&rdquo; — Ahmed, DubaiNegoce

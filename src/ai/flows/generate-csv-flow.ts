@@ -7,7 +7,7 @@
  */
 
 import { ai } from '@/ai/genkit';
-import { z } from 'zod';
+import { z } from 'genkit';
 import { processImageUrl, needsUpload } from '@/lib/image-upload';
 
 // CSV Format types

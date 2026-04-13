@@ -52,7 +52,7 @@ const MarketingFeature = () => {
 
             <p className="text-lg text-muted-foreground mb-8">
               Créez des campagnes publicitaires professionnelles pour vos produits cosmétiques.
-              Textes + images générés par IA, prêts à publier sur Instagram et Facebook.
+              Textes + images générés par notre agent, prêts à publier sur Instagram et Facebook.
             </p>
 
             <div className="grid grid-cols-2 gap-4 mb-8">

@@ -11,7 +11,11 @@ const FinalCta = () => {
   const { user } = useUser();
 
   const scrollToTrial = () => {
-    document.getElementById('essai-gratuit')?.scrollIntoView({ behavior: 'smooth' });
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    setTimeout(() => {
+      const input = document.querySelector('input[name="productName"]') as HTMLInputElement;
+      input?.focus();
+    }, 600);
   };
 
   return (

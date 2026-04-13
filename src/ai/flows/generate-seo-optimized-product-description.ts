@@ -9,7 +9,7 @@
  */
 
 import { ai } from '@/ai/genkit';
-import { z } from 'zod';
+import { z } from 'genkit';
 import { searchProductOnWeb } from '../tools/search-product-tool';
 
 // 1. Define Input Schema
@@ -46,9 +46,8 @@ const GenerateProductDescriptionOutputSchema = z.object({
   productTitle: z.string().describe('Le titre SEO optimisé (50-60 caractères max).'),
   shortDescription: z.string().describe('Pour les PARFUMS : liste structurée des notes olfactives (tête/cœur/fond) et le genre. Pour les autres catégories : méta-description SEO (150-160 caractères).'),
   longDescription: z.string().describe('La description longue et détaillée du produit (500-700 mots) au format HTML avec FAQ intégrée.'),
-  category: z.enum(['Homme', 'Femme', 'Unisexe'])
-    .catch('Unisexe')
-    .describe('Le public cible du produit. VALEURS EXACTES AUTORISÉES : "Homme", "Femme", ou "Unisexe". Ne jamais retourner "Masculin", "Féminin", "Mixte" ou autre valeur.'),
+  category: z.string()
+    .describe('Le public cible du produit : "Homme", "Femme", ou "Unisexe".'),
   contenance: z.string().optional().describe('La contenance, taille ou dimension du produit (ex: "100ml", "Taille L", "50cm x 70cm").'),
   price: z.string().optional().describe("Le prix trouvé pour le produit."),
   mainNotes: z.string().optional().describe("Les caractéristiques principales, notes olfactives ou matériaux."),
@@ -574,8 +573,8 @@ const generateProductDescriptionFlow = ai.defineFlow(
             throw new Error("Votre clé API pour le service IA a expiré ou est invalide. Veuillez la renouveler dans Google AI Studio.");
         }
 
-        if (errorMessage.includes('model') || errorMessage.includes('Model not found') || errorMessage.includes('not found')) {
-            throw new Error("Le modèle IA configuré n'est pas disponible. Veuillez vérifier la configuration.");
+        if (errorMessage.includes('Model not found') || errorMessage.includes('Could not find model')) {
+            throw new Error("Le modèle IA n'est pas disponible: " + errorMessage.substring(0, 150));
         }
 
         if (errorMessage.includes('quota') || errorMessage.includes('RESOURCE_EXHAUSTED')) {

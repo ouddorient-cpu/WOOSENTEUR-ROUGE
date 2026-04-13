@@ -23,7 +23,7 @@ const testimonials = [
 ];
 
 const Testimonials = () => (
-  <section className="py-20 lg:py-24 bg-muted/20">
+  <section className="py-20 lg:py-24 relative z-10">
     <div className="container mx-auto px-4 md:px-6">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
@@ -32,13 +32,13 @@ const Testimonials = () => (
         transition={{ duration: 0.5 }}
         className="text-center mb-14"
       >
-        <span className="inline-block bg-green-500/10 text-green-500 text-sm font-medium px-3 py-1 rounded-full mb-4">
+        <span className="inline-block text-xs font-bold uppercase tracking-widest px-4 py-1.5 rounded-full border border-violet-500/25 bg-violet-500/10 text-violet-300 mb-4">
           Ils utilisent Woosenteur
         </span>
-        <h2 className="font-headline text-3xl md:text-4xl font-bold text-foreground">
+        <h2 className="font-headline text-3xl md:text-4xl font-bold text-white">
           Des boutiques réelles, des résultats réels
         </h2>
-        <p className="mt-4 max-w-xl mx-auto text-lg text-muted-foreground">
+        <p className="mt-4 max-w-xl mx-auto text-lg text-white/50">
           Découvrez comment nos clients gagnent du temps et vendent plus.
         </p>
       </motion.div>
@@ -51,9 +51,9 @@ const Testimonials = () => (
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.5, delay: i * 0.15 }}
-            className="relative glass-card dark:bg-card dark:border-border rounded-2xl p-8 flex flex-col gap-4 hover:border-primary/30 transition-colors duration-300"
+            className="glass-card p-8 flex flex-col gap-4"
           >
-            <Quote className="h-8 w-8 text-primary/30 absolute top-6 right-6" />
+            <Quote className="h-8 w-8 text-violet-500/30 self-end" />
 
             {/* Stars */}
             <div className="flex gap-1">
@@ -62,20 +62,20 @@ const Testimonials = () => (
               ))}
             </div>
 
-            <p className="text-muted-foreground leading-relaxed text-sm flex-grow">
+            <p className="text-white/65 leading-relaxed text-sm flex-grow">
               &ldquo;{t.text}&rdquo;
             </p>
 
-            <div className="flex items-center justify-between pt-2 border-t border-border">
+            <div className="flex items-center justify-between pt-4 border-t border-white/[0.07]">
               <div>
-                <p className="font-semibold text-foreground text-sm">{t.name}</p>
-                <p className="text-xs text-muted-foreground">{t.category}</p>
+                <p className="font-semibold text-white text-sm">{t.name}</p>
+                <p className="text-xs text-white/40">{t.category}</p>
               </div>
               <a
                 href={t.url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-1 text-xs text-primary hover:underline font-medium"
+                className="inline-flex items-center gap-1 text-xs text-violet-400 hover:text-violet-300 font-medium transition-colors"
               >
                 {t.boutique}
                 <ExternalLink className="h-3 w-3" />
@@ -85,7 +85,6 @@ const Testimonials = () => (
         ))}
       </div>
 
-      {/* Social proof bar */}
       <motion.div
         initial={{ opacity: 0 }}
         whileInView={{ opacity: 1 }}
@@ -93,8 +92,8 @@ const Testimonials = () => (
         transition={{ duration: 0.5, delay: 0.4 }}
         className="mt-12 text-center"
       >
-        <p className="text-sm text-muted-foreground">
-          Rejoignez les boutiques qui génèrent leurs fiches produits avec l'IA
+        <p className="text-sm text-white/35">
+          Rejoignez les boutiques qui génèrent leurs fiches produits avec l&apos;IA
         </p>
       </motion.div>
     </div>

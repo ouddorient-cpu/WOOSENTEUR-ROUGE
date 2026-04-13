@@ -1,6 +1,6 @@
 
 import type { Metadata } from 'next';
-import { PT_Sans, Playfair_Display, Poppins } from 'next/font/google';
+import { PT_Sans, Poppins } from 'next/font/google';
 import './globals.css';
 import { cn } from '@/lib/utils';
 import { Toaster } from '@/components/ui/toaster';
@@ -11,6 +11,7 @@ import { Suspense } from 'react';
 import { NProgress } from '@/components/ui/nprogress';
 import { CookieConsent } from '@/components/CookieConsent';
 import { GlobalChatbot } from '@/components/chatbot/global-chatbot';
+import { AuroraBg } from '@/components/ui/aurora-bg';
 
 const ptSans = PT_Sans({
   subsets: ['latin'],
@@ -148,10 +149,11 @@ export default function RootLayout({
         <FirebaseClientProvider>
           <ThemeProvider
             attribute="class"
-            defaultTheme="light"
+            defaultTheme="dark"
             enableSystem={false}
             disableTransitionOnChange
           >
+            <AuroraBg />
             <FirebaseErrorListener />
             <Suspense fallback={null}>
               <NProgress />

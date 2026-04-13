@@ -12,3 +12,4 @@ build
 *.log
 .aidesigner/*
 !.aidesigner/.gitkeep
+backends.json

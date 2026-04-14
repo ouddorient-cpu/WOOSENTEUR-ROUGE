@@ -295,7 +295,7 @@ export default function TrialGenerator() {
         </motion.div>
 
         {/* Two-column layout */}
-        <div className="max-w-5xl mx-auto rounded-2xl border border-white/[0.08] bg-white/[0.03] backdrop-blur-sm shadow-2xl shadow-primary/10 p-6 md:p-8">
+        <div className="max-w-5xl mx-auto rounded-2xl border border-white/[0.08] bg-white/[0.04] backdrop-blur-sm shadow-2xl shadow-primary/10 p-6 md:p-8">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
           {/* Left: Form */}
           <motion.div
@@ -304,14 +304,17 @@ export default function TrialGenerator() {
             viewport={{ once: true }}
             transition={{ duration: 0.5, delay: 0.1 }}
           >
-            <Card className="border-primary/30 shadow-lg shadow-primary/5">
-              <CardHeader>
-                <CardTitle className="text-gradient">Informations Produit</CardTitle>
-                <CardDescription>
+            {/* Carte formulaire — couleurs explicites pour éviter l'héritage CSS-var */}
+            <div className="rounded-xl border border-violet-500/20 bg-[#0d0d22] shadow-lg shadow-violet-500/5">
+              {/* Header */}
+              <div className="p-6 pb-0">
+                <p className="text-xl font-semibold leading-none tracking-tight text-gradient">Informations Produit</p>
+                <p className="text-sm text-white/50 mt-1.5">
                   Remplissez les informations essentielles, notre IA s&apos;occupe du reste.
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
+                </p>
+              </div>
+              {/* Content */}
+              <div className="p-6">
                 <Form {...form}>
                   <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5">
 
@@ -321,16 +324,16 @@ export default function TrialGenerator() {
                       name="productMode"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>Mode de génération</FormLabel>
+                          <FormLabel className="text-white/80 font-medium">Mode de génération</FormLabel>
                           <div className="grid grid-cols-2 gap-2">
                             <button
                               type="button"
                               onClick={() => field.onChange('marque-connue')}
                               className={cn(
-                                'flex flex-col items-center gap-1 p-3 rounded-lg border-2 text-xs font-medium transition-colors',
+                                'flex flex-col items-center gap-1 p-3 rounded-lg border-2 text-xs font-medium transition-all',
                                 field.value === 'marque-connue'
-                                  ? 'border-primary bg-primary/10 text-primary'
-                                  : 'border-muted text-muted-foreground hover:border-muted-foreground'
+                                  ? 'border-violet-500 bg-violet-500/15 text-violet-300'
+                                  : 'border-white/10 text-white/50 hover:border-white/25 hover:text-white/70'
                               )}
                             >
                               <Globe className="h-4 w-4" />
@@ -340,21 +343,21 @@ export default function TrialGenerator() {
                               type="button"
                               onClick={() => field.onChange('mon-produit')}
                               className={cn(
-                                'flex flex-col items-center gap-1 p-3 rounded-lg border-2 text-xs font-medium transition-colors',
+                                'flex flex-col items-center gap-1 p-3 rounded-lg border-2 text-xs font-medium transition-all',
                                 field.value === 'mon-produit'
-                                  ? 'border-primary bg-primary/10 text-primary'
-                                  : 'border-muted text-muted-foreground hover:border-muted-foreground'
+                                  ? 'border-violet-500 bg-violet-500/15 text-violet-300'
+                                  : 'border-white/10 text-white/50 hover:border-white/25 hover:text-white/70'
                               )}
                             >
                               <PenLine className="h-4 w-4" />
                               Mon produit
                             </button>
                           </div>
-                          <FormDescription className="text-xs">
+                          <p className="text-xs text-white/40 mt-1.5">
                             {isMonProduit
                               ? "Décrivez votre produit — l'IA crée la fiche à partir de vos infos."
                               : "L'agent recherche automatiquement le produit en ligne."}
-                          </FormDescription>
+                          </p>
                         </FormItem>
                       )}
                     />
@@ -365,11 +368,16 @@ export default function TrialGenerator() {
                       name="productName"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>Nom du produit</FormLabel>
+                          <FormLabel className="text-white/80 font-medium">Nom du produit</FormLabel>
                           <FormControl>
-                            <Input placeholder="ex: La Vie Est Belle" {...field} autoComplete="off" />
+                            <Input
+                              placeholder="ex: La Vie Est Belle"
+                              {...field}
+                              autoComplete="off"
+                              className="bg-white/[0.06] border-white/10 text-white placeholder:text-white/30 focus:border-violet-500/50"
+                            />
                           </FormControl>
-                          <FormMessage />
+                          <FormMessage className="text-red-400" />
                         </FormItem>
                       )}
                     />
@@ -380,7 +388,7 @@ export default function TrialGenerator() {
                       name="brand"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>
+                          <FormLabel className="text-white/80 font-medium">
                             {isMonProduit ? 'Nom de votre marque (optionnel)' : 'Marque'}
                           </FormLabel>
                           <FormControl>
@@ -389,9 +397,10 @@ export default function TrialGenerator() {
                               {...field}
                               value={field.value ?? ''}
                               autoComplete="off"
+                              className="bg-white/[0.06] border-white/10 text-white placeholder:text-white/30 focus:border-violet-500/50"
                             />
                           </FormControl>
-                          <FormMessage />
+                          <FormMessage className="text-red-400" />
                         </FormItem>
                       )}
                     />
@@ -403,19 +412,19 @@ export default function TrialGenerator() {
                         name="productDescription"
                         render={({ field }) => (
                           <FormItem>
-                            <FormLabel>Description de votre produit</FormLabel>
+                            <FormLabel className="text-white/80 font-medium">Description de votre produit</FormLabel>
                             <FormControl>
                               <Textarea
                                 rows={4}
                                 placeholder="Ex: Sérum hydratant 30ml à base d'acide hyaluronique et niacinamide. Idéal pour peaux sèches, résultats visibles en 2 semaines. Fabriqué en France, sans parabènes."
-                                className="resize-none text-sm"
+                                className="resize-none text-sm bg-white/[0.06] border-white/10 text-white placeholder:text-white/30 focus:border-violet-500/50"
                                 {...field}
                               />
                             </FormControl>
-                            <FormDescription className="text-xs">
+                            <p className="text-xs text-white/40 mt-1">
                               Composition, bénéfices, usage… Plus vous en dites, meilleure est la fiche.
-                            </FormDescription>
-                            <FormMessage />
+                            </p>
+                            <FormMessage className="text-red-400" />
                           </FormItem>
                         )}
                       />
@@ -428,7 +437,7 @@ export default function TrialGenerator() {
                         name="certifications"
                         render={({ field }) => (
                           <FormItem>
-                            <FormLabel>Labels &amp; certifications</FormLabel>
+                            <FormLabel className="text-white/80 font-medium">Labels &amp; certifications</FormLabel>
                             <div className="grid grid-cols-2 gap-2 mt-1">
                               {CERTIFICATIONS.map((cert) => {
                                 const checked = (field.value ?? []).includes(cert.id);
@@ -444,14 +453,14 @@ export default function TrialGenerator() {
                                         );
                                       }}
                                     />
-                                    <label htmlFor={`trial-${cert.id}`} className="text-xs cursor-pointer leading-none">
+                                    <label htmlFor={`trial-${cert.id}`} className="text-xs text-white/70 cursor-pointer leading-none">
                                       {cert.label}
                                     </label>
                                   </div>
                                 );
                               })}
                             </div>
-                            <FormMessage />
+                            <FormMessage className="text-red-400" />
                           </FormItem>
                         )}
                       />
@@ -463,25 +472,25 @@ export default function TrialGenerator() {
                       name="category"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>Type de Produit</FormLabel>
+                          <FormLabel className="text-white/80 font-medium">Type de Produit</FormLabel>
                           <Select onValueChange={field.onChange} defaultValue={field.value}>
                             <FormControl>
-                              <SelectTrigger>
-                                <SelectValue placeholder="Sélectionner le type..." />
+                              <SelectTrigger className="bg-white/[0.06] border-white/10 text-white">
+                                <SelectValue placeholder="Sélectionner le type..." className="text-white/30" />
                               </SelectTrigger>
                             </FormControl>
-                            <SelectContent>
-                              <SelectItem value="Parfum">Parfum</SelectItem>
-                              <SelectItem value="Soin">Soin</SelectItem>
-                              <SelectItem value="Cosmétique">Cosmétique</SelectItem>
-                              <SelectItem value="parfum d'intérieur">Parfum d&apos;intérieur</SelectItem>
-                              <SelectItem value="Sport">Sport</SelectItem>
-                              <SelectItem value="Habillement">Habillement</SelectItem>
-                              <SelectItem value="Maison">Maison</SelectItem>
-                              <SelectItem value="Autres">Autres</SelectItem>
+                            <SelectContent className="bg-[#141428] border-white/10 text-white">
+                              <SelectItem value="Parfum" className="text-white hover:bg-white/10 focus:bg-white/10">Parfum</SelectItem>
+                              <SelectItem value="Soin" className="text-white hover:bg-white/10 focus:bg-white/10">Soin</SelectItem>
+                              <SelectItem value="Cosmétique" className="text-white hover:bg-white/10 focus:bg-white/10">Cosmétique</SelectItem>
+                              <SelectItem value="parfum d'intérieur" className="text-white hover:bg-white/10 focus:bg-white/10">Parfum d&apos;intérieur</SelectItem>
+                              <SelectItem value="Sport" className="text-white hover:bg-white/10 focus:bg-white/10">Sport</SelectItem>
+                              <SelectItem value="Habillement" className="text-white hover:bg-white/10 focus:bg-white/10">Habillement</SelectItem>
+                              <SelectItem value="Maison" className="text-white hover:bg-white/10 focus:bg-white/10">Maison</SelectItem>
+                              <SelectItem value="Autres" className="text-white hover:bg-white/10 focus:bg-white/10">Autres</SelectItem>
                             </SelectContent>
                           </Select>
-                          <FormMessage />
+                          <FormMessage className="text-red-400" />
                         </FormItem>
                       )}
                     />
@@ -497,15 +506,15 @@ export default function TrialGenerator() {
                         Débloquer plus de crédits
                       </Button>
                     ) : (
-                      <Button type="submit" size="lg" className="w-full" disabled={!isHydrated}>
+                      <Button type="submit" size="lg" className="w-full btn-primary-glow" disabled={!isHydrated}>
                         <Sparkles className="mr-2 h-4 w-4" />
                         Générer ma fiche gratuite
                       </Button>
                     )}
                   </form>
                 </Form>
-              </CardContent>
-            </Card>
+              </div>
+            </div>
           </motion.div>
 
           {/* Right: Result */}
@@ -516,12 +525,12 @@ export default function TrialGenerator() {
             transition={{ duration: 0.5, delay: 0.2 }}
           >
             {step === 'generating' && (
-              <Card className="h-full">
-                <CardHeader>
-                  <CardTitle className="text-gradient">Woody est au travail !</CardTitle>
-                  <CardDescription>Notre agent IA rédige votre fiche produit SEO.</CardDescription>
-                </CardHeader>
-                <CardContent className="flex flex-col justify-center items-center gap-6 py-10">
+              <div className="h-full rounded-xl border border-violet-500/20 bg-[#0d0d22]">
+                <div className="p-6 pb-0">
+                  <p className="text-xl font-semibold text-gradient">Woody est au travail !</p>
+                  <p className="text-sm text-white/50 mt-1.5">Notre agent IA rédige votre fiche produit SEO.</p>
+                </div>
+                <div className="flex flex-col justify-center items-center gap-6 py-10 px-6">
                   <motion.div
                     animate={{ y: [0, -12, 0] }}
                     transition={{ duration: 1.2, repeat: Infinity, ease: 'easeInOut' }}
@@ -537,28 +546,28 @@ export default function TrialGenerator() {
                   </motion.div>
                   <span className="text-base font-medium text-primary text-center">{progressMessage}</span>
                   <Progress value={progress} className="w-full" data-state={progress === 100 ? 'completed' : 'loading'} />
-                </CardContent>
-              </Card>
+                </div>
+              </div>
             )}
 
             {step === 'preview' && generatedProduct && (
               <div ref={resultRef} className="space-y-4">
                 {/* WooCommerce Product Page Mock-up */}
-                <div className="rounded-xl border border-border overflow-hidden shadow-xl">
+                <div className="rounded-xl border border-white/10 overflow-hidden shadow-xl">
                   {/* Browser chrome bar */}
-                  <div className="bg-muted/80 px-4 py-2 flex items-center gap-2 border-b border-border">
+                  <div className="bg-[#1a1a2e] px-4 py-2 flex items-center gap-2 border-b border-white/10">
                     <div className="flex gap-1.5">
                       <span className="w-3 h-3 rounded-full bg-red-400/70" />
                       <span className="w-3 h-3 rounded-full bg-yellow-400/70" />
                       <span className="w-3 h-3 rounded-full bg-green-400/70" />
                     </div>
-                    <div className="flex-1 bg-background/60 rounded px-3 py-1 flex items-center gap-2 text-xs text-muted-foreground ml-2">
+                    <div className="flex-1 bg-white/[0.07] rounded px-3 py-1 flex items-center gap-2 text-xs text-white/40 ml-2">
                       <LinkIcon className="h-3 w-3 shrink-0" />
                       <span className="truncate">votre-boutique.fr/produit/{generatedProduct.seo?.slug || 'votre-produit'}</span>
                     </div>
                   </div>
 
-                  {/* Product page content */}
+                  {/* Product page content — fond blanc simulant WooCommerce */}
                   <div className="bg-white p-5 space-y-4 max-h-[520px] overflow-y-auto">
                     <div className="grid grid-cols-2 gap-4">
                       {/* Fake product image */}
@@ -579,14 +588,14 @@ export default function TrialGenerator() {
                           {[1,2,3,4,5].map(i => (
                             <Star key={i} className="h-3 w-3 fill-yellow-400 text-yellow-400" />
                           ))}
-                          <span className="text-xs text-muted-foreground ml-1">(12 avis)</span>
+                          <span className="text-xs text-gray-500 ml-1">(12 avis)</span>
                         </div>
-                        <p className="text-xl font-bold text-primary">XX,XX €</p>
-                        <p className="text-xs text-muted-foreground leading-relaxed line-clamp-3">
+                        <p className="text-xl font-bold text-violet-600">XX,XX €</p>
+                        <p className="text-xs text-gray-600 leading-relaxed line-clamp-3">
                           {generatedProduct.seo?.shortDescription}
                         </p>
                         <div className="flex items-center gap-2 pt-1">
-                          <div className="flex-1 bg-primary/20 text-primary text-xs font-semibold py-2 px-3 rounded-md flex items-center justify-center gap-1.5 opacity-60 cursor-default">
+                          <div className="flex-1 bg-violet-100 text-violet-700 text-xs font-semibold py-2 px-3 rounded-md flex items-center justify-center gap-1.5 opacity-60 cursor-default">
                             <ShoppingCart className="h-3.5 w-3.5" />
                             Ajouter au panier
                           </div>
@@ -595,10 +604,10 @@ export default function TrialGenerator() {
                     </div>
 
                     {/* Description longue */}
-                    <div className="border-t border-border pt-4">
+                    <div className="border-t border-gray-200 pt-4">
                       <div className="flex gap-4 mb-3">
-                        <span className="text-xs font-semibold border-b-2 border-primary pb-1 text-primary">Description</span>
-                        <span className="text-xs text-muted-foreground pb-1">Informations</span>
+                        <span className="text-xs font-semibold border-b-2 border-violet-600 pb-1 text-violet-600">Description</span>
+                        <span className="text-xs text-gray-400 pb-1">Informations</span>
                       </div>
                       <div
                         className="prose prose-xs dark:prose-invert max-w-none text-muted-foreground text-xs leading-relaxed"

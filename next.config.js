@@ -13,7 +13,30 @@ const nextConfig = {
     ignoreBuildErrors: true,
   },
   experimental: {
-    serverComponentsExternalPackages: ['firebase-admin'],
+    // Externalise les packages serveur qui utilisent des require() dynamiques
+    // incompatibles avec le bundler Webpack de Next.js
+    serverComponentsExternalPackages: [
+      'firebase-admin',
+      'genkit',
+      '@genkit-ai/google-genai',
+      '@genkit-ai/googleai',
+      '@opentelemetry/sdk-node',
+      '@opentelemetry/instrumentation',
+      '@opentelemetry/exporter-jaeger',
+      'require-in-the-middle',
+      'shimmer',
+    ],
+  },
+  webpack: (config, { isServer }) => {
+    if (isServer) {
+      // Genkit dépend de @opentelemetry/exporter-jaeger qui n'est pas installé.
+      // On l'alias vers un module vide pour éviter l'erreur de build Webpack.
+      config.resolve.alias = {
+        ...config.resolve.alias,
+        '@opentelemetry/exporter-jaeger': false,
+      };
+    }
+    return config;
   },
   images: {
     remotePatterns: [

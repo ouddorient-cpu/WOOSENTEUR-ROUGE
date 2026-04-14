@@ -220,18 +220,21 @@ export default function HomePage() {
       <ScrollProgress />
       <Header />
       <main className="flex flex-col gap-0 relative z-10">
+        {/* ── BLOC 1 : Fiche produit ─────────────────────────── */}
         <Hero />
         <SocialProofTicker />
-        <Features />
-        <EditoSection />
-        <AdPowerSection />
-        <ForWho />
-        <OwnProductMode />
-        <HowItWorks />
-        <BeforeAfter />
+        <EditoSection />      {/* À quoi sert une fiche produit */}
+        <ForWho />            {/* Pour qui ? */}
+        <BeforeAfter />       {/* Sans Woosenteur vs Avec Woosenteur */}
+        <HowItWorks />        {/* Déroulement d'utilisation */}
+        <TrialGenerator />    {/* Essai live — exemple avec Woosenteur */}
+        <OwnProductMode />    {/* Mode produit perso */}
+        <Features />          {/* Toutes les fonctionnalités fiche produit */}
+        <Comparatif />        {/* Tableau comparatif */}
+        {/* ── BLOC 2 : Fonctions pub ────────────────────────── */}
+        <AdPowerSection />    {/* Posts viraux, contenu marketing */}
+        {/* ── BLOC 3 : Confiance & Conversion ──────────────── */}
         <Testimonials />
-        <Comparatif />
-        <TrialGenerator />
         <Pricing />
         <Faq />
         <FinalCta />

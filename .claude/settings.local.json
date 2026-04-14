@@ -2,7 +2,26 @@
   "permissions": {
     "allow": [
       "Bash(npx tsc:*)",
-      "Bash(npx next:*)"
+      "Bash(npx next:*)",
+      "Bash(git -C \"d:/Woosenteur/woosenteur-main\" config user.name \"Abderrahman El Malki\")",
+      "Bash(git -C \"d:/Woosenteur/woosenteur-main\" config user.email \"elmalkidigital@gmail.com\")",
+      "Bash(git -C \"d:/Woosenteur/woosenteur-main/WOOSENTEUR-ROUGE\" config user.name \"Abderrahman El Malki\")",
+      "Bash(git -C \"d:/Woosenteur/woosenteur-main/WOOSENTEUR-ROUGE\" config user.email \"elmalkidigital@gmail.com\")",
+      "Bash(git -C \"d:/Woosenteur/woosenteur-main/WOOSENTEUR-ROUGE\" remote -v)",
+      "Bash(git -C \"d:/Woosenteur/woosenteur-main/WOOSENTEUR-ROUGE\" status)",
+      "Bash(git -C \"d:/Woosenteur/woosenteur-main/WOOSENTEUR-ROUGE\" add apphosting.yaml)",
+      "Bash(git -C \"d:/Woosenteur/woosenteur-main/WOOSENTEUR-ROUGE\" commit -m \"Add Firebase App Hosting config\")",
+      "Bash(git -C \"d:/Woosenteur/woosenteur-main/WOOSENTEUR-ROUGE\" add apphosting.yaml .gitignore)",
+      "Bash(git -C \"d:/Woosenteur/woosenteur-main/WOOSENTEUR-ROUGE\" commit -m \"Fix apphosting.yaml: use SERVICE_ACCOUNT_KEY instead of split admin keys\")",
+      "Bash(git -C \"d:/Woosenteur/woosenteur-main/WOOSENTEUR-ROUGE\" push origin main)",
+      "Bash(bash setup-secrets.sh)",
+      "Bash(git -C \"d:/Woosenteur/woosenteur-main/WOOSENTEUR-ROUGE\" log --oneline -5)",
+      "Bash(git -C \"d:/Woosenteur/woosenteur-main/WOOSENTEUR-ROUGE\" diff a261f72 -- package.json)",
+      "Bash(git -C \"d:/Woosenteur/woosenteur-main/WOOSENTEUR-ROUGE\" add package.json)",
+      "Bash(git -C \"d:/Woosenteur/woosenteur-main/WOOSENTEUR-ROUGE\" commit -m \"fix: upgrade firebase to v12 and firebase-admin to v13 \\(genkit compat\\)\")",
+      "Bash(git -C \"d:/Woosenteur/woosenteur-main/WOOSENTEUR-ROUGE\" add src/ai/genkit.ts)",
+      "Bash(git -C \"d:/Woosenteur/woosenteur-main/WOOSENTEUR-ROUGE\" commit -m \"fix: use gemini-2.0-flash instead of 2.5-flash for stability\")",
+      "Bash(git -C \"d:/Woosenteur/woosenteur-main/WOOSENTEUR-ROUGE\" pull --rebase origin main)"
     ]
   }
 }

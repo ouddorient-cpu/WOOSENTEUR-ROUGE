@@ -6,10 +6,9 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
 import { motion } from 'framer-motion';
 import {
-  Sparkles, Loader2, Download, Bot, FileText, AlertCircle,
-  Rocket, ShoppingCart, Star, Tag, Link as LinkIcon, Image as ImageIcon,
-  Search, Globe, PenLine, Mail, CheckCircle2, ArrowRight,
-  Layers, ImagePlus, Zap, LayoutDashboard, ExternalLink,
+  Sparkles, Loader2, Download,
+  Rocket, ShoppingCart, Star, Link as LinkIcon, Image as ImageIcon,
+  PenLine, Layers, ImagePlus, Zap, LayoutDashboard, Globe,
 } from 'lucide-react';
 import Link from 'next/link';
 import NextImage from 'next/image';
@@ -104,16 +103,9 @@ export default function TrialGenerator() {
   const [step, setStep] = useState<TrialStep>('form');
   const [progress, setProgress] = useState(0);
   const [progressMessage, setProgressMessage] = useState('');
-  const [generationError, setGenerationError] = useState<string | null>(null);
+  const [, setGenerationError] = useState<string | null>(null);
   const [generatedProduct, setGeneratedProduct] = useState<TrialProduct | null>(null);
   const [showUpsell, setShowUpsell] = useState(false);
-
-  // Email capture state
-  const [captureEmail, setCaptureEmail] = useState('');
-  const [captureStatus, setCaptureStatus] = useState<'idle' | 'sending' | 'done'>('idle');
-
-  // Store URL for "Voir ma boutique"
-  const [storeUrl, setStoreUrl] = useState('');
 
   const resultRef = useRef<HTMLDivElement>(null);
   const idleTimerRef = useRef<NodeJS.Timeout | null>(null);
@@ -198,7 +190,7 @@ export default function TrialGenerator() {
         language: 'French',
       });
       if (!result.success) {
-        throw new Error(result.error);
+        throw new Error('La génération a échoué. Veuillez réessayer.');
       }
       const seoData = result.data;
 
@@ -266,32 +258,11 @@ export default function TrialGenerator() {
     setGeneratedProduct(null);
     setGenerationError(null);
     setProgress(0);
-    setCaptureEmail('');
-    setCaptureStatus('idle');
     form.reset();
   }, [form]);
 
-  const handleEmailCapture = useCallback(async () => {
-    if (!captureEmail.includes('@')) return;
-    setCaptureStatus('sending');
-    try {
-      await fetch('/api/capture-email', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          email: captureEmail,
-          source: 'trial-generator',
-          productName: generatedProduct?.name,
-        }),
-      });
-      setCaptureStatus('done');
-    } catch {
-      setCaptureStatus('done'); // silencieux côté UI
-    }
-  }, [captureEmail, generatedProduct]);
-
   return (
-    <section id="essai-gratuit" className="py-20 lg:py-24 relative overflow-hidden bg-gradient-to-b from-violet-50 via-white to-purple-50/40">
+    <section id="essai-gratuit" className="py-20 lg:py-24 relative overflow-hidden z-10">
       <div className="container mx-auto px-4 md:px-6">
         {/* Section Header */}
         <motion.div
@@ -301,14 +272,12 @@ export default function TrialGenerator() {
           transition={{ duration: 0.5 }}
           className="text-center mb-12"
         >
-          <Badge variant="secondary" className="mb-4 text-sm px-4 py-1">
-            Essai gratuit — Aucune inscription requise
-          </Badge>
-          <h2 className="font-headline text-3xl md:text-4xl font-bold">
+          <span className="section-label">Essai gratuit — Aucune inscription requise</span>
+          <h2 className="font-headline text-3xl md:text-4xl font-bold text-white mt-4">
             Testez notre générateur{' '}
-            <span className="text-gradient bg-gradient-to-r from-purple-500 to-pink-500">en live !</span>
+            <span className="text-gradient">en live !</span>
           </h2>
-          <p className="mt-4 text-lg text-muted-foreground max-w-2xl mx-auto">
+          <p className="mt-4 text-lg text-white/50 max-w-2xl mx-auto">
             Marque connue ou votre propre produit — générez jusqu&apos;à 5 fiches produits SEO gratuitement.
           </p>
           {isHydrated && (
@@ -326,7 +295,7 @@ export default function TrialGenerator() {
         </motion.div>
 
         {/* Two-column layout */}
-        <div className="max-w-5xl mx-auto rounded-2xl border border-primary/25 bg-white shadow-2xl shadow-primary/10 p-6 md:p-8">
+        <div className="max-w-5xl mx-auto rounded-2xl border border-white/[0.08] bg-white/[0.03] backdrop-blur-sm shadow-2xl shadow-primary/10 p-6 md:p-8">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
           {/* Left: Form */}
           <motion.div
@@ -590,20 +559,20 @@ export default function TrialGenerator() {
                   </div>
 
                   {/* Product page content */}
-                  <div className="bg-background p-5 space-y-4 max-h-[520px] overflow-y-auto">
+                  <div className="bg-white p-5 space-y-4 max-h-[520px] overflow-y-auto">
                     <div className="grid grid-cols-2 gap-4">
                       {/* Fake product image */}
-                      <div className="aspect-square bg-muted/60 rounded-lg flex flex-col items-center justify-center border border-dashed border-border">
-                        <ImageIcon className="h-10 w-10 text-muted-foreground/40" />
-                        <span className="text-xs text-muted-foreground/50 mt-2">Photo produit</span>
+                      <div className="aspect-square bg-gray-100 rounded-lg flex flex-col items-center justify-center border border-dashed border-gray-300">
+                        <ImageIcon className="h-10 w-10 text-gray-300" />
+                        <span className="text-xs text-gray-400 mt-2">Photo produit</span>
                       </div>
 
                       {/* Product info */}
                       <div className="space-y-3">
-                        <p className="text-xs text-muted-foreground">
+                        <p className="text-xs text-gray-500">
                           {generatedProduct.brand || 'Votre marque'} › {generatedProduct.productType}
                         </p>
-                        <h3 className="font-bold text-foreground text-sm leading-tight">
+                        <h3 className="font-bold text-gray-900 text-sm leading-tight">
                           {generatedProduct.seo?.productTitle}
                         </h3>
                         <div className="flex items-center gap-1">
@@ -636,132 +605,6 @@ export default function TrialGenerator() {
                         dangerouslySetInnerHTML={{ __html: generatedProduct.seo?.longDescription || '' }}
                       />
                     </div>
-                  </div>
-                </div>
-
-                {/* SEO Metadata panel */}
-                <div className="rounded-xl border border-primary/20 bg-primary/5 p-4 space-y-3">
-                  <div className="flex items-center justify-between">
-                    <p className="text-xs font-semibold text-primary flex items-center gap-1.5">
-                      <Search className="h-3.5 w-3.5" /> Données SEO générées
-                    </p>
-                    <div className="flex items-center gap-2">
-                      <div className="h-2 w-20 bg-muted rounded-full overflow-hidden">
-                        <div className="h-full bg-green-500 rounded-full" style={{ width: '100%' }} />
-                      </div>
-                      <span className="text-xs font-bold text-green-500">6 / 6</span>
-                    </div>
-                  </div>
-                  <div className="grid grid-cols-1 gap-2 text-xs">
-                    {generatedProduct.seo?.focusKeyword && (
-                      <div className="flex items-start gap-2">
-                        <span className="text-muted-foreground shrink-0 w-28">Mot-clé focus :</span>
-                        <span className="font-medium text-foreground">{generatedProduct.seo.focusKeyword}</span>
-                      </div>
-                    )}
-                    {generatedProduct.seo?.slug && (
-                      <div className="flex items-start gap-2">
-                        <span className="text-muted-foreground shrink-0 w-28">Slug URL :</span>
-                        <span className="font-mono text-primary text-xs">/{generatedProduct.seo.slug}</span>
-                      </div>
-                    )}
-                    {generatedProduct.seo?.imageAltText && (
-                      <div className="flex items-start gap-2">
-                        <span className="text-muted-foreground shrink-0 w-28">Balise alt image :</span>
-                        <span className="font-medium text-foreground">{generatedProduct.seo.imageAltText}</span>
-                      </div>
-                    )}
-                    {generatedProduct.seo?.tags && (
-                      <div className="flex items-start gap-2">
-                        <span className="text-muted-foreground shrink-0 w-28">Tags :</span>
-                        <div className="flex flex-wrap gap-1">
-                          {generatedProduct.seo.tags.split(',').slice(0, 5).map((tag, i) => (
-                            <span key={i} className="inline-flex items-center gap-0.5 bg-primary/10 text-primary px-1.5 py-0.5 rounded text-xs">
-                              <Tag className="h-2.5 w-2.5" />{tag.trim()}
-                            </span>
-                          ))}
-                        </div>
-                      </div>
-                    )}
-                  </div>
-                </div>
-
-                {/* Email capture — moment le plus chaud */}
-                {captureStatus !== 'done' ? (
-                  <div className="rounded-xl border-2 border-primary/20 bg-primary/5 p-4">
-                    <p className="text-sm font-semibold text-foreground mb-1 flex items-center gap-2">
-                      <Mail className="h-4 w-4 text-primary shrink-0" />
-                      Sauvegarder &amp; recevoir votre fiche par email
-                    </p>
-                    <p className="text-xs text-muted-foreground mb-3">
-                      On vous envoie aussi un accès à toutes vos futures générations. Gratuit, sans engagement.
-                    </p>
-                    <div className="flex gap-2">
-                      <Input
-                        type="email"
-                        placeholder="votre@email.com"
-                        value={captureEmail}
-                        onChange={(e) => setCaptureEmail(e.target.value)}
-                        onKeyDown={(e) => e.key === 'Enter' && handleEmailCapture()}
-                        className="text-sm h-9"
-                      />
-                      <Button
-                        size="sm"
-                        onClick={handleEmailCapture}
-                        disabled={!captureEmail.includes('@') || captureStatus === 'sending'}
-                        className="shrink-0 h-9 px-4"
-                      >
-                        {captureStatus === 'sending'
-                          ? <Loader2 className="h-3.5 w-3.5 animate-spin" />
-                          : <><ArrowRight className="h-3.5 w-3.5" /></>}
-                      </Button>
-                    </div>
-                  </div>
-                ) : (
-                  <div className="rounded-xl border border-green-200 bg-green-50 dark:bg-green-900/20 dark:border-green-800 px-4 py-3 flex items-center gap-3">
-                    <CheckCircle2 className="h-5 w-5 text-green-500 shrink-0" />
-                    <div>
-                      <p className="text-sm font-semibold text-green-700 dark:text-green-400">Email enregistré !</p>
-                      <p className="text-xs text-green-600 dark:text-green-500">
-                        Créez un compte pour retrouver toutes vos fiches →{' '}
-                        <a href="/signup" className="underline font-medium">woosenteur.fr/signup</a>
-                      </p>
-                    </div>
-                  </div>
-                )}
-
-                {/* "Voir ma boutique" — URL input */}
-                <div className="rounded-xl border border-primary/20 bg-primary/5 p-3 space-y-2">
-                  <p className="text-xs font-semibold text-primary flex items-center gap-1.5">
-                    <Globe className="h-3.5 w-3.5" />
-                    Voir votre produit dans votre vraie boutique
-                  </p>
-                  <p className="text-xs text-muted-foreground">
-                    Entrez votre domaine WooCommerce — on ouvre directement la page produit générée.
-                  </p>
-                  <div className="flex gap-2">
-                    <Input
-                      type="url"
-                      placeholder="https://votre-boutique.fr"
-                      value={storeUrl}
-                      onChange={(e) => setStoreUrl(e.target.value)}
-                      className="text-sm h-9"
-                    />
-                    <Button
-                      size="sm"
-                      disabled={!storeUrl.trim()}
-                      onClick={() => {
-                        const base = storeUrl.startsWith('http')
-                          ? storeUrl.replace(/\/$/, '')
-                          : `https://${storeUrl.replace(/\/$/, '')}`;
-                        const slug = generatedProduct?.seo?.slug || 'produit';
-                        window.open(`${base}/produit/${slug}`, '_blank');
-                      }}
-                      className="shrink-0 h-9 px-3 gap-1.5 whitespace-nowrap font-semibold"
-                    >
-                      <ExternalLink className="h-3.5 w-3.5" />
-                      Voir ma boutique
-                    </Button>
                   </div>
                 </div>
 

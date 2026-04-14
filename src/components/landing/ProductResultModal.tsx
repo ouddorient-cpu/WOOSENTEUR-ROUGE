@@ -4,8 +4,7 @@ import React, { useState, useCallback } from 'react';
 import { motion } from 'framer-motion';
 import {
   Download, Star, ShoppingCart, Link as LinkIcon, Image as ImageIcon,
-  Search, Mail, CheckCircle2, ArrowRight, Sparkles, Loader2,
-  Tag, Rocket, X,
+  Sparkles, Loader2, Rocket, X,
 } from 'lucide-react';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
@@ -60,8 +59,6 @@ export default function ProductResultModal({
   isLimitReached,
 }: ProductResultModalProps) {
   const { toast } = useToast();
-  const [captureEmail, setCaptureEmail] = useState('');
-  const [captureStatus, setCaptureStatus] = useState<'idle' | 'sending' | 'done'>('idle');
 
   const handleDownloadCsv = useCallback(async () => {
     if (!product) return;
@@ -91,30 +88,7 @@ export default function ProductResultModal({
     }
   }, [product, toast]);
 
-  const handleEmailCapture = useCallback(async () => {
-    if (!captureEmail.includes('@')) return;
-    setCaptureStatus('sending');
-    try {
-      await fetch('/api/capture-email', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          email: captureEmail,
-          source: 'hero-trial-generator',
-          productName: product?.name,
-        }),
-      });
-    } catch {
-      // silencieux
-    } finally {
-      setCaptureStatus('done');
-    }
-  }, [captureEmail, product]);
-
   const handleNewGeneration = useCallback(() => {
-    setCaptureEmail('');
-    setCaptureStatus('idle');
-    setStoreUrl('');
     onNewGeneration();
     onClose();
   }, [onNewGeneration, onClose]);
@@ -209,96 +183,6 @@ export default function ProductResultModal({
             </div>
           </div>
 
-          {/* SEO Metadata panel */}
-          <div className="rounded-xl border border-primary/20 bg-primary/5 p-4 space-y-3">
-            <div className="flex items-center justify-between">
-              <p className="text-xs font-semibold text-primary flex items-center gap-1.5">
-                <Search className="h-3.5 w-3.5" /> Données SEO générées
-              </p>
-              <div className="flex items-center gap-2">
-                <div className="h-2 w-20 bg-muted rounded-full overflow-hidden">
-                  <div className="h-full bg-green-500 rounded-full" style={{ width: '100%' }} />
-                </div>
-                <span className="text-xs font-bold text-green-500">6 / 6</span>
-              </div>
-            </div>
-            <div className="grid grid-cols-1 gap-2 text-xs">
-              {product.seo?.focusKeyword && (
-                <div className="flex items-start gap-2">
-                  <span className="text-muted-foreground shrink-0 w-28">Mot-clé focus :</span>
-                  <span className="font-medium text-foreground">{product.seo.focusKeyword}</span>
-                </div>
-              )}
-              {product.seo?.slug && (
-                <div className="flex items-start gap-2">
-                  <span className="text-muted-foreground shrink-0 w-28">Slug URL :</span>
-                  <span className="font-mono text-primary text-xs">/{product.seo.slug}</span>
-                </div>
-              )}
-              {product.seo?.imageAltText && (
-                <div className="flex items-start gap-2">
-                  <span className="text-muted-foreground shrink-0 w-28">Balise alt image :</span>
-                  <span className="font-medium text-foreground">{product.seo.imageAltText}</span>
-                </div>
-              )}
-              {product.seo?.tags && (
-                <div className="flex items-start gap-2">
-                  <span className="text-muted-foreground shrink-0 w-28">Tags :</span>
-                  <div className="flex flex-wrap gap-1">
-                    {product.seo.tags.split(',').slice(0, 5).map((tag, i) => (
-                      <span key={i} className="inline-flex items-center gap-0.5 bg-primary/10 text-primary px-1.5 py-0.5 rounded text-xs">
-                        <Tag className="h-2.5 w-2.5" />{tag.trim()}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-              )}
-            </div>
-          </div>
-
-          {/* Email capture */}
-          {captureStatus !== 'done' ? (
-            <div className="rounded-xl border-2 border-primary/20 bg-primary/5 p-4">
-              <p className="text-sm font-semibold text-foreground mb-1 flex items-center gap-2">
-                <Mail className="h-4 w-4 text-primary shrink-0" />
-                Sauvegarder &amp; recevoir votre fiche par email
-              </p>
-              <p className="text-xs text-muted-foreground mb-3">
-                On vous envoie aussi un accès à toutes vos futures générations. Gratuit, sans engagement.
-              </p>
-              <div className="flex gap-2">
-                <Input
-                  type="email"
-                  placeholder="votre@email.com"
-                  value={captureEmail}
-                  onChange={(e) => setCaptureEmail(e.target.value)}
-                  onKeyDown={(e) => e.key === 'Enter' && handleEmailCapture()}
-                  className="text-sm h-9"
-                />
-                <Button
-                  size="sm"
-                  onClick={handleEmailCapture}
-                  disabled={!captureEmail.includes('@') || captureStatus === 'sending'}
-                  className="shrink-0 h-9 px-4"
-                >
-                  {captureStatus === 'sending'
-                    ? <Loader2 className="h-3.5 w-3.5 animate-spin" />
-                    : <ArrowRight className="h-3.5 w-3.5" />}
-                </Button>
-              </div>
-            </div>
-          ) : (
-            <div className="rounded-xl border border-green-200 bg-green-50 dark:bg-green-900/20 dark:border-green-800 px-4 py-3 flex items-center gap-3">
-              <CheckCircle2 className="h-5 w-5 text-green-500 shrink-0" />
-              <div>
-                <p className="text-sm font-semibold text-green-700 dark:text-green-400">Email enregistré !</p>
-                <p className="text-xs text-green-600 dark:text-green-500">
-                  Créez un compte pour retrouver toutes vos fiches →{' '}
-                  <a href="/signup" className="underline font-medium">woosenteur.fr/signup</a>
-                </p>
-              </div>
-            </div>
-          )}
 
 
           {/* Actions */}

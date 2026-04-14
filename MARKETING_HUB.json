@@ -1,0 +1,108 @@
+{
+  "name": "woosenteur-marketing-hub",
+  "version": "1.0.0",
+  "description": "Clone Comparator - AI-powered perfume marketing content generator",
+  "testCases": [
+    {
+      "id": "test-tom-ford-black-orchid",
+      "name": "Tom Ford Black Orchid Detection",
+      "description": "Test de détection d'un parfum célèbre",
+      "expectedOutput": {
+        "perfumeName": "Tom Ford Black Orchid",
+        "confidence": 0.95,
+        "expectedClone": "Lattafa Asad",
+        "expectedPriceDifference": 165
+      }
+    },
+    {
+      "id": "test-dior-sauvage",
+      "name": "Dior Sauvage Detection",
+      "description": "Test classique pour hommes",
+      "expectedOutput": {
+        "perfumeName": "Dior Sauvage",
+        "confidence": 0.9,
+        "expectedClone": "Lattafa Silver",
+        "expectedPriceDifference": 175
+      }
+    },
+    {
+      "id": "test-creed-aventus",
+      "name": "Creed Aventus Detection",
+      "description": "Test du parfum haut de gamme",
+      "expectedOutput": {
+        "perfumeName": "Creed Aventus",
+        "confidence": 0.85,
+        "expectedClone": "Armaf Club de Nuit Intense",
+        "expectedPriceDifference": 310
+      }
+    }
+  ],
+  "aiFlows": [
+    {
+      "name": "detectPerfumeFromImage",
+      "type": "genkit-flow",
+      "description": "Détecte le nom et les notes olfactives d'un parfum",
+      "engine": "Gemini 1.5 Flash (Vision)",
+      "performance": "~2-3 secondes"
+    },
+    {
+      "name": "findCloneEquivalent",
+      "type": "genkit-flow",
+      "description": "Trouve un clone moins cher équivalent",
+      "engine": "Firestore + Gemini Fallback",
+      "performance": "~1 seconde"
+    },
+    {
+      "name": "generateMarketingSlogan",
+      "type": "genkit-flow",
+      "description": "Crée un slogan viral AIDA",
+      "engine": "Gemini 1.5 Flash (Text)",
+      "performance": "~2-4 secondes"
+    },
+    {
+      "name": "generateOlfactoryVisuals",
+      "type": "genkit-flow",
+      "description": "Mappe les notes olfactives à des éléments visuels",
+      "engine": "TypeScript (Local)",
+      "performance": "<100ms"
+    }
+  ],
+  "debugCommands": {
+    "start": "npm run dev",
+    "build": "npm run build",
+    "genkit-watch": "npm run genkit:watch",
+    "test-detection": "curl -X POST http://localhost:3000/api/marketing/generate -H 'Content-Type: application/json' -d '{...}'",
+    "view-logs": "tail -f dev-output.log | grep -E '(🔍|🧪|📝|🎨)'"
+  },
+  "troubleshooting": {
+    "api-error-400": "Vérifiez que l'image Base64 est valide et que la plateforme est spécifiée",
+    "gemini-auth": "Vérifiez GOOGLE_GENAI_API_KEY dans .env.local",
+    "timeout": "Les images > 5MB causent des timeouts. Limitez à 1-2MB",
+    "no-clone-found": "Le parfum n'est pas en DB Firestore. Ajouter données ou utiliser fallback IA"
+  },
+  "roadmap": {
+    "version-1.1": [
+      "Génération image finale avec Canvas API",
+      "Integration Replicate pour SDXL enhancement",
+      "Stockage Firestore des contenus générés",
+      "Historique utilisateur & gallery"
+    ],
+    "version-1.2": [
+      "Analytics: tracking likes/shares par plateforme",
+      "A/B testing de slogans",
+      "Multi-language support",
+      "Custom branding (logo, couleurs)"
+    ],
+    "version-2.0": [
+      "Batch processing (100+ images)",
+      "Video generation (pour TikTok/Reels)",
+      "UGC creator mode (créateurs de contenu)",
+      "Monetization: affiliate links intégrés"
+    ]
+  },
+  "credits": {
+    "creator": "Claude (Marc Lefèvre style)",
+    "date": "Mars 2026",
+    "inspiration": "Abderrahman El Malki - Concept Clone Comparator"
+  }
+}

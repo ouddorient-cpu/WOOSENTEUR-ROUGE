@@ -1,160 +1,137 @@
+'use server';
 /**
  * Flow 2: Trouver le clone équivalent moins cher
- * Cherche dans Firestore/DB une alternative moins chère
  */
 
-import { defineFlow } from "genkit";
-import { gemini15Flash } from "@genkit-ai/google-genai";
-import type { PerfumeData, ClonePerfume } from "@/types/marketing";
+import { ai } from '@/ai/genkit';
+import { z } from 'genkit';
+import type { ClonePerfume } from '@/types/marketing';
 
-// Mock pour la démo - À remplacer par une vraie query Firestore
 const PERFUME_CLONES_DB: Record<string, ClonePerfume> = {
-  "tom-ford-black-orchid": {
-    id: "lattafa-asad",
-    name: "Lattafa Asad",
-    brand: "Lattafa",
+  'tom-ford-black-orchid': {
+    id: 'lattafa-asad',
+    name: 'Lattafa Asad',
+    brand: 'Lattafa',
     fragranceNotes: {
-      top: ["Bergamote", "Agrumes épicés"],
-      heart: ["Orchidée noire", "Rose", "Ambroxan"],
-      base: ["Vétiver", "Cèdre", "Musc"],
+      top: ['Bergamote', 'Agrumes épicés'],
+      heart: ['Orchidée noire', 'Rose', 'Ambroxan'],
+      base: ['Vétiver', 'Cèdre', 'Musc'],
     },
     price: 35,
-    originalPerfumeId: "tom-ford-black-orchid",
-    priceReduction: 82, // 82% moins cher (Tom Ford ~200$, Lattafa ~35$)
+    originalPerfumeId: 'tom-ford-black-orchid',
+    priceReduction: 82,
   },
-  "dior-sauvage": {
-    id: "lattafa-silver",
-    name: "Lattafa Silver",
-    brand: "Lattafa",
+  'dior-sauvage': {
+    id: 'lattafa-silver',
+    name: 'Lattafa Silver',
+    brand: 'Lattafa',
     fragranceNotes: {
-      top: ["Ambroxan", "Épices"],
-      heart: ["Ambrox", "Cèdre"],
-      base: ["Bois de Cèdre", "Ambre"],
+      top: ['Ambroxan', 'Épices'],
+      heart: ['Ambrox', 'Cèdre'],
+      base: ['Bois de Cèdre', 'Ambre'],
     },
     price: 25,
-    originalPerfumeId: "dior-sauvage",
+    originalPerfumeId: 'dior-sauvage',
     priceReduction: 87,
   },
-  "creed-aventus": {
-    id: "armaf-club-de-nuit",
-    name: "Armaf Club de Nuit Intense",
-    brand: "Armaf",
+  'creed-aventus': {
+    id: 'armaf-club-de-nuit',
+    name: 'Armaf Club de Nuit Intense',
+    brand: 'Armaf',
     fragranceNotes: {
-      top: ["Pêche", "Bergamote", "Cardamome"],
-      heart: ["Rose bulgare", "Ambrox"],
-      base: ["Ambre", "Musc blanc", "Cèdre"],
+      top: ['Pêche', 'Bergamote', 'Cardamome'],
+      heart: ['Rose bulgare', 'Ambrox'],
+      base: ['Ambre', 'Musc blanc', 'Cèdre'],
     },
     price: 40,
-    originalPerfumeId: "creed-aventus",
+    originalPerfumeId: 'creed-aventus',
     priceReduction: 95,
   },
 };
 
-export const findCloneEquivalent = defineFlow(
-  {
-    name: "findCloneEquivalent",
-    description:
-      "Trouve un clone parfum équivalent moins cher pour un original détecté",
-    inputSchema: {
-      type: "object",
-      properties: {
-        originalPerfumeName: { type: "string" },
-        originalBrand: { type: "string" },
-        originalPrice: { type: "number" },
-        fragranceNotes: {
-          type: "object",
-          properties: {
-            top: { type: "array", items: { type: "string" } },
-            heart: { type: "array", items: { type: "string" } },
-            base: { type: "array", items: { type: "string" } },
-          },
-        },
-      },
-      required: ["originalPerfumeName", "originalBrand"],
-    },
-    outputSchema: {
-      type: "object",
-      properties: {
-        found: { type: "boolean" },
-        clone: {
-          type: "object",
-          properties: {
-            name: { type: "string" },
-            brand: { type: "string" },
-            price: { type: "number" },
-            priceReduction: { type: "number" },
-          },
-        },
-        matchScore: { type: "number", minimum: 0, maximum: 1 },
-      },
-    },
-  },
-  async (input: any) => {
-    const { originalPerfumeName, originalBrand, originalPrice }: { originalPerfumeName: string; originalBrand: string; originalPrice: number } = input;
+const InputSchema = z.object({
+  originalPerfumeName: z.string(),
+  originalBrand: z.string(),
+  originalPrice: z.number().optional(),
+  fragranceNotes: z
+    .object({
+      top: z.array(z.string()),
+      heart: z.array(z.string()),
+      base: z.array(z.string()),
+    })
+    .optional(),
+});
 
-    // Normalise le nom pour la recherche
+const CloneResultSchema = z.object({
+  found: z.boolean(),
+  clone: z
+    .object({
+      name: z.string(),
+      brand: z.string(),
+      price: z.number(),
+      priceReduction: z.number(),
+    })
+    .nullable(),
+  matchScore: z.number().min(0).max(1),
+});
+
+const AISuggestionSchema = z.object({
+  suggestedClone: z.string(),
+  suggestedBrand: z.string(),
+  estimatedPrice: z.number(),
+  matchScore: z.number(),
+});
+
+export const findCloneEquivalent = ai.defineFlow(
+  {
+    name: 'findCloneEquivalent',
+    inputSchema: InputSchema,
+    outputSchema: CloneResultSchema,
+  },
+  async (input) => {
+    const { originalPerfumeName, originalBrand, originalPrice = 200 } = input;
+
     const searchKey = `${originalBrand}-${originalPerfumeName}`
       .toLowerCase()
-      .replace(/\s+/g, "-");
+      .replace(/\s+/g, '-');
 
-    // Recherche dans la DB
     const clone = PERFUME_CLONES_DB[searchKey];
 
-    if (!clone) {
-      // Fallback: demander à l'IA de suggérer un équivalent
-      const response = await gemini15Flash.generate({
-        messages: [
-          {
-            content: [
-              {
-                type: "text",
-                text: `Suggère un clone parfum équivalent et moins cher pour "${originalPerfumeName}" de "${originalBrand}" (prix ~${originalPrice}$).
-Réponds en JSON: { suggestedClone: "Nom", suggestedBrand: "Brand", estimatedPrice: number, matchScore: 0.0-1.0 }`,
-              },
-            ],
-          },
-        ],
-      });
+    if (clone) {
+      return {
+        found: true,
+        clone: {
+          name: clone.name,
+          brand: clone.brand,
+          price: clone.price,
+          priceReduction: clone.priceReduction,
+        },
+        matchScore: 0.95,
+      };
+    }
 
-      const text = response.output?.text || "{}";
-      const jsonMatch = text.match(/\{[\s\S]*\}/);
+    // Fallback IA
+    const { output } = await ai.generate({
+      model: 'googleai/gemini-2.5-flash',
+      prompt: `Suggère un clone parfum équivalent et moins cher pour "${originalPerfumeName}" de "${originalBrand}" (prix ~${originalPrice}$).`,
+      output: { schema: AISuggestionSchema },
+    });
 
-      if (!jsonMatch) {
-        return {
-          found: false,
-          clone: null,
-          matchScore: 0,
-        };
-      }
-
-      try {
-        const suggestion = JSON.parse(jsonMatch[0]);
-        return {
-          found: true,
-          clone: {
-            name: suggestion.suggestedClone,
-            brand: suggestion.suggestedBrand,
-            price: suggestion.estimatedPrice,
-            priceReduction: Math.round(
-              ((originalPrice - suggestion.estimatedPrice) / originalPrice) * 100
-            ),
-          },
-          matchScore: suggestion.matchScore,
-        };
-      } catch {
-        return { found: false, clone: null, matchScore: 0 };
-      }
+    if (!output) {
+      return { found: false, clone: null, matchScore: 0 };
     }
 
     return {
       found: true,
       clone: {
-        name: clone.name,
-        brand: clone.brand,
-        price: clone.price,
-        priceReduction: clone.priceReduction,
+        name: output.suggestedClone,
+        brand: output.suggestedBrand,
+        price: output.estimatedPrice,
+        priceReduction: Math.round(
+          ((originalPrice - output.estimatedPrice) / originalPrice) * 100
+        ),
       },
-      matchScore: 0.95, // Haute confiance pour la DB
+      matchScore: output.matchScore,
     };
   }
 );

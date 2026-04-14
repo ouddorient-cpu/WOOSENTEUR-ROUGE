@@ -1,12 +1,11 @@
 /**
- * API Route: Upload et génération
+ * API Route: Upload et génération Marketing Hub
  * POST /api/marketing/generate
  */
 
-import { NextRequest, NextResponse } from "next/server";
-import { runFlow } from "genkit";
-import { generateCompleteMarketingContent } from "@/ai/flows";
-import type { MarketingRequest, MarketingResponse } from "@/types/marketing";
+import { NextRequest, NextResponse } from 'next/server';
+import { generateCompleteMarketingContent } from '@/ai/flows/index';
+import type { MarketingRequest, MarketingResponse } from '@/types/marketing';
 
 export async function POST(req: NextRequest) {
   try {
@@ -15,13 +14,12 @@ export async function POST(req: NextRequest) {
 
     if (!uploadedImageBase64 || !targetPlatform) {
       return NextResponse.json(
-        { success: false, error: "Image et plateforme requises" },
+        { success: false, error: 'Image et plateforme requises' },
         { status: 400 }
       );
     }
 
-    // Lance la génération via Genkit
-    const result = await runFlow(generateCompleteMarketingContent, {
+    const result = await generateCompleteMarketingContent({
       uploadedImageBase64,
       targetPlatform,
       customSlogan,
@@ -31,31 +29,25 @@ export async function POST(req: NextRequest) {
       success: result.success,
       data: result.success
         ? {
-            id: result.id,
+            id: result.id ?? result.contentId,
             originalPerfume: result.originalPerfume,
             clonePerfume: result.clonePerfume,
-            slogan: result.slogan,
-            visualElements: result.visualElements,
-            imageUrl: result.imageUrl || "", // TODO: générer image finale
+            slogan: result.slogan ?? '',
+            visualElements: result.visualElements ?? [],
+            imageUrl: result.imageUrl ?? '',
             createdAt: new Date(),
-            status: "draft",
+            status: 'draft',
           }
         : undefined,
       error: result.error,
     };
 
-    return NextResponse.json(response, {
-      status: response.success ? 200 : 400,
-    });
+    return NextResponse.json(response, { status: response.success ? 200 : 400 });
   } catch (error) {
-    console.error("API Error:", error);
     return NextResponse.json(
       {
         success: false,
-        error:
-          error instanceof Error
-            ? error.message
-            : "Erreur serveur inconnue",
+        error: error instanceof Error ? error.message : 'Erreur serveur inconnue',
       },
       { status: 500 }
     );

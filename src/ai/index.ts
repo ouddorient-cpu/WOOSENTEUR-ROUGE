@@ -1,12 +1,9 @@
 /**
- * Index des flows Genkit
- * Exporte tous les flows pour utilisation facile
+ * Index des flows Genkit — exports centralisés
  */
 
-export { detectPerfumeFromImage } from './detect-perfume-from-image';
-export { findCloneEquivalent } from './find-clone-equivalent';
-export { generateMarketingSlogan } from './generate-marketing-slogan';
-export { generateOlfactoryVisuals } from './generate-olfactory-visuals';
-export { generateCompleteMarketingContent } from './index';
-
-// defineFlow and runFlow are exported from 'genkit' package directly
+export { detectPerfumeFromImage } from './flows/detect-perfume-from-image';
+export { findCloneEquivalent } from './flows/find-clone-equivalent';
+export { generateMarketingSlogan } from './flows/generate-marketing-slogan';
+export { generateOlfactoryVisuals } from './flows/generate-olfactory-visuals';
+export { generateCompleteMarketingContent } from './flows/index';

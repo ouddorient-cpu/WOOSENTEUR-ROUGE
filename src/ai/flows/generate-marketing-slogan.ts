@@ -1,150 +1,91 @@
+'use server';
 /**
  * Flow 3: Générer un slogan marketing viral (AIDA)
- * Crée un texte viral adapté à la plateforme
  */
 
-import { defineFlow } from "genkit";
-import { gemini15Flash } from "@genkit-ai/google-genai";
+import { ai } from '@/ai/genkit';
+import { z } from 'genkit';
 
-export const generateMarketingSlogan = defineFlow(
+const InputSchema = z.object({
+  originalName: z.string(),
+  originalBrand: z.string(),
+  originalPrice: z.number().optional().default(200),
+  cloneName: z.string(),
+  cloneBrand: z.string(),
+  clonePrice: z.number(),
+  platform: z.enum(['tiktok', 'instagram', 'facebook', 'linkedin']),
+  customSlogan: z.string().optional(),
+});
+
+const OutputSchema = z.object({
+  slogan: z.string(),
+  hook: z.string(),
+  cta: z.string(),
+  hashtags: z.array(z.string()),
+});
+
+const AISloganSchema = z.object({
+  hook: z.string(),
+  mainSlogan: z.string(),
+  cta: z.string(),
+  hashtags: z.array(z.string()),
+});
+
+const PLATFORM_STYLE: Record<string, string> = {
+  tiktok: 'Court, viral, fun, émojis, Gen Z vibes',
+  instagram: 'Chic, aspirationnel, premium, emojis subtils',
+  facebook: 'Convaincant, story-driven, angle bénéfice',
+  linkedin: 'Professionnel, business insight, credibility',
+};
+
+export const generateMarketingSlogan = ai.defineFlow(
   {
-    name: "generateMarketingSlogan",
-    description:
-      "Génère un slogan viral style Marc Lefèvre pour un clone parfum",
-    inputSchema: {
-      type: "object",
-      properties: {
-        originalName: { type: "string" },
-        originalBrand: { type: "string" },
-        originalPrice: { type: "number" },
-        cloneName: { type: "string" },
-        cloneBrand: { type: "string" },
-        clonePrice: { type: "number" },
-        platform: {
-          type: "string",
-          enum: ["tiktok", "instagram", "facebook", "linkedin"],
-        },
-        customSlogan: { type: "string" },
-      },
-      required: [
-        "originalName",
-        "originalBrand",
-        "cloneName",
-        "cloneBrand",
-        "platform",
-      ],
-    },
-    outputSchema: {
-      type: "object",
-      properties: {
-        slogan: { type: "string" },
-        hook: { type: "string" },
-        cta: { type: "string" },
-        hashtags: { type: "array", items: { type: "string" } },
-      },
-    },
+    name: 'generateMarketingSlogan',
+    inputSchema: InputSchema,
+    outputSchema: OutputSchema,
   },
-  async (input: any) => {
-    const {
-      originalName,
-      cloneName,
-      cloneBrand,
-      clonePrice,
-      originalPrice = 200,
-      platform,
-      customSlogan,
-    }: {
-      originalName: string;
-      cloneName: string;
-      cloneBrand: string;
-      clonePrice: number;
-      originalPrice?: number;
-      platform: 'tiktok' | 'instagram' | 'facebook' | 'linkedin';
-      customSlogan?: string;
-    } = input;
+  async (input) => {
+    const { originalName, cloneName, cloneBrand, clonePrice, originalPrice = 200, platform, customSlogan } = input;
 
     if (customSlogan) {
       return {
         slogan: customSlogan,
-        hook: customSlogan.split("\n")[0],
-        cta: "Lien en bio 🔗",
-        hashtags: ["#CloneParfum", "#SaveMoney", "#ParfumAffaire"],
+        hook: customSlogan.split('\n')[0],
+        cta: 'Lien en bio 🔗',
+        hashtags: ['#CloneParfum', '#SaveMoney', '#ParfumAffaire'],
       };
     }
 
-    const platformPrompt = {
-      tiktok: "Court, viral, fun, émojis, Gen Z vibes",
-      instagram: "Chic, aspirationnel, premium, emojis subtils",
-      facebook: "Convaincant, story-driven, angle bénéfice",
-      linkedin: "Professionnel, business insight, credibility",
-    };
+    const saving = Math.round(((originalPrice - clonePrice) / originalPrice) * 100);
 
-    const platformKey = platform as 'tiktok' | 'instagram' | 'facebook' | 'linkedin';
-
-    const response = await gemini15Flash.generate({
-      messages: [
-        {
-          content: [
-            {
-              type: "text",
-              text: `Tu es Marc Lefèvre, expert marketing digital français.
+    const { output } = await ai.generate({
+      model: 'googleai/gemini-2.5-flash',
+      prompt: `Tu es Marc Lefèvre, expert marketing digital français.
 Crée un slogan VIRAL pour cette offre:
 - Original: ${originalName} (~${originalPrice}$)
-- Clone: ${cloneName} (${clonePrice}$)
-- Économie: ${originalPrice - clonePrice}$ (${Math.round(((originalPrice - clonePrice) / originalPrice) * 100)}%)
-- Platform: ${platform} (${platformPrompt[platformKey]})
-
-Format JSON:
-{
-  "hook": "Phrase d'accroche 3s (attention)",
-  "mainSlogan": "Texte principal (intérêt + désir)",
-  "cta": "Call-to-action (action)",
-  "hashtags": ["#tag1", "#tag2", "#tag3"]
-}
+- Clone: ${cloneName} par ${cloneBrand} (${clonePrice}$)
+- Économie: ${originalPrice - clonePrice}$ (${saving}%)
+- Plateforme: ${platform} (${PLATFORM_STYLE[platform]})
 
 Style Marc: Confiant, direct, humain (contractions), questions rhétoriques, focus conversion.
 Exemple: "T'as déjà payé 200€ pour une fragrance qui s'envole en 2h? 😤 Moi oui..."`,
-            },
-          ],
-        },
-      ],
+      output: { schema: AISloganSchema },
     });
 
-    const text = response.output?.text || "{}";
-    const jsonMatch = text.match(/\{[\s\S]*\}/);
-
-    if (!jsonMatch) {
+    if (!output) {
       return {
         slogan: `Tu aimes ${originalName} mais pas son prix? Voici ${cloneName} ✨`,
         hook: `${cloneName} - Luxe abordable`,
-        cta: "Découvrir maintenant 🔗",
-        hashtags: ["#CloneParfum", "#Luxe", "#SaveMoney"],
+        cta: 'Découvrir maintenant 🔗',
+        hashtags: ['#CloneParfum', '#Luxe', '#SaveMoney'],
       };
     }
 
-    try {
-      const parsedData = JSON.parse(jsonMatch[0]);
-      const fullSlogan = [
-        parsedData.hook,
-        parsedData.mainSlogan,
-        parsedData.cta,
-      ]
-        .filter(Boolean)
-        .join("\n");
-
-      return {
-        slogan: fullSlogan,
-        hook: parsedData.hook,
-        cta: parsedData.cta,
-        hashtags: parsedData.hashtags || ["#CloneParfum", "#SaveMoney"],
-      };
-    } catch {
-      return {
-        slogan: `Tu aimes ${originalName} mais pas son prix? Voici ${cloneName} ✨`,
-        hook: `${cloneName} - Le choix smart`,
-        cta: "Essayer maintenant",
-        hashtags: ["#CloneParfum", "#ParfumAffaire"],
-      };
-    }
+    return {
+      slogan: [output.hook, output.mainSlogan, output.cta].filter(Boolean).join('\n'),
+      hook: output.hook,
+      cta: output.cta,
+      hashtags: output.hashtags || ['#CloneParfum', '#SaveMoney'],
+    };
   }
 );

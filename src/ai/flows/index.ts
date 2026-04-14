@@ -1,144 +1,135 @@
+'use server';
 /**
  * Flow Principal: Orchestration complète du système
- * Gère: détection → clone → slogan → éléments olfactifs → image finale
+ * détection → clone → slogan → éléments olfactifs
  */
 
-import { defineFlow, runFlow } from "genkit";
-import { detectPerfumeFromImage } from "./detect-perfume-from-image";
-import { findCloneEquivalent } from "./find-clone-equivalent";
-import { generateMarketingSlogan } from "./generate-marketing-slogan";
-import { generateOlfactoryVisuals } from "./generate-olfactory-visuals";
-import type { MarketingContent, MarketingRequest } from "@/types/marketing";
+import { ai } from '@/ai/genkit';
+import { z } from 'genkit';
+import { detectPerfumeFromImage } from './detect-perfume-from-image';
+import { findCloneEquivalent } from './find-clone-equivalent';
+import { generateMarketingSlogan } from './generate-marketing-slogan';
+import { generateOlfactoryVisuals } from './generate-olfactory-visuals';
+import type { MarketingContent } from '@/types/marketing';
 
-export const generateCompleteMarketingContent = defineFlow(
+const InputSchema = z.object({
+  uploadedImageBase64: z.string(),
+  targetPlatform: z.enum(['tiktok', 'instagram', 'facebook', 'linkedin']),
+  customSlogan: z.string().optional(),
+});
+
+const OutputSchema = z.object({
+  success: z.boolean(),
+  contentId: z.string(),
+  id: z.string().optional(),
+  originalPerfume: z.any().optional(),
+  clonePerfume: z.any().optional(),
+  slogan: z.string().optional(),
+  visualElements: z.array(z.any()).optional(),
+  imageUrl: z.string().optional(),
+  error: z.string().optional(),
+});
+
+export const generateCompleteMarketingContent = ai.defineFlow(
   {
-    name: "generateCompleteMarketingContent",
-    description:
-      "Orchestre la génération complète: détection parfum → clone → slogan → visuels",
-    inputSchema: {
-      type: "object",
-      properties: {
-        uploadedImageBase64: { type: "string" },
-        targetPlatform: {
-          type: "string",
-          enum: ["tiktok", "instagram", "facebook", "linkedin"],
-        },
-        customSlogan: { type: "string" },
-      },
-      required: ["uploadedImageBase64", "targetPlatform"],
-    },
-    outputSchema: {
-      type: "object",
-      properties: {
-        success: { type: "boolean" },
-        contentId: { type: "string" },
-        originalPerfume: { type: "object" },
-        clonePerfume: { type: "object" },
-        slogan: { type: "string" },
-        visualElements: { type: "array" },
-        previewImageUrl: { type: "string" },
-      },
-    },
+    name: 'generateCompleteMarketingContent',
+    inputSchema: InputSchema,
+    outputSchema: OutputSchema,
   },
-  async (input: any) => {
-    const { uploadedImageBase64, targetPlatform, customSlogan }: { uploadedImageBase64: string; targetPlatform: 'tiktok' | 'instagram' | 'facebook' | 'linkedin'; customSlogan?: string } = input;
+  async (input) => {
+    const { uploadedImageBase64, targetPlatform, customSlogan } = input;
     const contentId = `mk_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
 
     try {
-      // 1️⃣ DÉTECTE le parfum original
-      console.log("🔍 Étape 1: Détection du parfum...");
-      const detectionResult = await runFlow(detectPerfumeFromImage, {
-        imageBase64: uploadedImageBase64.replace(/^data:image\/\w+;base64,/, ""),
-        imageMediaType: "image/jpeg",
+      // 1. Détection du parfum
+      const detectionResult = await detectPerfumeFromImage({
+        imageBase64: uploadedImageBase64.replace(/^data:image\/\w+;base64,/, ''),
+        imageMediaType: 'image/jpeg',
       });
 
       if (detectionResult.confidence < 0.3) {
         return {
           success: false,
-          error: "Impossible de détecter le parfum. Assurez-vous que l'image montre un flacon clair.",
           contentId,
+          error: "Impossible de détecter le parfum. Assurez-vous que l'image montre un flacon clair.",
         };
       }
 
-      // 2️⃣ TROUVE le clone équivalent
-      console.log("🧪 Étape 2: Recherche du clone équivalent...");
-      const cloneResult = await runFlow(findCloneEquivalent, {
+      // 2. Clone équivalent
+      const cloneResult = await findCloneEquivalent({
         originalPerfumeName: detectionResult.perfumeName,
         originalBrand: detectionResult.brand,
         originalPrice: detectionResult.estimatedPrice,
         fragranceNotes: detectionResult.estimatedNotes,
       });
 
-      if (!cloneResult.found) {
+      if (!cloneResult.found || !cloneResult.clone) {
         return {
           success: false,
-          error: "Aucun clone équivalent trouvé pour ce parfum.",
           contentId,
+          error: 'Aucun clone équivalent trouvé pour ce parfum.',
         };
       }
 
-      // 3️⃣ GÉNÈRE le slogan viral
-      console.log("📝 Étape 3: Création du slogan...");
-      const sloganResult = await runFlow(generateMarketingSlogan, {
-        originalName: detectionResult.perfumeName,
+      // 3. Slogan viral
+      const sloganResult = await generateMarketingSlogan({
+        originalName:  detectionResult.perfumeName,
         originalBrand: detectionResult.brand,
         originalPrice: detectionResult.estimatedPrice,
-        cloneName: cloneResult.clone.name,
-        cloneBrand: cloneResult.clone.brand,
-        clonePrice: cloneResult.clone.price,
-        platform: targetPlatform,
+        cloneName:     cloneResult.clone.name,
+        cloneBrand:    cloneResult.clone.brand,
+        clonePrice:    cloneResult.clone.price,
+        platform:      targetPlatform,
         customSlogan,
       });
 
-      // 4️⃣ GÉNÈRE les éléments olfactifs
-      console.log("🎨 Étape 4: Génération des éléments olfactifs...");
-      const visualsResult = await runFlow(generateOlfactoryVisuals, {
+      // 4. Éléments olfactifs visuels
+      const visualsResult = await generateOlfactoryVisuals({
         fragranceNotes: detectionResult.estimatedNotes,
       });
 
-      // 5️⃣ CONSTRUIT le contenu final
+      // Normalise les notes (champs optionnels Zod → requis dans le type)
+      const notes = {
+        top:   detectionResult.estimatedNotes.top   ?? [],
+        heart: detectionResult.estimatedNotes.heart ?? [],
+        base:  detectionResult.estimatedNotes.base  ?? [],
+      };
+
       const marketingContent: MarketingContent = {
         id: contentId,
         originalPerfume: {
-          id: `perf_${detectionResult.brand.toLowerCase()}_${detectionResult.perfumeName.toLowerCase().replace(/\s+/g, "_")}`,
+          id: `perf_${detectionResult.brand}_${detectionResult.perfumeName}`.toLowerCase().replace(/\s+/g, '_'),
           name: detectionResult.perfumeName,
           brand: detectionResult.brand,
-          fragranceNotes: detectionResult.estimatedNotes,
+          fragranceNotes: notes,
           price: detectionResult.estimatedPrice,
         },
         clonePerfume: {
-          id: "clone_" + contentId,
+          id: `clone_${contentId}`,
           name: cloneResult.clone.name,
           brand: cloneResult.clone.brand,
-          fragranceNotes: detectionResult.estimatedNotes, // À améliorer avec notes réelles du clone
+          fragranceNotes: notes,
           price: cloneResult.clone.price,
-          originalPerfumeId: "perf_" + detectionResult.brand,
+          originalPerfumeId: `perf_${detectionResult.brand}`,
           priceReduction: cloneResult.clone.priceReduction,
         },
         slogan: sloganResult.slogan,
-        visualElements: visualsResult,
-        imageUrl: "", // À générer via image generation (Replicate)
+        visualElements: visualsResult as import('@/types/marketing').VisualElement[],
+        imageUrl: '',
         createdAt: new Date(),
-        status: "draft",
+        status: 'draft',
       };
-
-      /*
-      // 6️⃣ GÉNÈRE l'image finale (TODO: via Replicate ou Canvas API)
-      console.log("🖼️ Étape 5: Génération de l'image finaleAvec slogan + éléments...");
-      const finalImageUrl = await generateFinalImage(uploadedImageBase64, marketingContent);
-      marketingContent.imageUrl = finalImageUrl;
-      */
 
       return {
         success: true,
+        contentId,
         ...marketingContent,
       };
     } catch (error) {
-      console.error("❌ Erreur lors de la génération:", error);
       return {
         success: false,
-        error: error instanceof Error ? error.message : "Erreur inconnue",
         contentId,
+        error: error instanceof Error ? error.message : 'Erreur inconnue',
       };
     }
   }

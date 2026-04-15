@@ -5,15 +5,15 @@ import { Check, X, Minus } from 'lucide-react';
 import Image from 'next/image';
 
 const rows = [
-  { label: 'Expertise Métiers (Parfums, Soins)', manual: 'Votre expertise', chatgpt: 'Générique', woosenteur: 'Spécialisé (Pyramides, Notes, Labels)' },
-  { label: 'Temps par fiche produit', manual: '1h – 2h', chatgpt: '20 – 30 min', woosenteur: '3 min' },
-  { label: 'Structure SEO (Rank Math / Yoast)', manual: 'Variable', chatgpt: 'Partiel', woosenteur: 'Optimisée d\'emblée' },
-  { label: 'Export WooCommerce prêt à l\'import', manual: 'À faire manuellement', chatgpt: 'À faire manuellement', woosenteur: 'Export 1 clic' },
-  { label: 'Export CSV universel (Shopify…)', manual: false, chatgpt: false, woosenteur: true },
-  { label: 'Contenu 100% unique', manual: true, chatgpt: false, woosenteur: true },
-  { label: 'Recherche produit automatique sur le web', manual: false, chatgpt: false, woosenteur: true },
-  { label: 'Balises SEO complètes (slug, alt, meta)', manual: false, chatgpt: false, woosenteur: true },
-  { label: 'Prix', manual: 'Votre temps', chatgpt: '20€/mois', woosenteur: 'Dès 5,99€' },
+  { label: 'Expertise Métiers (Parfums, Soins)', chatgpt: 'Générique', woosenteur: 'Spécialisé (Pyramides, Notes, Labels)' },
+  { label: 'Temps par fiche produit', chatgpt: '20 – 30 min', woosenteur: '3 min' },
+  { label: 'Structure SEO (Rank Math / Yoast)', chatgpt: 'Partiel', woosenteur: 'Optimisée d\'emblée' },
+  { label: 'Export WooCommerce prêt à l\'import', chatgpt: 'À faire manuellement', woosenteur: 'Export 1 clic' },
+  { label: 'Export CSV universel (Shopify…)', chatgpt: false, woosenteur: true },
+  { label: 'Contenu 100% unique', chatgpt: false, woosenteur: true },
+  { label: 'Recherche produit automatique sur le web', chatgpt: false, woosenteur: true },
+  { label: 'Balises SEO complètes (slug, alt, meta)', chatgpt: false, woosenteur: true },
+  { label: 'Prix', chatgpt: '20€/mois', woosenteur: 'Dès 5,99€' },
 ];
 
 type CellValue = boolean | string | null;
@@ -42,8 +42,7 @@ const Comparatif = () => (
         className="text-center mb-14"
       >
         <h2 className="font-headline text-3xl md:text-4xl font-bold text-foreground">
-          Pourquoi pas juste <span className="text-muted-foreground line-through decoration-red-400">ChatGPT</span>{' '}
-          ou écrire <span className="text-muted-foreground line-through decoration-red-400">à la main</span> ?
+          Pourquoi pas juste <span className="text-muted-foreground line-through decoration-red-400">ChatGPT</span> ?
         </h2>
         <p className="mt-4 max-w-2xl mx-auto text-lg text-muted-foreground">
           Woosenteur est conçu spécifiquement pour l'e-commerce. Ce n'est pas juste une IA généraliste.
@@ -128,15 +127,6 @@ const Comparatif = () => (
               <th className="text-left py-4 px-6 font-semibold text-muted-foreground w-2/5">Critère</th>
               <th className="py-4 px-4 text-center">
                 <div className="flex flex-col items-center gap-1.5">
-                  <span className="text-xs font-semibold text-muted-foreground">À la main</span>
-                  <div className="flex items-center gap-1">
-                    <Image src="/logo-woocommerce.png" alt="WooCommerce" width={70} height={18} style={{ height: 16, width: 'auto', objectFit: 'contain', opacity: 0.5 }} />
-                    <Image src="/logo-shopify.png" alt="Shopify" width={60} height={18} style={{ height: 16, width: 'auto', objectFit: 'contain', opacity: 0.5 }} />
-                  </div>
-                </div>
-              </th>
-              <th className="py-4 px-4 text-center">
-                <div className="flex flex-col items-center gap-1.5">
                   <span className="text-xs font-semibold text-muted-foreground">ChatGPT</span>
                   <span className="text-lg">🤖</span>
                 </div>
@@ -160,9 +150,6 @@ const Comparatif = () => (
                 className={`border-b border-border/50 transition-colors hover:bg-muted/20 ${i % 2 === 0 ? '' : 'bg-muted/10'}`}
               >
                 <td className="py-4 px-6 font-medium text-foreground">{row.label}</td>
-                <td className="py-4 px-4 text-center">
-                  <Cell value={row.manual} />
-                </td>
                 <td className="py-4 px-4 text-center">
                   <Cell value={row.chatgpt} />
                 </td>

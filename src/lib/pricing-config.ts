@@ -75,9 +75,9 @@ export const PRICING_PLANS: PricingPlan[] = [
     name: 'Entreprise',
     description: 'Pour les gros volumes et les agences e-commerce.',
     price: { monthly: '70,00€', annually: '700,00€' },
-    credits: { monthly: 500, annually: 6000 },
+    credits: { monthly: 999999, annually: 999999 },
     features: [
-      '<span class="font-bold">500 fiches produits / mois</span>',
+      '<span class="font-bold">Crédits illimités</span>',
       'Onboarding personnalisé avec le fondateur',
       'Accès anticipé à toutes les nouvelles fonctionnalités',
       'Support dédié — réponse en moins de 24h',

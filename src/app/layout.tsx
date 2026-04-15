@@ -12,6 +12,7 @@ import { NProgress } from '@/components/ui/nprogress';
 import { CookieConsent } from '@/components/CookieConsent';
 import { GlobalChatbot } from '@/components/chatbot/global-chatbot';
 import { AuroraBg } from '@/components/ui/aurora-bg';
+import { LangProvider } from '@/lib/i18n/LangContext';
 
 const ptSans = PT_Sans({
   subsets: ['latin'],
@@ -146,6 +147,7 @@ export default function RootLayout({
           poppins.variable
         )}
       >
+        <LangProvider>
         <FirebaseClientProvider>
           <ThemeProvider
             attribute="class"
@@ -164,6 +166,7 @@ export default function RootLayout({
             <GlobalChatbot />
           </ThemeProvider>
         </FirebaseClientProvider>
+        </LangProvider>
 
       </body>
     </html>

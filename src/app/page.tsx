@@ -9,7 +9,7 @@ import ForWho from '@/components/landing/ForWho';
 import BeforeAfter from '@/components/landing/BeforeAfter';
 import Testimonials from '@/components/landing/Testimonials';
 import Comparatif from '@/components/landing/Comparatif';
-import { Rocket, Check, Sparkles } from 'lucide-react';
+import { Rocket, Check } from 'lucide-react';
 import Link from 'next/link';
 import Header from '@/components/header';
 import Pricing from '@/components/landing/Pricing';
@@ -20,12 +20,16 @@ import OwnProductMode from '@/components/landing/OwnProductMode';
 import EditoSection from '@/components/landing/EditoSection';
 import AdPowerSection from '@/components/landing/AdPowerSection';
 import Image from 'next/image';
+import { useT } from '@/lib/i18n/useT';
 
 /* ─── HERO ─────────────────────────────────────────── */
 const Hero = () => {
+  const t = useT();
   const scrollToTrial = () => {
     document.getElementById('essai-gratuit')?.scrollIntoView({ behavior: 'smooth' });
   };
+
+  const trustChips = [t.hero.trust.structured, t.hero.trust.unique, t.hero.trust.native];
 
   return (
     <section className="relative overflow-hidden pt-32 pb-20 lg:pt-40 lg:pb-28 z-10">
@@ -59,20 +63,17 @@ const Hero = () => {
                   <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-violet-400 opacity-75" />
                   <span className="relative inline-flex h-2 w-2 rounded-full bg-violet-500" />
                 </span>
-                IA spécialisée e-commerce · WooCommerce &amp; Shopify
+                {t.hero.badge}
               </span>
             </motion.div>
 
             {/* Headline */}
             <h1 className="font-headline text-5xl md:text-6xl lg:text-[3.4rem] font-black tracking-tight leading-[1.05] text-white">
-              Tes fiches produits rédigées{' '}
-              <span className="text-gradient">par une IA</span>
-              {' '}qui connaît{' '}
-              <span className="text-gradient">le SEO.</span>
+              {t.hero.headline}
             </h1>
 
             <p className="mt-5 text-lg md:text-xl text-white/55 leading-relaxed max-w-lg">
-              Tu décris ton produit, l&apos;IA rédige une fiche structurée pour Google — titre, méta, slug, balises alt, description longue. Sans agence, sans rédacteur.
+              {t.hero.sub}
             </p>
 
             {/* CTAs */}
@@ -84,30 +85,26 @@ const Hero = () => {
                 className="btn-primary-glow px-8 py-4 rounded-full text-white font-bold text-base flex items-center gap-2"
               >
                 <Rocket className="h-4 w-4" />
-                Générer ma 1ère fiche — Gratuit
+                {t.hero.cta}
               </motion.button>
               <Link
                 href="/pricing"
                 className="text-sm font-medium text-white/50 hover:text-white/80 transition-colors"
               >
-                Voir les prix →
+                {t.hero.cta2}
               </Link>
             </div>
 
             <p className="mt-3 text-sm text-white/35">
-              5 fiches pour tester — sans carte bancaire
+              {t.hero.subtext}
             </p>
 
             {/* Trust chips */}
             <div className="mt-8 pt-6 border-t border-white/[0.07] flex flex-wrap gap-5">
-              {[
-                'Fiche structurée pour Google',
-                'Contenu original à chaque fois',
-                'WooCommerce & Shopify natif',
-              ].map((t) => (
-                <div key={t} className="flex items-center gap-1.5 text-sm font-medium text-white/65">
+              {trustChips.map((chip) => (
+                <div key={chip} className="flex items-center gap-1.5 text-sm font-medium text-white/65">
                   <Check className="h-4 w-4 text-green-400 shrink-0" />
-                  <span>{t}</span>
+                  <span>{chip}</span>
                 </div>
               ))}
             </div>
@@ -141,7 +138,7 @@ const Hero = () => {
                 <div className="h-3 w-3 rounded-full bg-red-500/80" />
                 <div className="h-3 w-3 rounded-full bg-yellow-500/80" />
                 <div className="h-3 w-3 rounded-full bg-green-500/80" />
-                <span className="ml-3 text-[11px] text-white/30 font-mono">app.woosenteur.fr — Générateur SEO</span>
+                <span className="ml-3 text-[11px] text-white/30 font-mono">app.woosenteur.fr — SEO Generator</span>
               </div>
 
               <Image

@@ -2,7 +2,6 @@
 
 import { motion } from 'framer-motion';
 import Footer from '@/components/footer';
-import Features from '@/components/landing/Features';
 import Faq from '@/components/landing/Faq';
 import FinalCta from '@/components/landing/FinalCta';
 import HowItWorks from '@/components/landing/HowItWorks';
@@ -222,7 +221,6 @@ export default function HomePage() {
         <HowItWorks />        {/* Déroulement d'utilisation */}
         <TrialGenerator />    {/* Essai live — exemple avec Woosenteur */}
         <OwnProductMode />    {/* Mode produit perso */}
-        <Features />          {/* Toutes les fonctionnalités fiche produit */}
         <Comparatif />        {/* Tableau comparatif */}
         {/* ── BLOC 2 : Fonctions pub ────────────────────────── */}
         <AdPowerSection />    {/* Posts viraux, contenu marketing */}

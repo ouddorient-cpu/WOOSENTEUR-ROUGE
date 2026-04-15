@@ -110,19 +110,6 @@ const HowItWorks = () => (
           transition={{ duration: 0.5, delay: 0.5 }}
           className="mt-16 flex flex-col sm:flex-row items-center justify-center gap-4"
         >
-          <motion.div
-            animate={{ y: [0, -6, 0] }}
-            transition={{ duration: 2.5, repeat: Infinity, ease: 'easeInOut' }}
-          >
-            <WoodyPose pose="whispering" width={90} className="drop-shadow-lg" />
-          </motion.div>
-          <div className="glass-card !rounded-2xl !rounded-tl-sm px-5 py-3 max-w-xs border-violet-500/20">
-            <p className="text-sm font-medium text-white/75 flex items-center gap-2 flex-wrap">
-              Simple non ? Je m&apos;occupe de tout — vous vous concentrez sur votre cœur de métier.
-              <WoodyEmoji mood="excited" size={28} />
-            </p>
-          </div>
-        </motion.div>
       </div>
     </div>
   </section>

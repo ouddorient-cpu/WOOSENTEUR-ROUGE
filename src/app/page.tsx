@@ -93,13 +93,6 @@ const Hero = () => {
               >
                 Voir les prix →
               </Link>
-              <Link
-                href="/v2"
-                className="flex items-center gap-1.5 text-sm font-bold text-violet-400 hover:text-violet-300 bg-violet-500/10 border border-violet-500/20 px-3 py-1.5 rounded-full transition-colors"
-              >
-                Comparer V2 (Bêta)
-                <Sparkles className="h-3.5 w-3.5" />
-              </Link>
             </div>
 
             <p className="mt-3 text-sm text-white/35">

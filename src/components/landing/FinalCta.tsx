@@ -5,7 +5,6 @@ import { Button } from '@/components/ui/button';
 import { Rocket, Check } from 'lucide-react';
 import Link from 'next/link';
 import { useUser } from '@/firebase/auth/use-user';
-import { WoodyPose } from '@/components/ui/woody-pose';
 
 const FinalCta = () => {
   const { user } = useUser();
@@ -39,14 +38,9 @@ const FinalCta = () => {
               background: 'linear-gradient(135deg, rgba(139,92,246,0.15), transparent 50%, rgba(59,130,246,0.15))',
             }} />
 
-          {/* Woody */}
-          <div className="absolute -top-16 left-1/2 -translate-x-1/2 hidden md:block z-10">
-            <WoodyPose pose="sitting" width={130} className="drop-shadow-2xl" />
-          </div>
-
           {user ? (
             <>
-              <h2 className="font-headline text-3xl md:text-4xl font-bold text-white pt-8 md:pt-10">
+              <h2 className="font-headline text-3xl md:text-4xl font-bold text-white">
                 Générez votre prochaine fiche produit
               </h2>
               <p className="mt-4 mx-auto max-w-xl text-lg text-white/65">
@@ -65,7 +59,7 @@ const FinalCta = () => {
             </>
           ) : (
             <>
-              <h2 className="font-headline text-3xl md:text-4xl font-bold text-white pt-8 md:pt-10">
+              <h2 className="font-headline text-3xl md:text-4xl font-bold text-white">
                 Prêt à créer votre première{' '}
                 <br className="hidden sm:block" />
                 fiche Woosenteur ?

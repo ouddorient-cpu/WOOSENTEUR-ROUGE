@@ -34,7 +34,7 @@ export const PRICING_PLANS: PricingPlan[] = [
     id: 'essential',
     name: 'Essentiel',
     description: 'Parfait pour les petites boutiques et les lancements.',
-    price: { monthly: '9,99€', annually: '99,90€' },
+    price: { monthly: '5,99€', annually: '59,90€' },
     credits: { monthly: 50, annually: 600 },
     features: [
       '<span class="font-bold">50 fiches produits / mois</span>',
@@ -54,7 +54,7 @@ export const PRICING_PLANS: PricingPlan[] = [
     id: 'standard',
     name: 'Standard',
     description: 'Le meilleur rapport qualité-prix pour les boutiques actives.',
-    price: { monthly: '19,90€', annually: '199,00€' },
+    price: { monthly: '9,99€', annually: '99,90€' },
     credits: { monthly: 200, annually: 2400 },
     features: [
       '<span class="font-bold">200 fiches produits / mois</span>',
@@ -71,10 +71,10 @@ export const PRICING_PLANS: PricingPlan[] = [
     },
   },
   {
-    id: 'entreprise',
-    name: 'Entreprise',
+    id: 'premium',
+    name: 'Premium',
     description: 'Pour les gros volumes et les agences e-commerce.',
-    price: { monthly: '70,00€', annually: '700,00€' },
+    price: { monthly: '19,99€', annually: '199,90€' },
     credits: { monthly: 999999, annually: 999999 },
     features: [
       '<span class="font-bold">Crédits illimités</span>',
@@ -84,7 +84,7 @@ export const PRICING_PLANS: PricingPlan[] = [
       'Multi-boutiques WooCommerce inclus',
     ],
     isPopular: false,
-    cta: 'Choisir Entreprise',
+    cta: 'Choisir Premium',
     paymentLink: {
       monthly: 'https://buy.stripe.com/8x2bJ096x6963ejdMT2VG03',
       annually: 'https://buy.stripe.com/00w00ifuV1SQ3ej1072VG04',

@@ -99,4 +99,52 @@ export interface Translations {
     rights: string;
     disclaimer: string;
   };
+  pricing: {
+    label: string;
+    title: string;
+    titleGradient: string;
+    sub: string;
+    monthly: string;
+    annually: string;
+    save2months: string;
+    popular: string;
+    perMonth: string;
+    perYear: string;
+    noCommitment: string;
+  };
+  adpower: {
+    badge: string;
+    title: string;
+    titleGradient: string;
+    sub: string;
+    tools: { badge: string; title: string; description: string }[];
+    cta: { title: string; items: string[]; btn: string; sub: string };
+  };
+  edito: {
+    label: string;
+    intro: string;
+    p1: string;
+    p2: string;
+    p3: string;
+    p4: string;
+    footer: string;
+  };
+  ticker: { items: string[] };
+  testimonials: {
+    badge: string;
+    title: string;
+    sub: string;
+    footer: string;
+    items: { text: string; category: string }[];
+  };
+  ownproduct: {
+    badge: string;
+    title: string;
+    titleSub: string;
+    titleGradient: string;
+    sub: string;
+    subGradient: string;
+    ctaSub: string;
+    cta: string;
+  };
 }

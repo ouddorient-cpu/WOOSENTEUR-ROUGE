@@ -6,8 +6,10 @@ import { Switch } from '@/components/ui/switch';
 import { Label } from '@/components/ui/label';
 import { PRICING_PLANS } from '@/lib/pricing-config';
 import { motion } from 'framer-motion';
+import { useT } from '@/lib/i18n/useT';
 
 const Pricing = () => {
+    const t = useT();
     const [billingCycle, setBillingCycle] = useState<'monthly' | 'annually'>('monthly');
 
     return (
@@ -25,20 +27,20 @@ const Pricing = () => {
                     viewport={{ once: true }}
                     transition={{ duration: 0.5 }}
                 >
-                    <span className="section-label mb-4 inline-block">Tarifs</span>
+                    <span className="section-label mb-4 inline-block">{t.pricing.label}</span>
                     <h2 className="font-headline text-4xl font-bold text-white">
-                        Des tarifs simples{' '}
-                        <span className="text-gradient">et transparents.</span>
+                        {t.pricing.title}{' '}
+                        <span className="text-gradient">{t.pricing.titleGradient}</span>
                     </h2>
                     <p className="mt-4 max-w-2xl mx-auto text-lg text-white/50">
-                        Choisissez le plan qui correspond à vos besoins. Pas de frais cachés, pas de contrats.
+                        {t.pricing.sub}
                     </p>
                 </motion.div>
 
                 {/* Billing toggle */}
                 <div className="mt-10 flex justify-center items-center gap-4">
                     <Label htmlFor="billing-cycle-landing" className={`cursor-pointer text-sm font-medium ${billingCycle === 'monthly' ? 'text-white' : 'text-white/40'}`}>
-                        Mensuel
+                        {t.pricing.monthly}
                     </Label>
                     <Switch
                         id="billing-cycle-landing"
@@ -47,9 +49,9 @@ const Pricing = () => {
                         className="data-[state=checked]:bg-violet-600"
                     />
                     <Label htmlFor="billing-cycle-landing" className={`cursor-pointer text-sm font-medium ${billingCycle === 'annually' ? 'text-white' : 'text-white/40'}`}>
-                        Annuel{' '}
+                        {t.pricing.annually}{' '}
                         <span className="ml-1 text-xs font-bold bg-violet-500/15 text-violet-300 border border-violet-500/25 px-2 py-0.5 rounded-full">
-                            Économisez 2 mois
+                            {t.pricing.save2months}
                         </span>
                     </Label>
                 </div>
@@ -58,7 +60,7 @@ const Pricing = () => {
                 <div className="mt-12 grid gap-6 md:grid-cols-2 lg:grid-cols-4 md:items-start max-w-7xl mx-auto">
                     {PRICING_PLANS.map((plan, i) => {
                         const price = plan.price[billingCycle];
-                        const priceDescription = plan.id === 'free' ? plan.priceDescription : `/${billingCycle === 'monthly' ? 'mois' : 'an'}`;
+                        const priceDescription = plan.id === 'free' ? plan.priceDescription : `/${billingCycle === 'monthly' ? t.pricing.perMonth : t.pricing.perYear}`;
 
                         return (
                             <motion.div
@@ -78,7 +80,7 @@ const Pricing = () => {
                                         <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-bold text-white"
                                             style={{ background: 'linear-gradient(135deg, #8B5CF6, #3B82F6)', boxShadow: '0 4px 16px -4px rgba(139,92,246,0.5)' }}>
                                             <Star className="w-3 h-3 fill-current" />
-                                            Populaire
+                                            {t.pricing.popular}
                                         </span>
                                     </div>
                                 )}
@@ -119,7 +121,7 @@ const Pricing = () => {
                                         </Link>
                                         {plan.id !== 'free' && (
                                             <p className="text-xs text-white/25 text-center">
-                                                Sans engagement · résiliez quand vous voulez
+                                                {t.pricing.noCommitment}
                                             </p>
                                         )}
                                     </div>

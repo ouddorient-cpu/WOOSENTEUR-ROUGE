@@ -7,59 +7,20 @@ import {
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
+import { useT } from '@/lib/i18n/useT';
 
-const tools = [
-  {
-    icon: <Megaphone className="h-5 w-5" />,
-    color: 'bg-rose-500/10 text-rose-500',
-    badge: 'Facebook & Instagram',
-    title: 'Posts viraux en 1 clic',
-    description:
-      'Génère 3 posts Facebook prêts à publier : accroche, corps du texte, hashtags et emoji. Adapté à ton parfum, ton audience et ton style.',
-  },
-  {
-    icon: <Flame className="h-5 w-5" />,
-    color: 'bg-orange-500/10 text-orange-500',
-    badge: 'Tendance',
-    title: 'Flash vente & urgence',
-    description:
-      'Textes "vente flash" avec compte à rebours psychologique. L\'IA rédige l\'urgence pour toi — promo, stock limité, offre exclusive.',
-  },
-  {
-    icon: <ImageIcon className="h-5 w-5" />,
-    color: 'bg-violet-500/10 text-violet-500',
-    badge: 'IA visuelle',
-    title: 'Visuels pub générés par IA',
-    description:
-      'FLUX génère des images publicitaires premium à partir de ton flacon. 3 styles : Luxe, Clean, Fun. Format carré, story ou bannière.',
-  },
-  {
-    icon: <BarChart2 className="h-5 w-5" />,
-    color: 'bg-blue-500/10 text-blue-500',
-    badge: 'Engagement',
-    title: 'Sondages & polls audience',
-    description:
-      'Crée des sondages Facebook qui génèrent de l\'interaction — "Tu préfères oud ou vanille ?" — pour booster ta portée organique.',
-  },
-  {
-    icon: <Sparkles className="h-5 w-5" />,
-    color: 'bg-amber-500/10 text-amber-500',
-    badge: 'Comparatif',
-    title: 'Dupe Viral Before/After',
-    description:
-      'Format Before/After canvas optimisé TikTok & Reels. L\'IA identifie ton équivalent de marque et rédige la comparaison qui convertit.',
-  },
-  {
-    icon: <Share2 className="h-5 w-5" />,
-    color: 'bg-emerald-500/10 text-emerald-500',
-    badge: 'Multicanal',
-    title: 'Export & partage direct',
-    description:
-      'Télécharge tes visuels en PNG, copie les textes en 1 clic. Prêts pour Buffer, Meta Business Suite ou publication manuelle.',
-  },
+const toolIcons = [
+  { icon: <Megaphone className="h-5 w-5" />, color: 'bg-rose-500/10 text-rose-500' },
+  { icon: <Flame className="h-5 w-5" />, color: 'bg-orange-500/10 text-orange-500' },
+  { icon: <ImageIcon className="h-5 w-5" />, color: 'bg-violet-500/10 text-violet-500' },
+  { icon: <BarChart2 className="h-5 w-5" />, color: 'bg-blue-500/10 text-blue-500' },
+  { icon: <Sparkles className="h-5 w-5" />, color: 'bg-amber-500/10 text-amber-500' },
+  { icon: <Share2 className="h-5 w-5" />, color: 'bg-emerald-500/10 text-emerald-500' },
 ];
 
 export default function AdPowerSection() {
+  const t = useT();
+
   return (
     <section className="py-20 lg:py-28 bg-background">
       <div className="container mx-auto px-4 md:px-6 max-w-6xl">
@@ -75,26 +36,25 @@ export default function AdPowerSection() {
           <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-sm font-semibold mb-5 text-white"
             style={{ background: 'linear-gradient(135deg, #e11d48 0%, #7c3aed 50%, #1e3a8a 100%)' }}>
             <Zap className="h-3.5 w-3.5" />
-            Studio publicitaire IA — tout intégré dans le dashboard
+            {t.adpower.badge}
           </span>
           <h2 className="font-headline text-3xl md:text-4xl lg:text-5xl font-bold text-foreground leading-tight">
-            Ton contenu pub,{' '}
+            {t.adpower.title}{' '}
             <span
               className="bg-clip-text text-transparent"
               style={{ backgroundImage: 'linear-gradient(135deg, #e11d48 0%, #7c3aed 50%, #1e3a8a 100%)' }}
             >
-              généré en 30 secondes.
+              {t.adpower.titleGradient}
             </span>
           </h2>
           <p className="mt-4 text-lg text-muted-foreground max-w-2xl mx-auto">
-            Woosenteur ne fait pas que les fiches produits. Le dashboard contient un vrai studio pub IA —
-            posts, visuels, sondages, flash vente — que la plupart des utilisateurs n&apos;ont pas encore découvert.
+            {t.adpower.sub}
           </p>
         </motion.div>
 
         {/* Tools grid */}
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5 mb-14">
-          {tools.map((tool, i) => (
+          {t.adpower.tools.map((tool, i) => (
             <motion.div
               key={i}
               initial={{ opacity: 0, y: 20 }}
@@ -110,8 +70,8 @@ export default function AdPowerSection() {
 
               {/* Icon + Title */}
               <div className="flex items-start gap-3 mb-3">
-                <div className={`flex-shrink-0 h-10 w-10 rounded-xl flex items-center justify-center ${tool.color}`}>
-                  {tool.icon}
+                <div className={`flex-shrink-0 h-10 w-10 rounded-xl flex items-center justify-center ${toolIcons[i].color}`}>
+                  {toolIcons[i].icon}
                 </div>
                 <h3 className="font-semibold text-foreground text-base leading-snug pt-1">
                   {tool.title}
@@ -131,7 +91,7 @@ export default function AdPowerSection() {
           ))}
         </div>
 
-        {/* Bottom CTA — Sedestral-style proof + action */}
+        {/* Bottom CTA */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -142,15 +102,10 @@ export default function AdPowerSection() {
         >
           <div className="flex-1">
             <h3 className="font-headline text-2xl md:text-3xl font-bold text-foreground mb-3">
-              Un dashboard. Tout ce qu&apos;il faut pour vendre.
+              {t.adpower.cta.title}
             </h3>
             <div className="flex flex-col gap-2 mt-4">
-              {[
-                'Fiches produits SEO générées par IA',
-                'Posts Facebook & visuels pub prêts à l\'emploi',
-                'Formats TikTok, Story, Dupe Viral Before/After',
-                'Publication WooCommerce en 1 clic',
-              ].map((item) => (
+              {t.adpower.cta.items.map((item) => (
                 <div key={item} className="flex items-center gap-2 text-sm text-foreground/80">
                   <CheckCircle2 className="h-4 w-4 text-primary shrink-0" />
                   <span>{item}</span>
@@ -164,11 +119,11 @@ export default function AdPowerSection() {
               <Button asChild size="lg" className="text-white rounded-full px-8 py-6 text-base font-semibold shadow-lg" style={{ background: 'linear-gradient(135deg, #e11d48 0%, #7c3aed 50%, #1e3a8a 100%)' }}>
                 <Link href="/dashboard/marketing">
                   <Megaphone className="mr-2 h-5 w-5" />
-                  Accéder au Studio Pub
+                  {t.adpower.cta.btn}
                 </Link>
               </Button>
             </motion.div>
-            <p className="text-xs text-muted-foreground">Inclus dans tous les plans</p>
+            <p className="text-xs text-muted-foreground">{t.adpower.cta.sub}</p>
           </div>
         </motion.div>
 

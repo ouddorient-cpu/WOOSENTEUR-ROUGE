@@ -4,7 +4,7 @@
 import { useState, Suspense } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { Check, Star, Loader2 } from 'lucide-react';
+import { Check, Star, Loader2, Package } from 'lucide-react';
 import HeaderLanding from '@/components/header-landing';
 import { useUser } from '@/firebase/auth/use-user';
 import { useToast } from '@/hooks/use-toast';
@@ -12,7 +12,7 @@ import Footer from '@/components/footer';
 import { Switch } from '@/components/ui/switch';
 import { Label } from '@/components/ui/label';
 import { WelcomeBanner } from './welcome-banner';
-import { PRICING_PLANS } from '@/lib/pricing-config';
+import { PRICING_PLANS, CREDIT_PACKS, CreditPack } from '@/lib/pricing-config';
 
 const C = {
   bg: '#FAF6F0', bgAlt: '#F3ECE4', surface: '#FDF9F5',
@@ -56,6 +56,28 @@ function PricingPageContent() {
       });
     } finally {
       setLoadingPriceId(null);
+    }
+  };
+
+  const handlePackPurchase = async (pack: CreditPack) => {
+    if (!user) {
+      router.push('/signup?redirect=/pricing');
+      return;
+    }
+    setLoadingPriceId(pack.id);
+    try {
+      const idToken = await user.getIdToken(true);
+      const res = await fetch('/api/checkout/pack', {
+        method: 'POST',
+        headers: { 'Authorization': `Bearer ${idToken}`, 'Content-Type': 'application/json' },
+        body: JSON.stringify({ packId: pack.id }),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error);
+      window.location.assign(data.url);
+    } catch (error: any) {
+      setLoadingPriceId(null);
+      toast({ variant: 'destructive', title: 'Erreur', description: error.message || 'Impossible de lancer le paiement.' });
     }
   };
 
@@ -139,6 +161,67 @@ function PricingPageContent() {
                   Économisez 2 mois
                 </span>
               </Label>
+            </div>
+          </div>
+        </section>
+
+        {/* Credit Packs */}
+        <section className="pb-10">
+          <div className="container mx-auto px-4 md:px-6">
+            <div className="max-w-2xl mx-auto">
+              <div className="flex items-center gap-2 justify-center mb-6">
+                <Package className="h-5 w-5" style={{ color: C.sage }} />
+                <span className="text-base font-semibold" style={{ color: C.sage }}>Packs de crédits — paiement unique, sans abonnement</span>
+              </div>
+              <div className="grid gap-4 sm:grid-cols-2">
+                {CREDIT_PACKS.map((pack) => (
+                  <div
+                    key={pack.id}
+                    className="relative flex flex-col rounded-2xl p-6 transition-all duration-300 hover:-translate-y-1"
+                    style={{
+                      background: C.surface,
+                      border: `2px solid ${pack.isPopular ? C.terra : C.border}`,
+                      boxShadow: pack.isPopular ? '0 8px 24px -8px rgba(212,112,74,0.2)' : '0 2px 8px rgba(46,32,24,0.05)',
+                    }}
+                  >
+                    {pack.isPopular && (
+                      <span className="absolute -top-3 left-4 inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-bold text-white" style={{ background: C.terra }}>
+                        <Star className="w-3 h-3 fill-current" /> Le plus choisi
+                      </span>
+                    )}
+                    <div className="flex items-baseline gap-1 mb-1">
+                      <span className="text-3xl font-extrabold" style={{ color: C.text }}>{pack.price}</span>
+                      <span className="text-sm" style={{ color: C.muted }}>paiement unique</span>
+                    </div>
+                    <p className="font-bold text-base mb-3" style={{ color: C.text }}>{pack.name}</p>
+                    <ul className="space-y-2 flex-grow mb-5">
+                      {pack.features.map((f, i) => (
+                        <li key={i} className="flex items-start gap-2 text-sm">
+                          <Check className="h-5 w-5 shrink-0 mt-0.5" style={{ color: C.sage }} />
+                          <span style={{ color: C.muted }} dangerouslySetInnerHTML={{ __html: f }} />
+                        </li>
+                      ))}
+                    </ul>
+                    <button
+                      className="w-full py-3 rounded-xl text-sm font-bold transition-all duration-200"
+                      style={pack.isPopular
+                        ? { background: C.terra, color: '#fff', boxShadow: '0 4px 16px -4px rgba(212,112,74,0.4)' }
+                        : { background: C.sagePale, color: C.sage, border: `1px solid ${C.border}` }
+                      }
+                      disabled={!!loadingPriceId || userLoading}
+                      onClick={() => handlePackPurchase(pack)}
+                    >
+                      {loadingPriceId === pack.id ? <Loader2 className="w-4 h-4 animate-spin mx-auto" /> : pack.cta}
+                    </button>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <div className="mt-12 mb-6 flex items-center gap-4 max-w-7xl mx-auto">
+              <div className="flex-1 border-t" style={{ borderColor: C.border }} />
+              <span className="text-sm font-medium px-3" style={{ color: C.muted }}>ou choisissez un abonnement mensuel</span>
+              <div className="flex-1 border-t" style={{ borderColor: C.border }} />
             </div>
           </div>
         </section>

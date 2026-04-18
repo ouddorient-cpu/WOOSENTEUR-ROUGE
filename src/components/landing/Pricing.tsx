@@ -1,10 +1,10 @@
 'use client';
 import { useState } from 'react';
-import { Check, Star } from 'lucide-react';
+import { Check, Star, Package } from 'lucide-react';
 import Link from 'next/link';
 import { Switch } from '@/components/ui/switch';
 import { Label } from '@/components/ui/label';
-import { PRICING_PLANS } from '@/lib/pricing-config';
+import { PRICING_PLANS, CREDIT_PACKS } from '@/lib/pricing-config';
 import { motion } from 'framer-motion';
 import { useT } from '@/lib/i18n/useT';
 
@@ -61,8 +61,69 @@ const Pricing = () => {
           </Label>
         </div>
 
+        {/* Credit packs */}
+        <div className="mt-12 max-w-2xl mx-auto">
+          <div className="flex items-center gap-2 justify-center mb-4">
+            <Package className="h-4 w-4" style={{ color: C.sage }} />
+            <span className="text-sm font-semibold" style={{ color: C.sage }}>Sans abonnement — packs à usage libre</span>
+          </div>
+          <div className="grid gap-4 sm:grid-cols-2">
+            {CREDIT_PACKS.map((pack, i) => (
+              <motion.div
+                key={pack.id}
+                initial={{ opacity: 0, y: 16 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.4, delay: i * 0.08 }}
+                className="relative flex flex-col rounded-2xl p-5 text-left"
+                style={{
+                  background: C.surface,
+                  border: `2px solid ${pack.isPopular ? C.terra : C.border}`,
+                  boxShadow: pack.isPopular ? '0 8px 24px -8px rgba(212,112,74,0.2)' : '0 2px 8px rgba(46,32,24,0.05)',
+                }}
+              >
+                {pack.isPopular && (
+                  <span className="absolute -top-3 left-4 inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-bold text-white" style={{ background: C.terra }}>
+                    <Star className="w-3 h-3 fill-current" /> Le plus choisi
+                  </span>
+                )}
+                <div className="flex items-baseline gap-1 mb-1">
+                  <span className="text-3xl font-extrabold" style={{ color: C.text }}>{pack.price}</span>
+                  <span className="text-sm" style={{ color: C.muted }}>paiement unique</span>
+                </div>
+                <p className="font-bold text-base mb-3" style={{ color: C.text }}>{pack.name}</p>
+                <ul className="space-y-1.5 flex-grow mb-4">
+                  {pack.features.map((f, fi) => (
+                    <li key={fi} className="flex items-start gap-2 text-sm">
+                      <Check className="h-4 w-4 shrink-0 mt-0.5" style={{ color: C.sage }} />
+                      <span style={{ color: C.muted }} dangerouslySetInnerHTML={{ __html: f }} />
+                    </li>
+                  ))}
+                </ul>
+                <Link
+                  href="/pricing"
+                  className="w-full py-2.5 rounded-xl text-sm font-bold text-center transition-all duration-200"
+                  style={pack.isPopular
+                    ? { background: C.terra, color: '#fff', boxShadow: '0 4px 12px -4px rgba(212,112,74,0.35)' }
+                    : { background: C.sagePale, color: C.sage, border: `1px solid ${C.border}` }
+                  }
+                >
+                  {pack.cta}
+                </Link>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+
+        {/* Divider */}
+        <div className="mt-10 mb-6 flex items-center gap-4 max-w-7xl mx-auto">
+          <div className="flex-1 border-t" style={{ borderColor: C.border }} />
+          <span className="text-sm font-medium px-3" style={{ color: C.muted }}>ou choisissez un abonnement</span>
+          <div className="flex-1 border-t" style={{ borderColor: C.border }} />
+        </div>
+
         {/* Plans grid */}
-        <div className="mt-12 grid gap-6 md:grid-cols-2 lg:grid-cols-4 md:items-start max-w-7xl mx-auto">
+        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4 md:items-start max-w-7xl mx-auto">
           {PRICING_PLANS.map((plan, i) => {
             const price = plan.price[billingCycle];
             const priceDescription = plan.id === 'free' ? plan.priceDescription : `/${billingCycle === 'monthly' ? t.pricing.perMonth : t.pricing.perYear}`;

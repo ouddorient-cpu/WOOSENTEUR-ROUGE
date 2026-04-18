@@ -13,6 +13,56 @@ export interface PricingPlan {
   paymentLink?: { monthly: string; annually: string };
 }
 
+export interface CreditPack {
+  id: string;
+  name: string;
+  description: string;
+  price: string;
+  credits: number;
+  validityMonths: number;
+  priceId: string;
+  features: string[];
+  isPopular: boolean;
+  cta: string;
+}
+
+export const CREDIT_PACKS: CreditPack[] = [
+  {
+    id: 'pack-s',
+    name: 'Pack S',
+    description: 'Idéal pour un lancement ou une petite collection.',
+    price: '4,90€',
+    credits: 10,
+    validityMonths: 6,
+    priceId: 'price_1TNiJkAIq9NC7F5alpgtfD6v',
+    features: [
+      '<span class="font-bold">10 fiches produit</span>',
+      'Valables 6 mois',
+      'Export CSV inclus',
+      'Paiement unique · sans abonnement',
+    ],
+    isPopular: false,
+    cta: 'Acheter le Pack S',
+  },
+  {
+    id: 'pack-m',
+    name: 'Pack M',
+    description: 'Pour une collection complète ou plusieurs produits.',
+    price: '9,90€',
+    credits: 30,
+    validityMonths: 12,
+    priceId: 'price_1TNiLyAIq9NC7F5aNEol4nbe',
+    features: [
+      '<span class="font-bold">30 fiches produit</span>',
+      'Valables 12 mois',
+      'Export CSV inclus',
+      'Paiement unique · sans abonnement',
+    ],
+    isPopular: true,
+    cta: 'Acheter le Pack M',
+  },
+];
+
 export const PRICING_PLANS: PricingPlan[] = [
   {
     id: 'free',

@@ -44,7 +44,7 @@ export async function POST(req: NextRequest) {
     switch (eventType) {
       // The 'checkout.session.completed' event can still be used for logging
       // or other side-effects, but credit attribution is now handled client-side.
-      case 'checkout.session.completed':
+      case 'checkout.session.completed': {
         console.log('✅ Checkout session completed:', session.id);
         const userId = session.client_reference_id;
         const stripeCustomerId = typeof session.customer === 'string' ? session.customer : session.customer?.id;
@@ -55,10 +55,35 @@ export async function POST(req: NextRequest) {
         }
 
         const userRef = db.collection('users').doc(userId);
-        await userRef.update({ stripeCustomerId });
-        console.log(`Updated stripeCustomerId for user ${userId}.`);
-        
+
+        if (session.mode === 'payment') {
+          // One-time credit pack purchase
+          const { packId, credits, validityMonths } = session.metadata || {};
+          if (!packId || !credits || !validityMonths) {
+            console.error('❌ Missing pack metadata in session:', session.id);
+            break;
+          }
+          const creditsNum = parseInt(credits, 10);
+          const validityNum = parseInt(validityMonths, 10);
+          const expiresAt = new Date();
+          expiresAt.setMonth(expiresAt.getMonth() + validityNum);
+
+          await userRef.update({
+            creditBalance: FieldValue.increment(creditsNum),
+            packExpiresAt: expiresAt.toISOString(),
+            lastPackId: packId,
+            claimedSessions: FieldValue.arrayUnion(session.id),
+          });
+          console.log(`✅ Added ${creditsNum} credits (pack ${packId}) to user ${userId}, expires ${expiresAt.toISOString()}`);
+        } else {
+          // Subscription checkout — just store stripeCustomerId
+          if (stripeCustomerId) {
+            await userRef.update({ stripeCustomerId });
+            console.log(`Updated stripeCustomerId for user ${userId}.`);
+          }
+        }
         break;
+      }
 
       case 'customer.subscription.deleted':
       case 'customer.subscription.updated':

@@ -35,7 +35,7 @@ export default function HeroNew() {
 
             <p className="text-warm-gray text-lg leading-relaxed max-w-lg mx-auto mb-8">
               Tu as créé quelque chose de beau. Dis-nous ce que c&apos;est — on écrit la fiche produit à ta place.
-              Claire, rassurante, prête à publier.
+              Claire, professionnelle, prête à publier.
             </p>
 
             <button

@@ -307,6 +307,29 @@ html {
     border-color: rgba(139,92,246,0.5);
     box-shadow: 0 0 0 3px rgba(139,92,246,0.15);
   }
+
+  /* ──────────────────────────────────────────────
+     LANDING WARM THEME — 2026 Rebranding
+     Palette : crème · terracotta · sauge · brun
+     ────────────────────────────────────────────── */
+  .btn-warm-cta {
+    display: inline-block;
+    background: #D4704A;
+    color: white;
+    font-weight: 600;
+    font-size: 16px;
+    padding: 16px 32px;
+    border-radius: 10px;
+    border: none;
+    cursor: pointer;
+    text-decoration: none;
+    box-shadow: 0 4px 20px rgba(212, 112, 74, 0.28);
+    transition: background 0.2s, transform 0.15s;
+  }
+  .btn-warm-cta:hover {
+    background: #BF5E3A;
+    transform: translateY(-1px);
+  }
 }
 
 /* ──────────────────────────────────────────────

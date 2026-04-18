@@ -12,7 +12,10 @@ import { Skeleton } from '@/components/ui/skeleton';
 import Image from 'next/image';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
-import { UploadCloud, Loader2, Edit, Download, ShieldCheck } from 'lucide-react';
+import { UploadCloud, Loader2, Edit, Download, ShieldCheck, Save, X } from 'lucide-react';
+import { Textarea } from '@/components/ui/textarea';
+import { doc, updateDoc } from 'firebase/firestore';
+import { useFirestore } from '@/firebase';
 import { useToast } from '@/hooks/use-toast';
 import { publishToWooCommerce } from '@/ai/flows/publish-to-woocommerce';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
@@ -69,6 +72,7 @@ export default function ProductPage() {
     const params = useParams();
     const { id } = params;
     const { toast } = useToast();
+    const firestore = useFirestore();
     const [isPublishing, setIsPublishing] = useState(false);
     const [isDownloading, setIsDownloading] = useState(false);
     const [uploadProgress, setUploadProgress] = useState(0);
@@ -76,6 +80,9 @@ export default function ProductPage() {
     const [isImageValidated, setIsImageValidated] = useState(false);
     const [csvFormat, setCsvFormat] = useState<CsvFormat>('woocommerce-fr');
     const fileInputRef = useRef<HTMLInputElement>(null);
+    const [isEditing, setIsEditing] = useState(false);
+    const [isSaving, setIsSaving] = useState(false);
+    const [editedFields, setEditedFields] = useState({ productTitle: '', shortDescription: '', longDescription: '' });
 
     const productPath = user && id ? `users/${user.uid}/products/${id}` : null;
     const userProfilePath = user ? `users/${user.uid}` : null;
@@ -90,11 +97,34 @@ export default function ProductPage() {
     }, [user, userLoading, router]);
 
     useEffect(() => {
-        // When the product data loads, if it has an image, consider it validated by default.
-        if (product?.imageUrl) {
-            setIsImageValidated(true);
+        if (product?.imageUrl) setIsImageValidated(true);
+        if (product?.seo) {
+            setEditedFields({
+                productTitle: product.seo.productTitle || '',
+                shortDescription: product.seo.shortDescription || '',
+                longDescription: product.seo.longDescription || '',
+            });
         }
     }, [product]);
+
+    const handleSaveEdit = async () => {
+        if (!user || !id) return;
+        setIsSaving(true);
+        try {
+            const ref = doc(firestore, `users/${user.uid}/products/${id}`);
+            await updateDoc(ref, {
+                'seo.productTitle': editedFields.productTitle,
+                'seo.shortDescription': editedFields.shortDescription,
+                'seo.longDescription': editedFields.longDescription,
+            });
+            setIsEditing(false);
+            toast({ variant: 'success', title: 'Fiche sauvegardée', description: 'Vos modifications ont été enregistrées.' });
+        } catch (e: any) {
+            toast({ variant: 'destructive', title: 'Erreur', description: e.message || 'Impossible de sauvegarder.' });
+        } finally {
+            setIsSaving(false);
+        }
+    };
 
     const handlePublish = async () => {
         if (!product || !userProfile?.wooCommerce) return;
@@ -300,24 +330,65 @@ export default function ProductPage() {
             <div className="grid gap-6 lg:grid-cols-5">
                 <div className="lg:col-span-3 space-y-6">
                         <Card>
-                        <CardHeader>
-                            <CardTitle>Fiche Produit Générée</CardTitle>
-                            <CardDescription>Contenu principal de la fiche produit, optimisé pour le SEO. Vous pouvez modifier ce texte.</CardDescription>
+                        <CardHeader className="flex flex-row items-start justify-between gap-4">
+                            <div>
+                                <CardTitle>Fiche Produit</CardTitle>
+                                <CardDescription>Cliquez sur Modifier pour retoucher le texte directement.</CardDescription>
+                            </div>
+                            <div className="flex gap-2 shrink-0">
+                                {isEditing ? (
+                                    <>
+                                        <Button size="sm" onClick={handleSaveEdit} disabled={isSaving}>
+                                            {isSaving ? <Loader2 className="h-4 w-4 animate-spin mr-1" /> : <Save className="h-4 w-4 mr-1" />}
+                                            Sauvegarder
+                                        </Button>
+                                        <Button size="sm" variant="outline" onClick={() => { setIsEditing(false); setEditedFields({ productTitle: seo.productTitle, shortDescription: seo.shortDescription, longDescription: seo.longDescription }); }}>
+                                            <X className="h-4 w-4 mr-1" /> Annuler
+                                        </Button>
+                                    </>
+                                ) : (
+                                    <Button size="sm" variant="outline" onClick={() => setIsEditing(true)}>
+                                        <Edit className="h-4 w-4 mr-1" /> Modifier
+                                    </Button>
+                                )}
+                            </div>
                         </CardHeader>
                         <CardContent className="space-y-6">
                             <div>
-                                <h3 className="font-semibold text-lg mb-2">Titre SEO</h3>
-                                <p className="text-muted-foreground p-4 bg-muted rounded-md">{seo.productTitle}</p>
+                                <h3 className="font-semibold text-sm mb-2 text-muted-foreground uppercase tracking-wide">Titre SEO</h3>
+                                {isEditing ? (
+                                    <Textarea
+                                        className="min-h-[60px] resize-none"
+                                        value={editedFields.productTitle}
+                                        onChange={e => setEditedFields(f => ({ ...f, productTitle: e.target.value }))}
+                                    />
+                                ) : (
+                                    <p className="text-foreground p-4 bg-muted rounded-md leading-relaxed">{seo.productTitle}</p>
+                                )}
                             </div>
                             <div>
-                                <h3 className="font-semibold text-lg mb-2">Méta Description</h3>
-                                <p className="text-muted-foreground p-4 bg-muted rounded-md">{seo.shortDescription}</p>
-
+                                <h3 className="font-semibold text-sm mb-2 text-muted-foreground uppercase tracking-wide">Méta Description</h3>
+                                {isEditing ? (
+                                    <Textarea
+                                        className="min-h-[80px] resize-none"
+                                        value={editedFields.shortDescription}
+                                        onChange={e => setEditedFields(f => ({ ...f, shortDescription: e.target.value }))}
+                                    />
+                                ) : (
+                                    <p className="text-foreground p-4 bg-muted rounded-md leading-relaxed">{seo.shortDescription}</p>
+                                )}
                             </div>
                             <div>
-                                <h3 className="font-semibold text-lg mb-2">Description Longue</h3>
-                                <div className="prose prose-sm max-w-none text-muted-foreground p-4 bg-muted rounded-md" dangerouslySetInnerHTML={{ __html: seo.longDescription }}>
-                                </div>
+                                <h3 className="font-semibold text-sm mb-2 text-muted-foreground uppercase tracking-wide">Description Longue</h3>
+                                {isEditing ? (
+                                    <Textarea
+                                        className="min-h-[240px]"
+                                        value={editedFields.longDescription}
+                                        onChange={e => setEditedFields(f => ({ ...f, longDescription: e.target.value }))}
+                                    />
+                                ) : (
+                                    <div className="prose prose-sm max-w-none text-foreground p-4 bg-muted rounded-md" dangerouslySetInnerHTML={{ __html: seo.longDescription }} />
+                                )}
                             </div>
                         </CardContent>
                     </Card>

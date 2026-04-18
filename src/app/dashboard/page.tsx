@@ -36,7 +36,7 @@ const StatCard = ({ title, value, icon, description, isCredits = false }: { titl
             {isCredits ? (
                 <CoinIndicator amount={value} showLabel={false} className="border-none bg-transparent p-0 shadow-none scale-125 origin-left" />
             ) : (
-                <div className="text-2xl font-bold text-white">{value}</div>
+                <div className="text-2xl font-bold text-foreground">{value}</div>
             )}
             {description && <p className="text-xs text-muted-foreground mt-1">{description}</p>}
         </CardContent>
@@ -144,10 +144,10 @@ export default function DashboardHomePage() {
 
             <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
                 <div>
-                    <Badge variant="outline" className="mb-2 border-primary/30 text-primary bg-primary/5">
-                        <Sparkles className="mr-2 h-3 w-3" /> Espace Créatif
+                    <Badge variant="outline" className="mb-2 border-primary/30 text-primary bg-accent">
+                        <Sparkles className="mr-2 h-3 w-3" /> Woosenteur
                     </Badge>
-                    <h1 className="font-headline text-3xl md:text-4xl font-bold text-white">Studio Dashboard</h1>
+                    <h1 className="font-headline text-3xl md:text-4xl font-bold text-foreground">Mon espace</h1>
                     <p className="text-muted-foreground">Bienvenue dans votre atelier, {user.displayName || user.email}.</p>
                 </div>
                 <div className="flex gap-3">
@@ -174,7 +174,7 @@ export default function DashboardHomePage() {
                     description={userProfile?.isUnlimited ? "Accès total" : "Pour le cycle en cours"}
                     isCredits={!userProfile?.isUnlimited}
                 />
-                <Card className="col-span-1 lg:col-span-2 bg-gradient-to-br from-primary/5 via-transparent to-accent/5 overflow-hidden border-2 border-primary/20">
+                <Card className="col-span-1 lg:col-span-2 overflow-hidden border-2 border-primary/30" style={{ background: '#F3ECE4' }}>
                     <CardHeader className="pb-4 relative z-10">
                         <CardTitle className="text-lg">Prêt à créer ?</CardTitle>
                         <CardDescription>Lancez une nouvelle génération ou importez vos produits WooCommerce.</CardDescription>
@@ -187,7 +187,7 @@ export default function DashboardHomePage() {
                             <Link href="/dashboard/import"><FileUp className="mr-2 h-5 w-5" />Importer</Link>
                         </Button>
                     </CardContent>
-                    <div className="absolute right-[-20%] top-[-20%] w-64 h-64 bg-primary/10 rounded-full blur-3xl" />
+                    <div className="absolute right-[-20%] top-[-20%] w-64 h-64 rounded-full blur-3xl" style={{ background: 'rgba(212,112,74,0.12)' }} />
                 </Card>
             </div>
 

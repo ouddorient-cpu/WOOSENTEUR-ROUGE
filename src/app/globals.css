@@ -32,33 +32,33 @@ html {
 }
 
 /* ──────────────────────────────────────────────
-   DESIGN TOKENS — 2026 Violet × Blue Dark Theme
+   DESIGN TOKENS — 2026 Warm Cream × Terracotta
    ────────────────────────────────────────────── */
 @layer base {
   :root {
-    /* Deep space dark — base surfaces */
-    --background: 240 30% 4%;          /* #060612 */
-    --foreground: 0 0% 98%;
+    /* Cream warm base */
+    --background: 37 50% 96%;          /* #FAF6F0 */
+    --foreground: 22 31% 14%;          /* #2E2018 warm brown */
 
-    --card: 240 25% 7%;                /* glass card surface */
-    --card-foreground: 0 0% 95%;
+    --card: 37 60% 98%;                /* #FDF9F5 */
+    --card-foreground: 22 31% 14%;
 
-    --popover: 240 25% 6%;
-    --popover-foreground: 0 0% 95%;
+    --popover: 37 60% 98%;
+    --popover-foreground: 22 31% 14%;
 
-    /* Primary — Electric Violet #8B5CF6 */
-    --primary: 263 89% 64%;
+    /* Primary — Terracotta #D4704A */
+    --primary: 17 62% 56%;
     --primary-foreground: 0 0% 100%;
 
-    /* Secondary — Cobalt Blue #3B82F6 */
-    --secondary: 217 91% 60%;
+    /* Secondary — Sage #7D9B76 */
+    --secondary: 109 16% 54%;
     --secondary-foreground: 0 0% 100%;
 
-    --muted: 240 20% 12%;
-    --muted-foreground: 240 10% 55%;
+    --muted: 32 39% 92%;               /* #F3ECE4 */
+    --muted-foreground: 28 11% 43%;    /* #7A6D62 */
 
-    --accent: 263 60% 18%;
-    --accent-foreground: 263 89% 80%;
+    --accent: 110 19% 94%;             /* #EDF2EC sage pale */
+    --accent-foreground: 109 16% 54%; /* sage */
 
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 0 0% 98%;
@@ -66,28 +66,28 @@ html {
     --warning: 38 96% 58%;
     --warning-foreground: 38 96% 20%;
 
-    --border: 240 20% 14%;
-    --input: 240 20% 14%;
-    --ring: 263 89% 64%;
+    --border: 32 25% 86%;              /* #E5DDD4 */
+    --input: 32 25% 86%;
+    --ring: 17 62% 56%;                /* terracotta */
 
     --radius: 0.75rem;
 
-    /* Chart colors — violet/blue spectrum */
-    --chart-1: 263 89% 64%;
-    --chart-2: 217 91% 60%;
-    --chart-3: 240 80% 70%;
-    --chart-4: 263 60% 50%;
-    --chart-5: 217 70% 45%;
+    /* Chart colors — warm spectrum */
+    --chart-1: 17 62% 56%;
+    --chart-2: 109 16% 54%;
+    --chart-3: 32 39% 72%;
+    --chart-4: 17 50% 44%;
+    --chart-5: 109 20% 44%;
 
     /* Sidebar */
-    --sidebar-background: 240 30% 5%;
-    --sidebar-foreground: 0 0% 90%;
-    --sidebar-primary: 263 89% 64%;
+    --sidebar-background: 37 50% 96%;
+    --sidebar-foreground: 22 31% 14%;
+    --sidebar-primary: 17 62% 56%;
     --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 240 25% 10%;
-    --sidebar-accent-foreground: 0 0% 90%;
-    --sidebar-border: 240 20% 12%;
-    --sidebar-ring: 263 89% 64%;
+    --sidebar-accent: 32 39% 92%;
+    --sidebar-accent-foreground: 22 31% 14%;
+    --sidebar-border: 32 25% 86%;
+    --sidebar-ring: 17 62% 56%;
   }
 
   /* Keep dark as default (same values) */
@@ -129,10 +129,10 @@ html {
    UTILITY CLASSES — 2026 Dark SaaS
    ────────────────────────────────────────────── */
 @layer utilities {
-  /* Gradient text: violet → blue */
+  /* Gradient text: terracotta warm */
   .text-gradient {
     @apply bg-clip-text text-transparent;
-    background-image: linear-gradient(110deg, #8B5CF6 20%, #a78bfa 45%, #60a5fa 70%, #3B82F6 90%);
+    background-image: linear-gradient(110deg, #D4704A 20%, #e8845e 50%, #BF5E3A 90%);
     background-size: 200% auto;
     animation: text-shimmer 4s linear infinite;
   }
@@ -154,21 +154,23 @@ html {
   }
 
   .aurora-1 {
-    background: #8B5CF6;
+    background: #D4704A;
     width: 600px;
     height: 600px;
     top: -200px;
     left: -100px;
     animation: float-aurora-1 20s infinite linear;
+    opacity: 0.08;
   }
 
   .aurora-2 {
-    background: #3B82F6;
+    background: #7D9B76;
     width: 500px;
     height: 500px;
     bottom: -100px;
     right: -100px;
     animation: float-aurora-2 25s infinite linear reverse;
+    opacity: 0.06;
   }
 
   /* Grid overlay */
@@ -179,22 +181,20 @@ html {
     background-size: 64px 64px;
   }
 
-  /* Old bg-dots kept for compat */
+  /* bg-dots — warm subtle dots */
   .bg-dots {
-    background-image: radial-gradient(rgba(139,92,246,0.12) 1px, transparent 1px);
+    background-image: radial-gradient(rgba(212,112,74,0.08) 1px, transparent 1px);
     background-size: 20px 20px;
   }
 
-  /* Glassmorphism card */
+  /* Warm surface card */
   .glass-card {
-    background: rgba(255, 255, 255, 0.03);
-    backdrop-filter: blur(24px);
-    -webkit-backdrop-filter: blur(24px);
-    border: 1px solid rgba(255, 255, 255, 0.07);
+    background: #FDF9F5;
+    border: 1px solid #E5DDD4;
     border-radius: 1.5rem;
     position: relative;
-    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-    box-shadow: inset 0 1px 0 0 rgba(255,255,255,0.06);
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    box-shadow: 0 2px 12px rgba(46, 32, 24, 0.06);
   }
 
   .glass-card::before {
@@ -203,61 +203,48 @@ html {
     inset: -1px;
     border-radius: inherit;
     padding: 1px;
-    background: linear-gradient(135deg, rgba(139,92,246,0.5), rgba(59,130,246,0.5), transparent 60%);
+    background: linear-gradient(135deg, rgba(212,112,74,0.4), rgba(125,155,118,0.4), transparent 60%);
     -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
     -webkit-mask-composite: xor;
     mask-composite: exclude;
     opacity: 0;
-    transition: opacity 0.5s ease;
+    transition: opacity 0.4s ease;
     pointer-events: none;
   }
 
   .glass-card:hover {
-    background: rgba(255, 255, 255, 0.055);
+    background: #FAF6F0;
     transform: translateY(-4px);
-    box-shadow: 0 10px 40px -10px rgba(139, 92, 246, 0.2);
+    box-shadow: 0 12px 40px -10px rgba(212, 112, 74, 0.18);
   }
 
   .glass-card:hover::before {
     opacity: 1;
   }
 
-  /* Featured/highlighted glass card — always glowing border */
+  /* Featured warm card — terracotta border glow */
   .glass-card-featured {
-    background: rgba(255, 255, 255, 0.04);
-    backdrop-filter: blur(24px);
-    -webkit-backdrop-filter: blur(24px);
-    border: 1px solid transparent;
+    background: #FDF9F5;
+    border: 2px solid #D4704A;
     border-radius: 1.5rem;
     position: relative;
-    box-shadow: 0 0 40px -10px rgba(139,92,246,0.3), 0 0 20px -5px rgba(59,130,246,0.2), inset 0 1px 0 0 rgba(255,255,255,0.08);
+    box-shadow: 0 8px 32px -8px rgba(212,112,74,0.25), 0 2px 12px rgba(46,32,24,0.06);
   }
 
   .glass-card-featured::before {
-    content: '';
-    position: absolute;
-    inset: -1px;
-    border-radius: inherit;
-    padding: 1px;
-    background: linear-gradient(135deg, #8B5CF6, #6366F1, #3B82F6);
-    background-size: 200% 200%;
-    animation: shimmer-border 4s ease infinite;
-    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-    -webkit-mask-composite: xor;
-    mask-composite: exclude;
-    pointer-events: none;
+    display: none;
   }
 
-  /* Primary gradient button glow */
+  /* Primary warm button */
   .btn-primary-glow {
-    background: linear-gradient(135deg, #8B5CF6, #6366F1, #3B82F6);
-    box-shadow: 0 0 30px -8px rgba(139,92,246,0.5), 0 0 15px -5px rgba(59,130,246,0.3);
+    background: #D4704A;
+    box-shadow: 0 4px 20px -4px rgba(212,112,74,0.45);
     transition: box-shadow 0.3s ease, transform 0.3s ease;
-    animation: pulse-halo 3s infinite;
   }
 
   .btn-primary-glow:hover {
-    box-shadow: 0 0 50px -10px rgba(139,92,246,0.6), 0 0 25px -8px rgba(59,130,246,0.4);
+    background: #BF5E3A;
+    box-shadow: 0 8px 28px -6px rgba(212,112,74,0.55);
     transform: translateY(-2px);
   }
 
@@ -281,9 +268,9 @@ html {
   /* Section label pill */
   .section-label {
     @apply inline-block text-xs font-bold uppercase tracking-widest px-4 py-1.5 rounded-full border;
-    color: #a78bfa;
-    background: rgba(139,92,246,0.1);
-    border-color: rgba(139,92,246,0.25);
+    color: #7D9B76;
+    background: #EDF2EC;
+    border-color: rgba(125,155,118,0.3);
   }
 
   /* Ticker mask fade edges */
@@ -298,14 +285,14 @@ html {
   }
 
   .studio-input {
-    background: rgba(255,255,255,0.04);
-    border-color: rgba(139,92,246,0.2);
+    background: #FAF6F0;
+    border-color: #E5DDD4;
     transition: border-color 0.2s, box-shadow 0.2s;
   }
 
   .studio-input:focus {
-    border-color: rgba(139,92,246,0.5);
-    box-shadow: 0 0 0 3px rgba(139,92,246,0.15);
+    border-color: rgba(212,112,74,0.5);
+    box-shadow: 0 0 0 3px rgba(212,112,74,0.12);
   }
 
   /* ──────────────────────────────────────────────

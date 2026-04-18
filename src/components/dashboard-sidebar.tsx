@@ -190,7 +190,7 @@ export default function DashboardSidebar() {
             {/* Logo */}
             <div className="flex h-14 items-center border-b px-4">
                 <Link href="/" className="flex items-center gap-2">
-                    <Logo className="h-7 w-7" />
+                    <Logo className="h-10 w-10" />
                     <span className="font-headline text-base font-bold text-foreground">Woosenteur</span>
                 </Link>
             </div>

@@ -23,7 +23,7 @@ export default function HeaderLanding() {
       <div className="max-w-5xl mx-auto flex h-16 items-center justify-between px-5 md:px-8">
         {/* Logo */}
         <Link href="/" className="flex items-center gap-2 hover:opacity-80 transition-opacity">
-          <Logo className="h-9 w-9" />
+          <Logo className="h-14 w-14" />
           <span
             className="font-bold text-lg hidden sm:block"
             style={{ fontFamily: "'Cormorant Garamond', Georgia, serif", color: '#2E2018' }}

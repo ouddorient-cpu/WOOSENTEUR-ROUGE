@@ -107,7 +107,7 @@ const FormColumn: React.FC<FormColumnProps> = ({ form, onSubmit, isGenerating, c
   return (
     <Card className="studio-card">
       <CardHeader>
-        <CardTitle className="text-gradient">1. Informations Produit</CardTitle>
+        <CardTitle className="text-white font-bold">1. Informations Produit</CardTitle>
         <CardDescription>Remplissez les informations essentielles, notre agent s'occupe du reste.</CardDescription>
       </CardHeader>
       <CardContent>
@@ -341,7 +341,7 @@ const FormColumn: React.FC<FormColumnProps> = ({ form, onSubmit, isGenerating, c
 const UploadingPreview: React.FC<{ progress: number; progressMessage: string; imageUrl?: string; }> = ({ progress, progressMessage, imageUrl }) => (
   <Card>
     <CardHeader>
-      <CardTitle className="text-gradient">{progressMessage}</CardTitle>
+      <CardTitle className="text-white font-bold">{progressMessage}</CardTitle>
       <CardDescription>Veuillez patienter pendant le traitement de votre image.</CardDescription>
     </CardHeader>
     <CardContent className="relative flex flex-col items-center justify-center gap-4 text-center">
@@ -419,7 +419,7 @@ const ResultColumn: React.FC<ResultColumnProps> = ({
     return (
       <Card className="h-full">
         <CardHeader>
-          <CardTitle className="text-gradient">Woody est au travail !</CardTitle>
+          <CardTitle className="text-white font-bold">Woody est au travail !</CardTitle>
           <CardDescription>Notre agent IA rédige votre fiche produit SEO.</CardDescription>
         </CardHeader>
         <CardContent className="flex flex-col justify-center items-center h-full gap-6">
@@ -463,7 +463,7 @@ const ResultColumn: React.FC<ResultColumnProps> = ({
       <div ref={resultColumnRef} className="space-y-6">
         <Card>
           <CardHeader>
-            <CardTitle className="text-gradient">3. Image du produit</CardTitle>
+            <CardTitle className="text-white font-bold">3. Image du produit</CardTitle>
             <CardDescription>Une image de haute qualité est essentielle. Notre IA validera votre choix.</CardDescription>
           </CardHeader>
           <CardContent className="flex flex-col items-center justify-center gap-4 text-center">
@@ -515,7 +515,7 @@ const ResultColumn: React.FC<ResultColumnProps> = ({
         {(step === 'preview' || step === 'export') && (
           <Card ref={exportCardRef}>
             <CardHeader>
-              <CardTitle className="text-gradient">4. Export</CardTitle>
+              <CardTitle className="text-white font-bold">4. Export</CardTitle>
               <CardDescription>Choisissez une plateforme et un format, puis exportez votre fiche produit.</CardDescription>
             </CardHeader>
             <CardContent className="space-y-6">

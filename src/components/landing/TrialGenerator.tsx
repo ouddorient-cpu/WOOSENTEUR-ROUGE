@@ -338,8 +338,8 @@ export default function TrialGenerator() {
                             <FormLabel style={{ color: C.text }} className="font-medium">Mode de génération</FormLabel>
                             <div className="grid grid-cols-2 gap-2">
                               {[
-                                { val: 'marque-connue', icon: <Globe className="h-4 w-4" />, label: 'Marque connue' },
                                 { val: 'mon-produit',   icon: <PenLine className="h-4 w-4" />, label: 'Mon produit' },
+                                { val: 'marque-connue', icon: <Globe className="h-4 w-4" />, label: 'Marque connue' },
                               ].map(({ val, icon, label }) => (
                                 <button
                                   key={val}

@@ -1151,7 +1151,7 @@ export default function ImportPage() {
     return (
         <>
             <div className="text-center mb-8">
-                <h1 className="font-headline text-3xl font-bold text-gradient">Import de Produits</h1>
+                <h1 className="font-headline text-3xl font-bold text-white">Import de Produits</h1>
                 <p className="text-muted-foreground">Générez des centaines de fiches produits en une seule fois.</p>
             </div>
             <div className="max-w-4xl mx-auto">

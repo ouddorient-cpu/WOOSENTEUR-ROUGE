@@ -140,7 +140,7 @@ export default function AdminPage() {
   return (
     <div className="space-y-8">
       <div>
-        <h1 className="font-headline text-3xl font-bold text-gradient">Tableau de bord Administrateur</h1>
+        <h1 className="font-headline text-3xl font-bold text-white">Tableau de bord Administrateur</h1>
         <p className="text-muted-foreground">Vue d&apos;ensemble de la plateforme.</p>
       </div>
 

@@ -1072,7 +1072,7 @@ export default function GeneratePage() {
             <Badge variant="outline" className="mb-2 border-primary/30 text-primary bg-primary/5">
               <Bot className="mr-2 h-3 w-3" /> Studio Créatif v2
             </Badge>
-            <h1 className="font-headline text-3xl font-bold text-gradient">Création de Produit</h1>
+            <h1 className="font-headline text-3xl font-bold text-white">Création de Produit</h1>
           </div>
           <div className="flex items-center gap-2 text-sm text-muted-foreground bg-muted/50 px-3 py-1.5 rounded-full">
             <ShieldCheck className="h-4 w-4 text-green-500" />

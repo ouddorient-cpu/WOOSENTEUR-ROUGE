@@ -126,7 +126,7 @@ export default function ProductsListPage() {
           <Badge variant="outline" className="mb-2 border-primary/30 text-primary bg-primary/5">
             <Package className="mr-2 h-3 w-3" /> Catalogue
           </Badge>
-          <h1 className="font-headline text-3xl md:text-4xl font-bold text-gradient">Mes Produits</h1>
+          <h1 className="font-headline text-3xl md:text-4xl font-bold text-white">Mes Produits</h1>
           <p className="text-muted-foreground">
             Gérez et exportez vos {filteredProducts.length} fiches produits générées.
           </p>

@@ -36,7 +36,7 @@ const StatCard = ({ title, value, icon, description, isCredits = false }: { titl
             {isCredits ? (
                 <CoinIndicator amount={value} showLabel={false} className="border-none bg-transparent p-0 shadow-none scale-125 origin-left" />
             ) : (
-                <div className="text-2xl font-bold text-gradient">{value}</div>
+                <div className="text-2xl font-bold text-white">{value}</div>
             )}
             {description && <p className="text-xs text-muted-foreground mt-1">{description}</p>}
         </CardContent>
@@ -147,7 +147,7 @@ export default function DashboardHomePage() {
                     <Badge variant="outline" className="mb-2 border-primary/30 text-primary bg-primary/5">
                         <Sparkles className="mr-2 h-3 w-3" /> Espace Créatif
                     </Badge>
-                    <h1 className="font-headline text-3xl md:text-4xl font-bold text-gradient">Studio Dashboard</h1>
+                    <h1 className="font-headline text-3xl md:text-4xl font-bold text-white">Studio Dashboard</h1>
                     <p className="text-muted-foreground">Bienvenue dans votre atelier, {user.displayName || user.email}.</p>
                 </div>
                 <div className="flex gap-3">

@@ -2083,7 +2083,7 @@ export default function MarketingPage() {
     <>
       {/* Header */}
       <div className="text-center mb-6">
-        <h1 className="font-headline text-3xl font-bold text-gradient flex items-center justify-center gap-2">
+        <h1 className="font-headline text-3xl font-bold text-white flex items-center justify-center gap-2">
           <Megaphone className="h-8 w-8" />
           Marketing IA
         </h1>
@@ -2576,7 +2576,7 @@ export default function MarketingPage() {
         <div className="max-w-md mx-auto">
           <Card>
             <CardHeader className="text-center">
-              <CardTitle className="text-gradient">Création en cours...</CardTitle>
+              <CardTitle className="text-white">Création en cours...</CardTitle>
               <CardDescription>Notre IA crée vos publicités personnalisées.</CardDescription>
             </CardHeader>
             <CardContent className="space-y-6">

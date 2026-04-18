@@ -48,9 +48,9 @@ export const metadata: Metadata = {
   publisher: 'Woosenteur v2',
   manifest: '/manifest.webmanifest',
   icons: {
-    icon: 'https://res.cloudinary.com/dzagwz94z/image/upload/v1768292940/ChatGPT_Image_13_janv._2026_09_28_19_wvny6h.png',
-    shortcut: 'https://res.cloudinary.com/dzagwz94z/image/upload/v1768292940/ChatGPT_Image_13_janv._2026_09_28_19_wvny6h.png',
-    apple: 'https://res.cloudinary.com/dzagwz94z/image/upload/v1768292940/ChatGPT_Image_13_janv._2026_09_28_19_wvny6h.png',
+    icon: 'https://res.cloudinary.com/db2ljqpdt/image/upload/v1776544331/Gemini_Generated_Image_8vt1oa8vt1oa8vt1__1_-removebg-preview_slimrt.png',
+    shortcut: 'https://res.cloudinary.com/db2ljqpdt/image/upload/v1776544331/Gemini_Generated_Image_8vt1oa8vt1oa8vt1__1_-removebg-preview_slimrt.png',
+    apple: 'https://res.cloudinary.com/db2ljqpdt/image/upload/v1776544331/Gemini_Generated_Image_8vt1oa8vt1oa8vt1__1_-removebg-preview_slimrt.png',
   },
   robots: {
     index: true,

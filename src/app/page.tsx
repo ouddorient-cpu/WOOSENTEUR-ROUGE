@@ -30,10 +30,8 @@ export default function HomePage() {
         <BeforeAfterNew />
         <BenefitsBlock />
 
-        {/* ── LIVE GENERATOR (dark — contraste intentionnel) ─── */}
-        <div className="bg-[#060612] text-white">
-          <TrialGenerator />
-        </div>
+        {/* ── LIVE GENERATOR ─────────────────────────────────── */}
+        <TrialGenerator />
 
         {/* ── WARM SECTIONS (suite) ──────────────────────────── */}
         <ReassuranceBlock />
@@ -41,11 +39,9 @@ export default function HomePage() {
         <TestimonialNew />
         <FinalCtaNew />
 
-        {/* ── PRICING & FAQ (dark) ───────────────────────────── */}
-        <div className="bg-[#060612] text-white">
-          <Pricing />
-          <Faq />
-        </div>
+        {/* ── PRICING & FAQ ──────────────────────────────────── */}
+        <Pricing />
+        <Faq />
 
       </main>
       <Footer />

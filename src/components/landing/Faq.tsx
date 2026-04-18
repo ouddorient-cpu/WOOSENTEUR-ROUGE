@@ -1,43 +1,54 @@
 'use client';
 
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
-import Image from 'next/image';
 import { useT } from '@/lib/i18n/useT';
 
+const C = {
+  bg: '#FAF6F0', bgAlt: '#F3ECE4',
+  text: '#2E2018', muted: '#7A6D62', border: '#E5DDD4',
+  sage: '#7D9B76', sagePale: '#EDF2EC',
+  terra: '#D4704A',
+};
+
 const Faq = () => {
-    const t = useT();
-    return (
-        <section id="faq" className="py-20 lg:py-24 relative overflow-hidden">
-            <div className="absolute inset-0 z-0">
-              <Image
-                src="https://res.cloudinary.com/dzagwz94z/image/upload/v1767267988/ChatGPT_Image_29_d%C3%A9c._2025_23_42_04_dku5kn.png"
-                alt="Fond texturé"
-                fill
-                style={{ objectFit: 'cover' }}
-                className="opacity-10"
-              />
-               <div className="absolute inset-0 bg-background/80"></div>
-            </div>
-            <div className="container mx-auto px-4 md:px-6 max-w-3xl relative">
-                <div className="text-center">
-                    <h2 className="font-headline text-4xl font-bold text-foreground">
-                        {t.faq.title}{' '}
-                        <span className="text-gradient">{t.faq.titleHighlight}</span>
-                    </h2>
-                </div>
-                <Accordion type="single" collapsible className="w-full mt-12">
-                    {t.faq.items.map((item, i) => (
-                        <AccordionItem value={`item-${i}`} key={i}>
-                            <AccordionTrigger className="text-lg font-medium text-left">{item.q}</AccordionTrigger>
-                            <AccordionContent className="text-base text-muted-foreground">
-                                {item.a}
-                            </AccordionContent>
-                        </AccordionItem>
-                    ))}
-                </Accordion>
-            </div>
-        </section>
-    );
+  const t = useT();
+  return (
+    <section id="faq" className="py-20 lg:py-24" style={{ background: C.bg }}>
+      <div className="container mx-auto px-4 md:px-6 max-w-3xl">
+        <div className="text-center mb-12">
+          <span
+            className="inline-block text-sm font-semibold px-4 py-1.5 rounded-full mb-4 tracking-wide"
+            style={{ background: C.sagePale, color: C.sage }}
+          >
+            ✦ FAQ
+          </span>
+          <h2 style={{ fontFamily: "var(--font-cormorant), Georgia, serif", fontSize: 'clamp(1.8rem,5vw,2.8rem)', fontWeight: 700, color: C.text }}>
+            {t.faq.title}{' '}
+            <span style={{ color: C.terra }}>{t.faq.titleHighlight}</span>
+          </h2>
+        </div>
+        <Accordion type="single" collapsible className="w-full">
+          {t.faq.items.map((item, i) => (
+            <AccordionItem
+              value={`item-${i}`}
+              key={i}
+              style={{ borderColor: C.border }}
+            >
+              <AccordionTrigger
+                className="text-base font-semibold text-left hover:no-underline"
+                style={{ color: C.text }}
+              >
+                {item.q}
+              </AccordionTrigger>
+              <AccordionContent className="text-base leading-relaxed" style={{ color: C.muted }}>
+                {item.a}
+              </AccordionContent>
+            </AccordionItem>
+          ))}
+        </Accordion>
+      </div>
+    </section>
+  );
 };
 
 export default Faq;

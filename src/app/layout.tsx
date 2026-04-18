@@ -1,6 +1,6 @@
 
 import type { Metadata } from 'next';
-import { PT_Sans, Poppins } from 'next/font/google';
+import { PT_Sans, Poppins, Cormorant_Garamond } from 'next/font/google';
 import './globals.css';
 import { cn } from '@/lib/utils';
 import { Toaster } from '@/components/ui/toaster';
@@ -26,16 +26,23 @@ const poppins = Poppins({
   variable: '--font-poppins',
 });
 
+const cormorant = Cormorant_Garamond({
+  subsets: ['latin'],
+  weight: ['600', '700'],
+  style: ['normal', 'italic'],
+  variable: '--font-cormorant',
+});
+
 const URL_BASE = 'https://woosenteur.fr';
 
 export const metadata: Metadata = {
   metadataBase: new URL(URL_BASE),
   title: {
-    default: 'Woosenteur v2 | IA pour Fiches Produits SEO Automatisées',
-    template: '%s | Woosenteur v2 AI',
+    default: 'Woosenteur — Des fiches produit qui font vendre, en 5 minutes',
+    template: '%s | Woosenteur',
   },
-  description: 'Générez n\'importe quelle fiche produit optimisée SEO en 3 min. Notre agent rédige un contenu unique pour WooCommerce, Shopify, et plus. Boostez votre trafic organique.',
-  keywords: ['IA fiche produit', 'générateur de contenu IA', 'SEO e-commerce', 'optimisation fiche produit', 'Woosenteur v2', 'Abderrahmane El Malki', 'France', 'Maroc'],
+  description: 'Tu as un bon produit mais tu ne sais pas comment le présenter ? Woosenteur rédige ta fiche produit à ta place. Claire, professionnelle, prête à publier — sans jargon, sans effort.',
+  keywords: ['fiche produit', 'rédaction fiche produit', 'e-commerce débutant', 'boutique en ligne', 'WooCommerce', 'Shopify', 'description produit', 'vendeur artisanal'],
   authors: [{ name: 'Abderrahmane El Malki', url: 'https://www.linkedin.com/in/abderrahman-elmalki-44a887253/' }],
   creator: 'Abderrahmane El Malki',
   publisher: 'Woosenteur v2',
@@ -53,8 +60,8 @@ export const metadata: Metadata = {
     'max-video-preview': -1,
   },
   openGraph: {
-    title: 'Woosenteur v2 | Fiches Produits instantanées pour E-commerçants',
-    description: 'Transformez votre catalogue avec des descriptions de produits uniques et optimisées SEO, générées par IA en quelques secondes.',
+    title: 'Woosenteur — Des fiches produit qui font vendre, en 5 minutes',
+    description: 'Décris ton produit en quelques mots. Woosenteur rédige une fiche claire, professionnelle et prête à publier — sans jargon, sans effort.',
     url: URL_BASE,
     siteName: 'Woosenteur v2',
     images: [
@@ -144,7 +151,8 @@ export default function RootLayout({
         className={cn(
           'font-body antialiased min-h-screen bg-background',
           ptSans.variable,
-          poppins.variable
+          poppins.variable,
+          cormorant.variable
         )}
       >
         <LangProvider>

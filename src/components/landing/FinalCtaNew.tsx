@@ -16,7 +16,7 @@ export default function FinalCtaNew() {
           viewport={{ once: true }}
           transition={{ duration: 0.5 }}
         >
-          <h2 className="text-white mb-4" style={{ fontFamily: "'Cormorant Garamond', Georgia, serif", fontSize: 'clamp(1.8rem,5vw,2.6rem)', fontWeight: 700 }}>
+          <h2 className="text-white mb-4" style={{ fontFamily: "var(--font-cormorant), Georgia, serif", fontSize: 'clamp(1.8rem,5vw,2.6rem)', fontWeight: 700 }}>
             Ton prochain produit mérite<br />une belle fiche.
           </h2>
           <p className="text-white/65 text-[17px] mb-8 max-w-md mx-auto">

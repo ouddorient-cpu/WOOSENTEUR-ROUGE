@@ -312,6 +312,11 @@ html {
      LANDING WARM THEME — 2026 Rebranding
      Palette : crème · terracotta · sauge · brun
      ────────────────────────────────────────────── */
+  /* Cormorant Garamond via CSS variable */
+  .font-serif-warm {
+    font-family: var(--font-cormorant), Georgia, serif;
+  }
+
   .btn-warm-cta {
     display: inline-block;
     background: #D4704A;

@@ -31,7 +31,7 @@ export default function HomePage() {
         <BenefitsBlock />
 
         {/* ── LIVE GENERATOR (dark — contraste intentionnel) ─── */}
-        <div className="bg-[#060612] text-white" id="essai-gratuit">
+        <div className="bg-[#060612] text-white">
           <TrialGenerator />
         </div>
 

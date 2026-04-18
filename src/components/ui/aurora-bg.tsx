@@ -1,11 +1,17 @@
 'use client';
 
+import { usePathname } from 'next/navigation';
+
 /**
- * AuroraBg — ambient fixed aurora orbs + subtle grid overlay
- * Renders behind all page content via position:fixed, z-index 0.
- * Drop once in RootLayout or page wrapper — renders nothing on server.
+ * AuroraBg — ambient fixed aurora orbs + subtle grid overlay.
+ * Only renders on dark-themed pages (dashboard, login, signup, etc.).
+ * Hidden on the landing page which uses a warm light theme.
  */
 export function AuroraBg() {
+  const pathname = usePathname();
+  // Landing page uses warm cream theme — no aurora
+  if (pathname === '/') return null;
+
   return (
     <>
       {/* Subtle grid overlay */}

@@ -47,7 +47,7 @@ export default function HowItWorksNew() {
             <span className="inline-block bg-white text-sage font-semibold text-sm px-4 py-1.5 rounded-full mb-4 tracking-wide shadow-sm">
               Comment ça marche
             </span>
-            <h2 className="text-warm-brown" style={{ fontFamily: "'Cormorant Garamond', Georgia, serif", fontSize: 'clamp(1.5rem,4vw,2.2rem)', fontWeight: 600 }}>
+            <h2 className="text-warm-brown" style={{ fontFamily: "var(--font-cormorant), Georgia, serif", fontSize: 'clamp(1.5rem,4vw,2.2rem)', fontWeight: 600 }}>
               Trois étapes.<br />Pas de complication.
             </h2>
           </motion.div>

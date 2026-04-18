@@ -33,7 +33,7 @@ export default function TestimonialNew() {
 
             <blockquote
               className="text-warm-brown italic mb-5"
-              style={{ fontFamily: "'Cormorant Garamond', Georgia, serif", fontSize: 'clamp(1.1rem,3vw,1.35rem)', lineHeight: 1.6 }}
+              style={{ fontFamily: "var(--font-cormorant), Georgia, serif", fontSize: 'clamp(1.1rem,3vw,1.35rem)', lineHeight: 1.6 }}
             >
               &ldquo;J&apos;ai enfin une fiche produit dont je suis fière. En 5 minutes, j&apos;avais quelque chose
               de vrai et de professionnel. Je ne pensais pas que c&apos;était possible pour moi.&rdquo;

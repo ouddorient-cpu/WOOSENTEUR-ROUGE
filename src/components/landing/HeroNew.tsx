@@ -29,7 +29,7 @@ export default function HeroNew() {
               ✦ Simple · Rapide · Humain
             </span>
 
-            <h1 className="font-serif text-warm-brown leading-tight mb-5" style={{ fontFamily: "'Cormorant Garamond', Georgia, serif", fontSize: 'clamp(2rem,6vw,3.2rem)', fontWeight: 700 }}>
+            <h1 className="font-serif text-warm-brown leading-tight mb-5" style={{ fontFamily: "var(--font-cormorant), Georgia, serif", fontSize: 'clamp(2rem,6vw,3.2rem)', fontWeight: 700 }}>
               Votre produit mérite<br className="hidden sm:block" /> une belle présentation.
             </h1>
 
@@ -46,6 +46,13 @@ export default function HeroNew() {
             </button>
             <p className="text-warm-gray text-sm mt-3">
               Sans inscription · 5 fiches offertes · Aucune carte bancaire
+            </p>
+            <p className="text-warm-gray/60 text-sm mt-2">
+              Ou{' '}
+              <Link href="/pricing" className="underline underline-offset-2 hover:text-warm-brown transition-colors">
+                voir les formules
+              </Link>{' '}
+              à partir de 5,99 €/mois
             </p>
           </motion.div>
 

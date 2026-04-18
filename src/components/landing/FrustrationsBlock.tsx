@@ -33,7 +33,7 @@ export default function FrustrationsBlock() {
             <p className="text-warm-gray text-lg italic mb-3">
               &ldquo;T&apos;es déjà resté·e bloqué·e devant une page vide à te demander quoi écrire pour ton produit ?&rdquo;
             </p>
-            <h2 className="text-warm-brown" style={{ fontFamily: "'Cormorant Garamond', Georgia, serif", fontSize: 'clamp(1.5rem,4vw,2.2rem)', fontWeight: 600 }}>
+            <h2 className="text-warm-brown" style={{ fontFamily: "var(--font-cormorant), Georgia, serif", fontSize: 'clamp(1.5rem,4vw,2.2rem)', fontWeight: 600 }}>
               Tu n&apos;es pas seul·e.
             </h2>
           </motion.div>

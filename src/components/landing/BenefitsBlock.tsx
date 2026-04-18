@@ -31,7 +31,7 @@ export default function BenefitsBlock() {
             transition={{ duration: 0.5 }}
             className="text-center mb-10"
           >
-            <h2 className="text-warm-brown" style={{ fontFamily: "'Cormorant Garamond', Georgia, serif", fontSize: 'clamp(1.5rem,4vw,2.2rem)', fontWeight: 600 }}>
+            <h2 className="text-warm-brown" style={{ fontFamily: "var(--font-cormorant), Georgia, serif", fontSize: 'clamp(1.5rem,4vw,2.2rem)', fontWeight: 600 }}>
               Ce que ça change pour toi
             </h2>
           </motion.div>

@@ -32,7 +32,7 @@ export default function ReassuranceBlock() {
           transition={{ duration: 0.5 }}
           className="text-center mb-10"
         >
-          <h2 className="text-warm-brown mb-3" style={{ fontFamily: "'Cormorant Garamond', Georgia, serif", fontSize: 'clamp(1.5rem,4vw,2.2rem)', fontWeight: 600 }}>
+          <h2 className="text-warm-brown mb-3" style={{ fontFamily: "var(--font-cormorant), Georgia, serif", fontSize: 'clamp(1.5rem,4vw,2.2rem)', fontWeight: 600 }}>
             Pas besoin d&apos;être expert·e.
           </h2>
           <p className="text-warm-gray text-[17px] max-w-md mx-auto">

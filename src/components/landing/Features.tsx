@@ -48,7 +48,7 @@ const CardVisual = ({
       >
         <div className="rounded-full p-1.5 shadow-md shadow-violet-500/20" style={{ background: 'rgba(139,92,246,0.15)', border: '1px solid rgba(139,92,246,0.3)' }}>
           <NextImage
-            src="/woody-white.png"
+            src="https://res.cloudinary.com/db2ljqpdt/image/upload/v1776544330/ChatGPT_Image_23_mars_2026__21_48_54-removebg-preview_wfgbmn.png"
             alt="Woody Woosenteur"
             width={56}
             height={56}

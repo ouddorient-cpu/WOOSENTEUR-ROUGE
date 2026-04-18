@@ -425,7 +425,7 @@ const ResultColumn: React.FC<ResultColumnProps> = ({
         <CardContent className="flex flex-col justify-center items-center h-full gap-6">
           <div className="flex flex-col items-center gap-4">
             <Image
-              src="/mascotte woosenteur.png"
+              src="https://res.cloudinary.com/db2ljqpdt/image/upload/v1776544330/ChatGPT_Image_23_mars_2026__21_48_54-removebg-preview_wfgbmn.png"
               alt="Woosenteur génère votre fiche"
               width={90}
               height={90}

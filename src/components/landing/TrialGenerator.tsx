@@ -499,7 +499,7 @@ export default function TrialGenerator() {
                   </div>
                   <div className="flex flex-col justify-center items-center gap-6 py-10 px-6">
                     <motion.div animate={{ y: [0, -12, 0] }} transition={{ duration: 1.2, repeat: Infinity, ease: 'easeInOut' }}>
-                      <NextImage src="/mascotte woosenteur.png" alt="Woosenteur génère votre fiche" width={90} height={90} style={{ width: 90, height: 'auto' }} className="drop-shadow-lg" />
+                      <NextImage src="https://res.cloudinary.com/db2ljqpdt/image/upload/v1776544330/ChatGPT_Image_23_mars_2026__21_48_54-removebg-preview_wfgbmn.png" alt="Woosenteur génère votre fiche" width={90} height={90} style={{ width: 90, height: 'auto' }} className="drop-shadow-lg" />
                     </motion.div>
                     <span className="text-base font-medium text-center" style={{ color: C.terra }}>{progressMessage}</span>
                     <div className="w-full h-2 rounded-full overflow-hidden" style={{ background: C.border }}>
@@ -585,7 +585,7 @@ export default function TrialGenerator() {
               {step === 'form' && !generatedProduct && (
                 <div className="h-full flex flex-col items-center justify-center min-h-[400px] rounded-xl border-2 border-dashed p-8 text-center" style={{ background: C.bg, borderColor: C.border }}>
                   <motion.div animate={{ y: [0, -8, 0] }} transition={{ duration: 2.5, repeat: Infinity, ease: 'easeInOut' }}>
-                    <NextImage src="/mascotte woosenteur.png" alt="Woody mascotte Woosenteur" width={90} height={90} style={{ width: 90, height: 'auto' }} className="drop-shadow-md" />
+                    <NextImage src="https://res.cloudinary.com/db2ljqpdt/image/upload/v1776544330/ChatGPT_Image_23_mars_2026__21_48_54-removebg-preview_wfgbmn.png" alt="Woody mascotte Woosenteur" width={90} height={90} style={{ width: 90, height: 'auto' }} className="drop-shadow-md" />
                   </motion.div>
                   <h3 className="mt-4 font-semibold text-lg" style={{ color: C.text }}>La fiche produit apparaîtra ici</h3>
                   <p className="text-sm mt-1" style={{ color: C.muted }}>Remplissez le formulaire et lancez la génération.</p>

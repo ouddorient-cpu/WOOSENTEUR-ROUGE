@@ -308,7 +308,7 @@ export default function TrialGenerator() {
             <div className="rounded-xl border border-violet-500/20 bg-[#0d0d22] shadow-lg shadow-violet-500/5">
               {/* Header */}
               <div className="p-6 pb-0">
-                <p className="text-xl font-semibold leading-none tracking-tight text-gradient">Informations Produit</p>
+                <p className="text-xl font-bold leading-none tracking-tight text-white">Informations Produit</p>
                 <p className="text-sm text-white/50 mt-1.5">
                   Remplissez les informations essentielles, notre IA s&apos;occupe du reste.
                 </p>
@@ -527,7 +527,7 @@ export default function TrialGenerator() {
             {step === 'generating' && (
               <div className="h-full rounded-xl border border-violet-500/20 bg-[#0d0d22]">
                 <div className="p-6 pb-0">
-                  <p className="text-xl font-semibold text-gradient">Woody est au travail !</p>
+                  <p className="text-xl font-bold text-white">Woody est au travail !</p>
                   <p className="text-sm text-white/50 mt-1.5">Notre agent IA rédige votre fiche produit SEO.</p>
                 </div>
                 <div className="flex flex-col justify-center items-center gap-6 py-10 px-6">

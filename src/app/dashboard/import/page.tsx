@@ -46,11 +46,122 @@ type ProcessedRow = CsvRow & {
 };
 
 type Step = 'upload' | 'preview' | 'processing' | 'complete' | 'history';
-type UploadTab = 'quick' | 'woo' | 'csv';
+type UploadTab = 'parfums' | 'quick' | 'woo' | 'csv';
+
+type WooPublishResult = {
+  succeeded: { id: number; name: string; permalink: string }[];
+  failed: { name: string; error: string }[];
+  total: number;
+};
 
 // ─── Constants ────────────────────────────────────────────────────────────────
 
 const VALID_CATEGORIES: string[] = ['Parfum', 'Soin', 'Cosmétique', "parfum d'intérieur"];
+
+// Marques détectées automatiquement depuis le nom du produit
+const KNOWN_BRANDS: { name: string; keywords: string[] }[] = [
+  { name: 'Lattafa', keywords: ['lattafa'] },
+  { name: 'Maison Alhambra', keywords: ['maison alhambra'] },
+  { name: 'Alhambra', keywords: ['alhambra'] },
+  { name: 'Fragrance World', keywords: ['fragrance world'] },
+  { name: 'Paris Corner', keywords: ['paris corner'] },
+  { name: 'Pendora', keywords: ['pendora'] },
+  { name: 'Nasomatto', keywords: ['nasomatto'] },
+  { name: 'Jean Lowe', keywords: ['jean lowe'] },
+  { name: 'Jean Couturier', keywords: ['jean couturier'] },
+  { name: 'Dior', keywords: ['christian dior', ' dior', 'sauvage', 'j\'adore', 'miss dior'] },
+  { name: 'Chanel', keywords: ['chanel', 'coco mademoiselle', 'n°5', 'bleu de chanel', 'chance'] },
+  { name: 'Tom Ford', keywords: ['tom ford'] },
+  { name: 'YSL', keywords: ['yves saint laurent', 'ysl', 'saint laurent', 'libre', 'opium', 'black opium'] },
+  { name: 'Armani', keywords: ['giorgio armani', 'armani', 'acqua di gio', 'si '] },
+  { name: 'Paco Rabanne', keywords: ['paco rabanne', 'rabanne', '1 million', 'lady million', 'invictus', 'olympea'] },
+  { name: 'Jean Paul Gaultier', keywords: ['jean paul gaultier', 'gaultier', 'le male', 'scandal'] },
+  { name: 'Versace', keywords: ['versace', 'eros', 'dylan', 'crystal noir'] },
+  { name: 'Gucci', keywords: ['gucci', 'guilty', 'bloom', 'flora'] },
+  { name: 'Hermès', keywords: ['hermès', 'hermes', 'terre d\'hermès', 'twilly', 'h24'] },
+  { name: 'Burberry', keywords: ['burberry', 'brit ', 'her ', 'touch '] },
+  { name: 'Hugo Boss', keywords: ['hugo boss', 'hugo ', 'boss '] },
+  { name: 'Calvin Klein', keywords: ['calvin klein', 'ck one', 'eternity', 'obsession', 'euphoria'] },
+  { name: 'Thierry Mugler', keywords: ['thierry mugler', 'mugler', 'angel', 'alien', 'aura'] },
+  { name: 'Lancôme', keywords: ['lancôme', 'lancome', 'la vie est belle', 'trésor', 'idôle'] },
+  { name: 'Givenchy', keywords: ['givenchy', 'irresistible', 'gentleman', 'pi '] },
+  { name: 'Dolce & Gabbana', keywords: ['dolce', 'gabbana', 'd&g', 'light blue', 'the one'] },
+  { name: 'Viktor & Rolf', keywords: ['viktor', 'flowerbomb', 'spicebomb', 'bonbon'] },
+  { name: 'Montblanc', keywords: ['montblanc', 'mont blanc', 'legend'] },
+  { name: 'Lacoste', keywords: ['lacoste'] },
+  { name: 'Davidoff', keywords: ['davidoff', 'cool water', 'zino'] },
+  { name: 'Azzaro', keywords: ['azzaro', 'chrome', 'wanted'] },
+];
+
+function detectBrand(productName: string): string {
+  const lower = productName.toLowerCase();
+  for (const brand of KNOWN_BRANDS) {
+    if (brand.keywords.some(kw => lower.includes(kw))) return brand.name;
+  }
+  // Fallback: dernier mot si ça ressemble à une marque (commence par majuscule)
+  const words = productName.trim().split(/\s+/);
+  if (words.length >= 2) return words[words.length - 1];
+  return 'Autre';
+}
+
+function parseParfumsEntry(text: string): ProcessedRow[] {
+  const lines = text.split('\n');
+  const result: ProcessedRow[] = [];
+  let id = 0;
+  for (const line of lines) {
+    const name = line.trim();
+    if (!name) continue;
+    const brand = detectBrand(name);
+    const raw = {
+      id: id++,
+      productName: name,
+      brand,
+      category: 'Parfum' as CsvRow['category'],
+      weight: '100',
+      price: undefined,
+      imageUrl: undefined,
+      status: 'pending' as const,
+      errorMessage: undefined,
+    };
+    const { isValid, validationErrors } = validateRow(raw);
+    result.push({ ...raw, isValid, validationErrors });
+  }
+  return result.slice(0, QUICK_ENTRY_MAX);
+}
+
+function buildFreshWooCommerceCsv(products: ProcessedRow[]): string {
+  const BOM = '\uFEFF';
+  const escape = (v: unknown): string => {
+    const s = String(v ?? '');
+    return /[",\r\n]/.test(s) ? `"${s.replace(/"/g, '""')}"` : s;
+  };
+
+  const headers = [
+    'ID', 'Type', 'SKU', 'Name', 'Published', 'Featured', 'Catalog visibility',
+    'Short description', 'Description', 'Regular price',
+    'Categories', 'Tags', 'Images',
+    'Meta: rank_math_focus_keyword', 'Meta: rank_math_description', 'Meta: rank_math_title',
+  ];
+
+  const rows = products
+    .filter(p => p.status === 'success' && p.generatedSeo)
+    .map(p => [
+      '', 'simple', '',
+      p.generatedSeo?.productTitle || p.productName,
+      '1', '0', 'visible',
+      p.generatedSeo?.shortDescription || '',
+      p.generatedSeo?.longDescription || '',
+      p.price || '',
+      'Parfums',
+      p.generatedSeo?.tags || '',
+      p.imageUrl || '',
+      p.generatedSeo?.focusKeyword || '',
+      p.generatedSeo?.shortDescription || '',
+      p.generatedSeo?.productTitle || '',
+    ].map(escape).join(','));
+
+  return BOM + [headers.map(escape).join(','), ...rows].join('\n');
+}
 
 // ─── Validation helper ────────────────────────────────────────────────────────
 
@@ -284,7 +395,7 @@ export default function ImportPage() {
     const [processingIndex, setProcessingIndex] = useState<number>(-1);
 
     // Upload tabs
-    const [uploadTab, setUploadTab] = useState<UploadTab>('quick');
+    const [uploadTab, setUploadTab] = useState<UploadTab>('parfums');
 
     // WooCommerce mode
     const [wooMode, setWooMode] = useState(false);
@@ -293,6 +404,12 @@ export default function ImportPage() {
     const [wooDetectedCount, setWooDetectedCount] = useState(0);
     const [wooFileName, setWooFileName] = useState('');
     const [isDraggingWoo, setIsDraggingWoo] = useState(false);
+
+    // Mode Parfums (ultra-simple)
+    const [parfumsText, setParfumsText] = useState('');
+    const [parfumsMode, setParfumsMode] = useState(false);
+    const [wooPublishing, setWooPublishing] = useState(false);
+    const [wooPublishResult, setWooPublishResult] = useState<WooPublishResult | null>(null);
 
     // Saisie Rapide
     const [quickEntryText, setQuickEntryText] = useState('');
@@ -327,6 +444,9 @@ export default function ImportPage() {
         if (previewFilter === 'invalid') return products.filter(p => !p.isValid);
         return products;
     }, [products, previewFilter]);
+
+    const parfumsParsed = useMemo(() => parseParfumsEntry(parfumsText), [parfumsText]);
+    const parfumsValid = useMemo(() => parfumsParsed.filter(p => p.isValid), [parfumsParsed]);
 
     const quickEntryParsed = useMemo(() => parseQuickEntry(quickEntryText), [quickEntryText]);
     const quickEntryValid = useMemo(() => quickEntryParsed.filter(p => p.isValid), [quickEntryParsed]);
@@ -566,6 +686,52 @@ export default function ImportPage() {
 
     // ─── Handlers ────────────────────────────────────────────────────────────
 
+    const handleParfumsImport = async () => {
+        if (!user) return;
+        const toProcess = parfumsValid;
+        if (toProcess.length === 0) {
+            toast({ variant: 'destructive', title: 'Liste vide', description: 'Collez au moins un nom de parfum.' });
+            return;
+        }
+        if (!isSuperAdmin && toProcess.length > availableCredits) {
+            toast({ variant: 'destructive', title: 'Crédits insuffisants', description: `Il vous faut ${toProcess.length} crédits, vous en avez ${availableCredits}.` });
+            return;
+        }
+        const today = new Date().toLocaleDateString('fr-FR', { day: '2-digit', month: '2-digit', year: 'numeric' });
+        setFileName(`Parfums - ${today}`);
+        setWooMode(false);
+        setParfumsMode(true);
+        setWooPublishResult(null);
+        setProducts(toProcess);
+        await runBatch(toProcess);
+    };
+
+    const handleWooPublish = async () => {
+        if (!user) return;
+        const successProducts = products.filter(p => p.status === 'success' && p.generatedSeo);
+        if (successProducts.length === 0) return;
+        setWooPublishing(true);
+        try {
+            const idToken = await user.getIdToken(true);
+            const res = await fetch('/api/woo/publish', {
+                method: 'POST',
+                headers: { 'Authorization': `Bearer ${idToken}`, 'Content-Type': 'application/json' },
+                body: JSON.stringify({ products: successProducts.map(p => ({ ...p, seo: p.generatedSeo })) }),
+            });
+            const data: WooPublishResult = await res.json();
+            if (!res.ok) throw new Error((data as any).error || 'Erreur publication');
+            setWooPublishResult(data);
+            toast({
+                title: `✅ ${data.succeeded.length} produit${data.succeeded.length > 1 ? 's' : ''} publié${data.succeeded.length > 1 ? 's' : ''} sur WooCommerce !`,
+                description: data.failed.length > 0 ? `${data.failed.length} échec(s).` : 'Tous publiés avec succès.',
+            });
+        } catch (error: any) {
+            toast({ variant: 'destructive', title: 'Erreur WooCommerce', description: error.message });
+        } finally {
+            setWooPublishing(false);
+        }
+    };
+
     const handleImport = async () => {
         if (!user) return;
         const toProcess = validProducts;
@@ -678,8 +844,9 @@ export default function ImportPage() {
             <CardContent className="space-y-6">
 
                 {/* ── Tabs ── */}
-                <div className="flex gap-1 p-1 bg-muted rounded-lg w-fit">
+                <div className="flex gap-1 p-1 bg-muted rounded-lg flex-wrap">
                     {([
+                        { id: 'parfums', icon: <Sparkles className="h-4 w-4" />, label: '✨ Parfums' },
                         { id: 'quick', icon: <Keyboard className="h-4 w-4" />, label: 'Saisie Rapide' },
                         { id: 'woo', icon: <ShoppingCart className="h-4 w-4" />, label: 'Import WooCommerce' },
                         { id: 'csv', icon: <FileUp className="h-4 w-4" />, label: 'CSV Maison' },
@@ -693,6 +860,85 @@ export default function ImportPage() {
                         </button>
                     ))}
                 </div>
+
+                {/* ── Panel : Parfums (mode ultra-simple) ── */}
+                {uploadTab === 'parfums' && (
+                    <div className="space-y-4">
+                        <div className="rounded-lg border-2 border-primary/20 bg-primary/5 p-4">
+                            <p className="font-semibold text-sm">Colle juste les noms de tes parfums — un par ligne</p>
+                            <p className="text-xs text-muted-foreground mt-1">La marque est détectée automatiquement. Catégorie et volume remplis par défaut.</p>
+                        </div>
+                        <div className="space-y-2">
+                            <div className="flex items-center justify-between">
+                                <p className="text-sm font-medium">Liste de parfums</p>
+                                {parfumsParsed.length > 0 && (
+                                    <span className="text-sm text-muted-foreground">
+                                        <span className="font-bold text-foreground">{parfumsParsed.length}</span> détecté{parfumsParsed.length > 1 ? 's' : ''}
+                                        {parfumsParsed.length >= QUICK_ENTRY_MAX && <span className="text-amber-500"> (max)</span>}
+                                    </span>
+                                )}
+                            </div>
+                            <textarea
+                                value={parfumsText}
+                                onChange={e => setParfumsText(e.target.value)}
+                                placeholder={`Lattafa Asad\nKhamrah Lattafa\nMaison Alhambra Baroque Rouge\nDior Sauvage\nTom Ford Black Orchid\nPaco Rabanne 1 Million`}
+                                className="w-full h-56 p-3 rounded-md border border-input bg-background text-sm font-mono resize-y focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring placeholder:text-muted-foreground"
+                                spellCheck={false}
+                            />
+                            <p className="text-xs text-muted-foreground">Un nom par ligne — max {QUICK_ENTRY_MAX} parfums</p>
+                        </div>
+
+                        {/* Aperçu de détection */}
+                        {parfumsParsed.length > 0 && (
+                            <div className="rounded-md border max-h-52 overflow-y-auto">
+                                <Table>
+                                    <TableHeader>
+                                        <TableRow>
+                                            <TableHead>Nom du parfum</TableHead>
+                                            <TableHead>Marque détectée</TableHead>
+                                            <TableHead>Catégorie</TableHead>
+                                        </TableRow>
+                                    </TableHeader>
+                                    <TableBody>
+                                        {parfumsParsed.map(p => (
+                                            <TableRow key={p.id}>
+                                                <TableCell className="font-medium">{p.productName}</TableCell>
+                                                <TableCell>
+                                                    <Badge variant="secondary">{p.brand}</Badge>
+                                                </TableCell>
+                                                <TableCell>
+                                                    <Badge variant="outline">Parfum · 100ml</Badge>
+                                                </TableCell>
+                                            </TableRow>
+                                        ))}
+                                    </TableBody>
+                                </Table>
+                            </div>
+                        )}
+
+                        {!isSuperAdmin && parfumsValid.length > availableCredits && (
+                            <Alert variant="destructive">
+                                <AlertCircle className="h-4 w-4" />
+                                <AlertTitle>Crédits insuffisants</AlertTitle>
+                                <AlertDescription>Il vous faut {parfumsValid.length} crédits mais vous en avez {availableCredits}. <Link href="/pricing" className="underline font-bold">Recharger</Link>.</AlertDescription>
+                            </Alert>
+                        )}
+
+                        <div className="flex justify-between items-center pt-1">
+                            <Button variant="ghost" size="sm" className="gap-2 text-muted-foreground" onClick={() => { setStep('history'); loadHistory(); }}>
+                                <History className="h-4 w-4" />Historique
+                            </Button>
+                            <Button
+                                onClick={handleParfumsImport}
+                                disabled={parfumsValid.length === 0 || (!isSuperAdmin && parfumsValid.length > availableCredits)}
+                                size="lg"
+                            >
+                                <Sparkles className="mr-2 h-4 w-4" />
+                                {parfumsValid.length > 0 ? `Générer ${parfumsValid.length} fiche${parfumsValid.length > 1 ? 's' : ''}` : 'Générer'}
+                            </Button>
+                        </div>
+                    </div>
+                )}
 
                 {/* ── Panel : Saisie Rapide ── */}
                 {uploadTab === 'quick' && (
@@ -1033,7 +1279,60 @@ export default function ImportPage() {
                     </CardDescription>
                 </CardHeader>
                 <CardContent>
-                    {/* Bouton WooCommerce enrichi — mis en avant */}
+                    {/* Mode Parfums — Publication directe WooCommerce + CSV */}
+                    {parfumsMode && successProducts.length > 0 && (
+                        <div className="mb-4 space-y-3">
+                            {/* Publication directe */}
+                            {!wooPublishResult ? (
+                                <div className="p-4 rounded-lg border-2 border-primary/20 bg-primary/5 flex items-center justify-between gap-4">
+                                    <div>
+                                        <p className="font-semibold flex items-center gap-2">
+                                            <ShoppingCart className="h-4 w-4 text-primary" />
+                                            Publier directement sur ta boutique
+                                        </p>
+                                        <p className="text-sm text-muted-foreground">{successProducts.length} fiche{successProducts.length > 1 ? 's' : ''} prête{successProducts.length > 1 ? 's' : ''} — 1 clic pour publier sur WooCommerce</p>
+                                    </div>
+                                    <Button onClick={handleWooPublish} disabled={wooPublishing} size="lg" className="gap-2 shrink-0">
+                                        {wooPublishing ? <Loader2 className="h-4 w-4 animate-spin" /> : <ShoppingCart className="h-4 w-4" />}
+                                        {wooPublishing ? 'Publication...' : 'Publier sur WooCommerce'}
+                                    </Button>
+                                </div>
+                            ) : (
+                                <div className="p-4 rounded-lg border-2 border-green-200 bg-green-50">
+                                    <p className="font-semibold text-green-800 flex items-center gap-2">
+                                        <CheckCircle2 className="h-4 w-4" />
+                                        {wooPublishResult.succeeded.length} produit{wooPublishResult.succeeded.length > 1 ? 's' : ''} publié{wooPublishResult.succeeded.length > 1 ? 's' : ''} sur WooCommerce !
+                                    </p>
+                                    {wooPublishResult.failed.length > 0 && (
+                                        <p className="text-sm text-red-600 mt-1">{wooPublishResult.failed.length} échec(s) : {wooPublishResult.failed.map(f => f.name).join(', ')}</p>
+                                    )}
+                                    {wooPublishResult.succeeded.length > 0 && (
+                                        <a href={`${wooPublishResult.succeeded[0].permalink?.split('/wp-json')[0]}/wp-admin/edit.php?post_type=product`}
+                                            target="_blank" rel="noopener noreferrer"
+                                            className="text-sm text-primary underline mt-2 inline-block">
+                                            Voir les produits dans WooCommerce →
+                                        </a>
+                                    )}
+                                </div>
+                            )}
+                            {/* CSV de secours */}
+                            <div className="p-3 rounded-lg border bg-muted/30 flex items-center justify-between gap-4">
+                                <p className="text-sm text-muted-foreground">Ou télécharge le CSV WooCommerce pour import manuel</p>
+                                <Button variant="outline" size="sm" className="gap-2 shrink-0" onClick={() => {
+                                    const csv = buildFreshWooCommerceCsv(products);
+                                    const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+                                    const url = URL.createObjectURL(blob);
+                                    const a = document.createElement('a');
+                                    a.href = url; a.download = `parfums-woocommerce-${new Date().toISOString().split('T')[0]}.csv`; a.click();
+                                    URL.revokeObjectURL(url);
+                                }}>
+                                    <Download className="h-4 w-4" />CSV WooCommerce
+                                </Button>
+                            </div>
+                        </div>
+                    )}
+
+                    {/* Bouton WooCommerce enrichi (mode import WooCommerce existant) */}
                     {wooMode && successProducts.length > 0 && (
                         <div className="mb-4 p-4 rounded-lg border-2 border-primary/20 bg-primary/5 flex items-center justify-between gap-4">
                             <div>
@@ -1066,7 +1365,7 @@ export default function ImportPage() {
                     </div>
                 </CardContent>
                 <CardFooter className="flex flex-wrap justify-between gap-2">
-                    <Button variant="outline" onClick={() => { setStep('upload'); setProducts([]); setWooMode(false); }}>Nouveau batch</Button>
+                    <Button variant="outline" onClick={() => { setStep('upload'); setProducts([]); setWooMode(false); setParfumsMode(false); setWooPublishResult(null); setParfumsText(''); }}>Nouveau batch</Button>
                     <div className="flex flex-wrap gap-2">
                         {failedProducts.length > 0 && (
                             <>
@@ -1151,7 +1450,7 @@ export default function ImportPage() {
     return (
         <>
             <div className="text-center mb-8">
-                <h1 className="font-headline text-3xl font-bold text-white">Import de Produits</h1>
+                <h1 className="font-headline text-3xl font-bold text-foreground">Import de Produits</h1>
                 <p className="text-muted-foreground">Générez des centaines de fiches produits en une seule fois.</p>
             </div>
             <div className="max-w-4xl mx-auto">

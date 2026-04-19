@@ -150,20 +150,24 @@ function buildFreshWooCommerceCsv(products: ProcessedRow[]): string {
 
   const rows = products
     .filter(p => p.status === 'success' && p.generatedSeo)
-    .map(p => [
-      '', 'simple', '',
-      p.generatedSeo?.productTitle || p.productName,
-      '1', '0', 'visible',
-      p.generatedSeo?.shortDescription || '',
-      p.generatedSeo?.longDescription || '',
-      p.price || '',
-      'Parfums',
-      p.generatedSeo?.tags || '',
-      p.imageUrl || '',
-      p.generatedSeo?.focusKeyword || '',
-      p.generatedSeo?.shortDescription || '',
-      p.generatedSeo?.productTitle || '',
-    ].map(escape).join(','));
+    .map(p => {
+      // generatedSeo = { success: true, data: SeoData }
+      const seo = p.generatedSeo?.data ?? p.generatedSeo ?? {};
+      return [
+        '', 'simple', '',
+        seo.productTitle || p.productName,
+        '1', '0', 'visible',
+        seo.shortDescription || '',
+        seo.longDescription || '',
+        p.price || '',
+        'Parfums',
+        seo.tags || '',
+        p.imageUrl || '',
+        seo.focusKeyword || '',
+        seo.shortDescription || '',
+        seo.productTitle || p.productName,
+      ].map(escape).join(',');
+    });
 
   return BOM + [headers.map(escape).join(','), ...rows].join('\n');
 }
@@ -773,7 +777,7 @@ export default function ImportPage() {
             const res = await fetch('/api/woo/publish', {
                 method: 'POST',
                 headers: { 'Authorization': `Bearer ${idToken}`, 'Content-Type': 'application/json' },
-                body: JSON.stringify({ products: successProducts.map(p => ({ ...p, seo: p.generatedSeo })) }),
+                body: JSON.stringify({ products: successProducts.map(p => ({ ...p, seo: p.generatedSeo?.data ?? p.generatedSeo })) }),
             });
             const data: WooPublishResult = await res.json();
             if (!res.ok) throw new Error((data as any).error || 'Erreur publication');

@@ -38,21 +38,24 @@ export async function POST(req: NextRequest) {
 
     const results = await Promise.allSettled(
       products.map(async (p: any) => {
-        const tags = p.seo?.tags
-          ? p.seo.tags.split(',').map((t: string) => ({ name: t.trim() })).filter((t: any) => t.name)
+        // seo peut être { success, data } ou directement SeoData
+        const seo = p.seo?.data ?? p.seo ?? {};
+
+        const tags = seo.tags
+          ? seo.tags.split(',').map((t: string) => ({ name: t.trim() })).filter((t: any) => t.name)
           : [];
 
         const body: Record<string, any> = {
-          name: p.seo?.productTitle || p.productName,
+          name: seo.productTitle || p.productName,
           type: 'simple',
           status: 'publish',
-          short_description: p.seo?.shortDescription || '',
-          description: p.seo?.longDescription || '',
+          short_description: seo.shortDescription || '',
+          description: seo.longDescription || '',
           categories: [{ name: 'Parfums' }],
           tags,
           meta_data: [
-            { key: 'rank_math_focus_keyword', value: p.seo?.focusKeyword || '' },
-            { key: 'rank_math_description', value: p.seo?.shortDescription || '' },
+            { key: 'rank_math_focus_keyword', value: seo.focusKeyword || '' },
+            { key: 'rank_math_description', value: seo.shortDescription || '' },
             { key: '_woosenteur_generated', value: '1' },
           ],
         };

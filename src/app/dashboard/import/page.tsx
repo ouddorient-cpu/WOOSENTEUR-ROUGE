@@ -385,6 +385,51 @@ function buildEnrichedWooCommerceCsv(
     return BOM + [headerLine, ...dataLines].join('\n');
 }
 
+// ─── WooConnectionTest ───────────────────────────────────────────────────────
+
+function WooConnectionTest({ user }: { user: any }) {
+    const [status, setStatus] = useState<'idle' | 'loading' | 'ok' | 'error'>('idle');
+    const [detail, setDetail] = useState('');
+
+    const runTest = async () => {
+        setStatus('loading');
+        setDetail('');
+        try {
+            const token = await user.getIdToken(true);
+            const res = await fetch('/api/woo/test', { headers: { Authorization: `Bearer ${token}` } });
+            const data = await res.json();
+            if (data.ok) {
+                setStatus('ok');
+                setDetail(`Connexion OK — WooCommerce ${data.wcVersion} · ${data.storeUrl}`);
+            } else {
+                setStatus('error');
+                setDetail(`[${data.step}] ${data.error}${data.httpStatus ? ` (HTTP ${data.httpStatus})` : ''}${data.storeUrl ? ` — ${data.storeUrl}` : ''}`);
+            }
+        } catch (e: any) {
+            setStatus('error');
+            setDetail(e.message);
+        }
+    };
+
+    return (
+        <div className="flex flex-col gap-1.5">
+            <button
+                onClick={runTest}
+                disabled={status === 'loading'}
+                className="text-xs underline text-muted-foreground hover:text-foreground w-fit flex items-center gap-1"
+            >
+                {status === 'loading' && <Loader2 className="h-3 w-3 animate-spin" />}
+                {status === 'loading' ? 'Test en cours...' : '🔌 Tester la connexion WooCommerce'}
+            </button>
+            {detail && (
+                <p className={`text-xs px-2 py-1 rounded ${status === 'ok' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-700'}`}>
+                    {detail}
+                </p>
+            )}
+        </div>
+    );
+}
+
 // ─── Component ────────────────────────────────────────────────────────────────
 
 export default function ImportPage() {
@@ -1334,27 +1379,41 @@ export default function ImportPage() {
                         <div className="mb-4 space-y-3">
                             {/* Publication directe */}
                             {!wooPublishResult ? (
-                                <div className="p-4 rounded-lg border-2 border-primary/20 bg-primary/5 flex items-center justify-between gap-4">
-                                    <div>
-                                        <p className="font-semibold flex items-center gap-2">
-                                            <ShoppingCart className="h-4 w-4 text-primary" />
-                                            Publier directement sur ta boutique
-                                        </p>
-                                        <p className="text-sm text-muted-foreground">{successProducts.length} fiche{successProducts.length > 1 ? 's' : ''} prête{successProducts.length > 1 ? 's' : ''} — 1 clic pour publier sur WooCommerce</p>
+                                <div className="p-4 rounded-lg border-2 border-primary/20 bg-primary/5 space-y-3">
+                                    <div className="flex items-center justify-between gap-4">
+                                        <div>
+                                            <p className="font-semibold flex items-center gap-2">
+                                                <ShoppingCart className="h-4 w-4 text-primary" />
+                                                Publier directement sur ta boutique
+                                            </p>
+                                            <p className="text-sm text-muted-foreground">{successProducts.length} fiche{successProducts.length > 1 ? 's' : ''} prête{successProducts.length > 1 ? 's' : ''} — 1 clic pour publier sur WooCommerce</p>
+                                        </div>
+                                        <Button onClick={handleWooPublish} disabled={wooPublishing} size="lg" className="gap-2 shrink-0">
+                                            {wooPublishing ? <Loader2 className="h-4 w-4 animate-spin" /> : <ShoppingCart className="h-4 w-4" />}
+                                            {wooPublishing ? 'Publication...' : 'Publier sur WooCommerce'}
+                                        </Button>
                                     </div>
-                                    <Button onClick={handleWooPublish} disabled={wooPublishing} size="lg" className="gap-2 shrink-0">
-                                        {wooPublishing ? <Loader2 className="h-4 w-4 animate-spin" /> : <ShoppingCart className="h-4 w-4" />}
-                                        {wooPublishing ? 'Publication...' : 'Publier sur WooCommerce'}
-                                    </Button>
+                                    <WooConnectionTest user={user} />
                                 </div>
                             ) : (
-                                <div className="p-4 rounded-lg border-2 border-green-200 bg-green-50">
-                                    <p className="font-semibold text-green-800 flex items-center gap-2">
-                                        <CheckCircle2 className="h-4 w-4" />
-                                        {wooPublishResult.succeeded.length} produit{wooPublishResult.succeeded.length > 1 ? 's' : ''} publié{wooPublishResult.succeeded.length > 1 ? 's' : ''} sur WooCommerce !
-                                    </p>
+                                <div className={`p-4 rounded-lg border-2 ${wooPublishResult.succeeded.length > 0 ? 'border-green-200 bg-green-50' : 'border-red-200 bg-red-50'}`}>
+                                    {wooPublishResult.succeeded.length > 0 && (
+                                        <p className="font-semibold text-green-800 flex items-center gap-2">
+                                            <CheckCircle2 className="h-4 w-4" />
+                                            {wooPublishResult.succeeded.length} produit{wooPublishResult.succeeded.length > 1 ? 's' : ''} publié{wooPublishResult.succeeded.length > 1 ? 's' : ''} sur WooCommerce !
+                                        </p>
+                                    )}
                                     {wooPublishResult.failed.length > 0 && (
-                                        <p className="text-sm text-red-600 mt-1">{wooPublishResult.failed.length} échec(s) : {wooPublishResult.failed.map(f => f.name).join(', ')}</p>
+                                        <div className="mt-2 space-y-1">
+                                            <p className="text-sm font-semibold text-red-700">{wooPublishResult.failed.length} échec(s) :</p>
+                                            {wooPublishResult.failed.map((f: any, i: number) => (
+                                                <div key={i} className="text-xs bg-red-100 rounded px-2 py-1 flex justify-between gap-2">
+                                                    <span className="font-medium text-red-800">{f.name}</span>
+                                                    <span className="text-red-600">{f.error}</span>
+                                                </div>
+                                            ))}
+                                            <WooConnectionTest user={user} />
+                                        </div>
                                     )}
                                     {wooPublishResult.succeeded.length > 0 && (
                                         <a href={`${wooPublishResult.succeeded[0].permalink?.split('/wp-json')[0]}/wp-admin/edit.php?post_type=product`}

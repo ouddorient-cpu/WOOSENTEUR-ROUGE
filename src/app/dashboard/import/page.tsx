@@ -109,7 +109,12 @@ function parseParfumsEntry(text: string): ProcessedRow[] {
   const result: ProcessedRow[] = [];
   let id = 0;
   for (const line of lines) {
-    const name = line.trim();
+    const trimmed = line.trim();
+    if (!trimmed) continue;
+    // Support format: "Nom du parfum | https://url-image.jpg"
+    const pipeIdx = trimmed.indexOf('|');
+    const name = (pipeIdx >= 0 ? trimmed.slice(0, pipeIdx) : trimmed).trim();
+    const imageUrl = pipeIdx >= 0 ? trimmed.slice(pipeIdx + 1).trim() || undefined : undefined;
     if (!name) continue;
     const brand = detectBrand(name);
     const raw = {
@@ -119,7 +124,7 @@ function parseParfumsEntry(text: string): ProcessedRow[] {
       category: 'Parfum' as CsvRow['category'],
       weight: '100',
       price: undefined,
-      imageUrl: undefined,
+      imageUrl,
       status: 'pending' as const,
       errorMessage: undefined,
     };
@@ -410,6 +415,8 @@ export default function ImportPage() {
     const [parfumsMode, setParfumsMode] = useState(false);
     const [wooPublishing, setWooPublishing] = useState(false);
     const [wooPublishResult, setWooPublishResult] = useState<WooPublishResult | null>(null);
+    const [parfumsImages, setParfumsImages] = useState<Record<number, string>>({});
+    const [showImageTuto, setShowImageTuto] = useState(false);
 
     // Saisie Rapide
     const [quickEntryText, setQuickEntryText] = useState('');
@@ -702,8 +709,13 @@ export default function ImportPage() {
         setWooMode(false);
         setParfumsMode(true);
         setWooPublishResult(null);
-        setProducts(toProcess);
-        await runBatch(toProcess);
+        // Fusionner les images éditées dans le tableau avec celles du pipe
+        const withImages = toProcess.map(p => ({
+            ...p,
+            imageUrl: parfumsImages[p.id] || p.imageUrl || undefined,
+        }));
+        setProducts(withImages);
+        await runBatch(withImages);
     };
 
     const handleWooPublish = async () => {
@@ -866,7 +878,9 @@ export default function ImportPage() {
                     <div className="space-y-4">
                         <div className="rounded-lg border-2 border-primary/20 bg-primary/5 p-4">
                             <p className="font-semibold text-sm">Colle juste les noms de tes parfums — un par ligne</p>
-                            <p className="text-xs text-muted-foreground mt-1">La marque est détectée automatiquement. Catégorie et volume remplis par défaut.</p>
+                            <p className="text-xs text-muted-foreground mt-1">
+                                La marque est détectée automatiquement. Ajoute une image en option avec un <code className="bg-black/10 px-1 rounded">|</code> après le nom.
+                            </p>
                         </div>
                         <div className="space-y-2">
                             <div className="flex items-center justify-between">
@@ -881,38 +895,74 @@ export default function ImportPage() {
                             <textarea
                                 value={parfumsText}
                                 onChange={e => setParfumsText(e.target.value)}
-                                placeholder={`Lattafa Asad\nKhamrah Lattafa\nMaison Alhambra Baroque Rouge\nDior Sauvage\nTom Ford Black Orchid\nPaco Rabanne 1 Million`}
-                                className="w-full h-56 p-3 rounded-md border border-input bg-background text-sm font-mono resize-y focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring placeholder:text-muted-foreground"
+                                placeholder={`Lattafa Asad\nKhamrah Lattafa | https://monsite.com/khamrah.jpg\nMaison Alhambra Baroque Rouge\nDior Sauvage | https://monsite.com/sauvage.jpg`}
+                                className="w-full h-48 p-3 rounded-md border border-input bg-background text-sm font-mono resize-y focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring placeholder:text-muted-foreground"
                                 spellCheck={false}
                             />
-                            <p className="text-xs text-muted-foreground">Un nom par ligne — max {QUICK_ENTRY_MAX} parfums</p>
+                            <p className="text-xs text-muted-foreground">
+                                Un nom par ligne — max {QUICK_ENTRY_MAX} parfums — image optionnelle : <code className="bg-muted px-1 rounded">Nom du parfum | https://url-image.jpg</code>
+                            </p>
                         </div>
 
-                        {/* Aperçu de détection */}
+                        {/* Aperçu de détection avec colonne image éditable */}
                         {parfumsParsed.length > 0 && (
-                            <div className="rounded-md border max-h-52 overflow-y-auto">
-                                <Table>
-                                    <TableHeader>
-                                        <TableRow>
-                                            <TableHead>Nom du parfum</TableHead>
-                                            <TableHead>Marque détectée</TableHead>
-                                            <TableHead>Catégorie</TableHead>
-                                        </TableRow>
-                                    </TableHeader>
-                                    <TableBody>
-                                        {parfumsParsed.map(p => (
-                                            <TableRow key={p.id}>
-                                                <TableCell className="font-medium">{p.productName}</TableCell>
-                                                <TableCell>
-                                                    <Badge variant="secondary">{p.brand}</Badge>
-                                                </TableCell>
-                                                <TableCell>
-                                                    <Badge variant="outline">Parfum · 100ml</Badge>
-                                                </TableCell>
+                            <div className="space-y-2">
+                                {/* Mini-tuto image */}
+                                <div className="flex items-center justify-between">
+                                    <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">Aperçu — tu peux ajouter/corriger les images ici</p>
+                                    <button
+                                        onClick={() => setShowImageTuto(v => !v)}
+                                        className="text-xs text-primary underline flex items-center gap-1"
+                                    >
+                                        {showImageTuto ? 'Masquer' : '📷 Comment trouver l\'URL d\'une image ?'}
+                                    </button>
+                                </div>
+
+                                {showImageTuto && (
+                                    <div className="rounded-lg border bg-amber-50 border-amber-200 p-4 text-sm space-y-2">
+                                        <p className="font-semibold text-amber-800">📷 Trouver l'URL d'une image dans WooCommerce</p>
+                                        <ol className="list-decimal list-inside space-y-1.5 text-amber-900 text-xs">
+                                            <li>Va dans ton <strong>administration WooCommerce</strong> → <strong>Médias</strong></li>
+                                            <li>Clique sur l'image de ton parfum (ou téléverse-la si elle n'est pas encore là)</li>
+                                            <li>Dans le panneau de droite, tu vois <strong>"URL du fichier"</strong> — copie ce lien</li>
+                                            <li>Colle-le dans la colonne "Image URL" ci-dessous ou directement après un <code className="bg-amber-100 px-1 rounded">|</code> dans la zone de saisie</li>
+                                        </ol>
+                                        <p className="text-xs text-amber-700 border-t border-amber-200 pt-2 mt-2">
+                                            💡 <strong>Astuce :</strong> si tu n'as pas encore les images, laisse vide — tu pourras les ajouter directement depuis ton catalogue WooCommerce après import.
+                                        </p>
+                                    </div>
+                                )}
+
+                                <div className="rounded-md border max-h-64 overflow-y-auto">
+                                    <Table>
+                                        <TableHeader>
+                                            <TableRow>
+                                                <TableHead>Nom du parfum</TableHead>
+                                                <TableHead>Marque</TableHead>
+                                                <TableHead className="min-w-[200px]">Image URL <span className="font-normal text-muted-foreground">(optionnel)</span></TableHead>
                                             </TableRow>
-                                        ))}
-                                    </TableBody>
-                                </Table>
+                                        </TableHeader>
+                                        <TableBody>
+                                            {parfumsParsed.map(p => (
+                                                <TableRow key={p.id}>
+                                                    <TableCell className="font-medium">{p.productName}</TableCell>
+                                                    <TableCell>
+                                                        <Badge variant="secondary">{p.brand}</Badge>
+                                                    </TableCell>
+                                                    <TableCell>
+                                                        <input
+                                                            type="url"
+                                                            placeholder="https://... (colle l'URL ici)"
+                                                            value={parfumsImages[p.id] ?? (p.imageUrl || '')}
+                                                            onChange={e => setParfumsImages(prev => ({ ...prev, [p.id]: e.target.value }))}
+                                                            className="w-full h-8 px-2 text-xs rounded border border-input bg-background focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
+                                                        />
+                                                    </TableCell>
+                                                </TableRow>
+                                            ))}
+                                        </TableBody>
+                                    </Table>
+                                </div>
                             </div>
                         )}
 
@@ -1365,7 +1415,7 @@ export default function ImportPage() {
                     </div>
                 </CardContent>
                 <CardFooter className="flex flex-wrap justify-between gap-2">
-                    <Button variant="outline" onClick={() => { setStep('upload'); setProducts([]); setWooMode(false); setParfumsMode(false); setWooPublishResult(null); setParfumsText(''); }}>Nouveau batch</Button>
+                    <Button variant="outline" onClick={() => { setStep('upload'); setProducts([]); setWooMode(false); setParfumsMode(false); setWooPublishResult(null); setParfumsText(''); setParfumsImages({}); }}>Nouveau batch</Button>
                     <div className="flex flex-wrap gap-2">
                         {failedProducts.length > 0 && (
                             <>

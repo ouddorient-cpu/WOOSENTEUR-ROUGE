@@ -68,7 +68,7 @@ const CERTIFICATIONS = [
 
 const productSchema = z.object({
   productName: z.string().min(2, { message: 'Le nom du produit doit contenir au moins 2 caractères.' }),
-  productMode: z.enum(['marque-connue', 'mon-produit']).default('marque-connue'),
+  productMode: z.enum(['marque-connue', 'mon-produit']).default('mon-produit'),
   brand: z.string().optional(),
   category: z.enum(['Parfum', 'Soin', 'Cosmétique', "parfum d'intérieur", 'Sport', 'Habillement', 'Maison', 'Autres'], {
     required_error: 'Veuillez sélectionner un type de produit.',
@@ -723,7 +723,7 @@ export default function GeneratePage() {
     resolver: zodResolver(productSchema),
     defaultValues: {
       productName: '',
-      productMode: 'marque-connue',
+      productMode: 'mon-produit',
       brand: '',
       weight: '',
       price: '',

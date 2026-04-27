@@ -73,7 +73,7 @@ const Hero = () => {
             </h1>
 
             <p className="mt-5 text-lg md:text-xl text-white/55 leading-relaxed max-w-lg">
-              Tu décris ton produit, l&apos;IA rédige une fiche structurée pour Google — titre, méta, slug, balises alt, description longue. Sans agence, sans rédacteur.
+              Fiches produits &amp; contenus marketing IA pour WooCommerce &amp; Shopify — titre, méta, SEO complet. Sans agence, sans rédacteur.
             </p>
 
             {/* CTAs */}

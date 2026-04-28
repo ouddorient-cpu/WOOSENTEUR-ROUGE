@@ -1,6 +1,6 @@
 
 import type { Metadata } from 'next';
-import { PT_Sans, Poppins } from 'next/font/google';
+import { PT_Sans, Poppins, Cormorant_Garamond } from 'next/font/google';
 import './globals.css';
 import { cn } from '@/lib/utils';
 import { Toaster } from '@/components/ui/toaster';
@@ -12,6 +12,7 @@ import { NProgress } from '@/components/ui/nprogress';
 import { CookieConsent } from '@/components/CookieConsent';
 import { GlobalChatbot } from '@/components/chatbot/global-chatbot';
 import { AuroraBg } from '@/components/ui/aurora-bg';
+import { LangProvider } from '@/lib/i18n/LangContext';
 
 const ptSans = PT_Sans({
   subsets: ['latin'],
@@ -25,24 +26,31 @@ const poppins = Poppins({
   variable: '--font-poppins',
 });
 
+const cormorant = Cormorant_Garamond({
+  subsets: ['latin'],
+  weight: ['600', '700'],
+  style: ['normal', 'italic'],
+  variable: '--font-cormorant',
+});
+
 const URL_BASE = 'https://woosenteur.fr';
 
 export const metadata: Metadata = {
   metadataBase: new URL(URL_BASE),
   title: {
-    default: 'Woosenteur v2 | IA pour Fiches Produits SEO Automatisées',
-    template: '%s | Woosenteur v2 AI',
+    default: 'Woosenteur — Des fiches produit qui font vendre, en 5 minutes',
+    template: '%s | Woosenteur',
   },
-  description: 'Générez n\'importe quelle fiche produit optimisée SEO en 3 min. Notre agent rédige un contenu unique pour WooCommerce, Shopify, et plus. Boostez votre trafic organique.',
-  keywords: ['IA fiche produit', 'générateur de contenu IA', 'SEO e-commerce', 'optimisation fiche produit', 'Woosenteur v2', 'Abderrahmane El Malki', 'France', 'Maroc'],
+  description: 'Tu as un bon produit mais tu ne sais pas comment le présenter ? Woosenteur rédige ta fiche produit à ta place. Claire, professionnelle, prête à publier — sans jargon, sans effort.',
+  keywords: ['fiche produit', 'rédaction fiche produit', 'e-commerce débutant', 'boutique en ligne', 'WooCommerce', 'Shopify', 'description produit', 'vendeur artisanal'],
   authors: [{ name: 'Abderrahmane El Malki', url: 'https://www.linkedin.com/in/abderrahman-elmalki-44a887253/' }],
   creator: 'Abderrahmane El Malki',
   publisher: 'Woosenteur v2',
   manifest: '/manifest.webmanifest',
   icons: {
-    icon: 'https://res.cloudinary.com/dzagwz94z/image/upload/v1768292940/ChatGPT_Image_13_janv._2026_09_28_19_wvny6h.png',
-    shortcut: 'https://res.cloudinary.com/dzagwz94z/image/upload/v1768292940/ChatGPT_Image_13_janv._2026_09_28_19_wvny6h.png',
-    apple: 'https://res.cloudinary.com/dzagwz94z/image/upload/v1768292940/ChatGPT_Image_13_janv._2026_09_28_19_wvny6h.png',
+    icon: 'https://res.cloudinary.com/db2ljqpdt/image/upload/v1776549880/ChatGPT_Image_18_avr._2026_22_36_12_p5pr6f.png',
+    shortcut: 'https://res.cloudinary.com/db2ljqpdt/image/upload/v1776549880/ChatGPT_Image_18_avr._2026_22_36_12_p5pr6f.png',
+    apple: 'https://res.cloudinary.com/db2ljqpdt/image/upload/v1776549880/ChatGPT_Image_18_avr._2026_22_36_12_p5pr6f.png',
   },
   robots: {
     index: true,
@@ -52,8 +60,8 @@ export const metadata: Metadata = {
     'max-video-preview': -1,
   },
   openGraph: {
-    title: 'Woosenteur v2 | Fiches Produits instantanées pour E-commerçants',
-    description: 'Transformez votre catalogue avec des descriptions de produits uniques et optimisées SEO, générées par IA en quelques secondes.',
+    title: 'Woosenteur — Des fiches produit qui font vendre, en 5 minutes',
+    description: 'Décris ton produit en quelques mots. Woosenteur rédige une fiche claire, professionnelle et prête à publier — sans jargon, sans effort.',
     url: URL_BASE,
     siteName: 'Woosenteur v2',
     images: [
@@ -143,13 +151,15 @@ export default function RootLayout({
         className={cn(
           'font-body antialiased min-h-screen bg-background',
           ptSans.variable,
-          poppins.variable
+          poppins.variable,
+          cormorant.variable
         )}
       >
+        <LangProvider>
         <FirebaseClientProvider>
           <ThemeProvider
             attribute="class"
-            defaultTheme="dark"
+            defaultTheme="light"
             enableSystem={false}
             disableTransitionOnChange
           >
@@ -164,6 +174,7 @@ export default function RootLayout({
             <GlobalChatbot />
           </ThemeProvider>
         </FirebaseClientProvider>
+        </LangProvider>
 
       </body>
     </html>

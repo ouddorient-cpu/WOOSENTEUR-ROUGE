@@ -51,7 +51,7 @@ import type { FacebookPostOutput, FacebookPollOutput, FacebookFlashOutput } from
 
 // Form validation schema
 const marketingFormSchema = z.object({
-  productId: z.string().min(1, { message: 'Veuillez sélectionner un produit.' }),
+  productId: z.string().optional(),
   message: z.string().min(10, { message: 'Le message doit contenir au moins 10 caractères.' }).max(200),
   style: z.enum(['luxe', 'clean', 'fun', 'science'] as const),
   ageRange: z.string().min(1, { message: 'Veuillez indiquer la tranche d\'âge.' }),
@@ -1715,6 +1715,10 @@ export default function MarketingPage() {
   const [progressMessage, setProgressMessage] = useState('Préparation...');
   const [products, setProducts] = useState<Product[]>([]);
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
+  const [productMode, setProductMode] = useState<'catalog' | 'manual'>('catalog');
+  const [manualProductName, setManualProductName] = useState('');
+  const [manualBrand, setManualBrand] = useState('');
+  const [manualProductType, setManualProductType] = useState('');
   const [generatedVariants, setGeneratedVariants] = useState<any[]>([]);
   const [showUpgradePopup, setShowUpgradePopup] = useState(false);
   const [isDownloading, setIsDownloading] = useState<string | null>(null);
@@ -1809,7 +1813,21 @@ export default function MarketingPage() {
   };
 
   const onSubmit = useCallback(async (data: MarketingFormValues) => {
-    if (!user || !selectedProduct) return;
+    if (!user) return;
+
+    const effectiveName = productMode === 'manual' ? manualProductName.trim() : selectedProduct?.name || '';
+    const effectiveBrand = productMode === 'manual' ? manualBrand.trim() : selectedProduct?.brand || '';
+    const effectiveType = productMode === 'manual' ? (manualProductType.trim() || 'produit') : selectedProduct?.productType || '';
+    const effectiveId = productMode === 'manual' ? `manual-${Date.now()}` : selectedProduct?.id || '';
+
+    if (!effectiveName) {
+      toast({ variant: 'destructive', title: 'Nom du produit manquant', description: 'Entrez le nom du produit.' });
+      return;
+    }
+    if (productMode === 'catalog' && !selectedProduct) {
+      toast({ variant: 'destructive', title: 'Produit manquant', description: 'Sélectionnez un produit dans le catalogue.' });
+      return;
+    }
 
     if (!canGenerate) {
       setShowUpgradePopup(true);
@@ -1829,9 +1847,9 @@ export default function MarketingPage() {
 
       // Generate marketing content (texts)
       const contentResult = await generateMarketingContent({
-        productName: selectedProduct.name,
-        productType: selectedProduct.productType,
-        brand: selectedProduct.brand,
+        productName: effectiveName,
+        productType: effectiveType,
+        brand: effectiveBrand,
         message: data.message,
         style: data.style,
         targetAudience: {
@@ -1853,8 +1871,8 @@ export default function MarketingPage() {
 
           try {
             const imageResult = await generateAdImage({
-              productName: selectedProduct.name,
-              productType: selectedProduct.productType,
+              productName: effectiveName,
+              productType: effectiveType,
               style: variant.styleName as MarketingStyle,
               format: data.formats[0],
             });
@@ -1884,9 +1902,9 @@ export default function MarketingPage() {
 
       // Save campaign to Firestore (filter out undefined values for Firestore compatibility)
       const campaignData: Parameters<typeof saveCampaign>[1] = {
-        productId: selectedProduct.id,
-        productName: selectedProduct.name,
-        productType: selectedProduct.productType,
+        productId: effectiveId,
+        productName: effectiveName,
+        productType: effectiveType as Product['productType'],
         brief: {
           message: data.message,
           targetAudience: {
@@ -1921,7 +1939,7 @@ export default function MarketingPage() {
       };
 
       // Only add productImageUrl if it exists (Firestore rejects undefined values)
-      if (selectedProduct.imageUrl) {
+      if (selectedProduct?.imageUrl) {
         campaignData.productImageUrl = selectedProduct.imageUrl;
       }
 
@@ -1945,7 +1963,7 @@ export default function MarketingPage() {
       });
       setStep('form');
     }
-  }, [user, selectedProduct, canGenerate, toast]);
+  }, [user, selectedProduct, productMode, manualProductName, manualBrand, manualProductType, canGenerate, toast]);
 
   const resetForm = () => {
     setStep('form');
@@ -2065,7 +2083,7 @@ export default function MarketingPage() {
     <>
       {/* Header */}
       <div className="text-center mb-6">
-        <h1 className="font-headline text-3xl font-bold text-gradient flex items-center justify-center gap-2">
+        <h1 className="font-headline text-3xl font-bold text-white flex items-center justify-center gap-2">
           <Megaphone className="h-8 w-8" />
           Marketing IA
         </h1>
@@ -2265,46 +2283,101 @@ export default function MarketingPage() {
 
               <Form {...form}>
                 <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-                  {/* Product Selector */}
-                  <FormField
-                    control={form.control}
-                    name="productId"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Produit</FormLabel>
-                        <Select onValueChange={field.onChange} value={field.value}>
-                          <FormControl>
-                            <SelectTrigger>
-                              <SelectValue placeholder="Sélectionner un produit..." />
-                            </SelectTrigger>
-                          </FormControl>
-                          <SelectContent>
-                            {products.length === 0 ? (
-                              <SelectItem value="none" disabled>
-                                Aucun produit disponible
-                              </SelectItem>
-                            ) : (
-                              products.map((product) => (
-                                <SelectItem key={product.id} value={product.id}>
-                                  {product.name} ({product.brand})
+                  {/* Product Mode Toggle */}
+                  <div>
+                    <p className="text-sm font-medium mb-2">Produit</p>
+                    <div className="flex rounded-lg border border-border overflow-hidden">
+                      <button
+                        type="button"
+                        onClick={() => setProductMode('catalog')}
+                        className={`flex-1 px-4 py-2 text-sm font-medium transition-colors ${productMode === 'catalog' ? 'bg-primary text-primary-foreground' : 'bg-transparent text-muted-foreground hover:text-foreground'}`}
+                      >
+                        Catalogue existant
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => setProductMode('manual')}
+                        className={`flex-1 px-4 py-2 text-sm font-medium transition-colors ${productMode === 'manual' ? 'bg-primary text-primary-foreground' : 'bg-transparent text-muted-foreground hover:text-foreground'}`}
+                      >
+                        Saisie manuelle
+                      </button>
+                    </div>
+                  </div>
+
+                  {productMode === 'catalog' ? (
+                    /* Product Selector */
+                    <FormField
+                      control={form.control}
+                      name="productId"
+                      render={({ field }) => (
+                        <FormItem>
+                          <Select onValueChange={field.onChange} value={field.value}>
+                            <FormControl>
+                              <SelectTrigger>
+                                <SelectValue placeholder="Sélectionner un produit..." />
+                              </SelectTrigger>
+                            </FormControl>
+                            <SelectContent>
+                              {products.length === 0 ? (
+                                <SelectItem value="none" disabled>
+                                  Aucun produit disponible
                                 </SelectItem>
-                              ))
+                              ) : (
+                                products.map((product) => (
+                                  <SelectItem key={product.id} value={product.id}>
+                                    {product.name} ({product.brand})
+                                  </SelectItem>
+                                ))
+                              )}
+                            </SelectContent>
+                          </Select>
+                          <FormDescription>
+                            {products.length === 0 ? (
+                              <Link href="/dashboard/generate" className="text-primary hover:underline">
+                                Créez d&apos;abord un produit avec le Générateur IA
+                              </Link>
+                            ) : (
+                              'Choisissez le produit pour lequel créer la publicité.'
                             )}
-                          </SelectContent>
-                        </Select>
-                        <FormDescription>
-                          {products.length === 0 ? (
-                            <Link href="/dashboard/generate" className="text-primary hover:underline">
-                              Créez d'abord un produit avec le Générateur IA
-                            </Link>
-                          ) : (
-                            'Choisissez le produit pour lequel créer la publicité.'
-                          )}
-                        </FormDescription>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
+                          </FormDescription>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  ) : (
+                    /* Manual product fields */
+                    <div className="space-y-3">
+                      <div>
+                        <label className="text-sm font-medium">Nom du produit <span className="text-destructive">*</span></label>
+                        <Input
+                          className="mt-1"
+                          placeholder="Ex : Lattafa Asad, Crème Lumineuse Gold..."
+                          value={manualProductName}
+                          onChange={e => setManualProductName(e.target.value)}
+                        />
+                      </div>
+                      <div className="grid grid-cols-2 gap-3">
+                        <div>
+                          <label className="text-sm font-medium">Marque</label>
+                          <Input
+                            className="mt-1"
+                            placeholder="Ex : Lattafa, L'Oréal..."
+                            value={manualBrand}
+                            onChange={e => setManualBrand(e.target.value)}
+                          />
+                        </div>
+                        <div>
+                          <label className="text-sm font-medium">Type de produit</label>
+                          <Input
+                            className="mt-1"
+                            placeholder="Ex : parfum, crème, sérum..."
+                            value={manualProductType}
+                            onChange={e => setManualProductType(e.target.value)}
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  )}
 
                   {/* Message */}
                   <FormField
@@ -2503,7 +2576,7 @@ export default function MarketingPage() {
         <div className="max-w-md mx-auto">
           <Card>
             <CardHeader className="text-center">
-              <CardTitle className="text-gradient">Création en cours...</CardTitle>
+              <CardTitle className="text-white">Création en cours...</CardTitle>
               <CardDescription>Notre IA crée vos publicités personnalisées.</CardDescription>
             </CardHeader>
             <CardContent className="space-y-6">
@@ -2523,7 +2596,7 @@ export default function MarketingPage() {
             <div>
               <h2 className="text-xl font-semibold">Vos Publicités</h2>
               <p className="text-sm text-muted-foreground">
-                3 variantes générées pour "{selectedProduct?.name}"
+                3 variantes générées pour "{productMode === 'manual' ? manualProductName : selectedProduct?.name}"
               </p>
             </div>
             <Button variant="outline" onClick={resetForm}>

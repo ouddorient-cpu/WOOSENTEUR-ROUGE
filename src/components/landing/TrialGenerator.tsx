@@ -261,430 +261,345 @@ export default function TrialGenerator() {
     form.reset();
   }, [form]);
 
+  /* ── Couleurs warm (cohérence landing) ── */
+  const C = {
+    bg:        '#FAF6F0',
+    bgAlt:     '#F3ECE4',
+    surface:   '#FDF9F5',
+    text:      '#2E2018',
+    muted:     '#7A6D62',
+    border:    '#E5DDD4',
+    sage:      '#7D9B76',
+    sagePale:  '#EDF2EC',
+    terra:     '#D4704A',
+    terraDark: '#BF5E3A',
+  };
+
+  const inputCls = `bg-[${C.bg}] border-[${C.border}] text-[${C.text}] placeholder:text-[${C.muted}]/50 focus:border-[${C.terra}]/60 focus:ring-0`;
+
   return (
-    <section id="essai-gratuit" className="py-20 lg:py-24 relative overflow-hidden z-10">
+    <section id="essai-gratuit" className="py-16 sm:py-20 relative overflow-hidden" style={{ background: C.bgAlt }}>
       <div className="container mx-auto px-4 md:px-6">
+
         {/* Section Header */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.5 }}
-          className="text-center mb-12"
+          className="text-center mb-10"
         >
-          <span className="section-label">Essai gratuit — Aucune inscription requise</span>
-          <h2 className="font-headline text-3xl md:text-4xl font-bold text-white mt-4">
-            Testez notre générateur{' '}
-            <span className="text-gradient">en live !</span>
+          <span className="inline-block text-sm font-semibold px-4 py-1.5 rounded-full mb-4 tracking-wide" style={{ background: C.sagePale, color: C.sage }}>
+            Essai gratuit — Aucune inscription requise
+          </span>
+          <h2 className="font-bold mt-2" style={{ fontFamily: 'var(--font-cormorant), Georgia, serif', fontSize: 'clamp(1.6rem,4vw,2.4rem)', color: C.text }}>
+            Testez le générateur en live
           </h2>
-          <p className="mt-4 text-lg text-white/50 max-w-2xl mx-auto">
-            Marque connue ou votre propre produit — générez jusqu&apos;à 5 fiches produits SEO gratuitement.
+          <p className="mt-3 text-base max-w-xl mx-auto" style={{ color: C.muted }}>
+            Décrivez votre produit en quelques mots — on rédige la fiche à votre place.
           </p>
           {isHydrated && (
             <div className="mt-4 inline-flex items-center gap-2">
-              <Badge
-                variant={isLimitReached ? 'destructive' : 'default'}
-                className="text-sm px-3 py-1"
-              >
-                {isLimitReached
-                  ? 'Limite atteinte (5/5)'
-                  : `${creditsRemaining}/5 générations restantes`}
-              </Badge>
+              <span className="text-sm font-medium px-3 py-1 rounded-full" style={{ background: isLimitReached ? '#FFE0D5' : C.sagePale, color: isLimitReached ? C.terra : C.sage }}>
+                {isLimitReached ? 'Limite atteinte (5/5)' : `${creditsRemaining}/5 générations restantes`}
+              </span>
             </div>
           )}
         </motion.div>
 
         {/* Two-column layout */}
-        <div className="max-w-5xl mx-auto rounded-2xl border border-white/[0.08] bg-white/[0.04] backdrop-blur-sm shadow-2xl shadow-primary/10 p-6 md:p-8">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
-          {/* Left: Form */}
-          <motion.div
-            initial={{ opacity: 0, x: -20 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5, delay: 0.1 }}
-          >
-            {/* Carte formulaire — couleurs explicites pour éviter l'héritage CSS-var */}
-            <div className="rounded-xl border border-violet-500/20 bg-[#0d0d22] shadow-lg shadow-violet-500/5">
-              {/* Header */}
-              <div className="p-6 pb-0">
-                <p className="text-xl font-semibold leading-none tracking-tight text-gradient">Informations Produit</p>
-                <p className="text-sm text-white/50 mt-1.5">
-                  Remplissez les informations essentielles, notre IA s&apos;occupe du reste.
-                </p>
-              </div>
-              {/* Content */}
-              <div className="p-6">
-                <Form {...form}>
-                  <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5">
+        <div className="max-w-5xl mx-auto rounded-2xl border p-6 md:p-8 shadow-sm" style={{ background: C.surface, borderColor: C.border }}>
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
 
-                    {/* Mode toggle */}
-                    <FormField
-                      control={form.control}
-                      name="productMode"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel className="text-white/80 font-medium">Mode de génération</FormLabel>
-                          <div className="grid grid-cols-2 gap-2">
-                            <button
-                              type="button"
-                              onClick={() => field.onChange('marque-connue')}
-                              className={cn(
-                                'flex flex-col items-center gap-1 p-3 rounded-lg border-2 text-xs font-medium transition-all',
-                                field.value === 'marque-connue'
-                                  ? 'border-violet-500 bg-violet-500/15 text-violet-300'
-                                  : 'border-white/10 text-white/50 hover:border-white/25 hover:text-white/70'
-                              )}
-                            >
-                              <Globe className="h-4 w-4" />
-                              Marque connue
-                            </button>
-                            <button
-                              type="button"
-                              onClick={() => field.onChange('mon-produit')}
-                              className={cn(
-                                'flex flex-col items-center gap-1 p-3 rounded-lg border-2 text-xs font-medium transition-all',
-                                field.value === 'mon-produit'
-                                  ? 'border-violet-500 bg-violet-500/15 text-violet-300'
-                                  : 'border-white/10 text-white/50 hover:border-white/25 hover:text-white/70'
-                              )}
-                            >
-                              <PenLine className="h-4 w-4" />
-                              Mon produit
-                            </button>
-                          </div>
-                          <p className="text-xs text-white/40 mt-1.5">
-                            {isMonProduit
-                              ? "Décrivez votre produit — l'IA crée la fiche à partir de vos infos."
-                              : "L'agent recherche automatiquement le produit en ligne."}
-                          </p>
-                        </FormItem>
-                      )}
-                    />
+            {/* Left: Form */}
+            <motion.div
+              initial={{ opacity: 0, x: -20 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: 0.1 }}
+            >
+              <div className="rounded-xl border shadow-sm" style={{ background: C.bg, borderColor: C.border }}>
+                <div className="p-6 pb-0">
+                  <p className="text-lg font-bold leading-none" style={{ color: C.text }}>Informations Produit</p>
+                  <p className="text-sm mt-1.5" style={{ color: C.muted }}>
+                    Remplissez les infos essentielles, on s&apos;occupe du reste.
+                  </p>
+                </div>
+                <div className="p-6">
+                  <Form {...form}>
+                    <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5">
 
-                    {/* Nom du produit */}
-                    <FormField
-                      control={form.control}
-                      name="productName"
-                      render={({ field }) => (
+                      {/* Mode toggle */}
+                      <FormField
+                        control={form.control}
+                        name="productMode"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel style={{ color: C.text }} className="font-medium">Mode de génération</FormLabel>
+                            <div className="grid grid-cols-2 gap-2">
+                              {[
+                                { val: 'mon-produit',   icon: <PenLine className="h-4 w-4" />, label: 'Mon produit' },
+                                { val: 'marque-connue', icon: <Globe className="h-4 w-4" />, label: 'Marque connue' },
+                              ].map(({ val, icon, label }) => (
+                                <button
+                                  key={val}
+                                  type="button"
+                                  onClick={() => field.onChange(val)}
+                                  className="flex flex-col items-center gap-1 p-3 rounded-lg border-2 text-xs font-medium transition-all"
+                                  style={field.value === val
+                                    ? { borderColor: C.terra, background: `${C.terra}15`, color: C.terra }
+                                    : { borderColor: C.border, color: C.muted }}
+                                >
+                                  {icon}{label}
+                                </button>
+                              ))}
+                            </div>
+                            <p className="text-xs mt-1.5" style={{ color: C.muted }}>
+                              {isMonProduit
+                                ? "Décrivez votre produit — on crée la fiche à partir de vos infos."
+                                : "L'agent recherche automatiquement le produit en ligne."}
+                            </p>
+                          </FormItem>
+                        )}
+                      />
+
+                      {/* Nom du produit */}
+                      <FormField control={form.control} name="productName" render={({ field }) => (
                         <FormItem>
-                          <FormLabel className="text-white/80 font-medium">Nom du produit</FormLabel>
+                          <FormLabel style={{ color: C.text }} className="font-medium">Nom du produit</FormLabel>
                           <FormControl>
-                            <Input
-                              placeholder="ex: La Vie Est Belle"
-                              {...field}
-                              autoComplete="off"
-                              className="bg-white/[0.06] border-white/10 text-white placeholder:text-white/30 focus:border-violet-500/50"
+                            <Input placeholder="ex: Bougie à la lavande" {...field} autoComplete="off"
+                              className="bg-[#FAF6F0] border-[#E5DDD4] text-[#2E2018] placeholder:text-[#7A6D62]/50 focus-visible:ring-[#D4704A]/30"
                             />
                           </FormControl>
-                          <FormMessage className="text-red-400" />
+                          <FormMessage className="text-red-500" />
                         </FormItem>
-                      )}
-                    />
+                      )} />
 
-                    {/* Marque */}
-                    <FormField
-                      control={form.control}
-                      name="brand"
-                      render={({ field }) => (
+                      {/* Marque */}
+                      <FormField control={form.control} name="brand" render={({ field }) => (
                         <FormItem>
-                          <FormLabel className="text-white/80 font-medium">
+                          <FormLabel style={{ color: C.text }} className="font-medium">
                             {isMonProduit ? 'Nom de votre marque (optionnel)' : 'Marque'}
                           </FormLabel>
                           <FormControl>
                             <Input
-                              placeholder={isMonProduit ? 'ex: Ma marque, ou laisser vide' : 'ex: Lancôme'}
-                              {...field}
-                              value={field.value ?? ''}
-                              autoComplete="off"
-                              className="bg-white/[0.06] border-white/10 text-white placeholder:text-white/30 focus:border-violet-500/50"
+                              placeholder={isMonProduit ? 'ex: Ma Boutique, ou laisser vide' : 'ex: Lancôme'}
+                              {...field} value={field.value ?? ''} autoComplete="off"
+                              className="bg-[#FAF6F0] border-[#E5DDD4] text-[#2E2018] placeholder:text-[#7A6D62]/50 focus-visible:ring-[#D4704A]/30"
                             />
                           </FormControl>
-                          <FormMessage className="text-red-400" />
+                          <FormMessage className="text-red-500" />
                         </FormItem>
-                      )}
-                    />
+                      )} />
 
-                    {/* Description libre — mode Mon produit uniquement */}
-                    {isMonProduit && (
-                      <FormField
-                        control={form.control}
-                        name="productDescription"
-                        render={({ field }) => (
+                      {/* Description libre */}
+                      {isMonProduit && (
+                        <FormField control={form.control} name="productDescription" render={({ field }) => (
                           <FormItem>
-                            <FormLabel className="text-white/80 font-medium">Description de votre produit</FormLabel>
+                            <FormLabel style={{ color: C.text }} className="font-medium">Description de votre produit</FormLabel>
                             <FormControl>
-                              <Textarea
-                                rows={4}
-                                placeholder="Ex: Sérum hydratant 30ml à base d'acide hyaluronique et niacinamide. Idéal pour peaux sèches, résultats visibles en 2 semaines. Fabriqué en France, sans parabènes."
-                                className="resize-none text-sm bg-white/[0.06] border-white/10 text-white placeholder:text-white/30 focus:border-violet-500/50"
+                              <Textarea rows={4}
+                                placeholder="Ex: Bougie 150g à la vraie lavande de Provence. Faite main, 40h de combustion, sans colorants."
+                                className="resize-none text-sm bg-[#FAF6F0] border-[#E5DDD4] text-[#2E2018] placeholder:text-[#7A6D62]/50 focus-visible:ring-[#D4704A]/30"
                                 {...field}
                               />
                             </FormControl>
-                            <p className="text-xs text-white/40 mt-1">
-                              Composition, bénéfices, usage… Plus vous en dites, meilleure est la fiche.
+                            <p className="text-xs mt-1" style={{ color: C.muted }}>
+                              Plus vous décrivez, meilleure est la fiche.
                             </p>
-                            <FormMessage className="text-red-400" />
+                            <FormMessage className="text-red-500" />
                           </FormItem>
-                        )}
-                      />
-                    )}
+                        )} />
+                      )}
 
-                    {/* Certifications — mode Mon produit uniquement */}
-                    {isMonProduit && (
-                      <FormField
-                        control={form.control}
-                        name="certifications"
-                        render={({ field }) => (
+                      {/* Certifications */}
+                      {isMonProduit && (
+                        <FormField control={form.control} name="certifications" render={({ field }) => (
                           <FormItem>
-                            <FormLabel className="text-white/80 font-medium">Labels &amp; certifications</FormLabel>
+                            <FormLabel style={{ color: C.text }} className="font-medium">Labels &amp; certifications</FormLabel>
                             <div className="grid grid-cols-2 gap-2 mt-1">
                               {CERTIFICATIONS.map((cert) => {
                                 const checked = (field.value ?? []).includes(cert.id);
                                 return (
                                   <div key={cert.id} className="flex items-center gap-2">
-                                    <Checkbox
-                                      id={`trial-${cert.id}`}
-                                      checked={checked}
+                                    <Checkbox id={`trial-${cert.id}`} checked={checked}
                                       onCheckedChange={(val) => {
                                         const current = field.value ?? [];
-                                        field.onChange(
-                                          val ? [...current, cert.id] : current.filter((v: string) => v !== cert.id)
-                                        );
+                                        field.onChange(val ? [...current, cert.id] : current.filter((v: string) => v !== cert.id));
                                       }}
                                     />
-                                    <label htmlFor={`trial-${cert.id}`} className="text-xs text-white/70 cursor-pointer leading-none">
+                                    <label htmlFor={`trial-${cert.id}`} className="text-xs cursor-pointer leading-none" style={{ color: C.muted }}>
                                       {cert.label}
                                     </label>
                                   </div>
                                 );
                               })}
                             </div>
-                            <FormMessage className="text-red-400" />
+                            <FormMessage className="text-red-500" />
                           </FormItem>
-                        )}
-                      />
-                    )}
+                        )} />
+                      )}
 
-                    {/* Catégorie */}
-                    <FormField
-                      control={form.control}
-                      name="category"
-                      render={({ field }) => (
+                      {/* Catégorie */}
+                      <FormField control={form.control} name="category" render={({ field }) => (
                         <FormItem>
-                          <FormLabel className="text-white/80 font-medium">Type de Produit</FormLabel>
+                          <FormLabel style={{ color: C.text }} className="font-medium">Type de Produit</FormLabel>
                           <Select onValueChange={field.onChange} defaultValue={field.value}>
                             <FormControl>
-                              <SelectTrigger className="bg-white/[0.06] border-white/10 text-white">
-                                <SelectValue placeholder="Sélectionner le type..." className="text-white/30" />
+                              <SelectTrigger className="bg-[#FAF6F0] border-[#E5DDD4] text-[#2E2018]">
+                                <SelectValue placeholder="Sélectionner le type..." />
                               </SelectTrigger>
                             </FormControl>
-                            <SelectContent className="bg-[#141428] border-white/10 text-white">
-                              <SelectItem value="Parfum" className="text-white hover:bg-white/10 focus:bg-white/10">Parfum</SelectItem>
-                              <SelectItem value="Soin" className="text-white hover:bg-white/10 focus:bg-white/10">Soin</SelectItem>
-                              <SelectItem value="Cosmétique" className="text-white hover:bg-white/10 focus:bg-white/10">Cosmétique</SelectItem>
-                              <SelectItem value="parfum d'intérieur" className="text-white hover:bg-white/10 focus:bg-white/10">Parfum d&apos;intérieur</SelectItem>
-                              <SelectItem value="Sport" className="text-white hover:bg-white/10 focus:bg-white/10">Sport</SelectItem>
-                              <SelectItem value="Habillement" className="text-white hover:bg-white/10 focus:bg-white/10">Habillement</SelectItem>
-                              <SelectItem value="Maison" className="text-white hover:bg-white/10 focus:bg-white/10">Maison</SelectItem>
-                              <SelectItem value="Autres" className="text-white hover:bg-white/10 focus:bg-white/10">Autres</SelectItem>
+                            <SelectContent className="bg-[#FDF9F5] border-[#E5DDD4] text-[#2E2018]">
+                              {['Parfum','Soin','Cosmétique',"parfum d'intérieur",'Sport','Habillement','Maison','Autres'].map(v => (
+                                <SelectItem key={v} value={v} className="text-[#2E2018] focus:bg-[#F3ECE4]">
+                                  {v === "parfum d'intérieur" ? "Parfum d'intérieur" : v}
+                                </SelectItem>
+                              ))}
                             </SelectContent>
                           </Select>
-                          <FormMessage className="text-red-400" />
+                          <FormMessage className="text-red-500" />
                         </FormItem>
+                      )} />
+
+                      {/* Submit */}
+                      {step === 'generating' ? (
+                        <button type="button" disabled className="w-full py-3 rounded-xl font-semibold text-white flex items-center justify-center gap-2 opacity-70" style={{ background: C.terra }}>
+                          <Loader2 className="h-4 w-4 animate-spin" /> Génération en cours...
+                        </button>
+                      ) : isLimitReached ? (
+                        <button type="button" onClick={() => setShowUpsell(true)} className="w-full py-3 rounded-xl font-semibold text-white flex items-center justify-center gap-2 transition-all hover:-translate-y-0.5" style={{ background: C.terra }}>
+                          <Rocket className="h-4 w-4" /> Débloquer plus de crédits
+                        </button>
+                      ) : (
+                        <button type="submit" disabled={!isHydrated} className="w-full py-3 rounded-xl font-semibold text-white flex items-center justify-center gap-2 transition-all hover:-translate-y-0.5 disabled:opacity-50" style={{ background: C.terra, boxShadow: `0 4px 16px ${C.terra}40` }}>
+                          <Sparkles className="h-4 w-4" /> Générer ma fiche gratuite
+                        </button>
                       )}
-                    />
-
-                    {step === 'generating' ? (
-                      <Button type="button" disabled size="lg" className="w-full">
-                        <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                        Génération en cours...
-                      </Button>
-                    ) : isLimitReached ? (
-                      <Button type="button" size="lg" className="w-full" onClick={() => setShowUpsell(true)}>
-                        <Rocket className="mr-2 h-4 w-4" />
-                        Débloquer plus de crédits
-                      </Button>
-                    ) : (
-                      <Button type="submit" size="lg" className="w-full btn-primary-glow" disabled={!isHydrated}>
-                        <Sparkles className="mr-2 h-4 w-4" />
-                        Générer ma fiche gratuite
-                      </Button>
-                    )}
-                  </form>
-                </Form>
-              </div>
-            </div>
-          </motion.div>
-
-          {/* Right: Result */}
-          <motion.div
-            initial={{ opacity: 0, x: 20 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5, delay: 0.2 }}
-          >
-            {step === 'generating' && (
-              <div className="h-full rounded-xl border border-violet-500/20 bg-[#0d0d22]">
-                <div className="p-6 pb-0">
-                  <p className="text-xl font-semibold text-gradient">Woody est au travail !</p>
-                  <p className="text-sm text-white/50 mt-1.5">Notre agent IA rédige votre fiche produit SEO.</p>
-                </div>
-                <div className="flex flex-col justify-center items-center gap-6 py-10 px-6">
-                  <motion.div
-                    animate={{ y: [0, -12, 0] }}
-                    transition={{ duration: 1.2, repeat: Infinity, ease: 'easeInOut' }}
-                  >
-                    <NextImage
-                      src="/mascotte woosenteur.png"
-                      alt="Woosenteur génère votre fiche"
-                      width={90}
-                      height={90}
-                      style={{ width: 90, height: 'auto' }}
-                      className="drop-shadow-lg"
-                    />
-                  </motion.div>
-                  <span className="text-base font-medium text-primary text-center">{progressMessage}</span>
-                  <Progress value={progress} className="w-full" data-state={progress === 100 ? 'completed' : 'loading'} />
+                    </form>
+                  </Form>
                 </div>
               </div>
-            )}
+            </motion.div>
 
-            {step === 'preview' && generatedProduct && (
-              <div ref={resultRef} className="space-y-4">
-                {/* WooCommerce Product Page Mock-up */}
-                <div className="rounded-xl border border-white/10 overflow-hidden shadow-xl">
-                  {/* Browser chrome bar */}
-                  <div className="bg-[#1a1a2e] px-4 py-2 flex items-center gap-2 border-b border-white/10">
-                    <div className="flex gap-1.5">
-                      <span className="w-3 h-3 rounded-full bg-red-400/70" />
-                      <span className="w-3 h-3 rounded-full bg-yellow-400/70" />
-                      <span className="w-3 h-3 rounded-full bg-green-400/70" />
-                    </div>
-                    <div className="flex-1 bg-white/[0.07] rounded px-3 py-1 flex items-center gap-2 text-xs text-white/40 ml-2">
-                      <LinkIcon className="h-3 w-3 shrink-0" />
-                      <span className="truncate">votre-boutique.fr/produit/{generatedProduct.seo?.slug || 'votre-produit'}</span>
+            {/* Right: Result */}
+            <motion.div
+              initial={{ opacity: 0, x: 20 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: 0.2 }}
+            >
+              {/* Generating */}
+              {step === 'generating' && (
+                <div className="h-full rounded-xl border shadow-sm" style={{ background: C.bg, borderColor: C.border }}>
+                  <div className="p-6 pb-0">
+                    <p className="text-lg font-bold" style={{ color: C.text }}>On rédige votre fiche...</p>
+                    <p className="text-sm mt-1" style={{ color: C.muted }}>Votre fiche produit SEO est en cours de rédaction.</p>
+                  </div>
+                  <div className="flex flex-col justify-center items-center gap-6 py-10 px-6">
+                    <motion.div animate={{ y: [0, -12, 0] }} transition={{ duration: 1.2, repeat: Infinity, ease: 'easeInOut' }}>
+                      <NextImage src="https://res.cloudinary.com/db2ljqpdt/image/upload/v1776544330/Gemini_Generated_Image_7bnxii7bnxii7bnx-removebg-preview_xfcumj.png" alt="Woosenteur génère votre fiche" width={90} height={90} style={{ width: 90, height: 'auto' }} className="drop-shadow-lg" />
+                    </motion.div>
+                    <span className="text-base font-medium text-center" style={{ color: C.terra }}>{progressMessage}</span>
+                    <div className="w-full h-2 rounded-full overflow-hidden" style={{ background: C.border }}>
+                      <motion.div className="h-full rounded-full" initial={{ width: 0 }} animate={{ width: `${progress}%` }} style={{ background: C.terra }} />
                     </div>
                   </div>
+                </div>
+              )}
 
-                  {/* Product page content — fond blanc simulant WooCommerce */}
-                  <div className="bg-white p-5 space-y-4 max-h-[520px] overflow-y-auto">
-                    <div className="grid grid-cols-2 gap-4">
-                      {/* Fake product image */}
-                      <div className="aspect-square bg-gray-100 rounded-lg flex flex-col items-center justify-center border border-dashed border-gray-300">
-                        <ImageIcon className="h-10 w-10 text-gray-300" />
-                        <span className="text-xs text-gray-400 mt-2">Photo produit</span>
+              {/* Preview */}
+              {step === 'preview' && generatedProduct && (
+                <div ref={resultRef} className="space-y-4">
+                  <div className="rounded-xl border overflow-hidden shadow-sm" style={{ borderColor: C.border }}>
+                    {/* Browser bar */}
+                    <div className="px-4 py-2 flex items-center gap-2 border-b" style={{ background: C.text, borderColor: '#3D2E22' }}>
+                      <div className="flex gap-1.5">
+                        <span className="w-3 h-3 rounded-full bg-red-400/70" />
+                        <span className="w-3 h-3 rounded-full bg-yellow-400/70" />
+                        <span className="w-3 h-3 rounded-full bg-green-400/70" />
                       </div>
+                      <div className="flex-1 rounded px-3 py-1 flex items-center gap-2 text-xs ml-2" style={{ background: 'rgba(255,255,255,0.1)', color: 'rgba(255,255,255,0.5)' }}>
+                        <LinkIcon className="h-3 w-3 shrink-0" />
+                        <span className="truncate">votre-boutique.fr/produit/{generatedProduct.seo?.slug || 'votre-produit'}</span>
+                      </div>
+                    </div>
 
-                      {/* Product info */}
-                      <div className="space-y-3">
-                        <p className="text-xs text-gray-500">
-                          {generatedProduct.brand || 'Votre marque'} › {generatedProduct.productType}
-                        </p>
-                        <h3 className="font-bold text-gray-900 text-sm leading-tight">
-                          {generatedProduct.seo?.productTitle}
-                        </h3>
-                        <div className="flex items-center gap-1">
-                          {[1,2,3,4,5].map(i => (
-                            <Star key={i} className="h-3 w-3 fill-yellow-400 text-yellow-400" />
-                          ))}
-                          <span className="text-xs text-gray-500 ml-1">(12 avis)</span>
+                    {/* WooCommerce mock — fond blanc intentionnel */}
+                    <div className="bg-white p-5 space-y-4 max-h-[520px] overflow-y-auto">
+                      <div className="grid grid-cols-2 gap-4">
+                        <div className="aspect-square bg-gray-100 rounded-lg flex flex-col items-center justify-center border border-dashed border-gray-300">
+                          <ImageIcon className="h-10 w-10 text-gray-300" />
+                          <span className="text-xs text-gray-400 mt-2">Photo produit</span>
                         </div>
-                        <p className="text-xl font-bold text-violet-600">XX,XX €</p>
-                        <p className="text-xs text-gray-600 leading-relaxed line-clamp-3">
-                          {generatedProduct.seo?.shortDescription}
-                        </p>
-                        <div className="flex items-center gap-2 pt-1">
-                          <div className="flex-1 bg-violet-100 text-violet-700 text-xs font-semibold py-2 px-3 rounded-md flex items-center justify-center gap-1.5 opacity-60 cursor-default">
-                            <ShoppingCart className="h-3.5 w-3.5" />
-                            Ajouter au panier
+                        <div className="space-y-3">
+                          <p className="text-xs text-gray-500">{generatedProduct.brand || 'Votre marque'} › {generatedProduct.productType}</p>
+                          <h3 className="font-bold text-gray-900 text-sm leading-tight">{generatedProduct.seo?.productTitle}</h3>
+                          <div className="flex items-center gap-1">
+                            {[1,2,3,4,5].map(i => <Star key={i} className="h-3 w-3 fill-yellow-400 text-yellow-400" />)}
+                            <span className="text-xs text-gray-500 ml-1">(12 avis)</span>
+                          </div>
+                          <p className="text-xl font-bold" style={{ color: C.terra }}>XX,XX €</p>
+                          <p className="text-xs text-gray-600 leading-relaxed line-clamp-3">{generatedProduct.seo?.shortDescription}</p>
+                          <div className="flex-1 text-xs font-semibold py-2 px-3 rounded-md flex items-center justify-center gap-1.5 opacity-70 cursor-default text-white" style={{ background: C.terra }}>
+                            <ShoppingCart className="h-3.5 w-3.5" /> Ajouter au panier
                           </div>
                         </div>
                       </div>
-                    </div>
-
-                    {/* Description longue */}
-                    <div className="border-t border-gray-200 pt-4">
-                      <div className="flex gap-4 mb-3">
-                        <span className="text-xs font-semibold border-b-2 border-violet-600 pb-1 text-violet-600">Description</span>
-                        <span className="text-xs text-gray-400 pb-1">Informations</span>
+                      <div className="border-t border-gray-200 pt-4">
+                        <div className="flex gap-4 mb-3">
+                          <span className="text-xs font-semibold pb-1 border-b-2" style={{ borderColor: C.terra, color: C.terra }}>Description</span>
+                          <span className="text-xs text-gray-400 pb-1">Informations</span>
+                        </div>
+                        <div className="prose prose-xs max-w-none text-gray-600 text-xs leading-relaxed"
+                          dangerouslySetInnerHTML={{ __html: generatedProduct.seo?.longDescription || '' }}
+                        />
                       </div>
-                      <div
-                        className="prose prose-xs dark:prose-invert max-w-none text-muted-foreground text-xs leading-relaxed"
-                        dangerouslySetInnerHTML={{ __html: generatedProduct.seo?.longDescription || '' }}
-                      />
                     </div>
                   </div>
-                </div>
 
-                {/* Actions */}
-                <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-                  <Button size="lg" variant="outline" onClick={handleDownloadCsv}>
-                    <Download className="mr-2 h-4 w-4" />
-                    Télécharger CSV
-                  </Button>
-                  <Button size="lg" variant="secondary" asChild>
-                    <Link href="/signup">
-                      <ShoppingCart className="mr-2 h-4 w-4" />
-                      Publier sur WooCommerce
+                  {/* Actions */}
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                    <button onClick={handleDownloadCsv} className="flex items-center justify-center gap-2 py-3 px-4 rounded-xl border font-medium text-sm transition-colors hover:bg-[#F3ECE4]" style={{ borderColor: C.border, color: C.text }}>
+                      <Download className="h-4 w-4" /> Télécharger CSV
+                    </button>
+                    <Link href="/signup" className="flex items-center justify-center gap-2 py-3 px-4 rounded-xl font-medium text-sm text-white transition-all hover:-translate-y-0.5" style={{ background: C.sage }}>
+                      <ShoppingCart className="h-4 w-4" /> Publier sur WooCommerce
                     </Link>
-                  </Button>
-                  <Button size="lg" onClick={handleNewGeneration} disabled={isLimitReached}>
-                    <Sparkles className="mr-2 h-4 w-4" />
-                    Nouvelle fiche
-                  </Button>
+                    <button onClick={handleNewGeneration} disabled={isLimitReached} className="flex items-center justify-center gap-2 py-3 px-4 rounded-xl font-semibold text-sm text-white transition-all hover:-translate-y-0.5 disabled:opacity-40" style={{ background: C.terra }}>
+                      <Sparkles className="h-4 w-4" /> Nouvelle fiche
+                    </button>
+                  </div>
+
+                  {isLimitReached && (
+                    <div className="p-4 rounded-xl border" style={{ background: '#FFF3EE', borderColor: `${C.terra}30` }}>
+                      <p className="text-sm font-semibold" style={{ color: C.terra }}>Limite atteinte</p>
+                      <p className="text-sm mt-1" style={{ color: C.muted }}>Vous avez utilisé vos 5 fiches gratuites. Passez à un plan payant pour continuer.</p>
+                    </div>
+                  )}
                 </div>
+              )}
 
-                {isLimitReached && (
-                  <Alert>
-                    <WoodyEmoji mood="sad" size={20} className="mt-0.5" />
-                    <AlertTitle>Limite atteinte</AlertTitle>
-                    <AlertDescription>
-                      Vous avez utilisé vos 5 fiches gratuites. Passez à un plan payant pour continuer.
-                    </AlertDescription>
-                  </Alert>
-                )}
-              </div>
-            )}
-
-            {step === 'form' && !generatedProduct && (
-              <Card className="h-full flex flex-col items-center justify-center bg-gradient-to-br from-primary/5 to-secondary/5 border-2 border-dashed border-primary/20 min-h-[400px]">
-                <CardContent className="text-center flex flex-col items-center gap-4">
-                  <motion.div
-                    animate={{ y: [0, -8, 0] }}
-                    transition={{ duration: 2.5, repeat: Infinity, ease: 'easeInOut' }}
-                  >
-                    <NextImage
-                      src="/woody-white.png"
-                      alt="Woody mascotte Woosenteur"
-                      width={100}
-                      height={100}
-                      style={{ width: 100, height: 'auto' }}
-                      className="drop-shadow-md"
-                    />
+              {/* Idle placeholder */}
+              {step === 'form' && !generatedProduct && (
+                <div className="h-full flex flex-col items-center justify-center min-h-[400px] rounded-xl border-2 border-dashed p-8 text-center" style={{ background: C.bg, borderColor: C.border }}>
+                  <motion.div animate={{ y: [0, -8, 0] }} transition={{ duration: 2.5, repeat: Infinity, ease: 'easeInOut' }}>
+                    <NextImage src="https://res.cloudinary.com/db2ljqpdt/image/upload/v1776544330/Gemini_Generated_Image_7bnxii7bnxii7bnx-removebg-preview_xfcumj.png" alt="Woody mascotte Woosenteur" width={90} height={90} style={{ width: 90, height: 'auto' }} className="drop-shadow-md" />
                   </motion.div>
-                  <div>
-                    <h3 className="font-headline text-xl font-semibold text-foreground/70">
-                      La fiche produit apparaîtra ici
-                    </h3>
-                    <p className="text-muted-foreground mt-1 text-sm">
-                      Remplissez le formulaire et lancez la génération.
-                    </p>
+                  <h3 className="mt-4 font-semibold text-lg" style={{ color: C.text }}>La fiche produit apparaîtra ici</h3>
+                  <p className="text-sm mt-1" style={{ color: C.muted }}>Remplissez le formulaire et lancez la génération.</p>
+                  <div className="mt-4 rounded-2xl px-4 py-2.5 border text-xs font-medium flex items-center gap-1.5" style={{ background: C.sagePale, borderColor: `${C.sage}30`, color: C.sage }}>
+                    <WoodyEmoji mood="confused" size={20} />
+                    Plus vous décrivez, meilleure est la fiche !
                   </div>
-                  <div className="bg-white/80 rounded-2xl px-4 py-2.5 border border-primary/15 shadow-sm max-w-[240px]">
-                    <p className="text-xs text-primary font-medium leading-relaxed flex items-center gap-1.5">
-                      <WoodyEmoji mood="confused" size={24} />
-                      Plus vous décrivez votre produit, meilleure est la fiche !
-                    </p>
-                  </div>
-                </CardContent>
-              </Card>
-            )}
-          </motion.div>
-        </div>
+                </div>
+              )}
+            </motion.div>
+          </div>
         </div>
 
-        {/* Dashboard teaser — sous le générateur */}
+        {/* Teaser dashboard */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -692,60 +607,48 @@ export default function TrialGenerator() {
           transition={{ duration: 0.5, delay: 0.2 }}
           className="mt-10 max-w-5xl mx-auto"
         >
-          <div className="rounded-2xl bg-gradient-to-r from-primary/10 via-secondary/5 to-primary/10 border border-primary/20 p-6 md:p-8">
+          <div className="rounded-2xl border p-6 md:p-8" style={{ background: C.sagePale, borderColor: `${C.sage}30` }}>
             <div className="flex flex-col md:flex-row items-start md:items-center gap-6 md:gap-10">
-              {/* Texte gauche */}
               <div className="flex-1">
                 <div className="flex items-center gap-2 mb-2">
-                  <LayoutDashboard className="h-5 w-5 text-primary" />
-                  <span className="text-sm font-bold text-primary uppercase tracking-wide">Dans votre Dashboard</span>
+                  <LayoutDashboard className="h-5 w-5" style={{ color: C.sage }} />
+                  <span className="text-sm font-bold uppercase tracking-wide" style={{ color: C.sage }}>Dans votre espace</span>
                 </div>
-                <h3 className="font-headline text-xl md:text-2xl font-bold text-foreground mb-1">
+                <h3 className="text-xl md:text-2xl font-bold mb-1" style={{ fontFamily: 'var(--font-cormorant), Georgia, serif', color: C.text }}>
                   Ce générateur, c&apos;est l&apos;aperçu.
                 </h3>
-                <p className="text-foreground/70 text-base">
-                  Dans votre espace : publication en masse, visuels pour vos réseaux, historique de vos fiches, accès à tous vos exports.
+                <p className="text-base" style={{ color: C.muted }}>
+                  Fiches illimitées, publication directe sur votre boutique, historique complet et exports.
                 </p>
               </div>
-
-              {/* Features pills */}
               <div className="flex flex-col gap-3 shrink-0">
                 {[
-                  { icon: <Layers className="h-4 w-4" />, label: 'Publication en masse', sub: 'Tous vos produits d\'un coup' },
-                  { icon: <ImagePlus className="h-4 w-4" />, label: 'Visuels pour vos réseaux', sub: 'Instagram, TikTok, Facebook' },
-                  { icon: <Zap className="h-4 w-4" />, label: 'Génération illimitée', sub: 'Sans quota, sans attente' },
+                  { icon: <Layers className="h-4 w-4" />, label: 'Fiches illimitées', sub: 'Tous vos produits' },
+                  { icon: <ImagePlus className="h-4 w-4" />, label: 'Visuels réseaux sociaux', sub: 'Instagram, TikTok, Facebook' },
+                  { icon: <Zap className="h-4 w-4" />, label: 'Export WooCommerce/Shopify', sub: 'En un clic' },
                 ].map((f, i) => (
-                  <div key={i} className="flex items-center gap-3 bg-white/80 dark:bg-card/80 rounded-xl px-4 py-2.5 border border-border/60 shadow-sm">
-                    <span className="text-primary shrink-0">{f.icon}</span>
+                  <div key={i} className="flex items-center gap-3 rounded-xl px-4 py-2.5 border shadow-sm" style={{ background: C.surface, borderColor: C.border }}>
+                    <span style={{ color: C.sage }}>{f.icon}</span>
                     <div>
-                      <p className="text-sm font-semibold text-foreground leading-tight">{f.label}</p>
-                      <p className="text-xs text-muted-foreground">{f.sub}</p>
+                      <p className="text-sm font-semibold leading-tight" style={{ color: C.text }}>{f.label}</p>
+                      <p className="text-xs" style={{ color: C.muted }}>{f.sub}</p>
                     </div>
                   </div>
                 ))}
               </div>
             </div>
-
-            {/* CTA */}
-            <div className="mt-6 flex flex-col sm:flex-row items-start sm:items-center gap-3 pt-5 border-t border-primary/15">
-              <Link href="/signup">
-                <Button size="lg" className="rounded-full px-8 shadow-lg shadow-primary/20 font-semibold">
-                  <Rocket className="mr-2 h-4 w-4" />
-                  Accéder à mon Dashboard — Gratuit
-                </Button>
+            <div className="mt-6 flex flex-col sm:flex-row items-start sm:items-center gap-3 pt-5 border-t" style={{ borderColor: `${C.sage}25` }}>
+              <Link href="/signup" className="inline-flex items-center gap-2 py-3 px-7 rounded-xl font-semibold text-sm text-white transition-all hover:-translate-y-0.5 shadow-sm" style={{ background: C.terra }}>
+                <Rocket className="h-4 w-4" /> Accéder à mon espace — Gratuit
               </Link>
-              <p className="text-sm text-muted-foreground">5 fiches offertes · Sans carte bancaire</p>
+              <p className="text-sm" style={{ color: C.muted }}>5 fiches offertes · Sans carte bancaire</p>
             </div>
           </div>
         </motion.div>
 
       </div>
 
-      <UpsellModal
-        open={showUpsell}
-        onClose={() => setShowUpsell(false)}
-        creditsUsed={creditsUsed}
-      />
+      <UpsellModal open={showUpsell} onClose={() => setShowUpsell(false)} creditsUsed={creditsUsed} />
     </section>
   );
 }

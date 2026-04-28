@@ -3,7 +3,7 @@ import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import { getPostBySlug, getAllPosts, getRelatedPosts } from '@/lib/posts';
 import { Clock, ArrowLeft, ArrowRight, Tag } from 'lucide-react';
-import Header from '@/components/header';
+import HeaderLanding from '@/components/header-landing';
 import Footer from '@/components/footer';
 
 // ─── Génération statique ──────────────────────────────────────────────────────
@@ -95,9 +95,9 @@ export default function BlogPostPage({ params }: { params: { slug: string } }) {
   const related = getRelatedPosts(post.slug);
 
   return (
-    <div className="bg-background text-foreground min-h-screen">
+    <div className="min-h-screen" style={{ background: '#FAF6F0', color: '#2E2018' }}>
       <ArticleJsonLd post={post} />
-      <Header />
+      <HeaderLanding />
 
       <main className="pt-28 pb-24">
         <div className="container mx-auto px-4 md:px-6 max-w-4xl">

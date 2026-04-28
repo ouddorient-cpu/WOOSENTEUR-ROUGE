@@ -67,6 +67,13 @@ export default {
           border: 'hsl(var(--sidebar-border))',
           ring: 'hsl(var(--sidebar-ring))',
         },
+        // 2026 warm landing palette
+        cream: { DEFAULT: '#FAF6F0', alt: '#F3ECE4', surface: '#FDF9F5' },
+        sage: { DEFAULT: '#7D9B76', pale: '#EDF2EC' },
+        terra: { DEFAULT: '#D4704A', dark: '#BF5E3A' },
+        'warm-brown': { DEFAULT: '#2E2018' },
+        'warm-gray': { DEFAULT: '#7A6D62' },
+        'warm-border': { DEFAULT: '#E5DDD4' },
         // 2026 violet × blue palette
         violet: {
           400: '#a78bfa',

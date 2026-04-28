@@ -27,7 +27,7 @@ export const LivePreview: React.FC<LivePreviewProps> = ({ product, isGenerating,
     }
 
     return (
-        <div className="relative w-full h-full overflow-hidden bg-white rounded-xl border border-primary/20 shadow-2xl flex flex-col studio-card">
+        <div className="relative w-full h-full overflow-hidden bg-[#0e0e1a] rounded-xl border border-white/10 shadow-2xl flex flex-col">
             {/* Browser-like header */}
             <div className="h-10 bg-muted/30 border-b flex items-center px-4 gap-2">
                 <div className="flex gap-1.5">
@@ -57,7 +57,7 @@ export const LivePreview: React.FC<LivePreviewProps> = ({ product, isGenerating,
                                 <div className="w-16 h-16 border-4 border-primary/20 border-t-primary rounded-full animate-spin" />
                                 <Sparkles className="absolute inset-0 m-auto h-6 w-6 text-primary animate-pulse" />
                             </div>
-                            <p className="text-sm font-bold text-gradient animate-pulse">L'IA façonne votre contenu...</p>
+                            <p className="text-sm font-bold text-white animate-pulse">L'IA façonne votre contenu...</p>
                             <div className="w-48 h-1.5 bg-muted rounded-full overflow-hidden">
                                 <motion.div
                                     initial={{ width: 0 }}
@@ -98,8 +98,8 @@ export const LivePreview: React.FC<LivePreviewProps> = ({ product, isGenerating,
 
                                 <div className="space-y-4">
                                     <div className="space-y-1">
-                                        <h2 className="text-2xl font-bold tracking-tight">{product?.name || "Nom du produit"}</h2>
-                                        <p className="text-xl font-semibold text-primary">
+                                        <h2 className="text-2xl font-bold tracking-tight text-white">{product?.name || "Nom du produit"}</h2>
+                                        <p className="text-xl font-semibold text-violet-400">
                                             {product?.price ? `${product.price}€` : "Prix non défini"}
                                         </p>
                                     </div>
@@ -126,14 +126,14 @@ export const LivePreview: React.FC<LivePreviewProps> = ({ product, isGenerating,
                             {/* Product Details (Generated SEO Content) */}
                             <div className="space-y-6 pt-8 border-t">
                                 {product?.seo?.longDescription ? (
-                                    <div className="prose prose-sm max-w-none">
-                                        <h3 className="text-lg font-bold mb-4 flex items-center gap-2 italic">
-                                            <Info className="h-4 w-4 text-primary" />
+                                    <div className="max-w-none">
+                                        <h3 className="text-lg font-bold mb-4 flex items-center gap-2 italic text-white">
+                                            <Info className="h-4 w-4 text-violet-400" />
                                             L'histoire du produit
                                         </h3>
                                         <div
-                                            className="text-muted-foreground leading-relaxed whitespace-pre-wrap"
-                                            dangerouslySetInnerHTML={{ __html: product.seo.longDescription.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>') }}
+                                            className="text-white/70 leading-relaxed whitespace-pre-wrap text-sm"
+                                            dangerouslySetInnerHTML={{ __html: product.seo.longDescription.replace(/\*\*(.*?)\*\*/g, '<strong class="text-white">$1</strong>') }}
                                         />
                                     </div>
                                 ) : (
@@ -146,8 +146,8 @@ export const LivePreview: React.FC<LivePreviewProps> = ({ product, isGenerating,
 
                                 {product?.seo?.shortDescription && (
                                     <div className="p-4 bg-muted/30 rounded-lg border border-primary/5">
-                                        <h4 className="text-xs font-bold uppercase tracking-widest text-primary mb-2">Points Clés</h4>
-                                        <p className="text-sm text-muted-foreground">
+                                        <h4 className="text-xs font-bold uppercase tracking-widest text-violet-400 mb-2">Points Clés</h4>
+                                        <p className="text-sm text-white/70">
                                             {product.seo.shortDescription}
                                         </p>
                                     </div>

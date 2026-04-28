@@ -166,7 +166,7 @@ export function ChatbotBubble({ user, userProfile }: ChatbotBubbleProps) {
             <div className="flex items-center justify-between">
               <CardTitle className="text-base font-semibold flex items-center gap-2">
                 <Image
-                  src="/woody-white.png"
+                  src="https://res.cloudinary.com/db2ljqpdt/image/upload/v1776544330/Gemini_Generated_Image_7bnxii7bnxii7bnx-removebg-preview_xfcumj.png"
                   alt="Woody"
                   width={32}
                   height={32}
@@ -260,7 +260,7 @@ export function ChatbotBubble({ user, userProfile }: ChatbotBubbleProps) {
         aria-label="Ouvrir le chat Woody"
       >
         <Image
-          src="/woody-white.png"
+          src="https://res.cloudinary.com/db2ljqpdt/image/upload/v1776544330/Gemini_Generated_Image_7bnxii7bnxii7bnx-removebg-preview_xfcumj.png"
           alt="Woody — chat Woosenteur"
           width={64}
           height={64}

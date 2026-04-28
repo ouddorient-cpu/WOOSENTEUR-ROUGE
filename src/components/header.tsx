@@ -29,6 +29,8 @@ import {
     NavigationMenuList,
     NavigationMenuTrigger,
 } from "@/components/ui/navigation-menu";
+import { useLang } from '@/lib/i18n/LangContext';
+import { useT } from '@/lib/i18n/useT';
 
 const getInitials = (name: string | null | undefined) => {
     if (!name) return 'U';
@@ -45,9 +47,34 @@ const AdminBadge = () => (
     </div>
 );
 
+const LangSwitcher = () => {
+    const { lang, setLang } = useLang();
+    return (
+        <div className="flex items-center gap-1 bg-white/5 rounded-full px-1 py-0.5">
+            <button
+                onClick={() => setLang('fr')}
+                className={`text-lg px-1.5 py-0.5 rounded-full transition-all ${lang === 'fr' ? 'bg-white/15 scale-110' : 'opacity-50 hover:opacity-80'}`}
+                title="Français"
+                aria-label="Français"
+            >
+                🇫🇷
+            </button>
+            <button
+                onClick={() => setLang('en')}
+                className={`text-lg px-1.5 py-0.5 rounded-full transition-all ${lang === 'en' ? 'bg-white/15 scale-110' : 'opacity-50 hover:opacity-80'}`}
+                title="English"
+                aria-label="English"
+            >
+                🇬🇧
+            </button>
+        </div>
+    );
+};
+
 const UserNav = () => {
     const { user } = useUser();
     const router = useRouter();
+    const t = useT();
     const userProfilePath = user ? `users/${user.uid}` : null;
     const { data: userProfile, isLoading: profileLoading } = useDoc<UserProfile>(userProfilePath);
 
@@ -92,12 +119,12 @@ const UserNav = () => {
                     <DropdownMenuSeparator className="bg-white/10" />
                     <DropdownMenuItem onClick={() => router.push('/dashboard')} className="text-white/70 hover:text-white hover:bg-violet-500/10 focus:bg-violet-500/10 cursor-pointer">
                         <LayoutDashboard className="mr-2 h-4 w-4 text-violet-400" />
-                        <span>Tableau de bord</span>
+                        <span>{t.nav.dashboard}</span>
                     </DropdownMenuItem>
                     <DropdownMenuSeparator className="bg-white/10" />
                     <DropdownMenuItem onClick={handleSignOut} className="text-white/70 hover:text-white hover:bg-red-500/10 focus:bg-red-500/10 cursor-pointer">
                         <LogOut className="mr-2 h-4 w-4" />
-                        <span>Déconnexion</span>
+                        <span>{t.nav.logout}</span>
                     </DropdownMenuItem>
                 </DropdownMenuContent>
             </DropdownMenu>
@@ -109,15 +136,16 @@ const Header = () => {
     const { user, loading } = useUser();
     const pathname = usePathname();
     const [mobileOpen, setMobileOpen] = useState(false);
+    const t = useT();
 
     if (pathname.startsWith('/dashboard') || pathname.startsWith('/login') || pathname.startsWith('/signup') || pathname.startsWith('/thank-you')) {
         return null;
     }
 
     const navLinks = [
-        { href: "/pricing", label: "Tarifs" },
-        { href: "/blog", label: "Blog" },
-        { href: "/#faq", label: "FAQ" },
+        { href: "/pricing", label: t.nav.pricing },
+        { href: "/blog", label: t.nav.blog },
+        { href: "/#faq", label: t.nav.faq },
     ];
 
     return (
@@ -131,7 +159,7 @@ const Header = () => {
                             <SheetTrigger asChild>
                                 <Button variant="ghost" size="icon" className="text-white/70 hover:text-white hover:bg-white/5">
                                     <Menu className="h-6 w-6" />
-                                    <span className="sr-only">Ouvrir le menu</span>
+                                    <span className="sr-only">{t.nav.openMenu}</span>
                                 </Button>
                             </SheetTrigger>
                             <SheetContent side="left" className="bg-[#0a0a1e] border-r border-white/10 text-white">
@@ -139,14 +167,14 @@ const Header = () => {
                                     <SheetClose asChild>
                                         <Link href="/creation-boutique" className="text-lg font-bold text-violet-400 flex items-center gap-2 hover:text-violet-300 transition-colors">
                                             <ShoppingBag className="h-5 w-5" />
-                                            Créer ma boutique
+                                            {t.nav.createShop}
                                         </Link>
                                     </SheetClose>
                                     <SheetClose asChild>
                                         <Link href="/publicite-facebook" className="text-lg font-medium text-white/60 flex items-center gap-2 hover:text-white transition-colors">
                                             <Megaphone className="h-5 w-5" />
-                                            Pub Facebook & Instagram
-                                            <span className="text-[9px] font-bold bg-blue-500/15 text-blue-400 px-1.5 py-0.5 rounded-full uppercase tracking-wide">Bientôt</span>
+                                            {t.nav.fbAds}
+                                            <span className="text-[9px] font-bold bg-blue-500/15 text-blue-400 px-1.5 py-0.5 rounded-full uppercase tracking-wide">{t.nav.soon}</span>
                                         </Link>
                                     </SheetClose>
                                     {navLinks.map(link => (
@@ -159,12 +187,15 @@ const Header = () => {
                                     <div className="pt-4 border-t border-white/10 flex flex-col gap-3">
                                         {user ? null : (
                                             <>
-                                                <Link href="/login" className="text-base font-medium text-white/70 hover:text-white transition-colors">Connexion</Link>
+                                                <Link href="/login" className="text-base font-medium text-white/70 hover:text-white transition-colors">{t.nav.login}</Link>
                                                 <Link href="/pricing" className="px-5 py-2.5 rounded-full bg-gradient-to-r from-violet-600 to-blue-500 text-white font-semibold text-sm text-center shadow-[0_0_20px_-5px_rgba(139,92,246,0.5)]">
-                                                    Essai gratuit
+                                                    {t.nav.freeTrial}
                                                 </Link>
                                             </>
                                         )}
+                                    </div>
+                                    <div className="pt-2 border-t border-white/10">
+                                        <LangSwitcher />
                                     </div>
                                 </div>
                             </SheetContent>
@@ -179,14 +210,14 @@ const Header = () => {
                 <nav aria-label="Navigation principale" className="hidden lg:flex items-center justify-center gap-6 flex-1">
                     <Link href="/creation-boutique" className="text-sm font-bold text-violet-400 hover:text-violet-300 flex items-center gap-1.5 transition-colors">
                         <ShoppingBag className="h-4 w-4" />
-                        Créer ma boutique
+                        {t.nav.createShop}
                     </Link>
 
                     <NavigationMenu>
                         <NavigationMenuList>
                             <NavigationMenuItem>
                                 <NavigationMenuTrigger className="text-sm font-medium text-white/60 hover:text-white bg-transparent hover:bg-white/5 data-[state=open]:bg-white/5 data-[state=open]:text-white transition-colors">
-                                    Outils
+                                    {t.nav.tools}
                                 </NavigationMenuTrigger>
                                 <NavigationMenuContent>
                                     <ul className="grid w-[420px] gap-2 p-3 md:w-[520px] md:grid-cols-2 bg-[#0d0d24] border border-white/10 rounded-2xl shadow-[0_20px_60px_-15px_rgba(0,0,0,0.8)]">
@@ -195,30 +226,30 @@ const Header = () => {
                                                 href: "/dashboard/generate",
                                                 icon: <Sparkles className="h-5 w-5 text-violet-400" />,
                                                 iconBg: "bg-violet-500/10 group-hover:bg-violet-500/20",
-                                                label: "Générateur SEO Pro",
-                                                desc: "Fiches produits optimisées en un clic.",
+                                                label: t.nav.seoGenerator,
+                                                desc: t.nav.seoGeneratorDesc,
                                             },
                                             {
                                                 href: "/publicite-facebook",
                                                 icon: <Megaphone className="h-5 w-5 text-blue-400" />,
                                                 iconBg: "bg-blue-500/10 group-hover:bg-blue-500/20",
-                                                label: "Pub Facebook & Instagram",
-                                                desc: "Fiche produit → pub prête à lancer sur Meta.",
-                                                badge: "Bientôt",
+                                                label: t.nav.fbAds,
+                                                desc: t.nav.fbAdsDesc,
+                                                badge: t.nav.soon,
                                             },
                                             {
                                                 href: "/dashboard/import",
                                                 icon: <Database className="h-5 w-5 text-indigo-400" />,
                                                 iconBg: "bg-indigo-500/10 group-hover:bg-indigo-500/20",
-                                                label: "Bulk SKU Updater",
-                                                desc: "Mise à jour rapide via import CSV.",
+                                                label: t.nav.bulkSku,
+                                                desc: t.nav.bulkSkuDesc,
                                             },
                                             {
                                                 href: "/dashboard",
                                                 icon: <Zap className="h-5 w-5 text-violet-300" />,
                                                 iconBg: "bg-violet-500/10 group-hover:bg-violet-500/20",
-                                                label: "Studio Dashboard",
-                                                desc: "Gérez tous vos projets au même endroit.",
+                                                label: t.nav.studio,
+                                                desc: t.nav.studioDesc,
                                             },
                                         ].map((item) => (
                                             <li key={item.href}>
@@ -258,18 +289,19 @@ const Header = () => {
                     ))}
                 </nav>
 
-                {/* Right — auth */}
+                {/* Right — lang switcher + auth */}
                 <div className="flex items-center gap-3">
+                    <LangSwitcher />
                     {loading ? null : user ? <UserNav /> : (
                         <div className="flex items-center gap-3">
-                            <Button variant="ghost" asChild className="hidden sm:inline-flex text-white/70 hover:text-white hover:bg-white/5">
-                                <Link href="/login">Connexion</Link>
+                            <Button variant="outline" asChild className="border-white/20 text-white hover:text-white hover:bg-white/10 hover:border-white/40 bg-transparent">
+                                <Link href="/login">{t.nav.login}</Link>
                             </Button>
                             <Link
                                 href="/pricing"
-                                className="px-5 py-2 rounded-full text-sm font-semibold text-white bg-gradient-to-r from-violet-600 to-blue-500 shadow-[0_0_20px_-5px_rgba(139,92,246,0.5)] hover:shadow-[0_0_30px_-5px_rgba(139,92,246,0.7)] hover:-translate-y-0.5 transition-all duration-200"
+                                className="hidden sm:inline-flex px-5 py-2 rounded-full text-sm font-semibold text-white bg-gradient-to-r from-violet-600 to-blue-500 shadow-[0_0_20px_-5px_rgba(139,92,246,0.5)] hover:shadow-[0_0_30px_-5px_rgba(139,92,246,0.7)] hover:-translate-y-0.5 transition-all duration-200"
                             >
-                                Essai gratuit
+                                {t.nav.freeTrial}
                             </Link>
                         </div>
                     )}

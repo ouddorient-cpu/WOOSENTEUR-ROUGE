@@ -41,7 +41,7 @@ const NavLink = ({ href, icon, label, isMobile = false }: { href: string; icon: 
                     href={href}
                     className={cn(
                         "flex items-center gap-4 rounded-lg px-4 py-3 text-muted-foreground transition-all hover:bg-primary/10 hover:text-primary",
-                        isActive && "bg-gradient-to-r from-primary to-secondary text-primary-foreground shadow-lg"
+                        isActive && "bg-primary text-primary-foreground shadow-md"
                     )}
                 >
                     {icon}
@@ -56,7 +56,7 @@ const NavLink = ({ href, icon, label, isMobile = false }: { href: string; icon: 
             href={href}
             className={cn(
                 "flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium text-muted-foreground transition-colors hover:bg-muted hover:text-foreground w-full",
-                isActive && "bg-gradient-to-r from-primary to-secondary text-primary-foreground shadow-md hover:text-primary-foreground"
+                isActive && "bg-primary text-primary-foreground shadow-sm hover:text-primary-foreground"
             )}
         >
             <span className="shrink-0">{icon}</span>
@@ -190,7 +190,7 @@ export default function DashboardSidebar() {
             {/* Logo */}
             <div className="flex h-14 items-center border-b px-4">
                 <Link href="/" className="flex items-center gap-2">
-                    <Logo className="h-7 w-7" />
+                    <Logo className="h-10 w-10" />
                     <span className="font-headline text-base font-bold text-foreground">Woosenteur</span>
                 </Link>
             </div>

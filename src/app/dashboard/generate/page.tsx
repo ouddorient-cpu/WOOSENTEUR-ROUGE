@@ -107,7 +107,7 @@ const FormColumn: React.FC<FormColumnProps> = ({ form, onSubmit, isGenerating, c
   return (
     <Card className="studio-card">
       <CardHeader>
-        <CardTitle className="text-gradient">1. Informations Produit</CardTitle>
+        <CardTitle className="text-white font-bold">1. Informations Produit</CardTitle>
         <CardDescription>Remplissez les informations essentielles, notre agent s'occupe du reste.</CardDescription>
       </CardHeader>
       <CardContent>
@@ -341,7 +341,7 @@ const FormColumn: React.FC<FormColumnProps> = ({ form, onSubmit, isGenerating, c
 const UploadingPreview: React.FC<{ progress: number; progressMessage: string; imageUrl?: string; }> = ({ progress, progressMessage, imageUrl }) => (
   <Card>
     <CardHeader>
-      <CardTitle className="text-gradient">{progressMessage}</CardTitle>
+      <CardTitle className="text-white font-bold">{progressMessage}</CardTitle>
       <CardDescription>Veuillez patienter pendant le traitement de votre image.</CardDescription>
     </CardHeader>
     <CardContent className="relative flex flex-col items-center justify-center gap-4 text-center">
@@ -419,13 +419,13 @@ const ResultColumn: React.FC<ResultColumnProps> = ({
     return (
       <Card className="h-full">
         <CardHeader>
-          <CardTitle className="text-gradient">Woody est au travail !</CardTitle>
+          <CardTitle className="text-white font-bold">Woody est au travail !</CardTitle>
           <CardDescription>Notre agent IA rédige votre fiche produit SEO.</CardDescription>
         </CardHeader>
         <CardContent className="flex flex-col justify-center items-center h-full gap-6">
           <div className="flex flex-col items-center gap-4">
             <Image
-              src="/mascotte woosenteur.png"
+              src="https://res.cloudinary.com/db2ljqpdt/image/upload/v1776544330/Gemini_Generated_Image_7bnxii7bnxii7bnx-removebg-preview_xfcumj.png"
               alt="Woosenteur génère votre fiche"
               width={90}
               height={90}
@@ -463,7 +463,7 @@ const ResultColumn: React.FC<ResultColumnProps> = ({
       <div ref={resultColumnRef} className="space-y-6">
         <Card>
           <CardHeader>
-            <CardTitle className="text-gradient">3. Image du produit</CardTitle>
+            <CardTitle className="text-white font-bold">3. Image du produit</CardTitle>
             <CardDescription>Une image de haute qualité est essentielle. Notre IA validera votre choix.</CardDescription>
           </CardHeader>
           <CardContent className="flex flex-col items-center justify-center gap-4 text-center">
@@ -515,7 +515,7 @@ const ResultColumn: React.FC<ResultColumnProps> = ({
         {(step === 'preview' || step === 'export') && (
           <Card ref={exportCardRef}>
             <CardHeader>
-              <CardTitle className="text-gradient">4. Export</CardTitle>
+              <CardTitle className="text-white font-bold">4. Export</CardTitle>
               <CardDescription>Choisissez une plateforme et un format, puis exportez votre fiche produit.</CardDescription>
             </CardHeader>
             <CardContent className="space-y-6">
@@ -1072,7 +1072,7 @@ export default function GeneratePage() {
             <Badge variant="outline" className="mb-2 border-primary/30 text-primary bg-primary/5">
               <Bot className="mr-2 h-3 w-3" /> Studio Créatif v2
             </Badge>
-            <h1 className="font-headline text-3xl font-bold text-gradient">Création de Produit</h1>
+            <h1 className="font-headline text-3xl font-bold text-white">Création de Produit</h1>
           </div>
           <div className="flex items-center gap-2 text-sm text-muted-foreground bg-muted/50 px-3 py-1.5 rounded-full">
             <ShieldCheck className="h-4 w-4 text-green-500" />

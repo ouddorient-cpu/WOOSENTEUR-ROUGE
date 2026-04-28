@@ -1,0 +1,611 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Woosenteur — Des fiches produit qui font vendre</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,600;0,700;1,600&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #FAF6F0;
+      --bg-alt: #F3ECE4;
+      --surface: #FDF9F5;
+      --text: #2E2018;
+      --text-muted: #7A6D62;
+      --accent: #7D9B76;
+      --accent-pale: #EDF2EC;
+      --cta: #D4704A;
+      --cta-hover: #BF5E3A;
+      --border: #E5DDD4;
+      --dark: #2E2018;
+      --radius-card: 20px;
+      --radius-btn: 10px;
+      --max-w: 680px;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'DM Sans', -apple-system, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      font-size: 17px;
+      line-height: 1.75;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .container {
+      max-width: var(--max-w);
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    h1, h2, h3 {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      line-height: 1.2;
+      color: var(--text);
+    }
+
+    h1 { font-size: clamp(2rem, 6vw, 3.2rem); font-weight: 700; }
+    h2 { font-size: clamp(1.5rem, 4vw, 2.2rem); font-weight: 600; }
+    h3 { font-size: 1.1rem; font-weight: 600; }
+
+    .section { padding: 88px 0; }
+    .section-alt { background: var(--bg-alt); }
+    .section-sage { background: var(--accent-pale); }
+    .section-dark { background: var(--dark); color: white; }
+    .section-dark h2 { color: white; }
+
+    .badge {
+      display: inline-block;
+      background: var(--accent-pale);
+      color: var(--accent);
+      font-size: 13px;
+      font-weight: 600;
+      padding: 6px 16px;
+      border-radius: 100px;
+      letter-spacing: 0.02em;
+      margin-bottom: 20px;
+    }
+
+    .btn-cta {
+      display: inline-block;
+      background: var(--cta);
+      color: white;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 16px;
+      font-weight: 600;
+      padding: 16px 32px;
+      border-radius: var(--radius-btn);
+      border: none;
+      cursor: pointer;
+      text-decoration: none;
+      box-shadow: 0 4px 20px rgba(212, 112, 74, 0.28);
+      transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
+      white-space: nowrap;
+    }
+    .btn-cta:hover { background: var(--cta-hover); transform: translateY(-1px); box-shadow: 0 6px 24px rgba(212,112,74,0.35); }
+
+    .btn-outline {
+      display: inline-block;
+      background: transparent;
+      color: var(--accent);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 15px;
+      font-weight: 500;
+      padding: 12px 24px;
+      border-radius: var(--radius-btn);
+      border: 1.5px solid var(--accent);
+      cursor: pointer;
+      text-decoration: none;
+      transition: background 0.2s;
+    }
+    .btn-outline:hover { background: var(--accent-pale); }
+
+    .cta-note {
+      display: block;
+      margin-top: 12px;
+      font-size: 13px;
+      color: var(--text-muted);
+    }
+
+    /* WAVE DIVIDER */
+    .wave { display: block; width: 100%; overflow: hidden; line-height: 0; }
+    .wave svg { display: block; width: 100%; }
+
+    /* ─── HERO ─── */
+    .hero {
+      background: var(--bg);
+      padding: 110px 0 80px;
+      text-align: center;
+    }
+    .hero h1 { margin-bottom: 20px; }
+    .hero p {
+      font-size: 18px;
+      color: var(--text-muted);
+      max-width: 480px;
+      margin: 0 auto 36px;
+      line-height: 1.7;
+    }
+    .hero-visual {
+      margin-top: 56px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-card);
+      padding: 32px;
+      text-align: left;
+      box-shadow: 0 8px 40px rgba(46,32,24,0.06);
+    }
+    .hero-visual .label {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 12px;
+    }
+    .hero-visual p { font-size: 15px; color: var(--text-muted); line-height: 1.65; }
+    .hero-visual .result {
+      margin-top: 20px;
+      padding-top: 20px;
+      border-top: 1px solid var(--border);
+    }
+    .hero-visual .result p { color: var(--text); }
+
+    /* ─── FRUSTRATIONS ─── */
+    .frustrations-intro {
+      font-size: 18px;
+      color: var(--text-muted);
+      font-style: italic;
+      margin-bottom: 8px;
+    }
+    .frustrations-list { margin-top: 32px; display: flex; flex-direction: column; gap: 12px; }
+    .frustration-card {
+      background: var(--surface);
+      border-radius: 12px;
+      border-left: 3px solid var(--cta);
+      padding: 16px 20px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      box-shadow: 0 2px 8px rgba(46,32,24,0.04);
+    }
+    .frustration-card .icon { font-size: 18px; flex-shrink: 0; opacity: 0.7; }
+    .frustration-card p { margin: 0; font-size: 15.5px; color: var(--text); }
+
+    /* ─── HOW IT WORKS ─── */
+    .steps { margin-top: 40px; display: flex; flex-direction: column; gap: 28px; }
+    .step { display: flex; align-items: flex-start; gap: 20px; }
+    .step-num {
+      flex-shrink: 0;
+      width: 44px; height: 44px;
+      background: var(--accent);
+      color: white;
+      border-radius: 50%;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 20px;
+      font-weight: 700;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .step-content h3 { margin-bottom: 4px; color: var(--text); font-size: 1.05rem; }
+    .step-content p { font-size: 15px; color: var(--text-muted); margin: 0; }
+
+    /* ─── AVANT / APRÈS ─── */
+    .before-after { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 40px; }
+    .ba-card { border-radius: 16px; padding: 24px; }
+    .ba-card.before { background: #FFF3EE; border-left: 4px solid var(--cta); }
+    .ba-card.after { background: var(--accent-pale); border-left: 4px solid var(--accent); }
+    .ba-badge {
+      display: inline-block;
+      font-size: 12px;
+      font-weight: 600;
+      padding: 4px 12px;
+      border-radius: 100px;
+      margin-bottom: 16px;
+    }
+    .ba-card.before .ba-badge { background: #FFE0D5; color: var(--cta); }
+    .ba-card.after .ba-badge { background: #D0E8CC; color: #4A7A42; }
+    .ba-card .text { font-size: 15px; line-height: 1.65; }
+    .ba-card.before .text { color: var(--text-muted); font-style: italic; }
+    .ba-card.after .text { color: var(--text); }
+    .ba-label { margin-top: 16px; font-size: 12px; font-weight: 500; color: var(--text-muted); }
+
+    /* ─── BÉNÉFICES ─── */
+    .benefits-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 40px; }
+    .benefit-card {
+      background: var(--surface);
+      border-radius: 16px;
+      padding: 24px 20px;
+      box-shadow: 0 2px 12px rgba(46,32,24,0.05);
+    }
+    .benefit-card .emoji { font-size: 28px; margin-bottom: 10px; }
+    .benefit-card h3 { font-size: 1rem; margin-bottom: 6px; font-family: 'DM Sans', sans-serif; font-weight: 600; }
+    .benefit-card p { font-size: 14px; color: var(--text-muted); margin: 0; line-height: 1.6; }
+
+    /* ─── RÉASSURANCE ─── */
+    .faq-list { margin-top: 40px; display: flex; flex-direction: column; gap: 0; border-top: 1px solid var(--border); }
+    .faq-item { padding: 24px 0; border-bottom: 1px solid var(--border); }
+    .faq-item .question { font-weight: 600; font-size: 16px; color: var(--text); margin-bottom: 10px; display: flex; align-items: center; gap: 10px; }
+    .faq-item .question::before { content: "?"; display: inline-flex; align-items: center; justify-content: center; width: 28px; height: 28px; background: var(--accent-pale); color: var(--accent); border-radius: 50%; font-size: 14px; font-weight: 700; flex-shrink: 0; }
+    .faq-item .answer { font-size: 15.5px; color: var(--text-muted); padding-left: 38px; line-height: 1.7; }
+
+    /* ─── POUR QUI ─── */
+    .forwho-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-top: 40px; }
+    .forwho-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 20px 18px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+    .forwho-card .icon { font-size: 28px; flex-shrink: 0; }
+    .forwho-card p { font-size: 14.5px; color: var(--text); margin: 0; line-height: 1.5; }
+
+    /* ─── TÉMOIGNAGE ─── */
+    .testimonial-wrap {
+      position: relative;
+      text-align: center;
+      max-width: 540px;
+      margin: 0 auto;
+      padding-top: 20px;
+    }
+    .testimonial-quote {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: clamp(1.1rem, 3vw, 1.4rem);
+      font-style: italic;
+      line-height: 1.6;
+      color: var(--text);
+      margin-bottom: 20px;
+    }
+    .testimonial-author {
+      font-size: 14px;
+      color: var(--text-muted);
+      font-weight: 500;
+    }
+    .testimonial-stars { color: var(--cta); font-size: 18px; margin-bottom: 12px; }
+    .big-quote {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 100px;
+      color: var(--cta);
+      opacity: 0.12;
+      line-height: 0.5;
+      position: absolute;
+      top: 0; left: 0;
+      pointer-events: none;
+    }
+
+    /* ─── CTA FINAL (dark) ─── */
+    .section-dark .cta-note { color: rgba(255,255,255,0.55); }
+    .section-dark p.sub { color: rgba(255,255,255,0.65); max-width: 440px; margin: 0 auto 36px; font-size: 17px; }
+    .trust-pills { display: flex; justify-content: center; gap: 20px; flex-wrap: wrap; margin-top: 24px; font-size: 13.5px; color: rgba(255,255,255,0.5); }
+    .trust-pills span { display: flex; align-items: center; gap: 6px; }
+
+    /* ─── FOOTER ─── */
+    footer {
+      background: var(--bg);
+      border-top: 1px solid var(--border);
+      padding: 40px 24px;
+      text-align: center;
+    }
+    footer .logo { font-family: 'Cormorant Garamond', serif; font-size: 1.4rem; font-weight: 700; color: var(--text); margin-bottom: 12px; }
+    footer .links { display: flex; justify-content: center; gap: 20px; flex-wrap: wrap; margin-bottom: 16px; }
+    footer .links a { font-size: 14px; color: var(--text-muted); text-decoration: none; }
+    footer .links a:hover { color: var(--text); }
+    footer .copy { font-size: 13px; color: var(--text-muted); }
+
+    /* ─── SECTION HEADERS ─── */
+    .section-header { text-align: center; margin-bottom: 16px; }
+    .section-header h2 { margin-top: 12px; }
+    .section-header .sub { margin-top: 12px; font-size: 17px; color: var(--text-muted); max-width: 480px; margin-left: auto; margin-right: auto; }
+
+    /* ─── RESPONSIVE ─── */
+    @media (max-width: 600px) {
+      .section { padding: 60px 0; }
+      .hero { padding: 80px 0 56px; }
+      .before-after { grid-template-columns: 1fr; }
+      .benefits-grid { grid-template-columns: 1fr; }
+      .forwho-grid { grid-template-columns: 1fr; }
+      .trust-pills { gap: 12px; }
+      h1 { font-size: 2rem; }
+      h2 { font-size: 1.5rem; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ══════════════════════════════════════════════
+     SECTION 1 — HERO
+══════════════════════════════════════════════ -->
+<section class="hero">
+  <div class="container">
+    <span class="badge">✦ Simple · Rapide · Humain</span>
+    <h1>Votre produit mérite<br/>une belle présentation.</h1>
+    <p>Tu as créé quelque chose de beau. Dis-nous ce que c'est — on écrit la fiche produit à ta place. Claire, professionnelle, prête à publier.</p>
+    <a href="#essai-gratuit" class="btn-cta">Écrire ma première fiche — Gratuitement</a>
+    <span class="cta-note">Sans inscription · 5 fiches offertes · Aucune carte bancaire</span>
+
+    <div class="hero-visual">
+      <div class="label">✦ Exemple en live</div>
+      <p><em>Ce que tu nous donnes :</em><br/>"Bougie naturelle à la lavande. Faite main. 150g."</p>
+      <div class="result">
+        <div class="label" style="color: var(--accent);">✓ Ce que Woosenteur rédige</div>
+        <p>Offre-toi un moment de calme avec notre bougie à la vraie lavande de Provence, fabriquée à la main en petite série. Idéale pour une soirée cocooning ou en cadeau. 150g — jusqu'à 40h de combustion douce.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="wave">
+  <svg viewBox="0 0 1440 40" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+    <path d="M0,20 C360,40 1080,0 1440,20 L1440,40 L0,40 Z" fill="#F3ECE4"/>
+  </svg>
+</div>
+
+<!-- ══════════════════════════════════════════════
+     SECTION 2 — FRUSTRATIONS
+══════════════════════════════════════════════ -->
+<section class="section section-alt">
+  <div class="container">
+    <div class="section-header">
+      <p class="frustrations-intro">"T'es déjà resté·e bloqué·e devant une page vide à te demander quoi écrire pour ton produit ?"</p>
+      <h2>Tu n'es pas seul·e.</h2>
+    </div>
+    <div class="frustrations-list">
+      <div class="frustration-card"><span class="icon">✗</span><p>Je ne sais pas par où commencer.</p></div>
+      <div class="frustration-card"><span class="icon">✗</span><p>J'ai peur que ça fasse amateur.</p></div>
+      <div class="frustration-card"><span class="icon">✗</span><p>Je bloque depuis des heures devant une page vide.</p></div>
+      <div class="frustration-card"><span class="icon">✗</span><p>Je ne connais rien au SEO et ça m'angoisse.</p></div>
+      <div class="frustration-card"><span class="icon">✗</span><p>Mes visiteurs ne comprennent pas ce que je vends.</p></div>
+    </div>
+  </div>
+</section>
+
+<div class="wave">
+  <svg viewBox="0 0 1440 40" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+    <path d="M0,20 C360,0 1080,40 1440,20 L1440,40 L0,40 Z" fill="#EDF2EC"/>
+  </svg>
+</div>
+
+<!-- ══════════════════════════════════════════════
+     SECTION 3 — COMMENT ÇA MARCHE
+══════════════════════════════════════════════ -->
+<section class="section section-sage">
+  <div class="container">
+    <div class="section-header">
+      <span class="badge">Comment ça marche</span>
+      <h2>Trois étapes.<br/>Pas de complication.</h2>
+    </div>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-content">
+          <h3>Décris ton produit</h3>
+          <p>Son nom, ce qu'il fait, à qui il s'adresse. Pas besoin d'être exhaustif·ve — quelques mots suffisent.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-content">
+          <h3>On s'occupe du reste</h3>
+          <p>Woosenteur rédige une fiche claire avec les bons mots pour convaincre tes visiteurs. Aucun jargon technique.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-content">
+          <h3>Publie en un clic</h3>
+          <p>Copie le texte ou exporte directement vers ta boutique WooCommerce ou Shopify. Ta fiche est prête.</p>
+        </div>
+      </div>
+    </div>
+    <div style="text-align:center; margin-top: 40px;">
+      <a href="#essai-gratuit" class="btn-outline">Essayer maintenant →</a>
+    </div>
+  </div>
+</section>
+
+<div class="wave">
+  <svg viewBox="0 0 1440 40" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+    <path d="M0,20 C360,40 1080,0 1440,20 L1440,40 L0,40 Z" fill="#FAF6F0"/>
+  </svg>
+</div>
+
+<!-- ══════════════════════════════════════════════
+     SECTION 4 — AVANT / APRÈS
+══════════════════════════════════════════════ -->
+<section class="section">
+  <div class="container">
+    <div class="section-header">
+      <h2>La différence que ça fait</h2>
+    </div>
+    <div class="before-after">
+      <div class="ba-card before">
+        <span class="ba-badge">❌ Avant</span>
+        <p class="text">"Bougie naturelle à la lavande. Faite main. 150g."</p>
+        <p class="ba-label">Fiche incomplète — ne convainc pas</p>
+      </div>
+      <div class="ba-card after">
+        <span class="ba-badge">✓ Après</span>
+        <p class="text">Offre-toi un moment de calme avec notre bougie à la vraie lavande de Provence, fabriquée à la main en petite série. Parfaite pour une soirée cocooning ou en cadeau. 150g — 40h de combustion douce.</p>
+        <p class="ba-label" style="color: var(--accent);">Fiche rassurante — prête à publier</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="wave">
+  <svg viewBox="0 0 1440 40" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+    <path d="M0,20 C360,0 1080,40 1440,20 L1440,40 L0,40 Z" fill="#F3ECE4"/>
+  </svg>
+</div>
+
+<!-- ══════════════════════════════════════════════
+     SECTION 5 — BÉNÉFICES
+══════════════════════════════════════════════ -->
+<section class="section section-alt">
+  <div class="container">
+    <div class="section-header">
+      <h2>Ce que ça change pour toi</h2>
+    </div>
+    <div class="benefits-grid">
+      <div class="benefit-card">
+        <div class="emoji">⏱</div>
+        <h3>Tu gagnes du temps</h3>
+        <p>Plus besoin de passer 2h à chercher tes mots. En 5 minutes, c'est fait.</p>
+      </div>
+      <div class="benefit-card">
+        <div class="emoji">✍️</div>
+        <h3>Fini la page blanche</h3>
+        <p>L'outil démarre la rédaction à ta place. Tu n'as qu'à valider.</p>
+      </div>
+      <div class="benefit-card">
+        <div class="emoji">🛒</div>
+        <h3>Des visiteurs qui comprennent</h3>
+        <p>Une fiche claire, c'est un acheteur rassuré qui passe à l'acte.</p>
+      </div>
+      <div class="benefit-card">
+        <div class="emoji">🌿</div>
+        <h3>Zéro jargon</h3>
+        <p>Pas besoin de connaître le SEO ni l'IA. On parle comme toi.</p>
+      </div>
+      <div class="benefit-card">
+        <div class="emoji">💬</div>
+        <h3>Un texte qui te ressemble</h3>
+        <p>Donne le ton, on l'adapte à ta façon de vendre.</p>
+      </div>
+      <div class="benefit-card">
+        <div class="emoji">📦</div>
+        <h3>Prêt à publier</h3>
+        <p>Copie-colle directement sur WooCommerce, Shopify ou ta boutique.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="wave">
+  <svg viewBox="0 0 1440 40" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+    <path d="M0,20 C360,40 1080,0 1440,20 L1440,40 L0,40 Z" fill="#FAF6F0"/>
+  </svg>
+</div>
+
+<!-- ══════════════════════════════════════════════
+     SECTION 6 — RÉASSURANCE
+══════════════════════════════════════════════ -->
+<section class="section">
+  <div class="container">
+    <div class="section-header">
+      <h2>Pas besoin d'être expert·e.</h2>
+      <p class="sub">Woosenteur a été conçu pour des gens comme toi — pas pour des développeurs.</p>
+    </div>
+    <div class="faq-list">
+      <div class="faq-item">
+        <div class="question">Je ne connais rien au SEO.</div>
+        <div class="answer">Tu n'as pas à le connaître. Woosenteur s'en occupe discrètement, sans t'en parler.</div>
+      </div>
+      <div class="faq-item">
+        <div class="question">Je ne suis pas bon·e en rédaction.</div>
+        <div class="answer">C'est exactement pour ça que l'outil existe. Tu donnes les infos, on rédige pour toi.</div>
+      </div>
+      <div class="faq-item">
+        <div class="question">Et si le résultat ne me correspond pas ?</div>
+        <div class="answer">Tu peux relancer, modifier et affiner jusqu'à être satisfait·e. Gratuitement.</div>
+      </div>
+      <div class="faq-item">
+        <div class="question">C'est fait pour les grandes boutiques ?</div>
+        <div class="answer">Non — c'est fait pour les vendeurs qui démarrent, qui gèrent tout seul·e, et qui ont besoin d'un coup de main rapide.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="wave">
+  <svg viewBox="0 0 1440 40" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+    <path d="M0,20 C360,0 1080,40 1440,20 L1440,40 L0,40 Z" fill="#EDF2EC"/>
+  </svg>
+</div>
+
+<!-- ══════════════════════════════════════════════
+     SECTION 7 — POUR QUI
+══════════════════════════════════════════════ -->
+<section class="section section-sage">
+  <div class="container">
+    <div class="section-header">
+      <h2>Fait pour toi, si...</h2>
+    </div>
+    <div class="forwho-grid">
+      <div class="forwho-card"><span class="icon">🧺</span><p>Tu vends des produits faits main ou artisanaux</p></div>
+      <div class="forwho-card"><span class="icon">🌿</span><p>Tu as lancé ta boutique naturelle ou bio</p></div>
+      <div class="forwho-card"><span class="icon">🕯️</span><p>Tu vends des bougies, cosmétiques ou accessoires</p></div>
+      <div class="forwho-card"><span class="icon">👶</span><p>Tu as créé des produits pour bébé ou famille</p></div>
+      <div class="forwho-card" style="grid-column: 1 / -1;"><span class="icon">🏠</span><p>Tu fais tout toi-même dans ta boutique en ligne</p></div>
+    </div>
+  </div>
+</section>
+
+<div class="wave">
+  <svg viewBox="0 0 1440 40" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+    <path d="M0,20 C360,40 1080,0 1440,20 L1440,40 L0,40 Z" fill="#F3ECE4"/>
+  </svg>
+</div>
+
+<!-- ══════════════════════════════════════════════
+     SECTION 8 — TÉMOIGNAGE
+══════════════════════════════════════════════ -->
+<section class="section section-alt">
+  <div class="container">
+    <div class="testimonial-wrap">
+      <div class="big-quote">"</div>
+      <div class="testimonial-stars">★★★★★</div>
+      <p class="testimonial-quote">
+        "J'ai enfin une fiche produit dont je suis fière. En 5 minutes, j'avais quelque chose de vrai et de professionnel. Je ne pensais pas que c'était possible pour moi."
+      </p>
+      <p class="testimonial-author">— Marie-Claire, boutique de savons artisanaux</p>
+    </div>
+  </div>
+</section>
+
+<div class="wave">
+  <svg viewBox="0 0 1440 40" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+    <path d="M0,20 C360,0 1080,40 1440,20 L1440,40 L0,40 Z" fill="#2E2018"/>
+  </svg>
+</div>
+
+<!-- ══════════════════════════════════════════════
+     SECTION 9 — CTA FINAL (dark)
+══════════════════════════════════════════════ -->
+<section id="essai-gratuit" class="section section-dark" style="text-align: center;">
+  <div class="container">
+    <h2 style="font-size: clamp(1.8rem, 5vw, 2.6rem); margin-bottom: 16px;">Ton prochain produit<br/>mérite une belle fiche.</h2>
+    <p class="sub">Commence maintenant, c'est gratuit. Pas d'abonnement, pas de carte bancaire.</p>
+    <a href="#" class="btn-cta" style="font-size: 17px; padding: 18px 40px;">Écrire ma première fiche — Gratuitement</a>
+    <span class="cta-note">5 fiches offertes · Sans inscription · Annulable à tout moment</span>
+    <div class="trust-pills">
+      <span>🔒 Sécurisé</span>
+      <span>❤️ Sans engagement</span>
+      <span>⚡ En 5 minutes</span>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════
+     FOOTER
+══════════════════════════════════════════════ -->
+<footer>
+  <div class="logo">Woosenteur</div>
+  <nav class="links">
+    <a href="#">Confidentialité</a>
+    <a href="#">CGV</a>
+    <a href="#">Contact</a>
+    <a href="#">Blog</a>
+  </nav>
+  <p class="copy">© 2026 Woosenteur — Fait avec ❤️ pour les petits vendeurs passionnés</p>
+</footer>
+
+</body>
+</html>

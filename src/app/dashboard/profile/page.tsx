@@ -119,7 +119,7 @@ export default function ProfilePage() {
     <>
       <div className="space-y-8">
         <div>
-          <h1 className="font-headline text-3xl font-bold text-gradient">Profil & Paramètres</h1>
+          <h1 className="font-headline text-3xl font-bold text-white">Profil & Paramètres</h1>
           <p className="text-muted-foreground">Gérez les informations de votre compte et vos intégrations.</p>
         </div>
         

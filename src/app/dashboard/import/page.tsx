@@ -1,4 +1,4 @@
-
+﻿
 'use client';
 
 import { useState, useRef, useMemo, useEffect } from 'react';
@@ -245,7 +245,7 @@ function parseQuickEntry(text: string): ProcessedRow[] {
 // ─── WooCommerce CSV helpers ──────────────────────────────────────────────────
 
 /** Parser CSV respectant les guillemets et les virgules dans les champs */
-function parseCSVLine(line: string): string[] {
+function parseCSVLine(line: string, delimiter = ','): string[] {
     const result: string[] = [];
     let current = '';
     let inQuotes = false;
@@ -254,7 +254,7 @@ function parseCSVLine(line: string): string[] {
         if (ch === '"') {
             if (inQuotes && line[i + 1] === '"') { current += '"'; i++; }
             else { inQuotes = !inQuotes; }
-        } else if (ch === ',' && !inQuotes) {
+        } else if (ch === delimiter && !inQuotes) {
             result.push(current.trim());
             current = '';
         } else {
@@ -277,10 +277,14 @@ function parseWooCommerceCsv(text: string): {
     const lines = cleaned.split('\n').filter(l => l.trim());
     if (lines.length < 2) return { products: [], headers: [], format: 'fr', detectedCount: 0 };
 
-    const headers = parseCSVLine(lines[0]);
+    // Auto-détection du délimiteur (WooCommerce FR utilise ; WooCommerce EN utilise ,)
+    const firstLine = lines[0];
+    const delimiter = (firstLine.split(';').length > firstLine.split(',').length) ? ';' : ',';
+
+    const headers = parseCSVLine(firstLine, delimiter);
 
     // Auto-détection FR vs EN
-    const isFr = headers.some(h => h === 'Nom') && headers.some(h => h === 'UGS' || h === 'Marques');
+    const isFr = headers.some(h => h === 'Nom');
     const format: 'fr' | 'en' = isFr ? 'fr' : 'en';
 
     const FR_MAP: Record<string, string> = {
@@ -288,8 +292,8 @@ function parseWooCommerceCsv(text: string): {
         weight: 'Poids (kg)', price: 'Tarif régulier', image: 'Images',
     };
     const EN_MAP: Record<string, string> = {
-        name: 'post_title', brand: 'tax:product_brand', category: 'tax:product_cat',
-        weight: 'weight', price: 'regular_price', image: 'images',
+        name: 'Name', brand: 'Brands', category: 'Categories',
+        weight: 'Weight (kg)', price: 'Regular price', image: 'Images',
     };
     const MAP = format === 'fr' ? FR_MAP : EN_MAP;
 
@@ -305,7 +309,7 @@ function parseWooCommerceCsv(text: string): {
 
     const products: ProcessedRow[] = lines.slice(1)
         .map((line, i) => {
-            const values = parseCSVLine(line);
+            const values = parseCSVLine(line, delimiter);
             const name = getByKey(values, 'name');
             if (!name.trim()) return null;
 

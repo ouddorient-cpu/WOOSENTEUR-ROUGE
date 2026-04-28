@@ -544,8 +544,22 @@ export default function ImportPage() {
         const reader = new FileReader();
         reader.onload = (e) => {
             const text = e.target?.result as string;
-            const lines = text.replace(/^\uFEFF/, '').split('\n').filter(line => line.trim() !== '');
-            const headers = lines[0].split(',').map(h => h.trim().replace(/"/g, ''));
+            const cleaned = text.replace(/^\uFEFF/, '');
+            const lines = cleaned.split('\n').filter(line => line.trim() !== '');
+            if (lines.length < 2) return;
+
+            // Auto-d\u00E9tection : si le CSV ressemble \u00E0 un export WooCommerce, on bascule
+            const firstLine = lines[0];
+            const delimiter = (firstLine.split(';').length > firstLine.split(',').length) ? ';' : ',';
+            const headers = parseCSVLine(firstLine, delimiter);
+            const isWooExport = headers.some(h => h === 'Nom' || h === 'Name') &&
+                headers.some(h => h === 'UGS' || h === 'SKU' || h === 'Cat\u00E9gories' || h === 'Categories');
+
+            if (isWooExport) {
+                processWooFile(file);
+                return;
+            }
+
             const requiredHeaders = ['productName', 'brand', 'category', 'weight'];
             if (!requiredHeaders.every(h => headers.includes(h))) {
                 toast({
@@ -559,7 +573,7 @@ export default function ImportPage() {
             const imageUrlIndex = headers.indexOf('imageUrl');
             const parsedProducts: ProcessedRow[] = lines.slice(1)
                 .map((line, index) => {
-                    const values = line.split(',').map(v => v.trim().replace(/"/g, ''));
+                    const values = parseCSVLine(line, delimiter);
                     const raw = {
                         id: index,
                         productName: values[headers.indexOf('productName')] || '',

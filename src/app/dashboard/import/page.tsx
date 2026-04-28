@@ -621,7 +621,7 @@ export default function ImportPage() {
         const reader = new FileReader();
         reader.onload = (e) => {
             const text = e.target?.result as string;
-            const { products: parsed, headers, format, detectedCount } = parseWooCommerceCsv(text);
+            const { products: parsed, headers, format, delimiter, detectedCount } = parseWooCommerceCsv(text);
 
             if (detectedCount === 0) {
                 toast({

@@ -174,12 +174,12 @@ function buildFreshWooCommerceCsv(products: ProcessedRow[]): string {
 
 // ─── Validation helper ────────────────────────────────────────────────────────
 
-function validateRow(row: Omit<ProcessedRow, 'isValid' | 'validationErrors'>): { isValid: boolean; validationErrors: string[] } {
+function validateRow(row: Omit<ProcessedRow, 'isValid' | 'validationErrors'>, wooMode = false): { isValid: boolean; validationErrors: string[] } {
     const errors: string[] = [];
     if (!row.productName?.trim()) errors.push('Nom manquant');
-    if (!row.brand?.trim()) errors.push('Marque manquante');
+    if (!wooMode && !row.brand?.trim()) errors.push('Marque manquante');
     if (!VALID_CATEGORIES.includes(row.category)) errors.push(`Catégorie invalide: "${row.category}"`);
-    if (!row.weight?.trim() || isNaN(parseFloat(row.weight))) errors.push('Poids invalide');
+    if (!wooMode && (!row.weight?.trim() || isNaN(parseFloat(row.weight)))) errors.push('Poids invalide');
     if (row.price && isNaN(parseFloat(row.price))) errors.push('Prix invalide');
     return { isValid: errors.length === 0, validationErrors: errors };
 }
@@ -338,7 +338,7 @@ function parseWooCommerceCsv(text: string): {
                 errorMessage: undefined,
                 originalRowData: values,
             };
-            const { isValid, validationErrors } = validateRow(raw);
+            const { isValid, validationErrors } = validateRow(raw, true);
             return { ...raw, isValid, validationErrors };
         })
         .filter(Boolean) as ProcessedRow[];

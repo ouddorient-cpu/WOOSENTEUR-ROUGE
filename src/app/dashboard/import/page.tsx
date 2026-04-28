@@ -270,12 +270,13 @@ function parseWooCommerceCsv(text: string): {
     products: ProcessedRow[];
     headers: string[];
     format: 'fr' | 'en';
+    delimiter: ',' | ';';
     detectedCount: number;
 } {
     // Retirer le BOM UTF-8 si présent
     const cleaned = text.replace(/^\uFEFF/, '');
     const lines = cleaned.split('\n').filter(l => l.trim());
-    if (lines.length < 2) return { products: [], headers: [], format: 'fr', detectedCount: 0 };
+    if (lines.length < 2) return { products: [], headers: [], format: 'fr', delimiter: ',', detectedCount: 0 };
 
     // Auto-détection du délimiteur (WooCommerce FR utilise ; WooCommerce EN utilise ,)
     const firstLine = lines[0];
@@ -342,14 +343,15 @@ function parseWooCommerceCsv(text: string): {
         })
         .filter(Boolean) as ProcessedRow[];
 
-    return { products, headers, format, detectedCount: products.length };
+    return { products, headers, format, delimiter, detectedCount: products.length };
 }
 
 /** Reconstruit le CSV WooCommerce en enrichissant les colonnes SEO */
 function buildEnrichedWooCommerceCsv(
     headers: string[],
     products: ProcessedRow[],
-    format: 'fr' | 'en'
+    format: 'fr' | 'en',
+    delimiter: ',' | ';' = ','
 ): string {
     const COLS_FR: Record<string, (p: ProcessedRow) => string> = {
         'Description courte': p => p.generatedSeo?.shortDescription ?? '',
@@ -373,10 +375,11 @@ function buildEnrichedWooCommerceCsv(
     const BOM = '\uFEFF';
     const escape = (v: unknown): string => {
         const s = String(v ?? '');
-        return /[",\r\n]/.test(s) ? `"${s.replace(/"/g, '""')}"` : s;
+        const needsQuote = s.includes(delimiter) || s.includes('"') || s.includes('\r') || s.includes('\n');
+        return needsQuote ? '"' + s.replace(/"/g, '""') + '"' : s;
     };
 
-    const headerLine = headers.map(escape).join(',');
+    const headerLine = headers.map(escape).join(delimiter);
     const dataLines = products.map(p => {
         const row = [...(p.originalRowData ?? new Array(headers.length).fill(''))];
         while (row.length < headers.length) row.push('');
@@ -387,7 +390,7 @@ function buildEnrichedWooCommerceCsv(
                 if (updater) row[i] = updater(p);
             });
         }
-        return row.map(escape).join(',');
+        return row.map(escape).join(delimiter);
     });
 
     return BOM + [headerLine, ...dataLines].join('\n');
@@ -459,6 +462,7 @@ export default function ImportPage() {
     const [wooMode, setWooMode] = useState(false);
     const [wooHeaders, setWooHeaders] = useState<string[]>([]);
     const [wooFormat, setWooFormat] = useState<'fr' | 'en'>('fr');
+    const [wooDelimiter, setWooDelimiter] = useState<',' | ';'>(',');
     const [wooDetectedCount, setWooDetectedCount] = useState(0);
     const [wooFileName, setWooFileName] = useState('');
     const [isDraggingWoo, setIsDraggingWoo] = useState(false);
@@ -616,6 +620,7 @@ export default function ImportPage() {
 
             setWooHeaders(headers);
             setWooFormat(format);
+            setWooDelimiter(delimiter as ',' | ';');
             setWooDetectedCount(detectedCount);
             setWooMode(true);
             setPreviewFilter('all');
@@ -649,7 +654,7 @@ export default function ImportPage() {
     };
 
     const downloadEnrichedWooCommerceCsv = () => {
-        const csv = buildEnrichedWooCommerceCsv(wooHeaders, products, wooFormat);
+        const csv = buildEnrichedWooCommerceCsv(wooHeaders, products, wooFormat, wooDelimiter);
         const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
         const url = URL.createObjectURL(blob);
         const a = document.createElement('a');

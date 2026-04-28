@@ -360,41 +360,55 @@ function buildEnrichedWooCommerceCsv(
         'Meta: rank_math_description': p => p.generatedSeo?.shortDescription ?? '',
         'Meta: rank_math_focus_keyword': p => p.generatedSeo?.focusKeyword ?? '',
         'Meta: rank_math_title': p => p.generatedSeo?.productTitle ?? '',
-        'Meta: _woosenteur_seo_title': p => p.generatedSeo?.productTitle ?? '',
-        'Meta: _woosenteur_main_keyword': p => p.generatedSeo?.focusKeyword ?? '',
         'Meta: _woosenteur_generated_by': () => 'WooSenteur Agent',
-        'Meta: _woosenteur_generation_date': () => new Date().toISOString(),
     };
     const COLS_EN: Record<string, (p: ProcessedRow) => string> = {
-        'post_content': p => p.generatedSeo?.longDescription ?? '',
-        'post_excerpt': p => p.generatedSeo?.shortDescription ?? '',
-        'tax:product_tag': p => p.generatedSeo?.tags ?? '',
+        'Short description': p => p.generatedSeo?.shortDescription ?? '',
+        'Description': p => p.generatedSeo?.longDescription ?? '',
+        'Tags': p => p.generatedSeo?.tags ?? '',
+        'Meta: rank_math_description': p => p.generatedSeo?.shortDescription ?? '',
+        'Meta: rank_math_focus_keyword': p => p.generatedSeo?.focusKeyword ?? '',
+        'Meta: rank_math_title': p => p.generatedSeo?.productTitle ?? '',
+        'Meta: _woosenteur_generated_by': () => 'WooSenteur Agent',
     };
     const COLS = format === 'fr' ? COLS_FR : COLS_EN;
 
-    const BOM = '\uFEFF';
+    const BOM = '﻿';
     const escape = (v: unknown): string => {
         const s = String(v ?? '');
         const needsQuote = s.includes(delimiter) || s.includes('"') || s.includes('\r') || s.includes('\n');
         return needsQuote ? '"' + s.replace(/"/g, '""') + '"' : s;
     };
 
-    const headerLine = headers.map(escape).join(delimiter);
+    // Colonnes SEO absentes du fichier source : on les ajoute
+    const existingSet = new Set(headers);
+    const newCols = Object.keys(COLS).filter(col => !existingSet.has(col));
+    const enrichedHeaders = [...headers, ...newCols];
+
+    const headerLine = enrichedHeaders.map(escape).join(delimiter);
     const dataLines = products.map(p => {
         const row = [...(p.originalRowData ?? new Array(headers.length).fill(''))];
         while (row.length < headers.length) row.push('');
 
         if (p.status === 'success') {
-            headers.forEach((h, i) => {
+            enrichedHeaders.forEach((h, i) => {
                 const updater = COLS[h];
                 if (updater) row[i] = updater(p);
             });
+            newCols.forEach(col => {
+                const updater = COLS[col];
+                row.push(updater ? updater(p) : '');
+            });
+        } else {
+            newCols.forEach(() => row.push(''));
         }
+
         return row.map(escape).join(delimiter);
     });
 
     return BOM + [headerLine, ...dataLines].join('\n');
 }
+
 
 // ─── WooConnectionTest ───────────────────────────────────────────────────────
 

@@ -687,13 +687,15 @@ export default function ImportPage() {
         setProducts(prev => prev.map(p => p.id === product.id ? { ...p, status: 'processing' } : p));
         try {
             if (!isSuperAdmin) await decrementCredits(user.uid);
-            const seoData = await generateSeoOptimizedProductDescription({
+            const seoResult = await generateSeoOptimizedProductDescription({
                 productName: product.productName,
                 brand: product.brand,
                 category: product.category,
                 language: 'French',
-                productMode: 'marque-connue',
+                productMode: product.brand?.trim() ? 'marque-connue' : 'mon-produit',
             });
+            if (!seoResult.success) throw new Error(seoResult.error);
+            const seoData = seoResult.data;
             const newProductData: any = {
                 name: product.productName,
                 brand: product.brand,
@@ -705,7 +707,7 @@ export default function ImportPage() {
             if (product.price) newProductData.price = parseFloat(product.price);
             if (product.imageUrl) newProductData.imageUrl = product.imageUrl;
             await saveProduct(user.uid, newProductData);
-            // Stocker le résultat SEO sur la ligne pour le CSV WooCommerce enrichi
+            // Stocker le résultat SEO (data uniquement) pour le CSV WooCommerce enrichi
             setProducts(prev => prev.map(p => p.id === product.id ? { ...p, status: 'success', generatedSeo: seoData } : p));
         } catch (error: any) {
             console.error('Erreur pour:', product.productName, error);

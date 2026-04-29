@@ -391,10 +391,12 @@ function buildEnrichedWooCommerceCsv(
         while (row.length < headers.length) row.push('');
 
         if (p.status === 'success') {
-            enrichedHeaders.forEach((h, i) => {
+            // Mettre à jour les colonnes existantes uniquement
+            headers.forEach((h, i) => {
                 const updater = COLS[h];
                 if (updater) row[i] = updater(p);
             });
+            // Ajouter les nouvelles colonnes SEO à la fin
             newCols.forEach(col => {
                 const updater = COLS[col];
                 row.push(updater ? updater(p) : '');

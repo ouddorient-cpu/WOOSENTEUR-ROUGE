@@ -53,7 +53,7 @@ export default function FeedbackButton() {
       {status === 'idle' && (
         <button
           onClick={() => setStatus('open')}
-          className="fixed bottom-24 right-4 sm:right-6 z-50 flex items-center gap-2 bg-primary text-white px-4 py-2.5 rounded-full shadow-lg shadow-primary/30 text-sm font-semibold hover:bg-primary/90 transition-all hover:scale-105"
+          className="fixed bottom-24 left-4 sm:left-6 z-50 flex items-center gap-2 bg-primary text-white px-4 py-2.5 rounded-full shadow-lg shadow-primary/30 text-sm font-semibold hover:bg-primary/90 transition-all hover:scale-105"
           aria-label="Donner mon avis"
         >
           <MessageSquarePlus className="h-4 w-4" />
@@ -63,7 +63,7 @@ export default function FeedbackButton() {
 
       {/* Feedback panel */}
       {(status === 'open' || status === 'sending' || status === 'sent') && (
-        <div className="fixed bottom-24 right-4 sm:right-6 z-50 w-80 bg-card border border-border rounded-2xl shadow-2xl shadow-black/10 overflow-hidden">
+        <div className="fixed bottom-24 left-4 sm:left-6 z-50 w-80 bg-card border border-border rounded-2xl shadow-2xl shadow-black/10 overflow-hidden">
           {/* Header */}
           <div className="flex items-center justify-between px-4 py-3 border-b border-border bg-muted/40">
             <p className="text-sm font-semibold text-foreground flex items-center gap-2">

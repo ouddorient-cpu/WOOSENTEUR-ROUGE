@@ -3,21 +3,32 @@
 
 import { useUser } from '@/firebase/auth/use-user';
 import { useCollection, useFirestore } from '@/firebase';
-import { collection, query, orderBy } from 'firebase/firestore';
+import { collection, query, orderBy, doc, deleteDoc } from 'firebase/firestore';
 import type { Product } from '@/lib/types';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent } from '@/components/ui/card';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Checkbox } from '@/components/ui/checkbox';
-import { ArrowRight, Package, Search, Filter, LayoutGrid, List, Eye, Clock, Sparkles, Download, CheckSquare } from 'lucide-react';
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from '@/components/ui/alert-dialog';
+import { ArrowRight, Package, Search, Filter, LayoutGrid, List, Eye, Clock, Sparkles, Download, CheckSquare, Trash2, Loader2 } from 'lucide-react';
 import { useMemo, useEffect, useState, useCallback } from 'react';
 import Image from 'next/image';
 import { Badge } from '@/components/ui/badge';
+import { useToast } from '@/hooks/use-toast';
 
 const ITEMS_PER_PAGE = 10;
 
@@ -85,11 +96,11 @@ function exportProductsToCsv(selected: Product[]) {
 
 const ProductsSkeleton = () => (
   <Card>
-    <CardHeader>
-      <Skeleton className="h-8 w-48" />
+    <div className="p-6">
+      <Skeleton className="h-8 w-48 mb-2" />
       <Skeleton className="h-4 w-80" />
-    </CardHeader>
-    <CardContent>
+    </div>
+    <div className="p-6 pt-0">
       <div className="flex gap-3 mb-4">
         <Skeleton className="h-10 flex-1" />
         <Skeleton className="h-10 w-48" />
@@ -114,7 +125,7 @@ const ProductsSkeleton = () => (
           ))}
         </TableBody>
       </Table>
-    </CardContent>
+    </div>
   </Card>
 );
 
@@ -122,6 +133,7 @@ export default function ProductsListPage() {
   const { user, loading: userLoading } = useUser();
   const router = useRouter();
   const firestore = useFirestore();
+  const { toast } = useToast();
 
   const [searchQuery, setSearchQuery] = useState('');
   const [categoryFilter, setCategoryFilter] = useState('all');
@@ -131,6 +143,9 @@ export default function ProductsListPage() {
     return 'grid';
   });
   const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
+  const [deleteTarget, setDeleteTarget] = useState<Product | null>(null);
+  const [deleteSelectionOpen, setDeleteSelectionOpen] = useState(false);
+  const [deleting, setDeleting] = useState(false);
 
   const productsPath = useMemo(() => user ? `users/${user.uid}/products` : null, [user]);
 
@@ -139,9 +154,7 @@ export default function ProductsListPage() {
   );
 
   useEffect(() => {
-    if (!userLoading && !user) {
-      router.push('/login');
-    }
+    if (!userLoading && !user) router.push('/login');
   }, [user, userLoading, router]);
 
   const filteredProducts = useMemo(() => {
@@ -164,18 +177,14 @@ export default function ProductsListPage() {
     currentPage * ITEMS_PER_PAGE
   );
 
-  useEffect(() => {
-    setCurrentPage(1);
-  }, [searchQuery, categoryFilter]);
+  useEffect(() => { setCurrentPage(1); }, [searchQuery, categoryFilter]);
 
   const allPageSelected = paginatedProducts.length > 0 && paginatedProducts.every((p) => selectedIds.has(p.id));
-  const somePageSelected = paginatedProducts.some((p) => selectedIds.has(p.id));
 
   const toggleProduct = useCallback((id: string) => {
     setSelectedIds((prev) => {
       const next = new Set(prev);
-      if (next.has(id)) next.delete(id);
-      else next.add(id);
+      if (next.has(id)) next.delete(id); else next.add(id);
       return next;
     });
   }, []);
@@ -183,11 +192,8 @@ export default function ProductsListPage() {
   const toggleAllPage = useCallback(() => {
     setSelectedIds((prev) => {
       const next = new Set(prev);
-      if (allPageSelected) {
-        paginatedProducts.forEach((p) => next.delete(p.id));
-      } else {
-        paginatedProducts.forEach((p) => next.add(p.id));
-      }
+      if (allPageSelected) paginatedProducts.forEach((p) => next.delete(p.id));
+      else paginatedProducts.forEach((p) => next.add(p.id));
       return next;
     });
   }, [allPageSelected, paginatedProducts]);
@@ -200,15 +206,48 @@ export default function ProductsListPage() {
 
   const handleExport = useCallback(() => {
     if (!products) return;
-    const toExport = products.filter((p) => selectedIds.has(p.id));
-    exportProductsToCsv(toExport);
+    exportProductsToCsv(products.filter((p) => selectedIds.has(p.id)));
   }, [products, selectedIds]);
 
-  const isLoading = userLoading || productsLoading;
+  const deleteOne = useCallback(async (product: Product) => {
+    if (!user) return;
+    setDeleting(true);
+    try {
+      await deleteDoc(doc(firestore, `users/${user.uid}/products`, product.id));
+      setSelectedIds((prev) => { const next = new Set(prev); next.delete(product.id); return next; });
+      toast({ title: 'Produit supprimé', description: product.name });
+    } catch {
+      toast({ title: 'Erreur', description: 'La suppression a échoué.', variant: 'destructive' });
+    } finally {
+      setDeleting(false);
+      setDeleteTarget(null);
+    }
+  }, [user, firestore, toast]);
 
-  if (isLoading || !user) {
-    return <ProductsSkeleton />;
-  }
+  const deleteSelection = useCallback(async () => {
+    if (!user || selectedIds.size === 0) return;
+    setDeleting(true);
+    let failed = 0;
+    for (const id of selectedIds) {
+      try {
+        await deleteDoc(doc(firestore, `users/${user.uid}/products`, id));
+      } catch {
+        failed++;
+      }
+    }
+    const deleted = selectedIds.size - failed;
+    toast({
+      title: `${deleted} produit${deleted > 1 ? 's' : ''} supprimé${deleted > 1 ? 's' : ''}`,
+      description: failed > 0 ? `${failed} échec(s)` : undefined,
+      variant: failed > 0 ? 'destructive' : 'default',
+    });
+    setSelectedIds(new Set());
+    setDeleteSelectionOpen(false);
+    setDeleting(false);
+  }, [user, firestore, selectedIds, toast]);
+
+  const isLoading = userLoading || productsLoading;
+  if (isLoading || !user) return <ProductsSkeleton />;
 
   return (
     <>
@@ -227,6 +266,7 @@ export default function ProductsListPage() {
         </Button>
       </div>
 
+      {/* Filters */}
       <Card className="mb-8 border-none bg-muted/30">
         <CardContent className="pt-6">
           <div className="flex flex-col sm:flex-row gap-4">
@@ -247,16 +287,13 @@ export default function ProductsListPage() {
                 </SelectTrigger>
                 <SelectContent>
                   {CATEGORIES.map((cat) => (
-                    <SelectItem key={cat.value} value={cat.value}>
-                      {cat.label}
-                    </SelectItem>
+                    <SelectItem key={cat.value} value={cat.value}>{cat.label}</SelectItem>
                   ))}
                 </SelectContent>
               </Select>
 
-              <div className="flex items-center gap-1 px-3 h-12 bg-background border border-border rounded-lg" title="Sélectionner la page">
+              <div className="flex items-center justify-center w-12 h-12 bg-background border border-border rounded-lg" title="Sélectionner la page">
                 <Checkbox
-                  id="select-page"
                   checked={allPageSelected}
                   onCheckedChange={toggleAllPage}
                   className="data-[state=checked]:bg-primary"
@@ -285,6 +322,7 @@ export default function ProductsListPage() {
         </CardContent>
       </Card>
 
+      {/* Products */}
       <div className="space-y-6">
         {paginatedProducts.length > 0 ? (
           viewMode === 'grid' ? (
@@ -304,6 +342,13 @@ export default function ProductsListPage() {
                       <Button asChild size="sm" variant="secondary">
                         <Link href={`/dashboard/products/${product.id}`}><Eye className="mr-2 h-4 w-4" /> Détails</Link>
                       </Button>
+                      <Button
+                        size="sm"
+                        variant="destructive"
+                        onClick={(e) => { e.preventDefault(); setDeleteTarget(product); }}
+                      >
+                        <Trash2 className="h-4 w-4" />
+                      </Button>
                     </div>
                     <div className="absolute top-3 left-3 flex items-center gap-2">
                       <div
@@ -311,9 +356,7 @@ export default function ProductsListPage() {
                         style={{ borderColor: selectedIds.has(product.id) ? 'hsl(var(--primary))' : 'hsl(var(--border))' }}
                         onClick={(e) => { e.preventDefault(); toggleProduct(product.id); }}
                       >
-                        {selectedIds.has(product.id) && (
-                          <div className="w-3 h-3 rounded-sm bg-primary" />
-                        )}
+                        {selectedIds.has(product.id) && <div className="w-3 h-3 rounded-sm bg-primary" />}
                       </div>
                       <Badge className="bg-background/90 text-foreground backdrop-blur-sm border-none shadow-sm">
                         {product.productType || 'Produit'}
@@ -349,8 +392,8 @@ export default function ProductsListPage() {
                       <Checkbox
                         checked={allPageSelected}
                         onCheckedChange={toggleAllPage}
-                        aria-label="Sélectionner toute la page"
                         className="data-[state=checked]:bg-primary"
+                        aria-label="Sélectionner toute la page"
                       />
                     </TableHead>
                     <TableHead className="w-12"></TableHead>
@@ -358,7 +401,7 @@ export default function ProductsListPage() {
                     <TableHead>Marque</TableHead>
                     <TableHead>Catégorie</TableHead>
                     <TableHead>Date</TableHead>
-                    <TableHead className="text-right">Action</TableHead>
+                    <TableHead className="text-right">Actions</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
@@ -368,7 +411,6 @@ export default function ProductsListPage() {
                         <Checkbox
                           checked={selectedIds.has(product.id)}
                           onCheckedChange={() => toggleProduct(product.id)}
-                          aria-label={`Sélectionner ${product.name}`}
                           className="data-[state=checked]:bg-primary"
                         />
                       </TableCell>
@@ -390,11 +432,22 @@ export default function ProductsListPage() {
                         {product.createdAt ? new Date(product.createdAt.seconds * 1000).toLocaleDateString('fr-FR') : 'N/A'}
                       </TableCell>
                       <TableCell className="text-right">
-                        <Button asChild size="sm" variant="ghost" className="h-8">
-                          <Link href={`/dashboard/products/${product.id}`} className="flex items-center gap-1">
-                            Éditer <ArrowRight className="h-3 w-3" />
-                          </Link>
-                        </Button>
+                        <div className="flex items-center justify-end gap-1">
+                          <Button asChild size="sm" variant="ghost" className="h-8">
+                            <Link href={`/dashboard/products/${product.id}`} className="flex items-center gap-1">
+                              Éditer <ArrowRight className="h-3 w-3" />
+                            </Link>
+                          </Button>
+                          <Button
+                            size="sm"
+                            variant="ghost"
+                            className="h-8 w-8 p-0 text-muted-foreground hover:text-destructive hover:bg-destructive/10"
+                            onClick={() => setDeleteTarget(product)}
+                            title="Supprimer"
+                          >
+                            <Trash2 className="h-4 w-4" />
+                          </Button>
+                        </div>
                       </TableCell>
                     </TableRow>
                   ))}
@@ -432,22 +485,10 @@ export default function ProductsListPage() {
               Page <span className="font-bold text-foreground">{currentPage}</span> sur <span className="font-bold text-foreground">{totalPages}</span>
             </p>
             <div className="flex gap-2">
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
-                disabled={currentPage === 1}
-                className="h-9 px-4"
-              >
+              <Button variant="outline" size="sm" onClick={() => setCurrentPage((p) => Math.max(1, p - 1))} disabled={currentPage === 1} className="h-9 px-4">
                 Précédent
               </Button>
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
-                disabled={currentPage === totalPages}
-                className="h-9 px-4"
-              >
+              <Button variant="outline" size="sm" onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))} disabled={currentPage === totalPages} className="h-9 px-4">
                 Suivant
               </Button>
             </div>
@@ -455,7 +496,7 @@ export default function ProductsListPage() {
         )}
       </div>
 
-      {/* Floating export bar */}
+      {/* Floating action bar */}
       {selectedIds.size > 0 && (
         <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 flex items-center gap-3 bg-background border border-border shadow-2xl rounded-2xl px-5 py-3 animate-in slide-in-from-bottom-4 duration-200">
           <span className="text-sm font-medium text-foreground">
@@ -471,12 +512,67 @@ export default function ProductsListPage() {
           <Button variant="ghost" size="sm" className="h-8 text-xs text-muted-foreground" onClick={clearSelection}>
             Annuler
           </Button>
+          <Button
+            size="sm"
+            variant="outline"
+            className="h-8 text-destructive border-destructive/30 hover:bg-destructive/10"
+            onClick={() => setDeleteSelectionOpen(true)}
+          >
+            <Trash2 className="mr-1.5 h-3.5 w-3.5" />
+            Supprimer
+          </Button>
           <Button size="sm" className="h-8 shadow-lg shadow-primary/20" onClick={handleExport}>
             <Download className="mr-2 h-3.5 w-3.5" />
-            Exporter CSV WooCommerce
+            Exporter CSV
           </Button>
         </div>
       )}
+
+      {/* Confirm delete single */}
+      <AlertDialog open={!!deleteTarget} onOpenChange={(open) => { if (!open) setDeleteTarget(null); }}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Supprimer ce produit ?</AlertDialogTitle>
+            <AlertDialogDescription>
+              <span className="font-semibold text-foreground">{deleteTarget?.name}</span> sera définitivement supprimé. Cette action est irréversible.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel disabled={deleting}>Annuler</AlertDialogCancel>
+            <AlertDialogAction
+              className="bg-destructive hover:bg-destructive/90 text-destructive-foreground"
+              onClick={() => deleteTarget && deleteOne(deleteTarget)}
+              disabled={deleting}
+            >
+              {deleting ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <Trash2 className="mr-2 h-4 w-4" />}
+              Supprimer
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+
+      {/* Confirm delete selection */}
+      <AlertDialog open={deleteSelectionOpen} onOpenChange={setDeleteSelectionOpen}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Supprimer {selectedIds.size} produit{selectedIds.size > 1 ? 's' : ''} ?</AlertDialogTitle>
+            <AlertDialogDescription>
+              Cette action est irréversible. Les {selectedIds.size} produits sélectionnés seront définitivement supprimés.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel disabled={deleting}>Annuler</AlertDialogCancel>
+            <AlertDialogAction
+              className="bg-destructive hover:bg-destructive/90 text-destructive-foreground"
+              onClick={deleteSelection}
+              disabled={deleting}
+            >
+              {deleting ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <Trash2 className="mr-2 h-4 w-4" />}
+              Supprimer tout
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </>
   );
 }

@@ -75,6 +75,10 @@ export default function ProductsListPage() {
   const [searchQuery, setSearchQuery] = useState('');
   const [categoryFilter, setCategoryFilter] = useState('all');
   const [currentPage, setCurrentPage] = useState(1);
+  const [viewMode, setViewMode] = useState<'grid' | 'list'>(() => {
+    if (typeof window !== 'undefined') return (localStorage.getItem('products-view') as 'grid' | 'list') || 'grid';
+    return 'grid';
+  });
 
   const productsPath = useMemo(() => user ? `users/${user.uid}/products` : null, [user]);
 
@@ -162,6 +166,22 @@ export default function ProductsListPage() {
                   ))}
                 </SelectContent>
               </Select>
+              <div className="flex border border-border rounded-lg overflow-hidden h-12">
+                <button
+                  onClick={() => { setViewMode('grid'); localStorage.setItem('products-view', 'grid'); }}
+                  className={`px-3 flex items-center transition-colors ${viewMode === 'grid' ? 'bg-primary text-white' : 'bg-background text-muted-foreground hover:text-foreground'}`}
+                  title="Vue grille"
+                >
+                  <LayoutGrid className="h-4 w-4" />
+                </button>
+                <button
+                  onClick={() => { setViewMode('list'); localStorage.setItem('products-view', 'list'); }}
+                  className={`px-3 flex items-center transition-colors ${viewMode === 'list' ? 'bg-primary text-white' : 'bg-background text-muted-foreground hover:text-foreground'}`}
+                  title="Vue liste"
+                >
+                  <List className="h-4 w-4" />
+                </button>
+              </div>
             </div>
           </div>
         </CardContent>
@@ -169,51 +189,91 @@ export default function ProductsListPage() {
 
       <div className="space-y-6">
         {paginatedProducts.length > 0 ? (
-          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-            {paginatedProducts.map((product) => (
-              <Card key={product.id} className="group overflow-hidden border border-border hover:border-primary/30 transition-all duration-300 hover:shadow-xl hover:-translate-y-1 flex flex-col studio-card">
-                <div className="aspect-[16/10] relative bg-muted flex items-center justify-center overflow-hidden">
-                  {product.imageUrl ? (
-                    <Image
-                      src={product.imageUrl}
-                      alt={product.name || 'Produit'}
-                      fill
-                      className="object-cover transition-transform duration-500 group-hover:scale-110"
-                    />
-                  ) : (
-                    <Package className="h-12 w-12 text-muted-foreground/30" />
-                  )}
-                  <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-3">
-                    <Button asChild size="sm" variant="secondary">
-                      <Link href={`/dashboard/products/${product.id}`}>
-                        <Eye className="mr-2 h-4 w-4" /> Détails
-                      </Link>
-                    </Button>
+          viewMode === 'grid' ? (
+            <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+              {paginatedProducts.map((product) => (
+                <Card key={product.id} className="group overflow-hidden border border-border hover:border-primary/30 transition-all duration-300 hover:shadow-xl hover:-translate-y-1 flex flex-col studio-card">
+                  <div className="aspect-[16/10] relative bg-muted flex items-center justify-center overflow-hidden">
+                    {product.imageUrl ? (
+                      <Image src={product.imageUrl} alt={product.name || 'Produit'} fill className="object-cover transition-transform duration-500 group-hover:scale-110" />
+                    ) : (
+                      <Package className="h-12 w-12 text-muted-foreground/30" />
+                    )}
+                    <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                      <Button asChild size="sm" variant="secondary">
+                        <Link href={`/dashboard/products/${product.id}`}><Eye className="mr-2 h-4 w-4" /> Détails</Link>
+                      </Button>
+                    </div>
+                    <Badge className="absolute top-3 left-3 bg-background/90 text-foreground backdrop-blur-sm border-none shadow-sm">
+                      {product.productType || 'Produit'}
+                    </Badge>
                   </div>
-                  <Badge className="absolute top-3 left-3 bg-background/90 text-foreground backdrop-blur-sm border-none shadow-sm">
-                    {product.productType || 'Produit'}
-                  </Badge>
-                </div>
-                <CardContent className="p-4 flex-1 flex flex-col justify-between">
-                  <div>
-                    <h3 className="font-bold line-clamp-1 group-hover:text-primary transition-colors">{product.name}</h3>
-                    <p className="text-sm text-muted-foreground mb-4">{product.brand}</p>
-                  </div>
-                  <div className="flex items-center justify-between pt-4 border-t border-border">
-                    <span className="text-xs text-muted-foreground flex items-center gap-1">
-                      <Clock className="h-3 w-3" />
-                      {product.createdAt ? new Date(product.createdAt.seconds * 1000).toLocaleDateString('fr-FR') : 'N/A'}
-                    </span>
-                    <Button asChild size="sm" variant="link" className="text-xs h-auto p-0 font-bold text-primary">
-                      <Link href={`/dashboard/products/${product.id}`} className="flex items-center gap-1 group/link">
-                        Éditer <ArrowRight className="h-3 w-3 transition-transform group-hover/link:translate-x-1" />
-                      </Link>
-                    </Button>
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
+                  <CardContent className="p-4 flex-1 flex flex-col justify-between">
+                    <div>
+                      <h3 className="font-bold line-clamp-1 group-hover:text-primary transition-colors">{product.name}</h3>
+                      <p className="text-sm text-muted-foreground mb-4">{product.brand}</p>
+                    </div>
+                    <div className="flex items-center justify-between pt-4 border-t border-border">
+                      <span className="text-xs text-muted-foreground flex items-center gap-1">
+                        <Clock className="h-3 w-3" />
+                        {product.createdAt ? new Date(product.createdAt.seconds * 1000).toLocaleDateString('fr-FR') : 'N/A'}
+                      </span>
+                      <Button asChild size="sm" variant="link" className="text-xs h-auto p-0 font-bold text-primary">
+                        <Link href={`/dashboard/products/${product.id}`} className="flex items-center gap-1 group/link">
+                          Éditer <ArrowRight className="h-3 w-3 transition-transform group-hover/link:translate-x-1" />
+                        </Link>
+                      </Button>
+                    </div>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          ) : (
+            <Card className="studio-card overflow-hidden">
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead className="w-12"></TableHead>
+                    <TableHead>Produit</TableHead>
+                    <TableHead>Marque</TableHead>
+                    <TableHead>Catégorie</TableHead>
+                    <TableHead>Date</TableHead>
+                    <TableHead className="text-right">Action</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {paginatedProducts.map((product) => (
+                    <TableRow key={product.id} className="group hover:bg-muted/30 transition-colors">
+                      <TableCell>
+                        <div className="w-10 h-10 rounded-lg bg-muted flex items-center justify-center overflow-hidden shrink-0">
+                          {product.imageUrl ? (
+                            <Image src={product.imageUrl} alt={product.name || ''} width={40} height={40} className="object-cover w-full h-full" />
+                          ) : (
+                            <Package className="h-4 w-4 text-muted-foreground/40" />
+                          )}
+                        </div>
+                      </TableCell>
+                      <TableCell className="font-medium">{product.name}</TableCell>
+                      <TableCell className="text-muted-foreground">{product.brand || '—'}</TableCell>
+                      <TableCell>
+                        <Badge variant="outline" className="text-xs">{product.productType || 'Produit'}</Badge>
+                      </TableCell>
+                      <TableCell className="text-xs text-muted-foreground">
+                        {product.createdAt ? new Date(product.createdAt.seconds * 1000).toLocaleDateString('fr-FR') : 'N/A'}
+                      </TableCell>
+                      <TableCell className="text-right">
+                        <Button asChild size="sm" variant="ghost" className="h-8">
+                          <Link href={`/dashboard/products/${product.id}`} className="flex items-center gap-1">
+                            Éditer <ArrowRight className="h-3 w-3" />
+                          </Link>
+                        </Button>
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </Card>
+          )
         ) : (
           <div className="py-24 text-center border-2 border-dashed rounded-xl bg-muted/20">
             {products && products.length > 0 ? (

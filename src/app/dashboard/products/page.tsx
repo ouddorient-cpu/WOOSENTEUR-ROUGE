@@ -46,22 +46,28 @@ const CATEGORIES = [
 
 function escapeCsvField(value: string | undefined | null): string {
   const str = value ?? '';
-  if (str.includes(';') || str.includes('"') || str.includes('\n') || str.includes('\r')) {
+  // Always quote fields to avoid any ambiguity with commas in descriptions
+  if (str.includes(',') || str.includes('"') || str.includes('\n') || str.includes('\r') || str.includes(';')) {
     return '"' + str.replace(/"/g, '""') + '"';
   }
   return str;
 }
 
 function exportProductsToCsv(selected: Product[]) {
+  // WooCommerce importer expects comma as delimiter for fresh CSV files
+  const SEP = ',';
+
   const headers = [
+    'ID',
+    'Type',
     'Nom',
-    'Marque',
-    'Catégories',
-    'Poids (kg)',
-    'Tarif régulier',
+    'Publié',
     'Description courte',
     'Description',
+    'Tarif régulier',
+    'Catégories',
     'Étiquettes',
+    'Poids (kg)',
     'Meta: rank_math_title',
     'Meta: rank_math_description',
     'Meta: rank_math_focus_keyword',
@@ -69,23 +75,24 @@ function exportProductsToCsv(selected: Product[]) {
   ];
 
   const rows = selected.map((p) => [
+    '',                                                                         // ID (vide = nouveau produit)
+    'simple',                                                                   // Type
     escapeCsvField(p.name),
-    escapeCsvField(p.brand),
-    escapeCsvField(p.productType),
-    escapeCsvField(p.weight ? (parseFloat(p.weight) / 1000).toFixed(3) : ''),
-    escapeCsvField(p.price != null ? String(p.price) : ''),
+    '1',                                                                        // Publié
     escapeCsvField(p.seo?.shortDescription),
     escapeCsvField(p.seo?.longDescription),
+    escapeCsvField(p.price != null ? String(p.price) : ''),
+    escapeCsvField(p.productType),
     escapeCsvField(p.seo?.tags),
+    escapeCsvField(p.weight ? (parseFloat(p.weight) / 1000).toFixed(3) : ''),
     escapeCsvField(p.seo?.productTitle),
     escapeCsvField(p.seo?.shortDescription),
     escapeCsvField(p.seo?.focusKeyword),
     'woosenteur',
   ]);
 
-  const csvContent = [headers.join(';'), ...rows.map((r) => r.join(';'))].join('\r\n');
-  const bom = '﻿';
-  const blob = new Blob([bom + csvContent], { type: 'text/csv;charset=utf-8;' });
+  const csvContent = [headers.join(SEP), ...rows.map((r) => r.join(SEP))].join('\r\n');
+  const blob = new Blob(['﻿' + csvContent], { type: 'text/csv;charset=utf-8;' });
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
   a.href = url;

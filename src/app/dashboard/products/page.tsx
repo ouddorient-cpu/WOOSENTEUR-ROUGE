@@ -13,8 +13,9 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import { Skeleton } from '@/components/ui/skeleton';
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { ArrowRight, Package, Search, Filter, LayoutGrid, List, Eye, Clock, Sparkles } from 'lucide-react';
-import { useMemo, useEffect, useState } from 'react';
+import { Checkbox } from '@/components/ui/checkbox';
+import { ArrowRight, Package, Search, Filter, LayoutGrid, List, Eye, Clock, Sparkles, Download, CheckSquare } from 'lucide-react';
+import { useMemo, useEffect, useState, useCallback } from 'react';
 import Image from 'next/image';
 import { Badge } from '@/components/ui/badge';
 
@@ -31,6 +32,56 @@ const CATEGORIES = [
   { value: 'electronique', label: 'Électronique' },
   { value: 'autre', label: 'Autre' },
 ];
+
+function escapeCsvField(value: string | undefined | null): string {
+  const str = value ?? '';
+  if (str.includes(';') || str.includes('"') || str.includes('\n') || str.includes('\r')) {
+    return '"' + str.replace(/"/g, '""') + '"';
+  }
+  return str;
+}
+
+function exportProductsToCsv(selected: Product[]) {
+  const headers = [
+    'Nom',
+    'Marque',
+    'Catégories',
+    'Poids (kg)',
+    'Tarif régulier',
+    'Description courte',
+    'Description',
+    'Étiquettes',
+    'Meta: rank_math_title',
+    'Meta: rank_math_description',
+    'Meta: rank_math_focus_keyword',
+    'Meta: _woosenteur_generated_by',
+  ];
+
+  const rows = selected.map((p) => [
+    escapeCsvField(p.name),
+    escapeCsvField(p.brand),
+    escapeCsvField(p.productType),
+    escapeCsvField(p.weight ? (parseFloat(p.weight) / 1000).toFixed(3) : ''),
+    escapeCsvField(p.price != null ? String(p.price) : ''),
+    escapeCsvField(p.seo?.shortDescription),
+    escapeCsvField(p.seo?.longDescription),
+    escapeCsvField(p.seo?.tags),
+    escapeCsvField(p.seo?.productTitle),
+    escapeCsvField(p.seo?.shortDescription),
+    escapeCsvField(p.seo?.focusKeyword),
+    'woosenteur',
+  ]);
+
+  const csvContent = [headers.join(';'), ...rows.map((r) => r.join(';'))].join('\r\n');
+  const bom = '﻿';
+  const blob = new Blob([bom + csvContent], { type: 'text/csv;charset=utf-8;' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `woosenteur-export-${new Date().toISOString().slice(0, 10)}.csv`;
+  a.click();
+  URL.revokeObjectURL(url);
+}
 
 const ProductsSkeleton = () => (
   <Card>
@@ -79,6 +130,7 @@ export default function ProductsListPage() {
     if (typeof window !== 'undefined') return (localStorage.getItem('products-view') as 'grid' | 'list') || 'grid';
     return 'grid';
   });
+  const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
 
   const productsPath = useMemo(() => user ? `users/${user.uid}/products` : null, [user]);
 
@@ -112,10 +164,45 @@ export default function ProductsListPage() {
     currentPage * ITEMS_PER_PAGE
   );
 
-  // Reset page when filters change
   useEffect(() => {
     setCurrentPage(1);
   }, [searchQuery, categoryFilter]);
+
+  const allPageSelected = paginatedProducts.length > 0 && paginatedProducts.every((p) => selectedIds.has(p.id));
+  const somePageSelected = paginatedProducts.some((p) => selectedIds.has(p.id));
+
+  const toggleProduct = useCallback((id: string) => {
+    setSelectedIds((prev) => {
+      const next = new Set(prev);
+      if (next.has(id)) next.delete(id);
+      else next.add(id);
+      return next;
+    });
+  }, []);
+
+  const toggleAllPage = useCallback(() => {
+    setSelectedIds((prev) => {
+      const next = new Set(prev);
+      if (allPageSelected) {
+        paginatedProducts.forEach((p) => next.delete(p.id));
+      } else {
+        paginatedProducts.forEach((p) => next.add(p.id));
+      }
+      return next;
+    });
+  }, [allPageSelected, paginatedProducts]);
+
+  const selectAll = useCallback(() => {
+    setSelectedIds(new Set(filteredProducts.map((p) => p.id)));
+  }, [filteredProducts]);
+
+  const clearSelection = useCallback(() => setSelectedIds(new Set()), []);
+
+  const handleExport = useCallback(() => {
+    if (!products) return;
+    const toExport = products.filter((p) => selectedIds.has(p.id));
+    exportProductsToCsv(toExport);
+  }, [products, selectedIds]);
 
   const isLoading = userLoading || productsLoading;
 
@@ -152,7 +239,7 @@ export default function ProductsListPage() {
                 className="pl-9 h-12 bg-background"
               />
             </div>
-            <div className="flex gap-2">
+            <div className="flex gap-2 items-center">
               <Select value={categoryFilter} onValueChange={setCategoryFilter}>
                 <SelectTrigger className="w-[180px] h-12 bg-background">
                   <Filter className="mr-2 h-4 w-4 text-muted-foreground" />
@@ -166,6 +253,17 @@ export default function ProductsListPage() {
                   ))}
                 </SelectContent>
               </Select>
+
+              <div className="flex items-center gap-1 px-3 h-12 bg-background border border-border rounded-lg" title="Sélectionner la page">
+                <Checkbox
+                  id="select-page"
+                  checked={allPageSelected}
+                  onCheckedChange={toggleAllPage}
+                  className="data-[state=checked]:bg-primary"
+                  aria-label="Sélectionner toute la page"
+                />
+              </div>
+
               <div className="flex border border-border rounded-lg overflow-hidden h-12">
                 <button
                   onClick={() => { setViewMode('grid'); localStorage.setItem('products-view', 'grid'); }}
@@ -192,21 +290,35 @@ export default function ProductsListPage() {
           viewMode === 'grid' ? (
             <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
               {paginatedProducts.map((product) => (
-                <Card key={product.id} className="group overflow-hidden border border-border hover:border-primary/30 transition-all duration-300 hover:shadow-xl hover:-translate-y-1 flex flex-col studio-card">
+                <Card
+                  key={product.id}
+                  className={`group overflow-hidden border transition-all duration-300 hover:shadow-xl hover:-translate-y-1 flex flex-col studio-card ${selectedIds.has(product.id) ? 'border-primary shadow-md shadow-primary/20' : 'border-border hover:border-primary/30'}`}
+                >
                   <div className="aspect-[16/10] relative bg-muted flex items-center justify-center overflow-hidden">
                     {product.imageUrl ? (
                       <Image src={product.imageUrl} alt={product.name || 'Produit'} fill className="object-cover transition-transform duration-500 group-hover:scale-110" />
                     ) : (
                       <Package className="h-12 w-12 text-muted-foreground/30" />
                     )}
-                    <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                    <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-2">
                       <Button asChild size="sm" variant="secondary">
                         <Link href={`/dashboard/products/${product.id}`}><Eye className="mr-2 h-4 w-4" /> Détails</Link>
                       </Button>
                     </div>
-                    <Badge className="absolute top-3 left-3 bg-background/90 text-foreground backdrop-blur-sm border-none shadow-sm">
-                      {product.productType || 'Produit'}
-                    </Badge>
+                    <div className="absolute top-3 left-3 flex items-center gap-2">
+                      <div
+                        className="w-5 h-5 rounded border-2 bg-background/90 backdrop-blur-sm flex items-center justify-center cursor-pointer"
+                        style={{ borderColor: selectedIds.has(product.id) ? 'hsl(var(--primary))' : 'hsl(var(--border))' }}
+                        onClick={(e) => { e.preventDefault(); toggleProduct(product.id); }}
+                      >
+                        {selectedIds.has(product.id) && (
+                          <div className="w-3 h-3 rounded-sm bg-primary" />
+                        )}
+                      </div>
+                      <Badge className="bg-background/90 text-foreground backdrop-blur-sm border-none shadow-sm">
+                        {product.productType || 'Produit'}
+                      </Badge>
+                    </div>
                   </div>
                   <CardContent className="p-4 flex-1 flex flex-col justify-between">
                     <div>
@@ -233,6 +345,14 @@ export default function ProductsListPage() {
               <Table>
                 <TableHeader>
                   <TableRow>
+                    <TableHead className="w-10">
+                      <Checkbox
+                        checked={allPageSelected}
+                        onCheckedChange={toggleAllPage}
+                        aria-label="Sélectionner toute la page"
+                        className="data-[state=checked]:bg-primary"
+                      />
+                    </TableHead>
                     <TableHead className="w-12"></TableHead>
                     <TableHead>Produit</TableHead>
                     <TableHead>Marque</TableHead>
@@ -243,7 +363,15 @@ export default function ProductsListPage() {
                 </TableHeader>
                 <TableBody>
                   {paginatedProducts.map((product) => (
-                    <TableRow key={product.id} className="group hover:bg-muted/30 transition-colors">
+                    <TableRow key={product.id} className={`group transition-colors ${selectedIds.has(product.id) ? 'bg-primary/5' : 'hover:bg-muted/30'}`}>
+                      <TableCell>
+                        <Checkbox
+                          checked={selectedIds.has(product.id)}
+                          onCheckedChange={() => toggleProduct(product.id)}
+                          aria-label={`Sélectionner ${product.name}`}
+                          className="data-[state=checked]:bg-primary"
+                        />
+                      </TableCell>
                       <TableCell>
                         <div className="w-10 h-10 rounded-lg bg-muted flex items-center justify-center overflow-hidden shrink-0">
                           {product.imageUrl ? (
@@ -326,6 +454,29 @@ export default function ProductsListPage() {
           </div>
         )}
       </div>
+
+      {/* Floating export bar */}
+      {selectedIds.size > 0 && (
+        <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 flex items-center gap-3 bg-background border border-border shadow-2xl rounded-2xl px-5 py-3 animate-in slide-in-from-bottom-4 duration-200">
+          <span className="text-sm font-medium text-foreground">
+            <span className="font-bold text-primary">{selectedIds.size}</span> produit{selectedIds.size > 1 ? 's' : ''} sélectionné{selectedIds.size > 1 ? 's' : ''}
+          </span>
+          <div className="w-px h-5 bg-border" />
+          {selectedIds.size < filteredProducts.length && (
+            <Button variant="ghost" size="sm" className="h-8 text-xs" onClick={selectAll}>
+              <CheckSquare className="mr-1.5 h-3.5 w-3.5" />
+              Tout sélectionner ({filteredProducts.length})
+            </Button>
+          )}
+          <Button variant="ghost" size="sm" className="h-8 text-xs text-muted-foreground" onClick={clearSelection}>
+            Annuler
+          </Button>
+          <Button size="sm" className="h-8 shadow-lg shadow-primary/20" onClick={handleExport}>
+            <Download className="mr-2 h-3.5 w-3.5" />
+            Exporter CSV WooCommerce
+          </Button>
+        </div>
+      )}
     </>
   );
 }

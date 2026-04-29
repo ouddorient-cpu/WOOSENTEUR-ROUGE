@@ -68,6 +68,7 @@ function exportProductsToCsv(selected: Product[]) {
     'Catégories',
     'Étiquettes',
     'Poids (kg)',
+    'Images',
     'Meta: rank_math_title',
     'Meta: rank_math_description',
     'Meta: rank_math_focus_keyword',
@@ -85,6 +86,7 @@ function exportProductsToCsv(selected: Product[]) {
     escapeCsvField(p.productType),
     escapeCsvField(p.seo?.tags),
     escapeCsvField(p.weight ? (parseFloat(p.weight) / 1000).toFixed(3) : ''),
+    escapeCsvField(p.imageUrl),                                                 // URL Firebase → WooCommerce télécharge automatiquement
     escapeCsvField(p.seo?.productTitle),
     escapeCsvField(p.seo?.shortDescription),
     escapeCsvField(p.seo?.focusKeyword),
@@ -235,7 +237,7 @@ export default function ProductsListPage() {
     if (!user || selectedIds.size === 0) return;
     setDeleting(true);
     let failed = 0;
-    for (const id of selectedIds) {
+    for (const id of Array.from(selectedIds)) {
       try {
         await deleteDoc(doc(firestore, `users/${user.uid}/products`, id));
       } catch {

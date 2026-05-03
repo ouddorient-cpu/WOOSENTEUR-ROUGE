@@ -3,11 +3,11 @@
 import { motion } from 'framer-motion';
 
 const pains = [
-  "Je ne sais pas par où commencer.",
-  "J'ai peur que ça fasse amateur.",
-  "Je bloque depuis des heures devant une page vide.",
-  "Je ne connais rien au SEO et ça m'angoisse.",
-  "Mes visiteurs ne comprennent pas ce que je vends.",
+  "Je perds des ventes parce que mes fiches sont vides ou bâclées.",
+  "J'ai peur que ça fasse amateur et que ça fasse fuir mes clients.",
+  "Je bloque depuis des heures devant une page vide — j'ai d'autres choses à faire.",
+  "Je ne connais rien au SEO et mes produits n'apparaissent pas sur Google.",
+  "J'ai 50 produits à rédiger. Je ne sais même pas par où commencer.",
 ];
 
 const WaveDown = ({ to }: { to: string }) => (
@@ -31,10 +31,10 @@ export default function FrustrationsBlock() {
             className="text-center mb-10"
           >
             <p className="text-warm-gray text-lg italic mb-3">
-              &ldquo;T&apos;es déjà resté·e bloqué·e devant une page vide à te demander quoi écrire pour ton produit ?&rdquo;
+              &ldquo;Combien de ventes perdez-vous chaque jour à cause d&apos;une fiche produit incomplète ?&rdquo;
             </p>
             <h2 className="text-warm-brown" style={{ fontFamily: "var(--font-cormorant), Georgia, serif", fontSize: 'clamp(1.5rem,4vw,2.2rem)', fontWeight: 600 }}>
-              Tu n&apos;es pas seul·e.
+              Ces problèmes ont une solution.
             </h2>
           </motion.div>
 
@@ -55,7 +55,7 @@ export default function FrustrationsBlock() {
           </div>
         </div>
       </section>
-      <WaveDown to="#EDF2EC" />
+      <WaveDown to="#07090F" />
     </>
   );
 }

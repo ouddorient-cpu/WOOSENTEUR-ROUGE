@@ -26,22 +26,22 @@ export default function HeroNew() {
             transition={{ duration: 0.5 }}
           >
             <span className="inline-block bg-sage-pale text-sage font-semibold text-sm px-4 py-1.5 rounded-full mb-6 tracking-wide">
-              ✦ Simple · Rapide · Humain
+              ✦ +3 000 fiches produits déjà générées
             </span>
 
             <h1 className="font-serif text-warm-brown leading-tight mb-5" style={{ fontFamily: "var(--font-cormorant), Georgia, serif", fontSize: 'clamp(2rem,6vw,3.2rem)', fontWeight: 700 }}>
-              Votre produit mérite<br className="hidden sm:block" /> une belle présentation.
+              Votre fiche produit rédigée<br className="hidden sm:block" /> en 5 minutes — prête à publier.
             </h1>
 
             <p className="text-warm-gray text-lg leading-relaxed max-w-lg mx-auto mb-8">
-              Fiches produits &amp; contenus marketing IA pour WooCommerce &amp; Shopify — titre, méta, SEO complet. Sans agence, sans rédacteur.
+              Décrivez votre produit en quelques mots. Woosenteur écrit le texte de vente, le titre et les mots-clés. Vous copiez, vous publiez. Sans agence, sans rédacteur.
             </p>
 
             <button
               onClick={scrollToTrial}
               className="inline-block bg-terra text-white font-semibold text-base px-8 py-4 rounded-xl shadow-[0_4px_20px_rgba(212,112,74,0.28)] hover:bg-terra-dark hover:-translate-y-0.5 transition-all duration-200"
             >
-              Écrire ma première fiche — Gratuitement
+              Générer ma première fiche — Gratuitement
             </button>
             <p className="text-warm-gray text-sm mt-3">
               Sans inscription · 5 fiches offertes · Aucune carte bancaire
@@ -77,7 +77,7 @@ export default function HeroNew() {
           </motion.div>
         </div>
       </section>
-      <WaveDown from="#FAF6F0" to="#F3ECE4" />
+      <WaveDown from="#07090F" to="#07090F" />
     </>
   );
 }

@@ -3,12 +3,12 @@
 import { motion } from 'framer-motion';
 
 const benefits = [
-  { emoji: '⏱', title: 'Tu gagnes du temps', desc: 'Plus besoin de passer 2h à chercher tes mots. En 5 minutes, c\'est fait.' },
-  { emoji: '✍️', title: 'Fini la page blanche', desc: 'L\'outil démarre la rédaction à ta place. Tu n\'as qu\'à valider.' },
-  { emoji: '🛒', title: 'Des visiteurs qui comprennent', desc: 'Une fiche claire, c\'est un acheteur rassuré qui passe à l\'acte.' },
-  { emoji: '🌿', title: 'Zéro jargon', desc: 'Pas besoin de connaître le SEO ni l\'IA. On parle comme toi.' },
-  { emoji: '💬', title: 'Un texte qui te ressemble', desc: 'Donne le ton, on l\'adapte à ta façon de vendre.' },
-  { emoji: '📦', title: 'Prêt à publier', desc: 'Copie-colle directement sur WooCommerce, Shopify ou ta boutique.' },
+  { emoji: '⏱', title: '2h de travail réduit à 5 min', desc: 'Ce qui vous prend une matinée entière, Woosenteur le fait pendant que vous prenez un café.' },
+  { emoji: '✍️', title: 'Fini la page blanche', desc: "Donnez 3 informations sur votre produit. L'outil rédige, vous validez. Rien d'autre." },
+  { emoji: '🛒', title: 'Des fiches qui vendent', desc: 'Un texte clair et convaincant rassure l\'acheteur. Une fiche floue, c\'est un panier abandonné.' },
+  { emoji: '🔍', title: 'Visible sur Google', desc: 'Titre optimisé, mots-clés et méta-description inclus. Vos produits remontent sans effort supplémentaire.' },
+  { emoji: '💬', title: 'Dans votre langage, pas le nôtre', desc: 'Vous choisissez le ton — formel, chaleureux, expert. Le texte s\'adapte à votre marque.' },
+  { emoji: '📦', title: 'Compatible WooCommerce & Shopify', desc: 'Export CSV en un clic. Importez 100 produits enrichis en quelques secondes dans votre boutique.' },
 ];
 
 const WaveDown = ({ to }: { to: string }) => (
@@ -32,8 +32,11 @@ export default function BenefitsBlock() {
             className="text-center mb-10"
           >
             <h2 className="text-warm-brown" style={{ fontFamily: "var(--font-cormorant), Georgia, serif", fontSize: 'clamp(1.5rem,4vw,2.2rem)', fontWeight: 600 }}>
-              Ce que ça change pour toi
+              Ce que ça change, concrètement
             </h2>
+            <p className="text-warm-gray text-base mt-3 max-w-md mx-auto">
+              Pas de promesses floues. Voici ce que nos utilisateurs gagnent dès la première fiche.
+            </p>
           </motion.div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -54,7 +57,7 @@ export default function BenefitsBlock() {
           </div>
         </div>
       </section>
-      <WaveDown to="#FAF6F0" />
+      <WaveDown to="#07090F" />
     </>
   );
 }

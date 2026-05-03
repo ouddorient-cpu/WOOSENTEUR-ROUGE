@@ -10,7 +10,7 @@ interface LogoProps {
 const Logo: FC<LogoProps> = ({ className }) => {
   return (
     <Image 
-      src="https://res.cloudinary.com/db2ljqpdt/image/upload/v1776544331/Gemini_Generated_Image_8vt1oa8vt1oa8vt1__1_-removebg-preview_slimrt.png"
+      src="https://res.cloudinary.com/db2ljqpdt/image/upload/v1777844860/ChatGPT_Image_3_mai_2026__22_46_44-removebg-preview_iknnob.png"
       alt="Woosenteur Logo"
       width={150}
       height={150}

@@ -52,41 +52,67 @@ const facebookPostPrompt = ai.definePrompt({
   input: { schema: FacebookPostInputSchema },
   output: { schema: FacebookPostOutputSchema },
   prompt: `
-Tu es expert en marketing Facebook pour e-commerçants cosmétiques français (cible 30-55 ans, acheteurs actifs).
+# RÔLE
+Tu es expert en marketing Facebook organique pour e-commerçants (cosmétiques, parfums, beauté) — marché FR/MA/BE.
+Cible : 30-55 ans, acheteurs actifs sur Facebook. Psychologie : communauté, confiance, bouche-à-oreille, emotion > logique.
+Principe clé (skill social-content) : "Lead with their world, not yours." Commence TOUJOURS par la réalité du client, pas par le produit.
 
-Crée 3 posts Facebook pour : **{{productName}}** ({{productType}})
-{{#if brand}}Marque : {{brand}}{{/if}}
-{{#if price}}Prix : {{price}}{{/if}}
-{{#if keyBenefit}}Message clé : {{keyBenefit}}{{/if}}
+# DONNÉES PRODUIT
+- Produit : **{{productName}}** ({{productType}})
+{{#if brand}}- Marque : {{brand}}{{/if}}
+{{#if price}}- Prix : {{price}}{{/if}}
+{{#if keyBenefit}}- Bénéfice clé : {{keyBenefit}}{{/if}}
 
-# RÈGLES GÉNÉRALES
-- headline MAX 55 caractères (affiché en grand sur l'image)
-- subline MAX 80 caractères (complète l'accroche)
-- Pas de promesses médicales (réglementation UE cosmétiques)
-- Pas de superlatifs absolus non vérifiables
-- Ton naturel, jamais trop "pub"
-- caption : 2-4 phrases + emojis pertinents + 5-7 hashtags (mix populaires + niche) + CTA "Commandez maintenant →"
+# RÈGLES ABSOLUES
+1. headline MAX 55 caractères — doit ARRÊTER le scroll (chiffre, émotion, question, promesse concrète)
+2. subline MAX 80 caractères — développe sans répéter le headline
+3. Zéro promesses médicales (réglementation UE)
+4. Zéro superlatifs vides ("le meilleur", "incroyable") — remplacer par des bénéfices spécifiques
+5. Ton NATUREL — les posts qui ressemblent à des pubs sont ignorés sur Facebook
+6. Chaque caption doit contenir un déclencheur de commentaires : question, appel à témoignage, ou choix à faire
+7. Structure caption : Ouverture (leur monde) → Transition (le produit) → Bénéfice concret → Preuve/confiance → CTA clair
 
-# VARIANTE 1 — VIRAL (engagement maximal)
+# VARIANTE 1 — VIRAL / ARRÊT DU SCROLL
+Objectif : partages, tags, réactions
 - tone: "Viral"
-- headline : Question choc, stat, ou formule qui stoppe le scroll
-  Exemples : "Ce parfum fait tourner les têtes. Littéralement. 👀" / "Le secret des personnes qui sentent toujours bon ☁️"
-- subline : Développe le désir, crée la curiosité
-- caption : Storytelling court (30-50 mots) + bénéfice surprise + CTA + hashtags dynamiques
+- headline : Chiffre choc, question surprenante, ou résultat inattendu
+  ✅ Exemples : "Ce {{productType}} fait tourner les têtes depuis 3 semaines 👀" / "Pourquoi mes voisins me demandent ce que je porte ?" / "Le produit dont tout le monde parle dans notre communauté"
+  ❌ Éviter : "Découvrez notre nouveau produit !"
+- subline : Crée la curiosité, donne envie de lire la suite
+- caption (structure) :
+  • Phrase 1 : situation du client avant le produit (leur monde, leur frustration ou désir)
+  • Phrase 2-3 : comment {{productName}} change la donne — bénéfice CONCRET et sensoriel
+  • Phrase 4 : chiffre ou preuve ("Plus de 200 commandes ce mois", "Noté 4.9/5")
+  • Question finale pour les commentaires : "Et vous, vous avez déjà essayé ? ⬇️" / "Qui partage ça à quelqu'un qui adore les parfums ? 👇"
+  • CTA : "Commandez maintenant → [lien]"
+  • 5-7 hashtags : mix populaires (#parfum #beauté) + niche (#dubaiscents #parfumsoriental) + communauté (#parfumlovers)
 
-# VARIANTE 2 — CHALEUREUX (proximité, confiance, communauté)
+# VARIANTE 2 — CHALEUREUX / COMMUNAUTÉ
+Objectif : confiance, fidélisation, partage dans les groupes
 - tone: "Chaleureux"
-- headline : Ton proche, bienveillant, "comme si on se parlait"
-  Exemples : "Votre nouveau rituel bien-être est arrivé ☁️" / "Offrez-vous ce moment rien que pour vous 🌸"
-- subline : Crée un lien émotionnel, sentiment de soin ou de cadeau
-- caption : Angle "soin de soi", témoignage client fictif plausible (ex: "Emma, 34 ans: ..."), CTA doux + hashtags lifestyle
+- headline : Ton proche, bienveillant, comme un ami qui recommande
+  ✅ Exemples : "Le rituel que j'aurais voulu découvrir plus tôt 🌸" / "Pour ceux qui méritent un moment rien que pour eux" / "Notre coup de cœur du moment — on ne garde pas ça pour nous"
+- subline : Lien émotionnel — cadeau, rituel, soin de soi, moment de pause
+- caption :
+  • Commence par "Vous" ou "On" — pas "Notre produit" ou "Découvrez"
+  • Témoignage client court et plausible intégré naturellement : "Fatima nous a écrit : 'Je ne change plus...' "
+  • Angle "rituel" ou "cadeau idéal" selon le contexte
+  • Question de fin pour engagement : "C'est pour vous ou pour offrir ? Dites-nous en commentaire 💬"
+  • CTA doux : "Disponible maintenant → [lien boutique]"
+  • 5-6 hashtags lifestyle : #cadeaubeauté #rituelbeauté #selfcare + spécifiques produit
 
-# VARIANTE 3 — PREMIUM (valeur perçue, aspirationnel)
+# VARIANTE 3 — PREMIUM / VALEUR PERÇUE
+Objectif : justifier le prix, convertir les hésitants, cible 40-55 ans
 - tone: "Premium"
-- headline : Élégant, exclusif, justifie l'investissement
-  Exemples : "L'expérience olfactive que vous méritez. 🌟" / "Raffinement sans compromis. {{productName}}."
-- subline : Qualité, savoir-faire, justification du prix par l'expérience
-- caption : Angle "investissement dans soi", valorisation du produit, CTA premium + hashtags luxe/qualité
+- headline : Élégant, affirmatif, justifie l'investissement sans le dire
+  ✅ Exemples : "Certaines choses méritent qu'on prenne le temps. {{productName}} en fait partie." / "L'expérience que vous cherchiez depuis longtemps." / "Quand le rapport qualité-prix devient évident."
+- subline : Qualité, savoir-faire, résultat — jamais le prix en premier
+- caption :
+  • Angle "investissement dans soi, pas une dépense"
+  • 1 argument qualité SPÉCIFIQUE et vérifiable (tenue, composition, origine)
+  • Traite l'objection prix implicitement : "Pour le prix d'un restaurant, vous profitez de..."
+  • CTA confiant : "Faites-vous plaisir → [lien]"
+  • 5-6 hashtags qualité : #luxeabordable #beauténaturelle #qualité + spécifiques
 
 Génère maintenant les 3 variantes pour {{productName}}.
 `,

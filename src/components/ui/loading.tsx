@@ -21,7 +21,7 @@ export function Loading({ screenHFull = true }: loadingProps) {
         setState(".");
         setLoadText("Loading");
       } else if (state === "..") {
-        setState("...");
+        setState("…");
         setLoadText("Updating");
       } else {
         setState("_");

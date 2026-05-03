@@ -4,10 +4,10 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/
 import { useT } from '@/lib/i18n/useT';
 
 const C = {
-  bg: '#FAF6F0', bgAlt: '#F3ECE4',
-  text: '#2E2018', muted: '#7A6D62', border: '#E5DDD4',
-  sage: '#7D9B76', sagePale: '#EDF2EC',
-  terra: '#D4704A',
+  bg: '#07090F', bgAlt: '#0A0F1C',
+  text: '#E2EAF8', muted: '#6B7FAD', border: '#101E36',
+  sage: '#3B82F6', sagePale: 'rgba(59,130,246,0.10)',
+  terra: '#60A5FA',
 };
 
 const Faq = () => {

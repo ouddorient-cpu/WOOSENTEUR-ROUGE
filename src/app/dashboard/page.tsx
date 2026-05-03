@@ -24,8 +24,8 @@ import Image from 'next/image';
 import { CoinIndicator } from '@/components/ui/coin-indicator';
 import { Badge } from '@/components/ui/badge';
 
-const StatCard = ({ title, value, icon, description, isCredits = false }: { title: string, value: string, icon: React.ReactNode, description?: string, isCredits?: boolean }) => (
-    <Card className="overflow-hidden relative group transition-all duration-300 hover:shadow-lg hover:border-primary/30">
+const StatCard = React.memo(({ title, value, icon, description, isCredits = false }: { title: string, value: string, icon: React.ReactNode, description?: string, isCredits?: boolean }) => (
+    <Card className="overflow-hidden relative group transition-[box-shadow,border-color] duration-300 hover:shadow-lg hover:border-primary/30">
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">{title}</CardTitle>
             <div className="p-2 bg-muted rounded-full group-hover:bg-primary/10 transition-colors">
@@ -36,16 +36,16 @@ const StatCard = ({ title, value, icon, description, isCredits = false }: { titl
             {isCredits ? (
                 <CoinIndicator amount={value} showLabel={false} className="border-none bg-transparent p-0 shadow-none scale-125 origin-left" />
             ) : (
-                <div className="text-2xl font-bold text-foreground">{value}</div>
+                <div className="text-2xl font-bold text-foreground tabular-nums">{value}</div>
             )}
             {description && <p className="text-xs text-muted-foreground mt-1">{description}</p>}
         </CardContent>
         {/* Decorative background element */}
-        <div className="absolute -right-4 -bottom-4 opacity-5 group-hover:opacity-10 transition-opacity">
+        <div className="absolute -right-4 -bottom-4 opacity-5 group-hover:opacity-10 transition-opacity" aria-hidden="true">
             {React.cloneElement(icon as React.ReactElement, { size: 100 })}
         </div>
     </Card>
-);
+));
 
 function PromoCodeWidget({ user }: { user: any }) {
     const [code, setCode] = useState('');
@@ -91,6 +91,9 @@ function PromoCodeWidget({ user }: { user: any }) {
                 onChange={(e) => { setCode(e.target.value.toUpperCase()); setStatus('idle'); setMsg(''); }}
                 className="h-8 text-sm border-0 bg-transparent focus-visible:ring-0 px-1 uppercase placeholder:normal-case"
                 onKeyDown={(e) => e.key === 'Enter' && handleRedeem()}
+                autoComplete="off"
+                spellCheck={false}
+                aria-label="Code promotionnel"
             />
             {status === 'error' && <span className="text-xs text-destructive shrink-0">{msg}</span>}
             <Button size="sm" onClick={handleRedeem} disabled={!code.trim() || status === 'loading'} className="shrink-0 h-8">
@@ -147,8 +150,8 @@ export default function DashboardHomePage() {
                     <Badge variant="outline" className="mb-2 border-primary/30 text-primary bg-accent">
                         <Sparkles className="mr-2 h-3 w-3" /> Woosenteur
                     </Badge>
-                    <h1 className="font-headline text-3xl md:text-4xl font-bold text-foreground">Mon espace</h1>
-                    <p className="text-muted-foreground">Bienvenue dans votre atelier, {user.displayName || user.email}.</p>
+                    <h1 className="font-headline text-3xl md:text-4xl font-bold text-foreground text-balance">Mon espace</h1>
+                    <p className="text-muted-foreground text-pretty">Bienvenue dans votre atelier, {user.displayName || user.email}.</p>
                 </div>
                 <div className="flex gap-3">
                     <Button asChild variant="outline" size="sm">
@@ -174,7 +177,7 @@ export default function DashboardHomePage() {
                     description={userProfile?.isUnlimited ? "Accès total" : "Pour le cycle en cours"}
                     isCredits={!userProfile?.isUnlimited}
                 />
-                <Card className="col-span-1 lg:col-span-2 overflow-hidden border-2 border-primary/30" style={{ background: '#F3ECE4' }}>
+                <Card className="col-span-1 lg:col-span-2 overflow-hidden border border-primary/25 bg-accent">
                     <CardHeader className="pb-4 relative z-10">
                         <CardTitle className="text-lg">Prêt à créer ?</CardTitle>
                         <CardDescription>Lancez une nouvelle génération ou importez vos produits WooCommerce.</CardDescription>
@@ -187,7 +190,7 @@ export default function DashboardHomePage() {
                             <Link href="/dashboard/import"><FileUp className="mr-2 h-5 w-5" />Importer</Link>
                         </Button>
                     </CardContent>
-                    <div className="absolute right-[-20%] top-[-20%] w-64 h-64 rounded-full blur-3xl" style={{ background: 'rgba(212,112,74,0.12)' }} />
+                    <div className="absolute right-[-20%] top-[-20%] w-64 h-64 rounded-full blur-3xl" style={{ background: 'rgba(37,99,235,0.12)' }} />
                 </Card>
             </div>
 
@@ -212,7 +215,7 @@ export default function DashboardHomePage() {
                 {recentProducts && recentProducts.length > 0 ? (
                     <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
                         {recentProducts.map(product => (
-                            <Card key={product.id} className="group overflow-hidden border border-border hover:border-primary/30 transition-all duration-300 hover:shadow-xl hover:-translate-y-1 studio-card">
+                            <Card key={product.id} className="group overflow-hidden border border-border hover:border-primary/30 transition-[transform,box-shadow,border-color] duration-300 hover:shadow-xl hover:-translate-y-1 studio-card">
                                 <div className="aspect-[16/10] relative bg-muted flex items-center justify-center overflow-hidden">
                                     {product.imageUrl ? (
                                         <Image

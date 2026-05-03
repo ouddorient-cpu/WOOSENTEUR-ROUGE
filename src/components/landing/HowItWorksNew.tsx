@@ -64,7 +64,7 @@ export default function HowItWorksNew() {
               >
                 <div
                   className="flex-shrink-0 w-11 h-11 rounded-full flex items-center justify-center text-white font-bold text-lg shadow-sm"
-                  style={{ fontFamily: "'Cormorant Garamond', serif", background: '#7D9B76' }}
+                  style={{ fontFamily: "'Cormorant Garamond', serif", background: '#2563EB' }}
                 >
                   {step.n}
                 </div>
@@ -86,7 +86,7 @@ export default function HowItWorksNew() {
           </div>
         </div>
       </section>
-      <WaveDown to="#FAF6F0" />
+      <WaveDown to="#07090F" />
     </>
   );
 }

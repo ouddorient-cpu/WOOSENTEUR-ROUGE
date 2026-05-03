@@ -183,7 +183,7 @@ export function PreviewCard({
         {/* Download Button */}
         <button
           disabled={isDownloading || !content.imageUrl}
-          className="w-full px-4 py-3 bg-amber-500 text-white rounded-lg font-semibold hover:bg-amber-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+          className="w-full px-4 py-3 bg-electric-600 text-white rounded-lg font-semibold hover:bg-electric-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
         >
           <Download className="w-5 h-5" />
           {isDownloading ? 'Téléchargement...' : 'Télécharger l\'image'}

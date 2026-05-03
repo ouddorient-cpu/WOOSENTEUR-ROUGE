@@ -53,7 +53,7 @@ export default function ReassuranceBlock() {
               <div className="flex items-start gap-3 mb-2">
                 <div
                   className="flex-shrink-0 w-7 h-7 rounded-full flex items-center justify-center text-sm font-bold text-sage"
-                  style={{ background: '#EDF2EC' }}
+                  style={{ background: 'rgba(59,130,246,0.12)' }}
                 >
                   ?
                 </div>

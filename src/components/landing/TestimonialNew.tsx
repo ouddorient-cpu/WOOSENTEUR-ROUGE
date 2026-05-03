@@ -24,12 +24,12 @@ export default function TestimonialNew() {
             {/* Big decorative quote */}
             <div
               className="absolute -top-4 left-4 pointer-events-none select-none"
-              style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 96, color: '#D4704A', opacity: 0.12, lineHeight: 1 }}
+              style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 96, color: '#3B82F6', opacity: 0.12, lineHeight: 1 }}
             >
               &ldquo;
             </div>
 
-            <div className="mb-4" style={{ color: '#D4704A', fontSize: 20 }}>★★★★★</div>
+            <div className="mb-4" style={{ color: '#3B82F6', fontSize: 20 }}>★★★★★</div>
 
             <blockquote
               className="text-warm-brown italic mb-5"
@@ -45,7 +45,7 @@ export default function TestimonialNew() {
           </motion.div>
         </div>
       </section>
-      <WaveDown to="#2E2018" />
+      <WaveDown to="#07090F" />
     </>
   );
 }

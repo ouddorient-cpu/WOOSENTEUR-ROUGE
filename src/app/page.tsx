@@ -18,7 +18,7 @@ import HeaderLanding from '@/components/header-landing';
 
 export default function HomePage() {
   return (
-    <div className="relative min-h-screen" style={{ background: '#FAF6F0', color: '#2E2018' }}>
+    <div className="relative min-h-screen bg-background text-foreground">
       <ScrollProgress />
       <HeaderLanding />
       <main className="flex flex-col gap-0">

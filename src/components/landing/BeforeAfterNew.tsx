@@ -35,11 +35,11 @@ export default function BeforeAfterNew() {
               viewport={{ once: true }}
               transition={{ duration: 0.5 }}
               className="rounded-2xl p-6"
-              style={{ background: '#FFF3EE', borderLeft: '4px solid #D4704A' }}
+              style={{ background: 'rgba(59,130,246,0.06)', borderLeft: '4px solid #3B82F6' }}
             >
               <span
                 className="inline-block text-xs font-semibold px-3 py-1 rounded-full mb-4"
-                style={{ background: '#FFE0D5', color: '#D4704A' }}
+                style={{ background: 'rgba(59,130,246,0.15)', color: '#60A5FA' }}
               >
                 ❌ Avant
               </span>
@@ -58,11 +58,11 @@ export default function BeforeAfterNew() {
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: 0.1 }}
               className="rounded-2xl p-6"
-              style={{ background: '#EDF2EC', borderLeft: '4px solid #7D9B76' }}
+              style={{ background: 'rgba(14,165,233,0.06)', borderLeft: '4px solid #0EA5E9' }}
             >
               <span
                 className="inline-block text-xs font-semibold px-3 py-1 rounded-full mb-4"
-                style={{ background: '#D0E8CC', color: '#4A7A42' }}
+                style={{ background: 'rgba(14,165,233,0.15)', color: '#38BDF8' }}
               >
                 ✓ Après
               </span>
@@ -70,14 +70,14 @@ export default function BeforeAfterNew() {
                 Offre-toi un moment de calme avec notre bougie à la vraie lavande de Provence, fabriquée à la main
                 en petite série. Parfaite pour une soirée cocooning ou en cadeau. 150g — 40h de combustion douce.
               </p>
-              <p className="text-xs font-medium" style={{ color: '#7D9B76' }}>
+              <p className="text-xs font-medium" style={{ color: '#38BDF8' }}>
                 Fiche rassurante — prête à publier
               </p>
             </motion.div>
           </div>
         </div>
       </section>
-      <WaveDown to="#F3ECE4" />
+      <WaveDown to="#07090F" />
     </>
   );
 }

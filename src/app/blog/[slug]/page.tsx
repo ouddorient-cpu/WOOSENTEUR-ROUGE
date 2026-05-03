@@ -95,7 +95,7 @@ export default function BlogPostPage({ params }: { params: { slug: string } }) {
   const related = getRelatedPosts(post.slug);
 
   return (
-    <div className="min-h-screen" style={{ background: '#FAF6F0', color: '#2E2018' }}>
+    <div className="min-h-screen bg-background text-foreground">
       <ArticleJsonLd post={post} />
       <HeaderLanding />
 

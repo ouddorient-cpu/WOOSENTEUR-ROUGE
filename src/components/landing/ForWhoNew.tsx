@@ -52,7 +52,7 @@ export default function ForWhoNew() {
           </div>
         </div>
       </section>
-      <WaveDown to="#F3ECE4" />
+      <WaveDown to="#07090F" />
     </>
   );
 }

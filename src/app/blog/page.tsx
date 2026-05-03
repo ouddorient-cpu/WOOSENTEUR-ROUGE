@@ -20,10 +20,10 @@ export const metadata: Metadata = {
 };
 
 const C = {
-  bg: '#FAF6F0', bgAlt: '#F3ECE4', surface: '#FDF9F5',
-  text: '#2E2018', muted: '#7A6D62', border: '#E5DDD4',
-  sage: '#7D9B76', sagePale: '#EDF2EC',
-  terra: '#D4704A', terraDark: '#BF5E3A',
+  bg: '#07090F', bgAlt: '#0A0F1C', surface: '#0D1525',
+  text: '#E2EAF8', muted: '#6B7FAD', border: '#101E36',
+  sage: '#3B82F6', sagePale: 'rgba(59,130,246,0.10)',
+  terra: '#2563EB', terraDark: '#1D4ED8',
 };
 
 function formatDate(iso: string) {

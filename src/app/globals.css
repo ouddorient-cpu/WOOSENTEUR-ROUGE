@@ -29,36 +29,50 @@ p {
 
 html {
   overflow-x: hidden;
+  color-scheme: dark;
+}
+
+/* Honor prefers-reduced-motion */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  .aurora-blob { animation: none !important; }
+  .ticker-scroll { animation: none !important; }
+  .animate-float { animation: none !important; }
 }
 
 /* ──────────────────────────────────────────────
-   DESIGN TOKENS — 2026 Warm Cream × Terracotta
+   DESIGN TOKENS — Electric Blue × Black SaaS
    ────────────────────────────────────────────── */
 @layer base {
   :root {
-    /* Cream warm base */
-    --background: 37 50% 96%;          /* #FAF6F0 */
-    --foreground: 22 31% 14%;          /* #2E2018 warm brown */
+    /* Deep black base with electric blue */
+    --background: 222 47% 4%;           /* #06080F near-black */
+    --foreground: 210 40% 92%;          /* #E2EAF8 */
 
-    --card: 37 60% 98%;                /* #FDF9F5 */
-    --card-foreground: 22 31% 14%;
+    --card: 218 30% 7%;                 /* #0A0F1C dark card */
+    --card-foreground: 210 40% 92%;
 
-    --popover: 37 60% 98%;
-    --popover-foreground: 22 31% 14%;
+    --popover: 220 32% 8%;
+    --popover-foreground: 210 40% 92%;
 
-    /* Primary — Terracotta #D4704A */
-    --primary: 17 62% 56%;
+    /* Primary — Electric Blue #3B82F6 */
+    --primary: 217 91% 60%;
     --primary-foreground: 0 0% 100%;
 
-    /* Secondary — Sage #7D9B76 */
-    --secondary: 109 16% 54%;
+    /* Secondary — Electric Cyan #0EA5E9 */
+    --secondary: 199 89% 48%;
     --secondary-foreground: 0 0% 100%;
 
-    --muted: 32 39% 92%;               /* #F3ECE4 */
-    --muted-foreground: 28 11% 43%;    /* #7A6D62 */
+    --muted: 218 38% 11%;               /* #0D1525 */
+    --muted-foreground: 215 20% 50%;    /* #6B7FAD */
 
-    --accent: 110 19% 94%;             /* #EDF2EC sage pale */
-    --accent-foreground: 109 16% 54%; /* sage */
+    --accent: 217 80% 13%;              /* #081A3D blue accent bg */
+    --accent-foreground: 217 91% 75%;   /* #93C5FD */
 
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 0 0% 98%;
@@ -66,53 +80,61 @@ html {
     --warning: 38 96% 58%;
     --warning-foreground: 38 96% 20%;
 
-    --border: 32 25% 86%;              /* #E5DDD4 */
-    --input: 32 25% 86%;
-    --ring: 17 62% 56%;                /* terracotta */
+    --border: 217 45% 13%;              /* #101E36 */
+    --input: 217 45% 13%;
+    --ring: 217 91% 60%;                /* electric blue */
 
     --radius: 0.75rem;
 
-    /* Chart colors — warm spectrum */
-    --chart-1: 17 62% 56%;
-    --chart-2: 109 16% 54%;
-    --chart-3: 32 39% 72%;
-    --chart-4: 17 50% 44%;
-    --chart-5: 109 20% 44%;
+    /* Chart colors — electric spectrum */
+    --chart-1: 217 91% 60%;            /* electric blue */
+    --chart-2: 199 89% 48%;            /* electric cyan */
+    --chart-3: 263 89% 64%;            /* violet */
+    --chart-4: 217 70% 45%;
+    --chart-5: 199 70% 38%;
 
-    /* Sidebar */
-    --sidebar-background: 37 50% 96%;
-    --sidebar-foreground: 22 31% 14%;
-    --sidebar-primary: 17 62% 56%;
+    /* Sidebar — deepest black */
+    --sidebar-background: 222 47% 3%;
+    --sidebar-foreground: 210 40% 88%;
+    --sidebar-primary: 217 91% 60%;
     --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 32 39% 92%;
-    --sidebar-accent-foreground: 22 31% 14%;
-    --sidebar-border: 32 25% 86%;
-    --sidebar-ring: 17 62% 56%;
+    --sidebar-accent: 217 80% 10%;
+    --sidebar-accent-foreground: 217 91% 75%;
+    --sidebar-border: 217 45% 9%;
+    --sidebar-ring: 217 91% 60%;
   }
 
-  /* Keep dark as default (same values) */
+  /* Dark class = same palette (electric blue is the single theme) */
   .dark {
-    --background: 240 30% 4%;
-    --foreground: 0 0% 98%;
-    --card: 240 25% 7%;
-    --card-foreground: 0 0% 95%;
-    --popover: 240 25% 6%;
-    --popover-foreground: 0 0% 95%;
-    --primary: 263 89% 64%;
+    --background: 222 47% 4%;
+    --foreground: 210 40% 92%;
+    --card: 218 30% 7%;
+    --card-foreground: 210 40% 92%;
+    --popover: 220 32% 8%;
+    --popover-foreground: 210 40% 92%;
+    --primary: 217 91% 60%;
     --primary-foreground: 0 0% 100%;
-    --secondary: 217 91% 60%;
+    --secondary: 199 89% 48%;
     --secondary-foreground: 0 0% 100%;
-    --muted: 240 20% 12%;
-    --muted-foreground: 240 10% 55%;
-    --accent: 263 60% 18%;
-    --accent-foreground: 263 89% 80%;
-    --destructive: 0 63% 31%;
+    --muted: 218 38% 11%;
+    --muted-foreground: 215 20% 50%;
+    --accent: 217 80% 13%;
+    --accent-foreground: 217 91% 75%;
+    --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 0 0% 98%;
     --warning: 38 96% 58%;
     --warning-foreground: 38 96% 88%;
-    --border: 240 20% 14%;
-    --input: 240 20% 14%;
-    --ring: 263 89% 64%;
+    --border: 217 45% 13%;
+    --input: 217 45% 13%;
+    --ring: 217 91% 60%;
+    --sidebar-background: 222 47% 3%;
+    --sidebar-foreground: 210 40% 88%;
+    --sidebar-primary: 217 91% 60%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 217 80% 10%;
+    --sidebar-accent-foreground: 217 91% 75%;
+    --sidebar-border: 217 45% 9%;
+    --sidebar-ring: 217 91% 60%;
   }
 }
 
@@ -126,13 +148,13 @@ html {
 }
 
 /* ──────────────────────────────────────────────
-   UTILITY CLASSES — 2026 Dark SaaS
+   UTILITY CLASSES — Dark Electric SaaS
    ────────────────────────────────────────────── */
 @layer utilities {
-  /* Gradient text: terracotta warm */
+  /* Gradient text: electric blue */
   .text-gradient {
     @apply bg-clip-text text-transparent;
-    background-image: linear-gradient(110deg, #D4704A 20%, #e8845e 50%, #BF5E3A 90%);
+    background-image: linear-gradient(110deg, #2563EB 20%, #60A5FA 50%, #0EA5E9 90%);
     background-size: 200% auto;
     animation: text-shimmer 4s linear infinite;
   }
@@ -154,47 +176,48 @@ html {
   }
 
   .aurora-1 {
-    background: #D4704A;
+    background: #2563EB;
     width: 600px;
     height: 600px;
     top: -200px;
     left: -100px;
     animation: float-aurora-1 20s infinite linear;
-    opacity: 0.08;
+    opacity: 0.07;
   }
 
   .aurora-2 {
-    background: #7D9B76;
+    background: #0EA5E9;
     width: 500px;
     height: 500px;
     bottom: -100px;
     right: -100px;
     animation: float-aurora-2 25s infinite linear reverse;
-    opacity: 0.06;
+    opacity: 0.05;
   }
 
-  /* Grid overlay */
+  /* Grid overlay — electric blue tint */
   .bg-grid {
     background-image:
-      linear-gradient(to right, rgba(255,255,255,0.018) 1px, transparent 1px),
-      linear-gradient(to bottom, rgba(255,255,255,0.018) 1px, transparent 1px);
+      linear-gradient(to right, rgba(59,130,246,0.04) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(59,130,246,0.04) 1px, transparent 1px);
     background-size: 64px 64px;
   }
 
-  /* bg-dots — warm subtle dots */
+  /* bg-dots — electric subtle */
   .bg-dots {
-    background-image: radial-gradient(rgba(212,112,74,0.08) 1px, transparent 1px);
+    background-image: radial-gradient(rgba(59,130,246,0.07) 1px, transparent 1px);
     background-size: 20px 20px;
   }
 
-  /* Warm surface card */
+  /* Dark glass card */
   .glass-card {
-    background: #FDF9F5;
-    border: 1px solid #E5DDD4;
-    border-radius: 1.5rem;
+    background: rgba(10, 15, 28, 0.75);
+    border: 1px solid rgba(59,130,246,0.10);
+    border-radius: 0.875rem;
     position: relative;
     transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-    box-shadow: 0 2px 12px rgba(46, 32, 24, 0.06);
+    box-shadow: 0 2px 20px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.04);
+    backdrop-filter: blur(12px);
   }
 
   .glass-card::before {
@@ -203,7 +226,7 @@ html {
     inset: -1px;
     border-radius: inherit;
     padding: 1px;
-    background: linear-gradient(135deg, rgba(212,112,74,0.4), rgba(125,155,118,0.4), transparent 60%);
+    background: linear-gradient(135deg, rgba(37,99,235,0.5), rgba(14,165,233,0.4), transparent 60%);
     -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
     -webkit-mask-composite: xor;
     mask-composite: exclude;
@@ -213,38 +236,40 @@ html {
   }
 
   .glass-card:hover {
-    background: #FAF6F0;
-    transform: translateY(-4px);
-    box-shadow: 0 12px 40px -10px rgba(212, 112, 74, 0.18);
+    background: rgba(13, 20, 40, 0.88);
+    transform: translateY(-3px);
+    border-color: rgba(59,130,246,0.22);
+    box-shadow: 0 12px 40px -8px rgba(37,99,235,0.18), 0 4px 16px rgba(0,0,0,0.5);
   }
 
   .glass-card:hover::before {
     opacity: 1;
   }
 
-  /* Featured warm card — terracotta border glow */
+  /* Featured card — electric blue border glow */
   .glass-card-featured {
-    background: #FDF9F5;
-    border: 2px solid #D4704A;
-    border-radius: 1.5rem;
+    background: rgba(10, 15, 28, 0.85);
+    border: 1px solid rgba(59,130,246,0.35);
+    border-radius: 0.875rem;
     position: relative;
-    box-shadow: 0 8px 32px -8px rgba(212,112,74,0.25), 0 2px 12px rgba(46,32,24,0.06);
+    box-shadow: 0 0 30px -5px rgba(37,99,235,0.15), inset 0 1px 0 rgba(255,255,255,0.04);
+    backdrop-filter: blur(12px);
   }
 
   .glass-card-featured::before {
     display: none;
   }
 
-  /* Primary warm button */
+  /* Primary electric button */
   .btn-primary-glow {
-    background: #D4704A;
-    box-shadow: 0 4px 20px -4px rgba(212,112,74,0.45);
+    background: #2563EB;
+    box-shadow: 0 4px 20px -4px rgba(37,99,235,0.55);
     transition: box-shadow 0.3s ease, transform 0.3s ease;
   }
 
   .btn-primary-glow:hover {
-    background: #BF5E3A;
-    box-shadow: 0 8px 28px -6px rgba(212,112,74,0.55);
+    background: #1D4ED8;
+    box-shadow: 0 8px 28px -6px rgba(37,99,235,0.65);
     transform: translateY(-2px);
   }
 
@@ -268,12 +293,12 @@ html {
   /* Section label pill */
   .section-label {
     @apply inline-block text-xs font-bold uppercase tracking-widest px-4 py-1.5 rounded-full border;
-    color: #7D9B76;
-    background: #EDF2EC;
-    border-color: rgba(125,155,118,0.3);
+    color: #60A5FA;
+    background: rgba(59,130,246,0.10);
+    border-color: rgba(59,130,246,0.20);
   }
 
-  /* Ticker mask fade edges */
+  /* Ticker mask */
   .ticker-mask {
     mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
     -webkit-mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
@@ -285,28 +310,20 @@ html {
   }
 
   .studio-input {
-    background: #FAF6F0;
-    border-color: #E5DDD4;
+    background: rgba(10, 15, 28, 0.8);
+    border-color: rgba(59,130,246,0.15);
     transition: border-color 0.2s, box-shadow 0.2s;
   }
 
   .studio-input:focus {
-    border-color: rgba(212,112,74,0.5);
-    box-shadow: 0 0 0 3px rgba(212,112,74,0.12);
+    border-color: rgba(59,130,246,0.45);
+    box-shadow: 0 0 0 3px rgba(37,99,235,0.12);
   }
 
-  /* ──────────────────────────────────────────────
-     LANDING WARM THEME — 2026 Rebranding
-     Palette : crème · terracotta · sauge · brun
-     ────────────────────────────────────────────── */
-  /* Cormorant Garamond via CSS variable */
-  .font-serif-warm {
-    font-family: var(--font-cormorant), Georgia, serif;
-  }
-
+  /* CTA button */
   .btn-warm-cta {
     display: inline-block;
-    background: #D4704A;
+    background: #2563EB;
     color: white;
     font-weight: 600;
     font-size: 16px;
@@ -315,12 +332,17 @@ html {
     border: none;
     cursor: pointer;
     text-decoration: none;
-    box-shadow: 0 4px 20px rgba(212, 112, 74, 0.28);
+    box-shadow: 0 4px 20px rgba(37, 99, 235, 0.35);
     transition: background 0.2s, transform 0.15s;
   }
   .btn-warm-cta:hover {
-    background: #BF5E3A;
+    background: #1D4ED8;
     transform: translateY(-1px);
+  }
+
+  /* Warm serif font compat */
+  .font-serif-warm {
+    font-family: var(--font-cormorant), Georgia, serif;
   }
 }
 
@@ -353,8 +375,8 @@ html {
 }
 
 @keyframes pulse-halo {
-  0%, 100% { box-shadow: 0 0 30px -8px rgba(139,92,246,0.5), 0 0 15px -5px rgba(59,130,246,0.3); }
-  50%       { box-shadow: 0 0 50px -5px rgba(139,92,246,0.65), 0 0 30px -5px rgba(59,130,246,0.45); }
+  0%, 100% { box-shadow: 0 0 30px -8px rgba(37,99,235,0.55), 0 0 15px -5px rgba(14,165,233,0.35); }
+  50%       { box-shadow: 0 0 50px -5px rgba(37,99,235,0.7), 0 0 30px -5px rgba(14,165,233,0.5); }
 }
 
 @keyframes float {
@@ -389,7 +411,7 @@ html {
 }
 
 #nprogress .bar {
-  background: linear-gradient(to right, #8B5CF6, #6366F1, #3B82F6);
+  background: linear-gradient(to right, #2563EB, #3B82F6, #0EA5E9);
   position: fixed;
   z-index: 9999;
   top: 0;
@@ -404,13 +426,13 @@ html {
   right: 0px;
   width: 100px;
   height: 100%;
-  box-shadow: 0 0 12px #8B5CF6, 0 0 6px #3B82F6;
+  box-shadow: 0 0 12px #3B82F6, 0 0 6px #0EA5E9;
   opacity: 1;
   transform: rotate(3deg) translate(0px, -4px);
 }
 
 /* Custom scrollbar */
 ::-webkit-scrollbar { width: 8px; }
-::-webkit-scrollbar-track { background: #060612; }
-::-webkit-scrollbar-thumb { background: #1a1a3a; border-radius: 4px; }
-::-webkit-scrollbar-thumb:hover { background: rgba(139,92,246,0.5); }
+::-webkit-scrollbar-track { background: #06080F; }
+::-webkit-scrollbar-thumb { background: #101E36; border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: rgba(59,130,246,0.45); }

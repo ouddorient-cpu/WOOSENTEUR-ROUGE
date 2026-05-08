@@ -1,4 +1,4 @@
-
+﻿
 'use client';
 
 import { useState, Suspense } from 'react';
@@ -15,8 +15,8 @@ import { WelcomeBanner } from './welcome-banner';
 import { PRICING_PLANS, CREDIT_PACKS, CreditPack } from '@/lib/pricing-config';
 
 const C = {
-  bg: '#07090F', bgAlt: '#0A0F1C', surface: '#0D1525',
-  text: '#E2EAF8', muted: '#6B7FAD', border: '#101E36',
+  bg: '#0F172A', bgAlt: '#131D2E', surface: '#1E293B',
+  text: '#E2EAF8', muted: '#6B7FAD', border: '#253352',
   sage: '#3B82F6', sagePale: 'rgba(59,130,246,0.10)',
   terra: '#2563EB', terraDark: '#1D4ED8',
 };

@@ -1,32 +1,13 @@
-'use client';
+﻿'use client';
+import SectionDivider from '@/components/ui/section-divider';
 
 import { motion } from 'framer-motion';
-
-const WaveDown = ({ to }: { to: string }) => (
-  <div className="w-full overflow-hidden leading-none -mb-1">
-    <svg viewBox="0 0 1440 48" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none" className="block w-full">
-      <path d="M0,24 C360,0 1080,48 1440,24 L1440,48 L0,48 Z" fill={to} />
-    </svg>
-  </div>
-);
 
 export default function BeforeAfterNew() {
   return (
     <>
       <section className="bg-cream py-16 sm:py-20">
         <div className="max-w-2xl mx-auto px-6">
-          <motion.div
-            initial={{ opacity: 0, y: 16 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5 }}
-            className="text-center mb-10"
-          >
-            <h2 className="text-warm-brown" style={{ fontFamily: "var(--font-cormorant), Georgia, serif", fontSize: 'clamp(1.5rem,4vw,2.2rem)', fontWeight: 600 }}>
-              La différence que ça fait
-            </h2>
-          </motion.div>
-
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
             {/* AVANT */}
             <motion.div
@@ -77,7 +58,7 @@ export default function BeforeAfterNew() {
           </div>
         </div>
       </section>
-      <WaveDown to="#07090F" />
+      <SectionDivider />
     </>
   );
 }

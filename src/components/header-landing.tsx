@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 
 import Link from 'next/link';
 import Logo from '@/components/logo';
@@ -18,7 +18,7 @@ export default function HeaderLanding() {
   return (
     <header
       className="fixed top-0 left-0 right-0 z-50 border-b"
-      style={{ background: 'rgba(6,8,15,0.90)', backdropFilter: 'blur(12px)', borderColor: '#101E36' }}
+      style={{ background: 'rgba(15,23,42,0.88)', backdropFilter: 'blur(14px)', borderColor: '#253352' }}
     >
       <div className="max-w-5xl mx-auto flex h-16 items-center justify-between px-5 md:px-8">
         {/* Logo */}
@@ -87,7 +87,7 @@ export default function HeaderLanding() {
 
       {/* Mobile menu */}
       {open && (
-        <div className="md:hidden border-t px-5 py-4 flex flex-col gap-3" style={{ background: '#0A0F1C', borderColor: '#101E36' }}>
+        <div className="md:hidden border-t px-5 py-4 flex flex-col gap-3" style={{ background: '#131D2E', borderColor: '#253352' }}>
           <Link href="/pricing" className="text-sm font-medium py-2" style={{ color: '#6B7FAD' }} onClick={() => setOpen(false)}>Tarifs</Link>
           <Link href="/#faq" className="text-sm font-medium py-2" style={{ color: '#6B7FAD' }} onClick={() => setOpen(false)}>FAQ</Link>
           <Link href="/blog" className="text-sm font-medium py-2" style={{ color: '#6B7FAD' }} onClick={() => setOpen(false)}>Blog</Link>

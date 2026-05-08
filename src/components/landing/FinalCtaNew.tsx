@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 
 import { motion } from 'framer-motion';
 
@@ -8,7 +8,7 @@ export default function FinalCtaNew() {
   };
 
   return (
-    <section className="py-20 sm:py-24 text-center" style={{ background: 'linear-gradient(135deg, #0A0F1C 0%, #081A3D 50%, #0A0F1C 100%)' }}>
+    <section className="py-20 sm:py-24 text-center" style={{ background: 'linear-gradient(135deg, #131D2E 0%, #081A3D 50%, #131D2E 100%)' }}>
       <div className="max-w-xl mx-auto px-6">
         <motion.div
           initial={{ opacity: 0, y: 20 }}

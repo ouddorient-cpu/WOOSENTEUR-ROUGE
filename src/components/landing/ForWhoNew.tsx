@@ -1,4 +1,5 @@
-'use client';
+﻿'use client';
+import SectionDivider from '@/components/ui/section-divider';
 
 import { motion } from 'framer-motion';
 
@@ -9,14 +10,6 @@ const profiles = [
   { emoji: '👶', label: 'Tu as créé des produits pour bébé ou famille' },
   { emoji: '🏠', label: 'Tu fais tout toi-même dans ta boutique en ligne' },
 ];
-
-const WaveDown = ({ to }: { to: string }) => (
-  <div className="w-full overflow-hidden leading-none -mb-1">
-    <svg viewBox="0 0 1440 48" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none" className="block w-full">
-      <path d="M0,24 C360,0 1080,48 1440,24 L1440,48 L0,48 Z" fill={to} />
-    </svg>
-  </div>
-);
 
 export default function ForWhoNew() {
   return (
@@ -52,7 +45,7 @@ export default function ForWhoNew() {
           </div>
         </div>
       </section>
-      <WaveDown to="#07090F" />
+      <SectionDivider />
     </>
   );
 }

@@ -1,11 +1,11 @@
-'use client';
+﻿'use client';
 
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import { useT } from '@/lib/i18n/useT';
 
 const C = {
-  bg: '#07090F', bgAlt: '#0A0F1C',
-  text: '#E2EAF8', muted: '#6B7FAD', border: '#101E36',
+  bg: '#0F172A', bgAlt: '#131D2E',
+  text: '#E2EAF8', muted: '#6B7FAD', border: '#253352',
   sage: '#3B82F6', sagePale: 'rgba(59,130,246,0.10)',
   terra: '#60A5FA',
 };

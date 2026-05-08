@@ -69,12 +69,12 @@ export default {
         },
         // Warm palette REMAPPED → Electric Blue × Black
         // (keeps existing landing component Tailwind classes working)
-        cream: { DEFAULT: '#07090F', alt: '#0A0F1C', surface: '#0D1525' },
+        cream: { DEFAULT: '#0F172A', alt: '#131D2E', surface: '#1E293B' },
         sage:  { DEFAULT: '#3B82F6', pale: 'rgba(59,130,246,0.08)' },
         terra: { DEFAULT: '#2563EB', dark: '#1D4ED8' },
         'warm-brown': { DEFAULT: '#E2EAF8' },
-        'warm-gray':  { DEFAULT: '#6B7FAD' },
-        'warm-border':{ DEFAULT: '#101E36' },
+        'warm-gray':  { DEFAULT: '#7A8FAD' },
+        'warm-border':{ DEFAULT: '#253352' },
         // Electric Blue × Black palette
         electric: {
           50:  '#EFF6FF',

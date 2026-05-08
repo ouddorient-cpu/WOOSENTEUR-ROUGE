@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { useForm } from 'react-hook-form';
@@ -263,12 +263,12 @@ export default function TrialGenerator() {
 
   /* ── Palette Electric Blue × Black ── */
   const C = {
-    bg:        '#07090F',
-    bgAlt:     '#0A0F1C',
-    surface:   '#0D1525',
+    bg:        '#0F172A',
+    bgAlt:     '#131D2E',
+    surface:   '#1E293B',
     text:      '#E2EAF8',
     muted:     '#6B7FAD',
-    border:    '#101E36',
+    border:    '#253352',
     sage:      '#3B82F6',
     sagePale:  'rgba(59,130,246,0.10)',
     terra:     '#2563EB',
@@ -369,7 +369,7 @@ export default function TrialGenerator() {
                           <FormLabel style={{ color: C.text }} className="font-medium">Nom du produit</FormLabel>
                           <FormControl>
                             <Input placeholder="ex: Bougie à la lavande" {...field} autoComplete="off"
-                              className="bg-[#0A0F1C] border-[#101E36] text-[#E2EAF8] placeholder:text-[#6B7FAD]/60 focus-visible:ring-[#2563EB]/30"
+                              className="bg-[#131D2E] border-[#253352] text-[#E2EAF8] placeholder:text-[#6B7FAD]/60 focus-visible:ring-[#2563EB]/30"
                             />
                           </FormControl>
                           <FormMessage className="text-red-500" />
@@ -386,7 +386,7 @@ export default function TrialGenerator() {
                             <Input
                               placeholder={isMonProduit ? 'ex: Ma Boutique, ou laisser vide' : 'ex: Lancôme'}
                               {...field} value={field.value ?? ''} autoComplete="off"
-                              className="bg-[#0A0F1C] border-[#101E36] text-[#E2EAF8] placeholder:text-[#6B7FAD]/60 focus-visible:ring-[#2563EB]/30"
+                              className="bg-[#131D2E] border-[#253352] text-[#E2EAF8] placeholder:text-[#6B7FAD]/60 focus-visible:ring-[#2563EB]/30"
                             />
                           </FormControl>
                           <FormMessage className="text-red-500" />
@@ -401,7 +401,7 @@ export default function TrialGenerator() {
                             <FormControl>
                               <Textarea rows={4}
                                 placeholder="Ex: Bougie 150g à la vraie lavande de Provence. Faite main, 40h de combustion, sans colorants."
-                                className="resize-none text-sm bg-[#0A0F1C] border-[#101E36] text-[#E2EAF8] placeholder:text-[#6B7FAD]/60 focus-visible:ring-[#2563EB]/30"
+                                className="resize-none text-sm bg-[#131D2E] border-[#253352] text-[#E2EAF8] placeholder:text-[#6B7FAD]/60 focus-visible:ring-[#2563EB]/30"
                                 {...field}
                               />
                             </FormControl>
@@ -447,13 +447,13 @@ export default function TrialGenerator() {
                           <FormLabel style={{ color: C.text }} className="font-medium">Type de Produit</FormLabel>
                           <Select onValueChange={field.onChange} defaultValue={field.value}>
                             <FormControl>
-                              <SelectTrigger className="bg-[#0A0F1C] border-[#101E36] text-[#E2EAF8]">
+                              <SelectTrigger className="bg-[#131D2E] border-[#253352] text-[#E2EAF8]">
                                 <SelectValue placeholder="Sélectionner le type..." />
                               </SelectTrigger>
                             </FormControl>
-                            <SelectContent className="bg-[#0D1525] border-[#101E36] text-[#E2EAF8]">
+                            <SelectContent className="bg-[#1E293B] border-[#253352] text-[#E2EAF8]">
                               {['Parfum','Soin','Cosmétique',"parfum d'intérieur",'Sport','Habillement','Maison','Autres'].map(v => (
-                                <SelectItem key={v} value={v} className="text-[#E2EAF8] focus:bg-[#0A0F1C]">
+                                <SelectItem key={v} value={v} className="text-[#E2EAF8] focus:bg-[#131D2E]">
                                   {v === "parfum d'intérieur" ? "Parfum d'intérieur" : v}
                                 </SelectItem>
                               ))}
@@ -561,7 +561,7 @@ export default function TrialGenerator() {
 
                   {/* Actions */}
                   <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-                    <button onClick={handleDownloadCsv} className="flex items-center justify-center gap-2 py-3 px-4 rounded-xl border font-medium text-sm transition-colors hover:bg-[#0A0F1C]" style={{ borderColor: C.border, color: C.text }}>
+                    <button onClick={handleDownloadCsv} className="flex items-center justify-center gap-2 py-3 px-4 rounded-xl border font-medium text-sm transition-colors hover:bg-[#131D2E]" style={{ borderColor: C.border, color: C.text }}>
                       <Download className="h-4 w-4" /> Télécharger CSV
                     </button>
                     <Link href="/signup" className="flex items-center justify-center gap-2 py-3 px-4 rounded-xl font-medium text-sm text-white transition-all hover:-translate-y-0.5" style={{ background: C.sage }}>

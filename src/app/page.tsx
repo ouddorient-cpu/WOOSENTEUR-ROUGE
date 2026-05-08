@@ -17,6 +17,7 @@ import MetricsSection from '@/components/landing/MetricsSection';
 import TestimonialsSection from '@/components/landing/TestimonialsSection';
 import ForWhoSection from '@/components/landing/ForWhoSection';
 import CtaSection from '@/components/landing/CtaSection';
+import VideoSection from '@/components/landing/VideoSection';
 
 export default function HomePage() {
   return (
@@ -34,14 +35,17 @@ export default function HomePage() {
         {/* 3 — SOLUTION : la révélation, simple et nette */}
         <SolutionSection />
 
-        {/* 4 — COMMENT : 3 étapes, zéro friction */}
+        {/* 4 — VIDÉO : voir le produit en action avant d'en apprendre plus */}
+        <VideoSection />
+
+        {/* 5 — COMMENT : 3 étapes, zéro friction */}
         <StepsSection />
 
-        {/* 5 — DEMO LIVE : voir pour croire */}
+        {/* 6 — DEMO LIVE : essayer soi-même */}
         <SectionDivider />
         <TrialGenerator />
 
-        {/* 6 — PREUVES : chiffres + témoignages */}
+        {/* 7 — PREUVES : chiffres + témoignages */}
         <SectionDivider />
         <MetricsSection />
         <TestimonialsSection />

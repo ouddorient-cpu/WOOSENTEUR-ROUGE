@@ -5,14 +5,14 @@ import SectionDivider from '@/components/ui/section-divider';
 
 const metrics = [
   {
-    value: '×24',
-    label: 'Plus rapide',
-    sub: 'Ce qui prenait 2h se fait en 5 min',
+    value: '136',
+    label: 'Fiches en 1 batch',
+    sub: 'Enrichies en une seule session — là où ça prendrait des semaines',
   },
   {
-    value: '+38%',
-    label: 'Taux de conversion',
-    sub: 'Sur les boutiques avec fiches complètes',
+    value: '30 s',
+    label: 'Par fiche produit',
+    sub: 'Titre · description · SEO · méta — prêt à publier',
   },
   {
     value: '500+',

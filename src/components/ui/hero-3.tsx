@@ -54,7 +54,7 @@ export const AnimatedMarqueeHero: React.FC<AnimatedMarqueeHeroProps> = ({
   return (
     <section
       className={cn(
-        "relative w-full h-screen overflow-hidden bg-background flex flex-col items-center justify-center text-center px-4 pt-16 pb-[42%] md:pb-[44%]",
+        "relative w-full h-screen overflow-hidden bg-background flex flex-col text-center px-4",
         className
       )}
     >
@@ -68,8 +68,8 @@ export const AnimatedMarqueeHero: React.FC<AnimatedMarqueeHeroProps> = ({
         />
       </div>
 
-      {/* Text content */}
-      <div className="relative z-10 flex flex-col items-center">
+      {/* Text content — centered in the 60% above the marquee */}
+      <div className="relative z-10 flex flex-col items-center justify-center h-[60%] md:h-[62%]">
         {/* Tagline badge */}
         <motion.div
           initial="hidden"

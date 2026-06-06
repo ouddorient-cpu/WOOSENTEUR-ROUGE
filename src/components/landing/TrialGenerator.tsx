@@ -247,11 +247,8 @@ export default function TrialGenerator() {
             Essai gratuit — Aucune inscription requise
           </span>
           <h2 className="font-bold mt-2" style={{ fontFamily: 'var(--font-cormorant), Georgia, serif', fontSize: 'clamp(1.6rem,4vw,2.4rem)', color: C.text }}>
-            Testez le générateur en live
-          </h2>
-          <p className="mt-3 text-base max-w-xl mx-auto" style={{ color: C.muted }}>
             Décrivez votre produit en quelques mots — on rédige la fiche à votre place.
-          </p>
+          </h2>
           {isHydrated && (
             <div className="mt-4 inline-flex items-center gap-2">
               <span className="text-sm font-medium px-3 py-1 rounded-full" style={{ background: isLimitReached ? '#FFE0D5' : C.sagePale, color: isLimitReached ? C.terra : C.sage }}>

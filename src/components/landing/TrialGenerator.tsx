@@ -482,8 +482,12 @@ export default function TrialGenerator() {
                       </div>
                     </div>
 
-                    {/* WooCommerce mock */}
-                    <div className="bg-white p-5 space-y-4 max-h-[520px] overflow-y-auto">
+                    {/* WooCommerce mock — select-none + no right-click pour décourager la copie */}
+                    <div
+                      className="bg-white p-5 space-y-4 max-h-[520px] overflow-y-auto select-none"
+                      onContextMenu={e => e.preventDefault()}
+                      onCopy={e => e.preventDefault()}
+                    >
                       <div className="grid grid-cols-2 gap-4">
                         <div className="aspect-square bg-gray-100 rounded-lg flex flex-col items-center justify-center border border-dashed border-gray-300">
                           <ImageIcon className="h-10 w-10 text-gray-300" />

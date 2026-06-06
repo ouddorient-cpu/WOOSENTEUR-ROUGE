@@ -34,7 +34,7 @@ export default function HeroAnimated() {
 
   return (
     <AnimatedMarqueeHero
-      tagline="+500 boutiques génèrent leurs fiches avec Woosenteur"
+      tagline="5 fiches offertes · Sans inscription · Sans carte bancaire"
       title={
         <>
           Vos fiches produit

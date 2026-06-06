@@ -7,7 +7,7 @@ import SectionDivider from '@/components/ui/section-divider';
 export default function SolutionSection() {
   return (
     <>
-      <section className="py-24 sm:py-32 text-center" style={{ background: '#111827' }}>
+      <section className="py-24 sm:py-32 text-center" style={{ background: 'var(--ls-bg-alt)' }}>
         <div className="max-w-3xl mx-auto px-6">
           <motion.div
             initial={{ opacity: 0, y: 24 }}
@@ -26,7 +26,7 @@ export default function SolutionSection() {
 
             {/* Headline */}
             <h2
-              className="font-bold tracking-tight text-white mb-6"
+              className="font-bold tracking-tight text-foreground mb-6"
               style={{ fontSize: 'clamp(2.2rem,5.5vw,3.5rem)', lineHeight: 1.12 }}
             >
               Décrivez votre produit en 3 mots.
@@ -39,7 +39,7 @@ export default function SolutionSection() {
             {/* Sub */}
             <p
               className="mx-auto mb-10 leading-relaxed"
-              style={{ color: '#94A3B8', fontSize: '1.125rem', maxWidth: '36rem' }}
+              style={{ color: 'var(--ls-muted)', fontSize: '1.125rem', maxWidth: '36rem' }}
             >
               Plus besoin de chercher vos mots. Notre IA génère une fiche produit claire,
               professionnelle et optimisée SEO — en moins de 30 secondes.

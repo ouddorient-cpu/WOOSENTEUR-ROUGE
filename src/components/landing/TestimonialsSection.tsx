@@ -36,7 +36,7 @@ const Stars = () => (
 export default function TestimonialsSection() {
   return (
     <>
-      <section className="py-24 sm:py-32" style={{ background: '#0F172A' }}>
+      <section className="py-24 sm:py-32" style={{ background: 'var(--ls-bg)' }}>
         <div className="max-w-5xl mx-auto px-6">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -48,7 +48,7 @@ export default function TestimonialsSection() {
             <p className="text-sm font-semibold tracking-widest uppercase mb-4" style={{ color: '#3B82F6' }}>
               Ce qu&apos;ils disent
             </p>
-            <h2 className="font-bold tracking-tight text-white" style={{ fontSize: 'clamp(2rem,5vw,3rem)', lineHeight: 1.15 }}>
+            <h2 className="font-bold tracking-tight text-foreground" style={{ fontSize: 'clamp(2rem,5vw,3rem)', lineHeight: 1.15 }}>
               Ils ont essayé. Ils ne reviennent pas en arrière.
             </h2>
           </motion.div>
@@ -63,12 +63,12 @@ export default function TestimonialsSection() {
                 transition={{ duration: 0.5, delay: i * 0.1 }}
                 className="flex flex-col rounded-2xl p-7"
                 style={{
-                  background: '#1E293B',
-                  border: '1px solid rgba(255,255,255,0.06)',
+                  background: 'var(--ls-surface)',
+                  border: '1px solid var(--ls-card-border)',
                 }}
               >
                 <Stars />
-                <blockquote className="flex-grow italic leading-relaxed mb-6" style={{ color: '#CBD5E1', fontSize: '0.9375rem' }}>
+                <blockquote className="flex-grow italic leading-relaxed mb-6" style={{ color: 'var(--ls-muted)', fontSize: '0.9375rem' }}>
                   &ldquo;{t.quote}&rdquo;
                 </blockquote>
                 <div className="flex items-center gap-3">
@@ -79,7 +79,7 @@ export default function TestimonialsSection() {
                     {t.initials}
                   </div>
                   <div>
-                    <p className="font-semibold text-white text-sm">{t.name}</p>
+                    <p className="font-semibold text-foreground text-sm">{t.name}</p>
                     <p className="text-xs" style={{ color: '#64748B' }}>{t.role}</p>
                   </div>
                 </div>

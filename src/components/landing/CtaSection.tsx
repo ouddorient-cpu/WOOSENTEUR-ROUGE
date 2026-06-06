@@ -20,7 +20,7 @@ export default function CtaSection() {
       <div
         className="absolute inset-0"
         style={{
-          background: 'linear-gradient(135deg, #0F172A 0%, #0C1A3A 50%, #0F172A 100%)',
+          background: 'linear-gradient(135deg, var(--ls-bg) 0%, var(--ls-bg-alt) 50%, var(--ls-bg) 100%)',
         }}
         aria-hidden="true"
       />
@@ -41,14 +41,14 @@ export default function CtaSection() {
           transition={{ duration: 0.6 }}
         >
           <h2
-            className="font-extrabold tracking-tight text-white mb-5"
+            className="font-extrabold tracking-tight text-foreground mb-5"
             style={{ fontSize: 'clamp(2.2rem,6vw,3.8rem)', lineHeight: 1.1 }}
           >
             Arrêtez de perdre<br />des ventes.
           </h2>
           <p
             className="mx-auto mb-10 leading-relaxed"
-            style={{ color: '#94A3B8', fontSize: '1.125rem', maxWidth: '30rem' }}
+            style={{ color: 'var(--ls-muted)', fontSize: '1.125rem', maxWidth: '30rem' }}
           >
             5 fiches produit professionnelles, sans carte bancaire, sans inscription obligatoire.
             Voyez le résultat avant de décider quoi que ce soit.
@@ -74,7 +74,7 @@ export default function CtaSection() {
               return (
                 <div key={i} className="flex items-center gap-2">
                   <Icon size={15} style={{ color: '#3B82F6' }} />
-                  <span style={{ color: '#64748B', fontSize: '0.875rem' }}>{g.label}</span>
+                  <span style={{ color: 'var(--ls-muted)', fontSize: '0.875rem' }}>{g.label}</span>
                 </div>
               );
             })}

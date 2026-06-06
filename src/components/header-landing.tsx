@@ -22,7 +22,7 @@ export default function HeaderLanding() {
   return (
     <header
       className="fixed top-0 left-0 right-0 z-50 border-b"
-      style={{ background: 'rgba(15,23,42,0.88)', backdropFilter: 'blur(14px)', borderColor: '#253352' }}
+      style={{ background: 'var(--ls-header-bg)', backdropFilter: 'blur(14px)', borderColor: 'var(--ls-header-border)' }}
     >
       <div className="max-w-5xl mx-auto flex h-16 items-center justify-between px-5 md:px-8">
         {/* Logo */}
@@ -38,13 +38,13 @@ export default function HeaderLanding() {
 
         {/* Desktop nav */}
         <nav className="hidden md:flex items-center gap-6">
-          <Link href="/pricing" className="text-sm font-medium hover:opacity-70 transition-opacity" style={{ color: '#6B7FAD' }}>
+          <Link href="/pricing" className="text-sm font-medium hover:opacity-70 transition-opacity" style={{ color: 'var(--ls-muted)' }}>
             Tarifs
           </Link>
-          <Link href="/#faq" className="text-sm font-medium hover:opacity-70 transition-opacity" style={{ color: '#6B7FAD' }}>
+          <Link href="/#faq" className="text-sm font-medium hover:opacity-70 transition-opacity" style={{ color: 'var(--ls-muted)' }}>
             FAQ
           </Link>
-          <Link href="/blog" className="text-sm font-medium hover:opacity-70 transition-opacity" style={{ color: '#6B7FAD' }}>
+          <Link href="/blog" className="text-sm font-medium hover:opacity-70 transition-opacity" style={{ color: 'var(--ls-muted)' }}>
             Blog
           </Link>
         </nav>
@@ -64,7 +64,7 @@ export default function HeaderLanding() {
               <Link
                 href="/login"
                 className="hidden sm:block text-sm font-medium hover:opacity-70 transition-opacity"
-                style={{ color: '#6B7FAD' }}
+                style={{ color: 'var(--ls-muted)' }}
               >
                 Connexion
               </Link>
@@ -87,8 +87,8 @@ export default function HeaderLanding() {
               title={theme === 'dark' ? 'Passer en mode clair' : 'Passer en mode sombre'}
             >
               {theme === 'dark'
-                ? <Sun className="h-4 w-4" style={{ color: '#6B7FAD' }} />
-                : <Moon className="h-4 w-4" style={{ color: '#6B7FAD' }} />
+                ? <Sun className="h-4 w-4" style={{ color: 'var(--ls-muted)' }} />
+                : <Moon className="h-4 w-4" style={{ color: 'var(--ls-muted)' }} />
               }
             </button>
           )}
@@ -106,13 +106,13 @@ export default function HeaderLanding() {
 
       {/* Mobile menu */}
       {open && (
-        <div className="md:hidden border-t px-5 py-4 flex flex-col gap-3" style={{ background: '#131D2E', borderColor: '#253352' }}>
-          <Link href="/pricing" className="text-sm font-medium py-2" style={{ color: '#6B7FAD' }} onClick={() => setOpen(false)}>Tarifs</Link>
-          <Link href="/#faq" className="text-sm font-medium py-2" style={{ color: '#6B7FAD' }} onClick={() => setOpen(false)}>FAQ</Link>
-          <Link href="/blog" className="text-sm font-medium py-2" style={{ color: '#6B7FAD' }} onClick={() => setOpen(false)}>Blog</Link>
+        <div className="md:hidden border-t px-5 py-4 flex flex-col gap-3" style={{ background: 'var(--ls-bg-alt)', borderColor: 'var(--ls-header-border)' }}>
+          <Link href="/pricing" className="text-sm font-medium py-2" style={{ color: 'var(--ls-muted)' }} onClick={() => setOpen(false)}>Tarifs</Link>
+          <Link href="/#faq" className="text-sm font-medium py-2" style={{ color: 'var(--ls-muted)' }} onClick={() => setOpen(false)}>FAQ</Link>
+          <Link href="/blog" className="text-sm font-medium py-2" style={{ color: 'var(--ls-muted)' }} onClick={() => setOpen(false)}>Blog</Link>
           {!user && (
             <>
-              <Link href="/login" className="text-sm font-medium py-2" style={{ color: '#6B7FAD' }} onClick={() => setOpen(false)}>Connexion</Link>
+              <Link href="/login" className="text-sm font-medium py-2" style={{ color: 'var(--ls-muted)' }} onClick={() => setOpen(false)}>Connexion</Link>
               <button
                 onClick={scrollToTrial}
                 className="text-sm font-semibold px-5 py-3 rounded-xl text-white text-center"

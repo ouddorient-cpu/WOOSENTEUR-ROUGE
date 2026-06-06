@@ -4,8 +4,8 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/
 import { useT } from '@/lib/i18n/useT';
 
 const C = {
-  bg: '#0F172A', bgAlt: '#131D2E',
-  text: '#E2EAF8', muted: '#6B7FAD', border: '#253352',
+  bg: 'var(--ls-bg)', bgAlt: 'var(--ls-bg-alt)',
+  text: 'var(--ls-text)', muted: 'var(--ls-muted)', border: 'var(--ls-border-color)',
   sage: '#3B82F6', sagePale: 'rgba(59,130,246,0.10)',
   terra: '#60A5FA',
 };

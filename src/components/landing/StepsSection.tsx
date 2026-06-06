@@ -32,7 +32,7 @@ export default function StepsSection() {
 
   return (
     <>
-      <section className="py-24 sm:py-32" style={{ background: '#0F172A' }}>
+      <section className="py-24 sm:py-32" style={{ background: 'var(--ls-bg)' }}>
         <div className="max-w-5xl mx-auto px-6">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -44,7 +44,7 @@ export default function StepsSection() {
             <p className="text-sm font-semibold tracking-widest uppercase mb-4" style={{ color: '#3B82F6' }}>
               Comment ça marche
             </p>
-            <h2 className="font-bold tracking-tight text-white" style={{ fontSize: 'clamp(2rem,5vw,3rem)', lineHeight: 1.15 }}>
+            <h2 className="font-bold tracking-tight text-foreground" style={{ fontSize: 'clamp(2rem,5vw,3rem)', lineHeight: 1.15 }}>
               Trois étapes. C&apos;est tout.
             </h2>
           </motion.div>
@@ -67,7 +67,7 @@ export default function StepsSection() {
                   viewport={{ once: true }}
                   transition={{ duration: 0.5, delay: i * 0.12 }}
                   className="relative flex flex-col items-center text-center px-6 py-8 rounded-2xl"
-                  style={{ background: '#1E293B', border: '1px solid rgba(255,255,255,0.06)' }}
+                  style={{ background: 'var(--ls-surface)', border: '1px solid var(--ls-card-border)' }}
                 >
                   {/* Number */}
                   <div
@@ -84,10 +84,10 @@ export default function StepsSection() {
                     <Icon size={22} strokeWidth={1.6} style={{ color: '#60A5FA' }} />
                   </div>
 
-                  <h3 className="font-semibold text-white mb-2.5" style={{ fontSize: '1.0625rem' }}>
+                  <h3 className="font-semibold text-foreground mb-2.5" style={{ fontSize: '1.0625rem' }}>
                     {step.title}
                   </h3>
-                  <p style={{ color: '#94A3B8', fontSize: '0.9375rem', lineHeight: 1.65 }}>
+                  <p style={{ color: 'var(--ls-muted)', fontSize: '0.9375rem', lineHeight: 1.65 }}>
                     {step.body}
                   </p>
                 </motion.div>

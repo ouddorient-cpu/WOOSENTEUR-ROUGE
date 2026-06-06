@@ -9,7 +9,7 @@ const VIDEO_URL =
 export default function VideoSection() {
   return (
     <>
-      <section className="py-24 sm:py-32" style={{ background: '#0F172A' }}>
+      <section className="py-24 sm:py-32" style={{ background: 'var(--ls-bg)' }}>
         <div className="max-w-4xl mx-auto px-6">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -22,7 +22,7 @@ export default function VideoSection() {
               Voir en action
             </p>
             <h2
-              className="font-bold tracking-tight text-white"
+              className="font-bold tracking-tight text-foreground"
               style={{ fontSize: 'clamp(2rem,5vw,3rem)', lineHeight: 1.15 }}
             >
               De 3 mots à une fiche complète.<br />
@@ -54,7 +54,7 @@ export default function VideoSection() {
               playsInline
               preload="metadata"
               className="w-full block"
-              style={{ aspectRatio: '16/9', background: '#0D1629' }}
+              style={{ aspectRatio: '16/9', background: 'var(--ls-bg)' }}
             >
               Votre navigateur ne supporte pas la lecture vidéo.
             </video>
@@ -67,7 +67,7 @@ export default function VideoSection() {
             viewport={{ once: true }}
             transition={{ duration: 0.4, delay: 0.3 }}
             className="text-center mt-5"
-            style={{ color: '#475569', fontSize: '0.875rem' }}
+            style={{ color: 'var(--ls-muted)', fontSize: '0.875rem' }}
           >
             Démo réelle — aucun montage, aucune retouche.
           </motion.p>

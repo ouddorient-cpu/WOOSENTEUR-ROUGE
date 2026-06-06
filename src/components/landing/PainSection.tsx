@@ -25,7 +25,7 @@ const pains = [
 export default function PainSection() {
   return (
     <>
-      <section className="py-24 sm:py-32" style={{ background: '#0F172A' }}>
+      <section className="py-24 sm:py-32" style={{ background: 'var(--ls-bg)' }}>
         <div className="max-w-5xl mx-auto px-6">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -37,7 +37,7 @@ export default function PainSection() {
             <p className="text-sm font-semibold tracking-widest uppercase mb-4" style={{ color: '#3B82F6' }}>
               Le vrai problème
             </p>
-            <h2 className="font-bold tracking-tight text-white" style={{ fontSize: 'clamp(2rem,5vw,3rem)', lineHeight: 1.15 }}>
+            <h2 className="font-bold tracking-tight text-foreground" style={{ fontSize: 'clamp(2rem,5vw,3rem)', lineHeight: 1.15 }}>
               Chaque jour sans fiche complète,<br />c&apos;est une vente perdue.
             </h2>
           </motion.div>
@@ -54,8 +54,8 @@ export default function PainSection() {
                   transition={{ duration: 0.5, delay: i * 0.1 }}
                   className="rounded-2xl p-7"
                   style={{
-                    background: '#1E293B',
-                    border: '1px solid rgba(255,255,255,0.06)',
+                    background: 'var(--ls-surface)',
+                    border: '1px solid var(--ls-card-border)',
                   }}
                 >
                   <div
@@ -64,10 +64,10 @@ export default function PainSection() {
                   >
                     <Icon size={20} strokeWidth={1.8} style={{ color: '#F87171' }} />
                   </div>
-                  <h3 className="font-semibold text-white mb-2.5" style={{ fontSize: '1.05rem' }}>
+                  <h3 className="font-semibold text-foreground mb-2.5" style={{ fontSize: '1.05rem' }}>
                     {p.headline}
                   </h3>
-                  <p className="leading-relaxed" style={{ color: '#94A3B8', fontSize: '0.9375rem' }}>
+                  <p className="leading-relaxed" style={{ color: 'var(--ls-muted)', fontSize: '0.9375rem' }}>
                     {p.body}
                   </p>
                 </motion.div>

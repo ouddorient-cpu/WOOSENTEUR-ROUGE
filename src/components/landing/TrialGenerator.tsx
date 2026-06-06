@@ -219,19 +219,17 @@ export default function TrialGenerator() {
 
   /* ── Palette Electric Blue × Black ── */
   const C = {
-    bg:        '#0F172A',
-    bgAlt:     '#131D2E',
-    surface:   '#1E293B',
-    text:      '#E2EAF8',
-    muted:     '#6B7FAD',
-    border:    '#253352',
+    bg:        'var(--ls-bg)',
+    bgAlt:     'var(--ls-bg-alt)',
+    surface:   'var(--ls-surface)',
+    text:      'var(--ls-text)',
+    muted:     'var(--ls-muted)',
+    border:    'var(--ls-border-color)',
     sage:      '#3B82F6',
     sagePale:  'rgba(59,130,246,0.10)',
     terra:     '#2563EB',
     terraDark: '#1D4ED8',
   };
-
-  const inputCls = `bg-[${C.bg}] border-[${C.border}] text-[${C.text}] placeholder:text-[${C.muted}]/50 focus:border-[${C.terra}]/60 focus:ring-0`;
 
   return (
     <section id="essai-gratuit" className="py-16 sm:py-20 relative overflow-hidden" style={{ background: C.bgAlt }}>
@@ -325,7 +323,7 @@ export default function TrialGenerator() {
                           <FormLabel style={{ color: C.text }} className="font-medium">Nom du produit</FormLabel>
                           <FormControl>
                             <Input placeholder="ex: Bougie à la lavande" {...field} autoComplete="off"
-                              className="bg-[#131D2E] border-[#253352] text-[#E2EAF8] placeholder:text-[#6B7FAD]/60 focus-visible:ring-[#2563EB]/30"
+                              style={{ background: 'var(--ls-bg-alt)', borderColor: 'var(--ls-border-color)', color: 'var(--ls-text)' }} className="focus-visible:ring-[#2563EB]/30"
                             />
                           </FormControl>
                           <FormMessage className="text-red-500" />
@@ -342,7 +340,7 @@ export default function TrialGenerator() {
                             <Input
                               placeholder={isMonProduit ? 'ex: Ma Boutique, ou laisser vide' : 'ex: Lancôme'}
                               {...field} value={field.value ?? ''} autoComplete="off"
-                              className="bg-[#131D2E] border-[#253352] text-[#E2EAF8] placeholder:text-[#6B7FAD]/60 focus-visible:ring-[#2563EB]/30"
+                              style={{ background: 'var(--ls-bg-alt)', borderColor: 'var(--ls-border-color)', color: 'var(--ls-text)' }} className="focus-visible:ring-[#2563EB]/30"
                             />
                           </FormControl>
                           <FormMessage className="text-red-500" />
@@ -357,7 +355,7 @@ export default function TrialGenerator() {
                             <FormControl>
                               <Textarea rows={4}
                                 placeholder="Ex: Bougie 150g à la vraie lavande de Provence. Faite main, 40h de combustion, sans colorants."
-                                className="resize-none text-sm bg-[#131D2E] border-[#253352] text-[#E2EAF8] placeholder:text-[#6B7FAD]/60 focus-visible:ring-[#2563EB]/30"
+                                style={{ background: 'var(--ls-bg-alt)', borderColor: 'var(--ls-border-color)', color: 'var(--ls-text)' }} className="resize-none text-sm focus-visible:ring-[#2563EB]/30"
                                 {...field}
                               />
                             </FormControl>
@@ -403,11 +401,11 @@ export default function TrialGenerator() {
                           <FormLabel style={{ color: C.text }} className="font-medium">Type de Produit</FormLabel>
                           <Select onValueChange={field.onChange} defaultValue={field.value}>
                             <FormControl>
-                              <SelectTrigger className="bg-[#131D2E] border-[#253352] text-[#E2EAF8]">
+                              <SelectTrigger style={{ background: 'var(--ls-bg-alt)', borderColor: 'var(--ls-border-color)', color: 'var(--ls-text)' }}>
                                 <SelectValue placeholder="Sélectionner le type..." />
                               </SelectTrigger>
                             </FormControl>
-                            <SelectContent className="bg-[#1E293B] border-[#253352] text-[#E2EAF8]">
+                            <SelectContent style={{ background: 'var(--ls-surface)', borderColor: 'var(--ls-border-color)', color: 'var(--ls-text)' }}>
                               {['Parfum','Soin','Cosmétique',"parfum d'intérieur",'Sport','Habillement','Maison','Autres'].map(v => (
                                 <SelectItem key={v} value={v} className="text-[#E2EAF8] focus:bg-[#131D2E]">
                                   {v === "parfum d'intérieur" ? "Parfum d'intérieur" : v}

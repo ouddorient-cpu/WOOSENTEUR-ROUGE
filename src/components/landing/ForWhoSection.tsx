@@ -21,7 +21,7 @@ const notForWho = [
 export default function ForWhoSection() {
   return (
     <>
-      <section className="py-24 sm:py-32" style={{ background: '#111827' }}>
+      <section className="py-24 sm:py-32" style={{ background: 'var(--ls-bg-alt)' }}>
         <div className="max-w-4xl mx-auto px-6">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -33,7 +33,7 @@ export default function ForWhoSection() {
             <p className="text-sm font-semibold tracking-widest uppercase mb-4" style={{ color: '#3B82F6' }}>
               Pour qui ?
             </p>
-            <h2 className="font-bold tracking-tight text-white" style={{ fontSize: 'clamp(2rem,5vw,3rem)', lineHeight: 1.15 }}>
+            <h2 className="font-bold tracking-tight text-foreground" style={{ fontSize: 'clamp(2rem,5vw,3rem)', lineHeight: 1.15 }}>
               Fait pour les e-commerçants<br />qui gèrent tout seuls.
             </h2>
           </motion.div>
@@ -48,7 +48,7 @@ export default function ForWhoSection() {
               className="rounded-2xl p-7"
               style={{ background: 'rgba(59,130,246,0.06)', border: '1px solid rgba(59,130,246,0.15)' }}
             >
-              <p className="font-bold text-white mb-5" style={{ fontSize: '1rem' }}>
+              <p className="font-bold text-foreground mb-5" style={{ fontSize: '1rem' }}>
                 ✓ Woosenteur est fait pour vous si…
               </p>
               <ul className="space-y-3">
@@ -70,7 +70,7 @@ export default function ForWhoSection() {
               className="rounded-2xl p-7"
               style={{ background: 'rgba(239,68,68,0.04)', border: '1px solid rgba(239,68,68,0.1)' }}
             >
-              <p className="font-bold text-white mb-5" style={{ fontSize: '1rem' }}>
+              <p className="font-bold text-foreground mb-5" style={{ fontSize: '1rem' }}>
                 ✗ Probablement pas si…
               </p>
               <ul className="space-y-3">
@@ -82,8 +82,8 @@ export default function ForWhoSection() {
                 ))}
               </ul>
 
-              <div className="mt-8 pt-6" style={{ borderTop: '1px solid rgba(255,255,255,0.06)' }}>
-                <p className="font-semibold text-white mb-1" style={{ fontSize: '0.9375rem' }}>
+              <div className="mt-8 pt-6" style={{ borderTop: '1px solid var(--ls-card-border)' }}>
+                <p className="font-semibold text-foreground mb-1" style={{ fontSize: '0.9375rem' }}>
                   Vous ne savez pas encore ?
                 </p>
                 <p style={{ color: '#64748B', fontSize: '0.875rem' }}>

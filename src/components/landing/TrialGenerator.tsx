@@ -40,7 +40,6 @@ import { cn } from '@/lib/utils';
 import { useToast } from '@/hooks/use-toast';
 import { useTrialCredits } from '@/hooks/use-trial-credits';
 import { generateSeoOptimizedProductDescription } from '@/ai/flows/generate-seo-optimized-product-description';
-import { generateProductCsv } from '@/ai/flows/generate-csv-flow';
 import UpsellModal from './UpsellModal';
 import { WoodyEmoji } from '@/components/ui/woody-emoji';
 
@@ -108,7 +107,6 @@ export default function TrialGenerator() {
   const [showUpsell, setShowUpsell] = useState(false);
 
   const resultRef = useRef<HTMLDivElement>(null);
-  const idleTimerRef = useRef<NodeJS.Timeout | null>(null);
 
   const form = useForm<TrialFormValues>({
     resolver: zodResolver(trialSchema),
@@ -144,14 +142,6 @@ export default function TrialGenerator() {
       resultRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
   }, [step]);
-
-  // 30s idle timer after generation → show upsell
-  useEffect(() => {
-    if (step === 'preview' && !isLimitReached) {
-      idleTimerRef.current = setTimeout(() => { setShowUpsell(true); }, 30000);
-    }
-    return () => { if (idleTimerRef.current) clearTimeout(idleTimerRef.current); };
-  }, [step, isLimitReached]);
 
   // Show upsell when limit reached
   useEffect(() => {
@@ -207,12 +197,6 @@ export default function TrialGenerator() {
       setProgress(100);
       setGeneratedProduct(product);
       setStep('preview');
-
-      toast({
-        variant: 'success',
-        title: 'Fiche produit générée !',
-        description: `Il vous reste ${creditsRemaining - 1} génération(s) gratuite(s).`,
-      });
     } catch (error: any) {
       console.error('Trial generation error:', error);
       let errorMessage = error.message || 'La génération a échoué. Veuillez réessayer.';
@@ -223,35 +207,7 @@ export default function TrialGenerator() {
       setStep('form');
       toast({ variant: 'destructive', title: 'Erreur de génération', description: errorMessage });
     }
-  }, [canGenerate, consumeCredit, creditsRemaining, toast]);
-
-  const handleDownloadCsv = useCallback(async () => {
-    if (!generatedProduct) return;
-    try {
-      const result = await generateProductCsv({
-        product: {
-          name: generatedProduct.name,
-          brand: generatedProduct.brand,
-          productType: generatedProduct.productType,
-          seo: generatedProduct.seo,
-        },
-        format: 'woocommerce-fr',
-      });
-      const blob = new Blob([result.csvData], { type: 'text/csv;charset=utf-8;' });
-      const link = document.createElement('a');
-      const url = URL.createObjectURL(blob);
-      link.setAttribute('href', url);
-      const fileName = generatedProduct.seo?.slug ? `${generatedProduct.seo.slug}.csv` : 'product.csv';
-      link.setAttribute('download', fileName);
-      link.style.visibility = 'hidden';
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-      toast({ variant: 'success', title: 'Export réussi !', description: 'Votre fichier CSV a été téléchargé.' });
-    } catch (error: any) {
-      toast({ variant: 'destructive', title: 'Erreur CSV', description: 'Impossible de générer le fichier CSV.' });
-    }
-  }, [generatedProduct, toast]);
+  }, [canGenerate, consumeCredit, toast]);
 
   const handleNewGeneration = useCallback(() => {
     setStep('form');
@@ -526,7 +482,7 @@ export default function TrialGenerator() {
                       </div>
                     </div>
 
-                    {/* WooCommerce mock — fond blanc intentionnel */}
+                    {/* WooCommerce mock */}
                     <div className="bg-white p-5 space-y-4 max-h-[520px] overflow-y-auto">
                       <div className="grid grid-cols-2 gap-4">
                         <div className="aspect-square bg-gray-100 rounded-lg flex flex-col items-center justify-center border border-dashed border-gray-300">
@@ -559,14 +515,22 @@ export default function TrialGenerator() {
                     </div>
                   </div>
 
-                  {/* Actions */}
+                  {/* Actions — CSV et WooCommerce déclenchent le popup d'inscription */}
                   <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-                    <button onClick={handleDownloadCsv} className="flex items-center justify-center gap-2 py-3 px-4 rounded-xl border font-medium text-sm transition-colors hover:bg-[#131D2E]" style={{ borderColor: C.border, color: C.text }}>
+                    <button
+                      onClick={() => setShowUpsell(true)}
+                      className="flex items-center justify-center gap-2 py-3 px-4 rounded-xl border font-medium text-sm transition-colors hover:bg-[#131D2E]"
+                      style={{ borderColor: C.border, color: C.text }}
+                    >
                       <Download className="h-4 w-4" /> Télécharger CSV
                     </button>
-                    <Link href="/signup" className="flex items-center justify-center gap-2 py-3 px-4 rounded-xl font-medium text-sm text-white transition-all hover:-translate-y-0.5" style={{ background: C.sage }}>
+                    <button
+                      onClick={() => setShowUpsell(true)}
+                      className="flex items-center justify-center gap-2 py-3 px-4 rounded-xl font-medium text-sm text-white transition-all hover:-translate-y-0.5"
+                      style={{ background: C.sage }}
+                    >
                       <ShoppingCart className="h-4 w-4" /> Publier sur WooCommerce
-                    </Link>
+                    </button>
                     <button onClick={handleNewGeneration} disabled={isLimitReached} className="flex items-center justify-center gap-2 py-3 px-4 rounded-xl font-semibold text-sm text-white transition-all hover:-translate-y-0.5 disabled:opacity-40" style={{ background: C.terra }}>
                       <Sparkles className="h-4 w-4" /> Nouvelle fiche
                     </button>

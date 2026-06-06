@@ -29,21 +29,20 @@ export default function HomePage() {
         {/* 1 — ACCROCHE : l'outcome en 2 secondes */}
         <HeroAnimated />
 
-        {/* 2 — DOULEUR : le problème qu'ils vivent chaque jour */}
+        {/* 2 — DEMO LIVE : Try Before You Buy — résultat flouté + gate signup */}
+        <TrialGenerator />
+
+        {/* 3 — DOULEUR : le problème qu'ils vivent chaque jour */}
         <PainSection />
 
-        {/* 3 — SOLUTION : la révélation, simple et nette */}
+        {/* 4 — SOLUTION : la révélation, simple et nette */}
         <SolutionSection />
 
-        {/* 4 — VIDÉO : voir le produit en action avant d'en apprendre plus */}
+        {/* 5 — VIDÉO : voir le produit en action avant d'en apprendre plus */}
         <VideoSection />
 
-        {/* 5 — COMMENT : 3 étapes, zéro friction */}
+        {/* 6 — COMMENT : 3 étapes, zéro friction */}
         <StepsSection />
-
-        {/* 6 — DEMO LIVE : essayer soi-même */}
-        <SectionDivider />
-        <TrialGenerator />
 
         {/* 7 — PREUVES : chiffres + témoignages */}
         <SectionDivider />

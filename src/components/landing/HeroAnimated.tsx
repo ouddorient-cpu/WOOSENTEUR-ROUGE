@@ -34,7 +34,7 @@ export default function HeroAnimated() {
 
   return (
     <AnimatedMarqueeHero
-      tagline="5 fiches offertes · Sans inscription · Sans carte bancaire"
+      tagline="L'IA qui rédige vos fiches produit à votre place"
       title={
         <>
           Vos fiches produit

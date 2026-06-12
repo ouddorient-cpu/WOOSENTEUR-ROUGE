@@ -1,98 +1,101 @@
-﻿
+
 'use client';
 
 import { useState, Suspense } from 'react';
-import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { Check, Star, Loader2, Package } from 'lucide-react';
+import { Check, Sparkles, Heart, ArrowRight, Loader2 } from 'lucide-react';
 import HeaderLanding from '@/components/header-landing';
+import Footer from '@/components/footer';
 import { useUser } from '@/firebase/auth/use-user';
 import { useToast } from '@/hooks/use-toast';
-import Footer from '@/components/footer';
-import { Switch } from '@/components/ui/switch';
-import { Label } from '@/components/ui/label';
 import { WelcomeBanner } from './welcome-banner';
 import { PRICING_PLANS, CREDIT_PACKS, CreditPack } from '@/lib/pricing-config';
 
-const C = {
-  bg: '#0F172A', bgAlt: '#131D2E', surface: '#1E293B',
-  text: '#E2EAF8', muted: '#6B7FAD', border: '#253352',
-  sage: '#3B82F6', sagePale: 'rgba(59,130,246,0.10)',
-  terra: '#2563EB', terraDark: '#1D4ED8',
+const P = {
+  cream:    '#FAF7F2',
+  pearl:    '#F1ECE4',
+  ink:      '#2E2A26',
+  inkSoft:  '#6B645C',
+  rose:     '#C9897B',
+  roseDeep: '#B3705F',
+  sage:     '#9AA88F',
 };
+
+const SERIF  = "Georgia, 'Times New Roman', serif";
+const SANS   = 'system-ui, -apple-system, sans-serif';
+
+const FAQ_ITEMS = [
+  {
+    q: 'Pourquoi payer alors que ChatGPT est gratuit ?',
+    a: "ChatGPT vous donne du texte brut : à vous de trouver le bon prompt, structurer la fiche, ajouter les mots-clés, formater pour WooCommerce, puis copier-coller champ par champ. Woosenteur fait tout ça en un clic — titre, description, SEO Rank Math, méta, et publication directe sur votre boutique. Vous payez le temps gagné, pas le texte.",
+  },
+  {
+    q: 'Que deviennent mes crédits non utilisés ?',
+    a: 'Avec le plan Boutique, vos crédits se renouvellent chaque mois. Avec le Pack Découverte, vos 10 fiches sont valables 6 mois — vous les utilisez à votre rythme, sans pression.',
+  },
+  {
+    q: 'Je peux changer de plan ou arrêter quand je veux ?',
+    a: 'Oui. Passage de plan, pause ou résiliation : tout se fait en 1 clic depuis votre espace, sans email à envoyer, sans justification à donner.',
+  },
+];
 
 function PricingPageContent() {
   const { user, loading: userLoading } = useUser();
   const router = useRouter();
   const { toast } = useToast();
   const [loadingPriceId, setLoadingPriceId] = useState<string | null>(null);
-  const [billingCycle, setBillingCycle] = useState<'monthly' | 'annually'>('monthly');
+  const [annual, setAnnual] = useState(false);
+  const billingCycle = annual ? 'annually' : 'monthly';
 
+  /* ── Handlers (logique Stripe / Firebase inchangée) ── */
   const handleFreePlan = async () => {
-    if (!user) {
-      router.push('/signup?redirect=/pricing&new_user=true');
-      return;
-    }
+    if (!user) { router.push('/signup?redirect=/pricing&new_user=true'); return; }
     setLoadingPriceId('free');
     try {
       const idToken = await user.getIdToken(true);
-      const response = await fetch('/api/user/activate-free', {
+      const res = await fetch('/api/user/activate-free', {
         method: 'POST',
-        headers: { 'Authorization': `Bearer ${idToken}` },
+        headers: { Authorization: `Bearer ${idToken}` },
       });
-      const data = await response.json();
-      if (!response.ok) throw new Error(data.error);
-      toast({
-        variant: 'success',
-        title: "C'est parti ! 🎉",
-        description: 'Vos 5 crédits gratuits ont été ajoutés. Vous allez être redirigé vers le générateur.',
-      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error);
+      toast({ variant: 'success', title: "C'est parti ! 🎉", description: 'Vos 5 crédits ont été ajoutés. Redirection…' });
       setTimeout(() => router.push('/dashboard/onboarding'), 2000);
-    } catch (error: any) {
-      toast({
-        variant: 'destructive',
-        title: 'Erreur',
-        description: error.message || "Impossible d'activer le plan gratuit.",
-      });
+    } catch (err: any) {
+      toast({ variant: 'destructive', title: 'Erreur', description: err.message || "Impossible d'activer le plan gratuit." });
     } finally {
       setLoadingPriceId(null);
     }
   };
 
   const handlePackPurchase = async (pack: CreditPack) => {
-    if (!user) {
-      router.push('/signup?redirect=/pricing');
-      return;
-    }
+    if (!user) { router.push('/signup?redirect=/pricing'); return; }
     setLoadingPriceId(pack.id);
     try {
       const idToken = await user.getIdToken(true);
       const res = await fetch('/api/checkout/pack', {
         method: 'POST',
-        headers: { 'Authorization': `Bearer ${idToken}`, 'Content-Type': 'application/json' },
+        headers: { Authorization: `Bearer ${idToken}`, 'Content-Type': 'application/json' },
         body: JSON.stringify({ packId: pack.id }),
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error);
       window.location.assign(data.url);
-    } catch (error: any) {
+    } catch (err: any) {
       setLoadingPriceId(null);
-      toast({ variant: 'destructive', title: 'Erreur', description: error.message || 'Impossible de lancer le paiement.' });
+      toast({ variant: 'destructive', title: 'Erreur', description: err.message || 'Impossible de lancer le paiement.' });
     }
   };
 
   const handlePaidPlan = (plan: typeof PRICING_PLANS[0]) => {
-    if (!user) {
-      router.push('/signup?redirect=/pricing');
-      return;
-    }
+    if (!user) { router.push('/signup?redirect=/pricing'); return; }
     if (!('paymentLink' in plan) || !plan.paymentLink) {
-      toast({ variant: 'destructive', title: 'Erreur', description: 'Plan de paiement non configurable.' });
+      toast({ variant: 'destructive', title: 'Erreur', description: 'Plan de paiement non configuré.' });
       return;
     }
     const link = plan.paymentLink[billingCycle];
     if (!link) {
-      toast({ variant: 'destructive', title: 'Erreur', description: 'Lien de paiement non disponible pour ce cycle.' });
+      toast({ variant: 'destructive', title: 'Erreur', description: 'Lien de paiement indisponible pour ce cycle.' });
       return;
     }
     setLoadingPriceId(plan.id);
@@ -101,224 +104,294 @@ function PricingPageContent() {
       url.searchParams.set('prefilled_email', user.email || '');
       url.searchParams.set('client_reference_id', user.uid);
       window.location.assign(url.toString());
-    } catch (error: any) {
+    } catch (err: any) {
       setLoadingPriceId(null);
-      toast({ variant: 'destructive', title: 'Erreur de redirection', description: 'Impossible de vous rediriger vers la page de paiement. Veuillez réessayer.' });
+      toast({ variant: 'destructive', title: 'Erreur de redirection', description: 'Impossible de vous rediriger. Veuillez réessayer.' });
     }
   };
 
+  /* ── Mapping plans → affichage ── */
+  const freePlan     = PRICING_PLANS.find(p => p.id === 'free')!;
+  const boutiquePlan = PRICING_PLANS.find(p => p.id === 'standard')!;
+  const proPlan      = PRICING_PLANS.find(p => p.id === 'premium')!;
+  const packDecouverte = CREDIT_PACKS.find(p => p.id === 'pack-s')!;
+
+  const displayPlans = [
+    {
+      plan: freePlan,
+      displayName: 'Gratuit',
+      tagline: 'Pour voir le résultat de vos propres yeux.',
+      highlight: false,
+      badge: null,
+      onCta: handleFreePlan,
+      ctaLabel: 'Générer mes 5 fiches',
+      displayFeatures: [
+        '5 fiches produit offertes',
+        'Optimisation SEO de base',
+        'Export CSV',
+        'Accès à vie aux fiches créées',
+        'Sans carte bancaire',
+      ],
+    },
+    {
+      plan: boutiquePlan,
+      displayName: 'Boutique',
+      tagline: 'Le plan de celles et ceux qui vendent.',
+      highlight: true,
+      badge: 'Recommandé',
+      onCta: () => handlePaidPlan(boutiquePlan),
+      ctaLabel: 'Choisir Boutique',
+      displayFeatures: [
+        '200 fiches produit / mois',
+        'Score Rank Math 88%+ garanti',
+        'Publication 1-clic WooCommerce + Shopify',
+        'Import produits en masse (CSV)',
+        'Accès aux outils Marketing IA',
+        'Résiliable en 1 clic',
+      ],
+    },
+    {
+      plan: proPlan,
+      displayName: 'Pro',
+      tagline: 'Pour les gros catalogues et les agences.',
+      highlight: false,
+      badge: null,
+      onCta: () => handlePaidPlan(proPlan),
+      ctaLabel: 'Choisir Pro',
+      displayFeatures: [
+        'Crédits illimités',
+        'Multi-boutiques WooCommerce',
+        'Support prioritaire — réponse sous 24h',
+        'Accès anticipé aux nouvelles fonctionnalités',
+        'Bonus lancement : onboarding avec le fondateur',
+      ],
+    },
+  ];
+
+  const busy = !!loadingPriceId || userLoading;
+
   return (
-    <div className="min-h-screen flex flex-col" style={{ background: C.bg, color: C.text }}>
+    <div className="min-h-screen flex flex-col" style={{ backgroundColor: P.cream, color: P.ink, fontFamily: SERIF }}>
       <HeaderLanding />
+
       <main className="flex-grow pt-24">
 
-        {/* Hero */}
-        <section className="py-16 md:py-20 text-center">
-          <div className="container mx-auto px-4 md:px-6">
-            <Suspense fallback={<div className="h-24" />}>
+        {/* ── En-tête ── */}
+        <section className="py-16 text-center">
+          <div className="max-w-2xl mx-auto px-6">
+            <Suspense fallback={<div className="h-16" />}>
               <WelcomeBanner />
             </Suspense>
-            <span
-              className="inline-block text-sm font-semibold px-4 py-1.5 rounded-full mb-6 tracking-wide"
-              style={{ background: C.sagePale, color: C.sage }}
-            >
-              ✦ Tarifs
-            </span>
-            <h1
-              style={{ fontFamily: "var(--font-cormorant), Georgia, serif", fontSize: 'clamp(2rem,6vw,3.2rem)', fontWeight: 700, color: C.text }}
-            >
-              Un tarif simple pour des{' '}
-              <span style={{ color: C.terra }}>résultats professionnels</span>
-            </h1>
-            <p className="mt-6 max-w-2xl mx-auto text-lg" style={{ color: C.muted }}>
-              Commencez gratuitement, évoluez selon vos besoins. Sans engagement.
+            <p className="uppercase tracking-widest text-xs mb-4" style={{ color: P.roseDeep, fontFamily: SANS, letterSpacing: '0.2em' }}>
+              Tarifs
             </p>
+            <h1 className="text-4xl md:text-5xl leading-tight mb-4" style={{ fontWeight: 500 }}>
+              Un prix simple.<br />
+              <span style={{ color: P.roseDeep, fontStyle: 'italic' }}>Choisi en paix.</span>
+            </h1>
+            <p className="text-lg" style={{ color: P.inkSoft, fontFamily: SANS }}>
+              Commencez gratuitement, sans carte bancaire. Passez au plan supérieur uniquement le jour où votre boutique en a besoin. Pas avant.
+            </p>
+          </div>
+        </section>
 
-            {/* Billing toggle */}
-            <div className="mt-10 flex justify-center items-center gap-4">
-              <Label
-                htmlFor="billing-cycle"
-                className="cursor-pointer text-sm font-medium"
-                style={{ color: billingCycle === 'monthly' ? C.text : C.muted }}
-              >
-                Mensuel
-              </Label>
-              <Switch
-                id="billing-cycle"
-                checked={billingCycle === 'annually'}
-                onCheckedChange={(checked) => setBillingCycle(checked ? 'annually' : 'monthly')}
-              />
-              <Label
-                htmlFor="billing-cycle"
-                className="cursor-pointer text-sm font-medium"
-                style={{ color: billingCycle === 'annually' ? C.text : C.muted }}
-              >
-                Annuel{' '}
-                <span
-                  className="ml-1 text-xs font-bold px-2 py-0.5 rounded-full"
-                  style={{ background: C.sagePale, color: C.sage }}
+        {/* ── Toggle mensuel / annuel ── */}
+        <div className="flex items-center justify-center gap-3 mb-12" style={{ fontFamily: SANS }}>
+          <span className="text-sm" style={{ color: annual ? P.inkSoft : P.ink, fontWeight: annual ? 400 : 600 }}>
+            Mensuel
+          </span>
+          <button
+            onClick={() => setAnnual(!annual)}
+            aria-label="Basculer entre tarif mensuel et annuel"
+            className="relative w-14 h-8 rounded-full transition-colors duration-200"
+            style={{ backgroundColor: annual ? P.roseDeep : P.pearl, border: `1px solid ${P.rose}` }}
+          >
+            <span
+              className="absolute top-1 w-6 h-6 rounded-full bg-white shadow transition-all duration-200"
+              style={{ left: annual ? 'calc(100% - 28px)' : '4px' }}
+            />
+          </button>
+          <span className="text-sm" style={{ color: annual ? P.ink : P.inkSoft, fontWeight: annual ? 600 : 400 }}>
+            Annuel{' '}
+            <span className="ml-2 px-2 py-0.5 rounded-full text-xs" style={{ backgroundColor: P.sage, color: 'white' }}>
+              2 mois offerts
+            </span>
+          </span>
+        </div>
+
+        {/* ── Les 3 plans ── */}
+        <section className="pb-6">
+          <div className="max-w-6xl mx-auto px-6">
+            <div className="grid md:grid-cols-3 gap-6 items-stretch">
+              {displayPlans.map(({ plan, displayName, tagline, highlight, badge, onCta, ctaLabel, displayFeatures }) => (
+                <div
+                  key={plan.id}
+                  className="relative rounded-3xl p-8 flex flex-col transition-transform duration-200 hover:-translate-y-1"
+                  style={{
+                    backgroundColor: highlight ? 'white' : P.pearl,
+                    border: highlight ? `2px solid ${P.roseDeep}` : `1px solid ${P.pearl}`,
+                    boxShadow: highlight ? '0 16px 40px rgba(179,112,95,0.15)' : 'none',
+                  }}
                 >
-                  Économisez 2 mois
-                </span>
-              </Label>
-            </div>
-          </div>
-        </section>
-
-        {/* Credit Packs */}
-        <section className="pb-10">
-          <div className="container mx-auto px-4 md:px-6">
-            <div className="max-w-2xl mx-auto">
-              <div className="flex items-center gap-2 justify-center mb-6">
-                <Package className="h-5 w-5" style={{ color: C.sage }} />
-                <span className="text-base font-semibold" style={{ color: C.sage }}>Packs de crédits — paiement unique, sans abonnement</span>
-              </div>
-              <div className="grid gap-4 sm:grid-cols-2">
-                {CREDIT_PACKS.map((pack) => (
-                  <div
-                    key={pack.id}
-                    className="relative flex flex-col rounded-2xl p-6 transition-all duration-300 hover:-translate-y-1"
-                    style={{
-                      background: C.surface,
-                      border: `2px solid ${pack.isPopular ? C.terra : C.border}`,
-                      boxShadow: pack.isPopular ? '0 8px 24px -8px rgba(212,112,74,0.2)' : '0 2px 8px rgba(46,32,24,0.05)',
-                    }}
-                  >
-                    {pack.isPopular && (
-                      <span className="absolute -top-3 left-4 inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-bold text-white" style={{ background: C.terra }}>
-                        <Star className="w-3 h-3 fill-current" /> Le plus choisi
-                      </span>
-                    )}
-                    <div className="flex items-baseline gap-1 mb-1">
-                      <span className="text-3xl font-extrabold" style={{ color: C.text }}>{pack.price}</span>
-                      <span className="text-sm" style={{ color: C.muted }}>paiement unique</span>
-                    </div>
-                    <p className="font-bold text-base mb-3" style={{ color: C.text }}>{pack.name}</p>
-                    <ul className="space-y-2 flex-grow mb-5">
-                      {pack.features.map((f, i) => (
-                        <li key={i} className="flex items-start gap-2 text-sm">
-                          <Check className="h-5 w-5 shrink-0 mt-0.5" style={{ color: C.sage }} />
-                          <span style={{ color: C.muted }} dangerouslySetInnerHTML={{ __html: f }} />
-                        </li>
-                      ))}
-                    </ul>
-                    <button
-                      className="w-full py-3 rounded-xl text-sm font-bold transition-all duration-200"
-                      style={pack.isPopular
-                        ? { background: C.terra, color: '#fff', boxShadow: '0 4px 16px -4px rgba(212,112,74,0.4)' }
-                        : { background: C.sagePale, color: C.sage, border: `1px solid ${C.border}` }
-                      }
-                      disabled={!!loadingPriceId || userLoading}
-                      onClick={() => handlePackPurchase(pack)}
+                  {badge && (
+                    <span
+                      className="absolute -top-3 left-1/2 -translate-x-1/2 px-4 py-1 rounded-full text-xs uppercase tracking-wider"
+                      style={{ backgroundColor: P.roseDeep, color: 'white', fontFamily: SANS, letterSpacing: '0.1em' }}
                     >
-                      {loadingPriceId === pack.id ? <Loader2 className="w-4 h-4 animate-spin mx-auto" /> : pack.cta}
-                    </button>
+                      {badge}
+                    </span>
+                  )}
+
+                  <h2 className="text-2xl mb-1" style={{ fontWeight: 600 }}>{displayName}</h2>
+                  <p className="text-sm mb-6" style={{ color: P.inkSoft, fontFamily: SANS }}>{tagline}</p>
+
+                  <div className="mb-1">
+                    <span className="text-5xl" style={{ fontWeight: 500 }}>
+                      {plan.price[billingCycle]}
+                    </span>
+                    {plan.id !== 'free' && (
+                      <span className="text-base ml-1" style={{ color: P.inkSoft, fontFamily: SANS }}>/mois</span>
+                    )}
                   </div>
-                ))}
-              </div>
-            </div>
+                  <p className="text-xs mb-8 h-4" style={{ color: P.inkSoft, fontFamily: SANS }}>
+                    {annual && plan.id !== 'free' ? `(${plan.price.annually} facturés annuellement)` : ' '}
+                  </p>
 
-            <div className="mt-12 mb-6 flex items-center gap-4 max-w-7xl mx-auto">
-              <div className="flex-1 border-t" style={{ borderColor: C.border }} />
-              <span className="text-sm font-medium px-3" style={{ color: C.muted }}>ou choisissez un abonnement mensuel</span>
-              <div className="flex-1 border-t" style={{ borderColor: C.border }} />
-            </div>
-          </div>
-        </section>
+                  <ul className="space-y-3 mb-8 flex-1" style={{ fontFamily: SANS }}>
+                    {displayFeatures.map((f) => (
+                      <li key={f} className="flex items-start gap-2 text-sm">
+                        <Check size={16} className="mt-0.5 shrink-0" style={{ color: P.sage }} />
+                        <span>{f}</span>
+                      </li>
+                    ))}
+                  </ul>
 
-        {/* Plans */}
-        <section className="pb-20 md:pb-24">
-          <div className="container mx-auto px-4 md:px-6">
-            <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-4 md:items-start max-w-7xl mx-auto">
-              {PRICING_PLANS.map((plan) => {
-                const price = plan.price[billingCycle];
-                const priceDescription = plan.id === 'free' ? plan.priceDescription : `/${billingCycle === 'monthly' ? 'mois' : 'an'}`;
-
-                return (
-                  <div
-                    key={plan.id}
-                    className="relative flex flex-col transition-all duration-300 hover:-translate-y-1 rounded-2xl"
+                  <button
+                    onClick={onCta}
+                    disabled={busy}
+                    className="w-full rounded-full py-3 px-6 text-sm transition-opacity hover:opacity-90 flex items-center justify-center"
                     style={{
-                      background: C.surface,
-                      border: `2px solid ${plan.isPopular ? C.terra : C.border}`,
-                      transform: plan.isPopular ? 'scale(1.04)' : undefined,
-                      zIndex: plan.isPopular ? 10 : undefined,
-                      boxShadow: plan.isPopular ? '0 8px 32px -8px rgba(212,112,74,0.25)' : '0 2px 12px rgba(46,32,24,0.06)',
+                      backgroundColor: highlight ? P.roseDeep : 'transparent',
+                      color: highlight ? 'white' : P.roseDeep,
+                      border: `1.5px solid ${P.roseDeep}`,
+                      fontFamily: SANS,
+                      fontWeight: 600,
                     }}
                   >
-                    {plan.isPopular && (
-                      <div className="absolute -top-3 left-0 right-0 flex justify-center">
-                        <span
-                          className="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-bold text-white"
-                          style={{ background: C.terra }}
-                        >
-                          <Star className="w-3 h-3 fill-current" />
-                          Populaire
-                        </span>
-                      </div>
-                    )}
-
-                    <div className="p-6 flex flex-col h-full">
-                      <div className="mb-6">
-                        <h3 className="text-xl font-bold" style={{ color: C.text }}>{plan.name}</h3>
-                        <p className="text-sm mt-1 h-10 flex items-center" style={{ color: C.muted }}>{plan.description}</p>
-                        <div className="mt-4 flex items-baseline gap-1">
-                          <span className="text-4xl font-extrabold" style={{ color: C.text }}>{price}</span>
-                          <span className="text-sm" style={{ color: C.muted }}>{priceDescription}</span>
-                        </div>
-                      </div>
-
-                      <ul className="space-y-3 flex-grow">
-                        {plan.features.map((feature, i) => (
-                          <li key={i} className="flex items-start gap-2 text-sm">
-                            <Check className="h-5 w-5 shrink-0 mt-0.5" style={{ color: C.sage }} />
-                            <span style={{ color: C.muted }} dangerouslySetInnerHTML={{ __html: feature }} />
-                          </li>
-                        ))}
-                      </ul>
-
-                      <div className="mt-6 flex flex-col gap-2">
-                        <button
-                          className="w-full py-3 rounded-xl text-sm font-bold transition-all duration-200"
-                          style={plan.isPopular
-                            ? { background: C.terra, color: '#fff', boxShadow: '0 4px 16px -4px rgba(212,112,74,0.4)' }
-                            : { background: C.sagePale, color: C.sage, border: `1px solid ${C.border}` }
-                          }
-                          disabled={!!loadingPriceId || userLoading}
-                          onClick={() => plan.id === 'free' ? handleFreePlan() : handlePaidPlan(plan)}
-                        >
-                          {loadingPriceId === plan.id ? (
-                            <Loader2 className="w-4 h-4 animate-spin mx-auto" />
-                          ) : (
-                            plan.cta
-                          )}
-                        </button>
-                        {plan.id !== 'free' && (
-                          <p className="text-xs text-center" style={{ color: C.muted }}>
-                            Sans engagement · résiliez quand vous voulez
-                          </p>
-                        )}
-                      </div>
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
-          </div>
-        </section>
-
-        {/* Guarantees strip */}
-        <section className="py-12 border-t" style={{ borderColor: C.border, background: C.bgAlt }}>
-          <div className="container mx-auto px-4 md:px-6">
-            <div className="flex flex-wrap justify-center gap-8 text-sm font-medium" style={{ color: C.muted }}>
-              {['✓ Sans engagement', '✓ Résiliez à tout moment', '✓ Support humain inclus', '✓ Données sécurisées'].map((item) => (
-                <span key={item}>{item}</span>
+                    {loadingPriceId === plan.id ? <Loader2 className="w-4 h-4 animate-spin" /> : ctaLabel}
+                  </button>
+                </div>
               ))}
             </div>
           </div>
         </section>
 
+        {/* ── Pack Découverte ── */}
+        <section className="py-6">
+          <div className="max-w-6xl mx-auto px-6">
+            <div
+              className="rounded-3xl p-8 md:p-10 flex flex-col md:flex-row items-center gap-6 md:gap-10"
+              style={{ backgroundColor: 'white', border: `1px dashed ${P.rose}` }}
+            >
+              <div
+                className="shrink-0 w-16 h-16 rounded-full flex items-center justify-center"
+                style={{ backgroundColor: P.pearl }}
+              >
+                <Heart size={28} style={{ color: P.roseDeep }} />
+              </div>
+              <div className="flex-1 text-center md:text-left">
+                <h3 className="text-xl mb-1" style={{ fontWeight: 600 }}>Pas fan des abonnements ? On comprend.</h3>
+                <p className="text-sm" style={{ color: P.inkSoft, fontFamily: SANS }}>
+                  <strong style={{ color: P.ink }}>Pack Découverte — {packDecouverte.credits} fiches pour {packDecouverte.price}</strong>, paiement unique,
+                  valables {packDecouverte.validityMonths} mois, export CSV inclus. Vous payez une fois, vous utilisez à votre rythme. C&apos;est tout.
+                </p>
+              </div>
+              <button
+                onClick={() => handlePackPurchase(packDecouverte)}
+                disabled={busy}
+                className="shrink-0 inline-flex items-center gap-2 rounded-full py-3 px-6 text-sm hover:opacity-90"
+                style={{ backgroundColor: P.ink, color: 'white', fontFamily: SANS, fontWeight: 600 }}
+              >
+                {loadingPriceId === packDecouverte.id
+                  ? <Loader2 className="w-4 h-4 animate-spin" />
+                  : <><span>Acheter le pack — {packDecouverte.price}</span><ArrowRight size={16} /></>
+                }
+              </button>
+            </div>
+          </div>
+        </section>
+
+        {/* ── Done-for-you ── */}
+        <div className="text-center py-4" style={{ fontFamily: SANS }}>
+          <p className="text-sm" style={{ color: P.inkSoft }}>
+            <Sparkles size={14} className="inline mr-1" style={{ color: P.roseDeep }} />
+            Pas le temps du tout ?{' '}
+            <strong style={{ color: P.ink }}>On rédige vos 50 premières fiches pour vous</strong> — offre Atelier dès 199€.{' '}
+            <a href="mailto:woosenteur@gmail.com" className="underline" style={{ color: P.roseDeep }}>
+              Écrivez-nous
+            </a>
+          </p>
+        </div>
+
+        {/* ── Réassurance ── */}
+        <section className="py-10">
+          <div className="max-w-6xl mx-auto px-6">
+            <div className="grid sm:grid-cols-3 gap-4 text-center text-sm" style={{ fontFamily: SANS, color: P.inkSoft }}>
+              {[
+                { title: 'Sans engagement', desc: 'Résiliez en 1 clic depuis votre espace.' },
+                { title: 'Satisfait ou remboursé', desc: '14 jours pour changer d\'avis, sans question.' },
+                { title: 'Vos fiches restent à vous', desc: 'Accès à vie à tout ce que vous avez créé.' },
+              ].map(({ title, desc }) => (
+                <div key={title} className="rounded-2xl py-5 px-4" style={{ backgroundColor: P.pearl }}>
+                  <strong style={{ color: P.ink }}>{title}</strong>
+                  <br />{desc}
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* ── FAQ anti-objections ── */}
+        <section className="py-10">
+          <div className="max-w-2xl mx-auto px-6">
+            <h3 className="text-2xl text-center mb-8" style={{ fontWeight: 600 }}>
+              Les questions qu&apos;on nous pose vraiment
+            </h3>
+            <div className="space-y-4" style={{ fontFamily: SANS }}>
+              {FAQ_ITEMS.map((item) => (
+                <details
+                  key={item.q}
+                  className="rounded-2xl px-6 py-4 group"
+                  style={{ backgroundColor: 'white', border: `1px solid ${P.pearl}` }}
+                >
+                  <summary className="cursor-pointer text-sm font-semibold list-none flex justify-between items-center">
+                    {item.q}
+                    <span className="text-xl transition-transform group-open:rotate-45 ml-4 shrink-0" style={{ color: P.roseDeep }}>+</span>
+                  </summary>
+                  <p className="text-sm mt-3" style={{ color: P.inkSoft }}>{item.a}</p>
+                </details>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* ── CTA final ── */}
+        <section className="py-16 text-center">
+          <button
+            onClick={handleFreePlan}
+            disabled={busy}
+            className="inline-flex items-center justify-center rounded-full py-4 px-10 text-base hover:opacity-90"
+            style={{ backgroundColor: P.roseDeep, color: 'white', fontFamily: SANS, fontWeight: 600 }}
+          >
+            {loadingPriceId === 'free' ? <Loader2 className="w-5 h-5 animate-spin" /> : 'Commencer gratuitement — 5 fiches offertes'}
+          </button>
+          <p className="text-xs mt-3" style={{ color: P.inkSoft, fontFamily: SANS }}>
+            Sans carte bancaire · Résultat en 30 secondes · Vous décidez après
+          </p>
+        </section>
+
       </main>
+
       <Footer />
     </div>
   );

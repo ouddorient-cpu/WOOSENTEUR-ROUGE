@@ -84,7 +84,7 @@ export const metadata: Metadata = {
     creator: '@abderelmalki',
   },
   verification: {
-    google: 'c06db5a6dbe5dbd7',
+    google: 'io50-VjP9Me5eSmcN1NtiZvhLw5AUbAwKhCTBMSRKG0',
   },
 
   alternates: {

@@ -83,7 +83,9 @@ export const metadata: Metadata = {
     images: ['https://res.cloudinary.com/dhjwimevi/image/upload/v1765955670/ChatGPT_Image_16_d%C3%A9c._2025_18_05_41_1_kluffi.png'],
     creator: '@abderelmalki',
   },
-  // verification.google: à renseigner depuis Google Search Console → Paramètres → Méthode HTML
+  verification: {
+    google: 'c06db5a6dbe5dbd7',
+  },
 
   alternates: {
     canonical: '/',

@@ -45,7 +45,7 @@ export const metadata: Metadata = {
   keywords: ['fiche produit', 'rédaction fiche produit', 'e-commerce débutant', 'boutique en ligne', 'WooCommerce', 'Shopify', 'description produit', 'vendeur artisanal'],
   authors: [{ name: 'Abderrahmane El Malki', url: 'https://www.linkedin.com/in/abderrahman-elmalki-44a887253/' }],
   creator: 'Abderrahmane El Malki',
-  publisher: 'Woosenteur v2',
+  publisher: 'Woosenteur',
   manifest: '/manifest.webmanifest',
   icons: {
     icon: 'https://res.cloudinary.com/db2ljqpdt/image/upload/v1776549880/ChatGPT_Image_18_avr._2026_22_36_12_p5pr6f.png',
@@ -63,7 +63,7 @@ export const metadata: Metadata = {
     title: 'Woosenteur — Des fiches produit qui font vendre, en 5 minutes',
     description: 'Décris ton produit en quelques mots. Woosenteur rédige une fiche claire, professionnelle et prête à publier — sans jargon, sans effort.',
     url: URL_BASE,
-    siteName: 'Woosenteur v2',
+    siteName: 'Woosenteur',
     images: [
       {
         url: 'https://res.cloudinary.com/dhjwimevi/image/upload/v1765955670/ChatGPT_Image_16_d%C3%A9c._2025_18_05_41_1_kluffi.png',
@@ -77,14 +77,13 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Woosenteur v2 - L\'IA qui rédige vos fiches produits',
+    title: 'Woosenteur - L\'IA qui rédige vos fiches produits',
     description: 'Économisez des heures et boostez votre SEO. L\'outil indispensable pour tous les e-commerçants.',
     images: ['https://res.cloudinary.com/dhjwimevi/image/upload/v1765955670/ChatGPT_Image_16_d%C3%A9c._2025_18_05_41_1_kluffi.png'],
     creator: '@abderelmalki',
   },
-  verification: {
-    google: 'YOUR_GOOGLE_VERIFICATION_CODE',
-  },
+  // verification.google: à renseigner depuis Google Search Console → Paramètres → Méthode HTML
+
   alternates: {
     canonical: '/',
   },
@@ -102,7 +101,7 @@ export default function RootLayout({
           __html: JSON.stringify({
             "@context": "https://schema.org",
             "@type": "SoftwareApplication",
-            "name": "Woosenteur v2",
+            "name": "Woosenteur",
             "applicationCategory": "BusinessApplication",
             "operatingSystem": "Web",
             "description": "Une application SaaS basée sur l'IA pour générer des fiches produits optimisées pour le SEO, pour les boutiques WooCommerce, Shopify et autres.",
@@ -138,7 +137,7 @@ export default function RootLayout({
               "url": "https://www.linkedin.com/in/abderrahman-elmalki-44a887253/"
             },
             "screenshot": "https://res.cloudinary.com/dhjwimevi/image/upload/v1765904836/ChatGPT_Image_16_d%C3%A9c._2025_18_05_41_vfx3jk.png",
-            "softwareVersion": "2.0",
+            "softwareVersion": "2",
             "aggregateRating": {
               "@type": "AggregateRating",
               "ratingValue": "4.9",

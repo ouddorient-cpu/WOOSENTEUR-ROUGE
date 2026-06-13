@@ -40,6 +40,7 @@ import { cn } from '@/lib/utils';
 import { useToast } from '@/hooks/use-toast';
 import { useTrialCredits } from '@/hooks/use-trial-credits';
 import { generateSeoOptimizedProductDescription } from '@/ai/flows/generate-seo-optimized-product-description';
+import { getFirestore, collection, addDoc, serverTimestamp } from 'firebase/firestore';
 import UpsellModal from './UpsellModal';
 import { WoodyEmoji } from '@/components/ui/woody-emoji';
 
@@ -105,6 +106,9 @@ export default function TrialGenerator() {
   const [, setGenerationError] = useState<string | null>(null);
   const [generatedProduct, setGeneratedProduct] = useState<TrialProduct | null>(null);
   const [showUpsell, setShowUpsell] = useState(false);
+  const [showEmailCapture, setShowEmailCapture] = useState(false);
+  const [emailInput, setEmailInput] = useState('');
+  const [emailSubmitting, setEmailSubmitting] = useState(false);
 
   const resultRef = useRef<HTMLDivElement>(null);
 
@@ -216,6 +220,28 @@ export default function TrialGenerator() {
     setProgress(0);
     form.reset();
   }, [form]);
+
+  const handleEmailCapture = useCallback(async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!emailInput.includes('@')) return;
+    setEmailSubmitting(true);
+    try {
+      const db = getFirestore();
+      await addDoc(collection(db, 'emailCaptures'), {
+        email: emailInput.trim().toLowerCase(),
+        source: 'trial-generator',
+        productName: generatedProduct?.name || null,
+        createdAt: serverTimestamp(),
+      });
+    } catch {
+      // Silently fail — ne pas bloquer l'utilisateur
+    } finally {
+      setEmailSubmitting(false);
+      setShowEmailCapture(false);
+      setEmailInput('');
+      setShowUpsell(true);
+    }
+  }, [emailInput, generatedProduct]);
 
   /* ── Palette Electric Blue × Black ── */
   const C = {
@@ -514,17 +540,17 @@ export default function TrialGenerator() {
                     </div>
                   </div>
 
-                  {/* Actions — CSV et WooCommerce déclenchent le popup d'inscription */}
+                  {/* Actions — CSV et WooCommerce déclenchent la capture email puis le popup */}
                   <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                     <button
-                      onClick={() => setShowUpsell(true)}
+                      onClick={() => setShowEmailCapture(true)}
                       className="flex items-center justify-center gap-2 py-3 px-4 rounded-xl border font-medium text-sm transition-colors hover:bg-[#131D2E]"
                       style={{ borderColor: C.border, color: C.text }}
                     >
                       <Download className="h-4 w-4" /> Télécharger CSV
                     </button>
                     <button
-                      onClick={() => setShowUpsell(true)}
+                      onClick={() => setShowEmailCapture(true)}
                       className="flex items-center justify-center gap-2 py-3 px-4 rounded-xl font-medium text-sm text-white transition-all hover:-translate-y-0.5"
                       style={{ background: C.sage }}
                     >
@@ -610,6 +636,55 @@ export default function TrialGenerator() {
         </motion.div>
 
       </div>
+
+      {/* Email capture modal */}
+      {showEmailCapture && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4" style={{ background: 'rgba(0,0,0,0.75)' }}>
+          <div className="w-full max-w-md rounded-2xl p-8 shadow-2xl" style={{ background: C.surface, border: `1px solid ${C.border}` }}>
+            <div className="text-center mb-6">
+              <div className="inline-flex items-center justify-center w-12 h-12 rounded-full mb-4" style={{ background: C.sagePale }}>
+                <Download className="h-5 w-5" style={{ color: C.sage }} />
+              </div>
+              <h3 className="text-xl font-bold mb-2" style={{ fontFamily: 'var(--font-cormorant), Georgia, serif', color: C.text }}>
+                Où envoyer votre fiche ?
+              </h3>
+              <p className="text-sm" style={{ color: C.muted }}>
+                Entrez votre email — on vous envoie la fiche et vous débloquez vos 5 génèrations gratuites.
+              </p>
+            </div>
+            <form onSubmit={handleEmailCapture} className="space-y-4">
+              <input
+                type="email"
+                required
+                value={emailInput}
+                onChange={e => setEmailInput(e.target.value)}
+                placeholder="vous@email.fr"
+                className="w-full px-4 py-3 rounded-xl text-sm outline-none focus:ring-2 focus:ring-[#3B82F6]/40"
+                style={{ background: C.bg, border: `1px solid ${C.border}`, color: C.text }}
+              />
+              <button
+                type="submit"
+                disabled={emailSubmitting}
+                className="w-full py-3 rounded-xl text-sm font-bold text-white flex items-center justify-center gap-2 transition-opacity hover:opacity-90"
+                style={{ background: C.terra }}
+              >
+                {emailSubmitting ? <Loader2 className="h-4 w-4 animate-spin" /> : <><Sparkles className="h-4 w-4" /> Recevoir ma fiche gratuite</>}
+              </button>
+              <button
+                type="button"
+                onClick={() => setShowEmailCapture(false)}
+                className="w-full py-2 text-xs"
+                style={{ color: C.muted }}
+              >
+                Annuler
+              </button>
+            </form>
+            <p className="text-center text-xs mt-4" style={{ color: C.muted }}>
+              Aucun spam · Désinscription en 1 clic · RGPD
+            </p>
+          </div>
+        </div>
+      )}
 
       <UpsellModal open={showUpsell} onClose={() => setShowUpsell(false)} creditsUsed={creditsUsed} />
     </section>

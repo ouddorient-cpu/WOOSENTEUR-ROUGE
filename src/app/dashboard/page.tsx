@@ -215,7 +215,7 @@ export default function DashboardHomePage() {
                 {recentProducts && recentProducts.length > 0 ? (
                     <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
                         {recentProducts.map(product => (
-                            <Card key={product.id} className="group overflow-hidden border border-border hover:border-primary/30 transition-[transform,box-shadow,border-color] duration-300 hover:shadow-xl hover:-translate-y-1 studio-card">
+                            <Card key={product.id} className="group overflow-hidden border border-border hover:border-primary/30 transition-[transform,box-shadow,border-color] duration-300 hover:shadow-xl hover:-translate-y-1">
                                 <div className="aspect-[16/10] relative bg-muted flex items-center justify-center overflow-hidden">
                                     {product.imageUrl ? (
                                         <Image

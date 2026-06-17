@@ -262,15 +262,15 @@ export default function ProductsListPage() {
     <>
       <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-8">
         <div>
-          <Badge variant="outline" className="mb-2 border-primary/30 text-primary bg-primary/5">
+          <Badge variant="outline" className="mb-2 border-[#C2553B]/30 text-[#C2553B] bg-[#C2553B]/5">
             <Package className="mr-2 h-3 w-3" /> Catalogue
           </Badge>
-          <h1 className="font-headline text-3xl md:text-4xl font-bold text-white">Mes Produits</h1>
+          <h1 className="font-headline text-3xl md:text-4xl font-bold" style={{ color: 'var(--ls-text)' }}>Mes Produits</h1>
           <p className="text-muted-foreground">
             Gérez et exportez vos {filteredProducts.length} fiches produits générées.
           </p>
         </div>
-        <Button asChild size="lg" className="shadow-lg shadow-primary/20">
+        <Button asChild size="lg" className="shadow-lg shadow-[#C2553B]/20 bg-[#C2553B] hover:bg-[#A23F29] text-white">
           <Link href="/dashboard/generate"><Sparkles className="mr-2 h-4 w-4" /> Nouveau Produit</Link>
         </Button>
       </div>
@@ -305,7 +305,7 @@ export default function ProductsListPage() {
                 <Checkbox
                   checked={allPageSelected}
                   onCheckedChange={toggleAllPage}
-                  className="data-[state=checked]:bg-primary"
+                  className="data-[state=checked]:bg-[#C2553B] data-[state=checked]:border-[#C2553B]"
                   aria-label="Sélectionner toute la page"
                 />
               </div>
@@ -313,14 +313,14 @@ export default function ProductsListPage() {
               <div className="flex border border-border rounded-lg overflow-hidden h-12">
                 <button
                   onClick={() => { setViewMode('grid'); localStorage.setItem('products-view', 'grid'); }}
-                  className={`px-3 flex items-center transition-colors ${viewMode === 'grid' ? 'bg-primary text-white' : 'bg-background text-muted-foreground hover:text-foreground'}`}
+                  className={`px-3 flex items-center transition-colors ${viewMode === 'grid' ? 'bg-[#C2553B] text-white' : 'bg-background text-muted-foreground hover:text-foreground'}`}
                   title="Vue grille"
                 >
                   <LayoutGrid className="h-4 w-4" />
                 </button>
                 <button
                   onClick={() => { setViewMode('list'); localStorage.setItem('products-view', 'list'); }}
-                  className={`px-3 flex items-center transition-colors ${viewMode === 'list' ? 'bg-primary text-white' : 'bg-background text-muted-foreground hover:text-foreground'}`}
+                  className={`px-3 flex items-center transition-colors ${viewMode === 'list' ? 'bg-[#C2553B] text-white' : 'bg-background text-muted-foreground hover:text-foreground'}`}
                   title="Vue liste"
                 >
                   <List className="h-4 w-4" />
@@ -339,7 +339,7 @@ export default function ProductsListPage() {
               {paginatedProducts.map((product) => (
                 <Card
                   key={product.id}
-                  className={`group overflow-hidden border transition-all duration-300 hover:shadow-xl hover:-translate-y-1 flex flex-col studio-card ${selectedIds.has(product.id) ? 'border-primary shadow-md shadow-primary/20' : 'border-border hover:border-primary/30'}`}
+                  className={`group overflow-hidden border transition-all duration-300 hover:shadow-xl hover:-translate-y-1 flex flex-col ${selectedIds.has(product.id) ? 'border-[#C2553B] shadow-md shadow-[#C2553B]/20' : 'border-border hover:border-[#C2553B]/30'}`}
                 >
                   <div className="aspect-[16/10] relative bg-muted flex items-center justify-center overflow-hidden">
                     {product.imageUrl ? (
@@ -362,10 +362,10 @@ export default function ProductsListPage() {
                     <div className="absolute top-3 left-3 flex items-center gap-2">
                       <div
                         className="w-5 h-5 rounded border-2 bg-background/90 backdrop-blur-sm flex items-center justify-center cursor-pointer"
-                        style={{ borderColor: selectedIds.has(product.id) ? 'hsl(var(--primary))' : 'hsl(var(--border))' }}
+                        style={{ borderColor: selectedIds.has(product.id) ? '#C2553B' : 'hsl(var(--border))' }}
                         onClick={(e) => { e.preventDefault(); toggleProduct(product.id); }}
                       >
-                        {selectedIds.has(product.id) && <div className="w-3 h-3 rounded-sm bg-primary" />}
+                        {selectedIds.has(product.id) && <div className="w-3 h-3 rounded-sm bg-[#C2553B]" />}
                       </div>
                       <Badge className="bg-background/90 text-foreground backdrop-blur-sm border-none shadow-sm">
                         {product.productType || 'Produit'}
@@ -374,7 +374,7 @@ export default function ProductsListPage() {
                   </div>
                   <CardContent className="p-4 flex-1 flex flex-col justify-between">
                     <div>
-                      <h3 className="font-bold line-clamp-1 group-hover:text-primary transition-colors">{product.name}</h3>
+                      <h3 className="font-bold line-clamp-1 group-hover:text-[#C2553B] transition-colors">{product.name}</h3>
                       <p className="text-sm text-muted-foreground mb-4">{product.brand}</p>
                     </div>
                     <div className="flex items-center justify-between pt-4 border-t border-border">
@@ -382,7 +382,7 @@ export default function ProductsListPage() {
                         <Clock className="h-3 w-3" />
                         {product.createdAt ? new Date(product.createdAt.seconds * 1000).toLocaleDateString('fr-FR') : 'N/A'}
                       </span>
-                      <Button asChild size="sm" variant="link" className="text-xs h-auto p-0 font-bold text-primary">
+                      <Button asChild size="sm" variant="link" className="text-xs h-auto p-0 font-bold text-[#C2553B]">
                         <Link href={`/dashboard/products/${product.id}`} className="flex items-center gap-1 group/link">
                           Éditer <ArrowRight className="h-3 w-3 transition-transform group-hover/link:translate-x-1" />
                         </Link>
@@ -393,7 +393,7 @@ export default function ProductsListPage() {
               ))}
             </div>
           ) : (
-            <Card className="studio-card overflow-hidden">
+            <Card className="overflow-hidden">
               <Table>
                 <TableHeader>
                   <TableRow>
@@ -401,7 +401,7 @@ export default function ProductsListPage() {
                       <Checkbox
                         checked={allPageSelected}
                         onCheckedChange={toggleAllPage}
-                        className="data-[state=checked]:bg-primary"
+                        className="data-[state=checked]:bg-[#C2553B]"
                         aria-label="Sélectionner toute la page"
                       />
                     </TableHead>
@@ -415,12 +415,12 @@ export default function ProductsListPage() {
                 </TableHeader>
                 <TableBody>
                   {paginatedProducts.map((product) => (
-                    <TableRow key={product.id} className={`group transition-colors ${selectedIds.has(product.id) ? 'bg-primary/5' : 'hover:bg-muted/30'}`}>
+                    <TableRow key={product.id} className={`group transition-colors ${selectedIds.has(product.id) ? 'bg-[#C2553B]/5' : 'hover:bg-muted/30'}`}>
                       <TableCell>
                         <Checkbox
                           checked={selectedIds.has(product.id)}
                           onCheckedChange={() => toggleProduct(product.id)}
-                          className="data-[state=checked]:bg-primary"
+                          className="data-[state=checked]:bg-[#C2553B]"
                         />
                       </TableCell>
                       <TableCell>
@@ -509,7 +509,7 @@ export default function ProductsListPage() {
       {selectedIds.size > 0 && (
         <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 flex items-center gap-3 bg-background border border-border shadow-2xl rounded-2xl px-5 py-3 animate-in slide-in-from-bottom-4 duration-200">
           <span className="text-sm font-medium text-foreground">
-            <span className="font-bold text-primary">{selectedIds.size}</span> produit{selectedIds.size > 1 ? 's' : ''} sélectionné{selectedIds.size > 1 ? 's' : ''}
+            <span className="font-bold text-[#C2553B]">{selectedIds.size}</span> produit{selectedIds.size > 1 ? 's' : ''} sélectionné{selectedIds.size > 1 ? 's' : ''}
           </span>
           <div className="w-px h-5 bg-border" />
           {selectedIds.size < filteredProducts.length && (
@@ -530,7 +530,7 @@ export default function ProductsListPage() {
             <Trash2 className="mr-1.5 h-3.5 w-3.5" />
             Supprimer
           </Button>
-          <Button size="sm" className="h-8 shadow-lg shadow-primary/20" onClick={handleExport}>
+          <Button size="sm" className="h-8 shadow-lg shadow-[#C2553B]/20" onClick={handleExport}>
             <Download className="mr-2 h-3.5 w-3.5" />
             Exporter CSV
           </Button>

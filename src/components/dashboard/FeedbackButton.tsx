@@ -53,7 +53,7 @@ export default function FeedbackButton() {
       {status === 'idle' && (
         <button
           onClick={() => setStatus('open')}
-          className="fixed bottom-24 left-4 sm:left-6 z-50 flex items-center gap-2 bg-primary text-white px-4 py-2.5 rounded-full shadow-lg shadow-primary/30 text-sm font-semibold hover:bg-primary/90 transition-all hover:scale-105"
+          className="fixed bottom-24 left-4 sm:left-6 z-50 flex items-center gap-2 bg-[#C2553B] text-white px-4 py-2.5 rounded-full shadow-lg shadow-[#C2553B]/30 text-sm font-semibold hover:bg-[#A23F29] transition-all hover:scale-105"
           aria-label="Donner mon avis"
         >
           <MessageSquarePlus className="h-4 w-4" />
@@ -67,7 +67,7 @@ export default function FeedbackButton() {
           {/* Header */}
           <div className="flex items-center justify-between px-4 py-3 border-b border-border bg-muted/40">
             <p className="text-sm font-semibold text-foreground flex items-center gap-2">
-              <MessageSquarePlus className="h-4 w-4 text-primary" />
+              <MessageSquarePlus className="h-4 w-4 text-[#C2553B]" />
               Votre avis compte
             </p>
             {status !== 'sending' && status !== 'sent' && (
@@ -136,7 +136,7 @@ export default function FeedbackButton() {
 
               <Button
                 size="sm"
-                className="w-full"
+                className="w-full bg-[#C2553B] hover:bg-[#A23F29] text-white"
                 onClick={handleSend}
                 disabled={!message.trim() || rating === 0 || status === 'sending'}
               >

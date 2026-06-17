@@ -45,8 +45,8 @@ const WelcomeMessage = () => {
     return (
       <div className="text-center mb-12">
         <CheckCircle2 className="h-16 w-16 text-green-500 mx-auto mb-4 animate-fade-in-up" />
-        <h1 className="font-headline text-4xl font-bold text-white animate-fade-in-up" style={{ animationDelay: '200ms'}}>Bienvenue à bord !</h1>
-        <p className="mt-4 text-lg text-white/80 max-w-2xl mx-auto animate-fade-in-up" style={{ animationDelay: '400ms'}}>
+        <h1 className="font-headline text-4xl font-bold animate-fade-in-up" style={{ color: 'var(--ls-text)', animationDelay: '200ms'}}>Bienvenue à bord !</h1>
+        <p className="mt-4 text-lg max-w-2xl mx-auto animate-fade-in-up" style={{ color: 'var(--ls-muted)', animationDelay: '400ms'}}>
           Votre compte est prêt. Pour finaliser la configuration, veuillez connecter votre boutique WooCommerce ci-dessous.
         </p>
       </div>
@@ -112,13 +112,13 @@ export default function OnboardingPage() {
   if (isLoading || !user) {
     return (
       <div className="flex h-screen items-center justify-center">
-        <Loader2 className="h-8 w-8 animate-spin text-primary" />
+        <Loader2 className="h-8 w-8 animate-spin text-[#C2553B]" />
       </div>
     );
   }
 
   return (
-    <div className="flex min-h-screen w-full flex-col bg-gradient-to-br from-[#3A0F6C] via-[#6C2BB8] to-[#3A0F6C]">
+    <div className="flex min-h-screen w-full flex-col" style={{ background: 'var(--ls-bg)' }}>
       <Header />
       <main className="flex flex-1 flex-col items-center justify-center gap-4 p-4 pt-24 md:gap-8 md:p-8">
         <div className="max-w-2xl w-full">
@@ -127,7 +127,7 @@ export default function OnboardingPage() {
             </Suspense>
             <Card className="animate-fade-in-up" style={{ animationDelay: '600ms'}}>
                 <CardHeader className="items-center text-center">
-                    <Plug className="h-12 w-12 text-primary mb-4" />
+                    <Plug className="h-12 w-12 text-[#C2553B] mb-4" />
                     <CardTitle className="font-headline text-3xl">Connectez votre boutique</CardTitle>
                     <CardDescription>
                         C'est la dernière étape ! Connectez votre boutique pour permettre la publication automatique des fiches produits.
@@ -179,7 +179,7 @@ export default function OnboardingPage() {
                             )}
                         />
                         <div className="flex flex-col gap-2">
-                            <Button type="submit" disabled={isSaving} className="w-full" size="lg">
+                            <Button type="submit" disabled={isSaving} className="w-full bg-[#C2553B] hover:bg-[#A23F29] text-white" size="lg">
                                 {isSaving ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <Save className="mr-2 h-4 w-4" />}
                                 {isSaving ? 'Connexion...' : 'Connecter et continuer'}
                             </Button>

@@ -40,8 +40,8 @@ const NavLink = ({ href, icon, label, isMobile = false }: { href: string; icon: 
                 <Link
                     href={href}
                     className={cn(
-                        "flex items-center gap-4 rounded-lg px-4 py-3 text-muted-foreground transition-all hover:bg-primary/10 hover:text-primary",
-                        isActive && "bg-primary text-primary-foreground shadow-md"
+                        "flex items-center gap-4 rounded-lg px-4 py-3 text-muted-foreground transition-all hover:bg-[#C2553B]/10 hover:text-[#C2553B]",
+                        isActive && "bg-[#C2553B] text-white shadow-md"
                     )}
                 >
                     {icon}
@@ -56,7 +56,7 @@ const NavLink = ({ href, icon, label, isMobile = false }: { href: string; icon: 
             href={href}
             className={cn(
                 "flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium text-muted-foreground transition-colors hover:bg-muted hover:text-foreground w-full",
-                isActive && "bg-primary text-primary-foreground shadow-sm hover:text-primary-foreground"
+                isActive && "bg-[#C2553B] text-white shadow-sm hover:text-white"
             )}
         >
             <span className="shrink-0">{icon}</span>
@@ -142,7 +142,7 @@ export const MobileNav = () => {
                                     <div className="flex items-center justify-between">
                                         <Badge variant="secondary" className="capitalize">{userProfile?.subscriptionPlan || 'N/A'}</Badge>
                                         <SheetClose asChild>
-                                            <Link href="/pricing" className="text-xs text-primary hover:underline">Changer</Link>
+                                            <Link href="/pricing" className="text-xs text-[#C2553B] hover:underline">Changer</Link>
                                         </SheetClose>
                                     </div>
                                 </>
@@ -244,7 +244,7 @@ export default function DashboardSidebar() {
                             </div>
                             <div className="flex items-center justify-between mt-1">
                                 <Badge variant="secondary" className="text-[10px] capitalize px-1.5">{userProfile?.subscriptionPlan || 'Gratuit'}</Badge>
-                                <Link href="/pricing" className="text-[10px] text-primary hover:underline">Changer</Link>
+                                <Link href="/pricing" className="text-[10px] text-[#C2553B] hover:underline">Changer</Link>
                             </div>
                         </div>
                     )}

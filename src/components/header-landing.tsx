@@ -30,7 +30,7 @@ export default function HeaderLanding() {
           <Logo className="h-14 w-14" />
           <span
             className="font-bold text-lg hidden sm:block"
-            style={{ color: '#E2EAF8' }}
+            style={{ fontFamily: 'var(--font-cormorant), serif', fontStyle: 'italic', color: 'var(--ls-text)' }}
           >
             Woosenteur
           </span>
@@ -82,7 +82,7 @@ export default function HeaderLanding() {
           {mounted && (
             <button
               onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
-              className="p-2 rounded-lg transition-colors hover:bg-white/10"
+              className="p-2 rounded-lg transition-colors hover:bg-black/5"
               aria-label="Changer le thème"
               title={theme === 'dark' ? 'Passer en mode clair' : 'Passer en mode sombre'}
             >
@@ -95,11 +95,11 @@ export default function HeaderLanding() {
 
           {/* Mobile burger */}
           <button
-            className="md:hidden p-2 rounded-lg hover:bg-white/5 transition-colors"
+            className="md:hidden p-2 rounded-lg hover:bg-black/5 transition-colors"
             onClick={() => setOpen(!open)}
             aria-label="Menu"
           >
-            {open ? <X className="h-5 w-5" style={{ color: '#E2EAF8' }} /> : <Menu className="h-5 w-5" style={{ color: '#E2EAF8' }} />}
+            {open ? <X className="h-5 w-5" style={{ color: 'var(--ls-text)' }} /> : <Menu className="h-5 w-5" style={{ color: 'var(--ls-text)' }} />}
           </button>
         </div>
       </div>

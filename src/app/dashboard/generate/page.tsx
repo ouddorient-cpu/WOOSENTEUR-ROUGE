@@ -56,6 +56,19 @@ import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Label } from "@/components/ui/label";
 import { LivePreview } from '@/components/dashboard/live-preview';
 
+/* Palette Soft Atelier — identique à TrialGenerator / Pricing pour cohérence avec la landing */
+const C = {
+  bg:        'var(--ls-bg)',
+  bgAlt:     'var(--ls-bg-alt)',
+  surface:   'var(--ls-surface)',
+  text:      'var(--ls-text)',
+  muted:     'var(--ls-muted)',
+  border:    'var(--ls-border-color)',
+  terra:     '#C2553B',
+  terraDark: '#A23F29',
+  terraSoft: 'rgba(194,85,59,0.10)',
+};
+
 const CERTIFICATIONS = [
   { id: 'bio', label: 'Bio / Organic' },
   { id: 'vegan', label: 'Vegan' },
@@ -105,10 +118,10 @@ const FormColumn: React.FC<FormColumnProps> = ({ form, onSubmit, isGenerating, c
   const isMonProduit = productMode === 'mon-produit';
 
   return (
-    <Card className="studio-card">
+    <Card style={{ background: C.surface, borderColor: C.border }}>
       <CardHeader>
-        <CardTitle className="text-white font-bold">1. Informations Produit</CardTitle>
-        <CardDescription>Remplissez les informations essentielles, notre agent s'occupe du reste.</CardDescription>
+        <CardTitle style={{ color: C.text }} className="font-bold">1. Informations Produit</CardTitle>
+        <CardDescription style={{ color: C.muted }}>Remplissez les informations essentielles, notre agent s'occupe du reste.</CardDescription>
       </CardHeader>
       <CardContent>
         <Form {...form}>
@@ -120,17 +133,15 @@ const FormColumn: React.FC<FormColumnProps> = ({ form, onSubmit, isGenerating, c
               name="productMode"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Mode de génération</FormLabel>
+                  <FormLabel style={{ color: C.text }}>Mode de génération</FormLabel>
                   <div className="grid grid-cols-2 gap-2">
                     <button
                       type="button"
                       onClick={() => field.onChange('marque-connue')}
-                      className={cn(
-                        'flex flex-col items-center gap-1 p-3 rounded-lg border-2 text-xs font-medium transition-colors',
-                        field.value === 'marque-connue'
-                          ? 'border-primary bg-primary/10 text-primary'
-                          : 'border-muted text-muted-foreground hover:border-muted-foreground'
-                      )}
+                      className="flex flex-col items-center gap-1 p-3 rounded-lg border-2 text-xs font-medium transition-colors"
+                      style={field.value === 'marque-connue'
+                        ? { borderColor: C.terra, background: C.terraSoft, color: C.terra }
+                        : { borderColor: C.border, color: C.muted }}
                     >
                       <Globe className="h-4 w-4" />
                       Marque connue
@@ -138,18 +149,16 @@ const FormColumn: React.FC<FormColumnProps> = ({ form, onSubmit, isGenerating, c
                     <button
                       type="button"
                       onClick={() => field.onChange('mon-produit')}
-                      className={cn(
-                        'flex flex-col items-center gap-1 p-3 rounded-lg border-2 text-xs font-medium transition-colors',
-                        field.value === 'mon-produit'
-                          ? 'border-primary bg-primary/10 text-primary'
-                          : 'border-muted text-muted-foreground hover:border-muted-foreground'
-                      )}
+                      className="flex flex-col items-center gap-1 p-3 rounded-lg border-2 text-xs font-medium transition-colors"
+                      style={field.value === 'mon-produit'
+                        ? { borderColor: C.terra, background: C.terraSoft, color: C.terra }
+                        : { borderColor: C.border, color: C.muted }}
                     >
                       <PenLine className="h-4 w-4" />
                       Mon produit
                     </button>
                   </div>
-                  <FormDescription className="text-xs">
+                  <FormDescription className="text-xs" style={{ color: C.muted }}>
                     {isMonProduit
                       ? 'Décrivez votre produit — l\'IA crée la fiche à partir de vos infos.'
                       : 'L\'agent recherche automatiquement le produit en ligne.'}
@@ -164,12 +173,14 @@ const FormColumn: React.FC<FormColumnProps> = ({ form, onSubmit, isGenerating, c
               name="productName"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Nom du produit</FormLabel>
+                  <FormLabel style={{ color: C.text }}>Nom du produit</FormLabel>
                   <FormControl>
                     <Input
                       placeholder="ex: La Vie Est Belle"
                       {...field}
                       autoComplete="off" autoCorrect="off" autoCapitalize="off" spellCheck="false"
+                      style={{ background: C.bgAlt, borderColor: C.border, color: C.text }}
+                      className="focus-visible:ring-[#C2553B]/30"
                     />
                   </FormControl>
                   <FormMessage />
@@ -183,13 +194,15 @@ const FormColumn: React.FC<FormColumnProps> = ({ form, onSubmit, isGenerating, c
               name="brand"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>{isMonProduit ? 'Nom de votre marque (optionnel)' : 'Marque'}</FormLabel>
+                  <FormLabel style={{ color: C.text }}>{isMonProduit ? 'Nom de votre marque (optionnel)' : 'Marque'}</FormLabel>
                   <FormControl>
                     <Input
                       placeholder={isMonProduit ? 'ex: Ma marque, ou laisser vide' : 'ex: Lancôme'}
                       {...field}
                       value={field.value ?? ''}
                       autoComplete="off" autoCorrect="off" autoCapitalize="off" spellCheck="false"
+                      style={{ background: C.bgAlt, borderColor: C.border, color: C.text }}
+                      className="focus-visible:ring-[#C2553B]/30"
                     />
                   </FormControl>
                   <FormMessage />
@@ -204,16 +217,17 @@ const FormColumn: React.FC<FormColumnProps> = ({ form, onSubmit, isGenerating, c
                 name="productDescription"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Description de votre produit</FormLabel>
+                    <FormLabel style={{ color: C.text }}>Description de votre produit</FormLabel>
                     <FormControl>
                       <Textarea
                         rows={4}
                         placeholder="Ex: Sérum hydratant 30ml à base d'acide hyaluronique et niacinamide. Idéal pour peaux sèches, résultats visibles en 2 semaines. Fabriqué en France, sans parabènes."
-                        className="resize-none text-sm"
+                        className="resize-none text-sm focus-visible:ring-[#C2553B]/30"
+                        style={{ background: C.bgAlt, borderColor: C.border, color: C.text }}
                         {...field}
                       />
                     </FormControl>
-                    <FormDescription className="text-xs">
+                    <FormDescription className="text-xs" style={{ color: C.muted }}>
                       Composition, bénéfices, usage, histoire… Plus vous en dites, meilleure est la fiche.
                     </FormDescription>
                     <FormMessage />
@@ -229,7 +243,7 @@ const FormColumn: React.FC<FormColumnProps> = ({ form, onSubmit, isGenerating, c
                 name="certifications"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Labels & certifications</FormLabel>
+                    <FormLabel style={{ color: C.text }}>Labels & certifications</FormLabel>
                     <div className="grid grid-cols-2 gap-2 mt-1">
                       {CERTIFICATIONS.map((cert) => {
                         const checked = (field.value ?? []).includes(cert.id);
@@ -238,6 +252,7 @@ const FormColumn: React.FC<FormColumnProps> = ({ form, onSubmit, isGenerating, c
                             <Checkbox
                               id={cert.id}
                               checked={checked}
+                              className="border-[#C2553B]/50 data-[state=checked]:bg-[#C2553B] data-[state=checked]:text-white data-[state=checked]:border-[#C2553B]"
                               onCheckedChange={(val) => {
                                 const current = field.value ?? [];
                                 field.onChange(
@@ -245,7 +260,7 @@ const FormColumn: React.FC<FormColumnProps> = ({ form, onSubmit, isGenerating, c
                                 );
                               }}
                             />
-                            <label htmlFor={cert.id} className="text-xs cursor-pointer leading-none">
+                            <label htmlFor={cert.id} className="text-xs cursor-pointer leading-none" style={{ color: C.muted }}>
                               {cert.label}
                             </label>
                           </div>
@@ -264,22 +279,22 @@ const FormColumn: React.FC<FormColumnProps> = ({ form, onSubmit, isGenerating, c
               name="category"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Type de Produit</FormLabel>
+                  <FormLabel style={{ color: C.text }}>Type de Produit</FormLabel>
                   <Select onValueChange={field.onChange} defaultValue={field.value}>
                     <FormControl>
-                      <SelectTrigger>
+                      <SelectTrigger style={{ background: C.bgAlt, borderColor: C.border, color: C.text }}>
                         <SelectValue placeholder="Sélectionner le type..." />
                       </SelectTrigger>
                     </FormControl>
-                    <SelectContent>
-                      <SelectItem value="Parfum">Parfum</SelectItem>
-                      <SelectItem value="Soin">Soin</SelectItem>
-                      <SelectItem value="Cosmétique">Cosmétique</SelectItem>
-                      <SelectItem value="parfum d'intérieur">Parfum d'intérieur</SelectItem>
-                      <SelectItem value="Sport">Sport</SelectItem>
-                      <SelectItem value="Habillement">Habillement</SelectItem>
-                      <SelectItem value="Maison">Maison</SelectItem>
-                      <SelectItem value="Autres">Autres</SelectItem>
+                    <SelectContent style={{ background: C.surface, borderColor: C.border, color: C.text }}>
+                      <SelectItem value="Parfum" className="focus:bg-[var(--ls-bg-alt)]">Parfum</SelectItem>
+                      <SelectItem value="Soin" className="focus:bg-[var(--ls-bg-alt)]">Soin</SelectItem>
+                      <SelectItem value="Cosmétique" className="focus:bg-[var(--ls-bg-alt)]">Cosmétique</SelectItem>
+                      <SelectItem value="parfum d'intérieur" className="focus:bg-[var(--ls-bg-alt)]">Parfum d'intérieur</SelectItem>
+                      <SelectItem value="Sport" className="focus:bg-[var(--ls-bg-alt)]">Sport</SelectItem>
+                      <SelectItem value="Habillement" className="focus:bg-[var(--ls-bg-alt)]">Habillement</SelectItem>
+                      <SelectItem value="Maison" className="focus:bg-[var(--ls-bg-alt)]">Maison</SelectItem>
+                      <SelectItem value="Autres" className="focus:bg-[var(--ls-bg-alt)]">Autres</SelectItem>
                     </SelectContent>
                   </Select>
                   <FormMessage />
@@ -294,11 +309,14 @@ const FormColumn: React.FC<FormColumnProps> = ({ form, onSubmit, isGenerating, c
                 name="weight"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Poids (g)</FormLabel>
+                    <FormLabel style={{ color: C.text }}>Poids (g)</FormLabel>
                     <FormControl>
-                      <Input type="number" placeholder="ex: 250" {...field} />
+                      <Input type="number" placeholder="ex: 250" {...field}
+                        style={{ background: C.bgAlt, borderColor: C.border, color: C.text }}
+                        className="focus-visible:ring-[#C2553B]/30"
+                      />
                     </FormControl>
-                    <FormDescription className="text-xs">Poids du colis en grammes.</FormDescription>
+                    <FormDescription className="text-xs" style={{ color: C.muted }}>Poids du colis en grammes.</FormDescription>
                     <FormMessage />
                   </FormItem>
                 )}
@@ -308,9 +326,12 @@ const FormColumn: React.FC<FormColumnProps> = ({ form, onSubmit, isGenerating, c
                 name="price"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Prix de vente (€)</FormLabel>
+                    <FormLabel style={{ color: C.text }}>Prix de vente (€)</FormLabel>
                     <FormControl>
-                      <Input type="number" placeholder="ex: 99.90" {...field} />
+                      <Input type="number" placeholder="ex: 99.90" {...field}
+                        style={{ background: C.bgAlt, borderColor: C.border, color: C.text }}
+                        className="focus-visible:ring-[#C2553B]/30"
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -318,7 +339,7 @@ const FormColumn: React.FC<FormColumnProps> = ({ form, onSubmit, isGenerating, c
               />
             </div>
 
-            <Button type="submit" disabled={isGenerating && !canGenerate} size="lg" className="w-full">
+            <Button type="submit" disabled={isGenerating && !canGenerate} size="lg" className="w-full bg-[#C2553B] hover:bg-[#A23F29] text-white">
               {isGenerating ? (
                 <>
                   <Loader2 className="mr-2 h-4 w-4 animate-spin" />
@@ -339,10 +360,10 @@ const FormColumn: React.FC<FormColumnProps> = ({ form, onSubmit, isGenerating, c
 };
 
 const UploadingPreview: React.FC<{ progress: number; progressMessage: string; imageUrl?: string; }> = ({ progress, progressMessage, imageUrl }) => (
-  <Card>
+  <Card style={{ background: C.surface, borderColor: C.border }}>
     <CardHeader>
-      <CardTitle className="text-white font-bold">{progressMessage}</CardTitle>
-      <CardDescription>Veuillez patienter pendant le traitement de votre image.</CardDescription>
+      <CardTitle style={{ color: C.text }} className="font-bold">{progressMessage}</CardTitle>
+      <CardDescription style={{ color: C.muted }}>Veuillez patienter pendant le traitement de votre image.</CardDescription>
     </CardHeader>
     <CardContent className="relative flex flex-col items-center justify-center gap-4 text-center">
       {imageUrl ? (
@@ -355,13 +376,13 @@ const UploadingPreview: React.FC<{ progress: number; progressMessage: string; im
             width={400}
           />
           <div className="absolute inset-0 flex flex-col items-center justify-center gap-4 p-4">
-            <Loader2 className="h-8 w-8 animate-spin text-primary" />
-            <Progress value={progress} className="w-full" />
+            <Loader2 className="h-8 w-8 animate-spin" style={{ color: C.terra }} />
+            <Progress value={progress} className="w-full [&>div]:bg-[#C2553B]" />
           </div>
         </div>
       ) : (
-        <div className="flex items-center justify-center p-8 border-2 border-dashed rounded-lg w-full">
-          <Loader2 className="h-16 w-16 text-muted-foreground animate-spin" />
+        <div className="flex items-center justify-center p-8 border-2 border-dashed rounded-lg w-full" style={{ borderColor: C.border }}>
+          <Loader2 className="h-16 w-16 animate-spin" style={{ color: C.muted }} />
         </div>
       )}
     </CardContent>
@@ -417,10 +438,10 @@ const ResultColumn: React.FC<ResultColumnProps> = ({
 }) => {
   if (step === 'generating' || step === 'error') {
     return (
-      <Card className="h-full">
+      <Card className="h-full" style={{ background: C.surface, borderColor: C.border }}>
         <CardHeader>
-          <CardTitle className="text-white font-bold">Woody est au travail !</CardTitle>
-          <CardDescription>Notre agent IA rédige votre fiche produit SEO.</CardDescription>
+          <CardTitle style={{ color: C.text }} className="font-bold">Woody est au travail !</CardTitle>
+          <CardDescription style={{ color: C.muted }}>Notre agent IA rédige votre fiche produit SEO.</CardDescription>
         </CardHeader>
         <CardContent className="flex flex-col justify-center items-center h-full gap-6">
           <div className="flex flex-col items-center gap-4">
@@ -433,11 +454,11 @@ const ResultColumn: React.FC<ResultColumnProps> = ({
               style={{ animation: 'mascotteBounce 1.2s ease-in-out infinite' }}
             />
             <style>{`@keyframes mascotteBounce { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-12px)} }`}</style>
-            <span className="text-base font-medium text-primary text-center">{progressMessage}</span>
+            <span className="text-base font-medium text-center" style={{ color: C.terra }}>{progressMessage}</span>
           </div>
           <Progress
             value={progress}
-            className="w-full"
+            className="w-full [&>div]:bg-[#C2553B]"
             data-state={progress === 100 ? 'completed' : 'loading'}
           />
 
@@ -461,10 +482,10 @@ const ResultColumn: React.FC<ResultColumnProps> = ({
     const canPublish = !!userProfile?.wooCommerce?.storeUrl;
     return (
       <div ref={resultColumnRef} className="space-y-6">
-        <Card>
+        <Card style={{ background: C.surface, borderColor: C.border }}>
           <CardHeader>
-            <CardTitle className="text-white font-bold">3. Image du produit</CardTitle>
-            <CardDescription>Une image de haute qualité est essentielle. Notre IA validera votre choix.</CardDescription>
+            <CardTitle style={{ color: C.text }} className="font-bold">3. Image du produit</CardTitle>
+            <CardDescription style={{ color: C.muted }}>Une image de haute qualité est essentielle. Notre IA validera votre choix.</CardDescription>
           </CardHeader>
           <CardContent className="flex flex-col items-center justify-center gap-4 text-center">
             {generatedProduct?.imageUrl ? (
@@ -477,24 +498,24 @@ const ResultColumn: React.FC<ResultColumnProps> = ({
                   width={400}
                 />
                 <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity bg-black/50 rounded-lg">
-                  <Button onClick={triggerFileInput} disabled={isUploading}>
+                  <Button onClick={triggerFileInput} disabled={isUploading} className="bg-[#C2553B] hover:bg-[#A23F29] text-white">
                     <Upload className="mr-2 h-4 w-4" />
                     Changer l'image
                   </Button>
                 </div>
               </div>
             ) : (
-              <div className="flex flex-col items-center justify-center p-8 border-2 border-dashed rounded-lg w-full">
-                <ImageIcon className="h-16 w-16 text-muted-foreground mb-4" />
-                <Button onClick={triggerFileInput} size="lg" disabled={isUploading}>
+              <div className="flex flex-col items-center justify-center p-8 border-2 border-dashed rounded-lg w-full" style={{ borderColor: C.border }}>
+                <ImageIcon className="h-16 w-16 mb-4" style={{ color: C.muted }} />
+                <Button onClick={triggerFileInput} size="lg" disabled={isUploading} className="bg-[#C2553B] hover:bg-[#A23F29] text-white">
                   <Upload className="mr-2 h-4 w-4" />
                   Téléverser votre image
                 </Button>
-                <p className="text-sm text-muted-foreground mt-2">depuis votre appareil</p>
+                <p className="text-sm mt-2" style={{ color: C.muted }}>depuis votre appareil</p>
               </div>
             )}
-            <div className="w-full max-w-sm mt-4 pt-4 border-t">
-              <Label htmlFor="externalImageUrl" className="text-sm font-medium text-left block mb-2">
+            <div className="w-full max-w-sm mt-4 pt-4 border-t" style={{ borderColor: C.border }}>
+              <Label htmlFor="externalImageUrl" className="text-sm font-medium text-left block mb-2" style={{ color: C.text }}>
                 Ou collez une URL d'image (Cloudinary, etc.)
               </Label>
               <Input
@@ -503,9 +524,10 @@ const ResultColumn: React.FC<ResultColumnProps> = ({
                 placeholder="https://res.cloudinary.com/..."
                 value={externalImageUrl}
                 onChange={(e) => setExternalImageUrl(e.target.value)}
-                className="text-sm"
+                className="text-sm focus-visible:ring-[#C2553B]/30"
+                style={{ background: C.bgAlt, borderColor: C.border, color: C.text }}
               />
-              <p className="text-xs text-muted-foreground mt-1 text-left">
+              <p className="text-xs mt-1 text-left" style={{ color: C.muted }}>
                 Cette URL sera utilisée dans le CSV au lieu de l'image uploadée.
               </p>
             </div>
@@ -513,14 +535,14 @@ const ResultColumn: React.FC<ResultColumnProps> = ({
         </Card>
 
         {(step === 'preview' || step === 'export') && (
-          <Card ref={exportCardRef}>
+          <Card ref={exportCardRef} style={{ background: C.surface, borderColor: C.border }}>
             <CardHeader>
-              <CardTitle className="text-white font-bold">4. Export</CardTitle>
-              <CardDescription>Choisissez une plateforme et un format, puis exportez votre fiche produit.</CardDescription>
+              <CardTitle style={{ color: C.text }} className="font-bold">4. Export</CardTitle>
+              <CardDescription style={{ color: C.muted }}>Choisissez une plateforme et un format, puis exportez votre fiche produit.</CardDescription>
             </CardHeader>
             <CardContent className="space-y-6">
               <div>
-                <Label className="text-sm font-medium mb-3 block">Plateforme de publication</Label>
+                <Label className="text-sm font-medium mb-3 block" style={{ color: C.text }}>Plateforme de publication</Label>
                 <RadioGroup
                   value={exportPlatform}
                   onValueChange={(value) => {
@@ -534,7 +556,8 @@ const ResultColumn: React.FC<ResultColumnProps> = ({
                     <RadioGroupItem value="woocommerce" id="woocommerce" className="peer sr-only" />
                     <Label
                       htmlFor="woocommerce"
-                      className="flex flex-col items-center justify-between rounded-md border-2 border-muted bg-popover p-4 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-primary [&:has([data-state=checked])]:border-primary"
+                      style={{ borderColor: C.border, color: C.text, background: C.bgAlt }}
+                      className="flex flex-col items-center justify-between rounded-md border-2 p-4 hover:opacity-80 peer-data-[state=checked]:border-[#C2553B] peer-data-[state=checked]:text-[#C2553B] [&:has([data-state=checked])]:border-[#C2553B]"
                     >
                       WooCommerce
                     </Label>
@@ -543,7 +566,8 @@ const ResultColumn: React.FC<ResultColumnProps> = ({
                     <RadioGroupItem value="shopify" id="shopify" className="peer sr-only" />
                     <Label
                       htmlFor="shopify"
-                      className="flex flex-col items-center justify-between rounded-md border-2 border-muted bg-popover p-4 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-primary [&:has([data-state=checked])]:border-primary"
+                      style={{ borderColor: C.border, color: C.text, background: C.bgAlt }}
+                      className="flex flex-col items-center justify-between rounded-md border-2 p-4 hover:opacity-80 peer-data-[state=checked]:border-[#C2553B] peer-data-[state=checked]:text-[#C2553B] [&:has([data-state=checked])]:border-[#C2553B]"
                     >
                       Shopify
                     </Label>
@@ -552,24 +576,24 @@ const ResultColumn: React.FC<ResultColumnProps> = ({
               </div>
 
               <div>
-                <Label className="text-sm font-medium mb-3 block">Format CSV</Label>
+                <Label className="text-sm font-medium mb-3 block" style={{ color: C.text }}>Format CSV</Label>
                 {exportPlatform === 'shopify' ? (
-                  <div className="rounded-md border border-border bg-muted/40 px-4 py-3 text-sm text-foreground flex items-center gap-2">
+                  <div className="rounded-md border px-4 py-3 text-sm flex items-center gap-2" style={{ borderColor: C.border, background: C.bgAlt, color: C.text }}>
                     <span className="font-medium">Shopify CSV</span>
-                    <span className="text-xs text-muted-foreground">— Format officiel Shopify Products Import</span>
+                    <span className="text-xs" style={{ color: C.muted }}>— Format officiel Shopify Products Import</span>
                   </div>
                 ) : (
                   <Select value={csvFormat} onValueChange={(value) => setCsvFormat(value as CsvFormat)}>
-                    <SelectTrigger>
+                    <SelectTrigger style={{ background: C.bgAlt, borderColor: C.border, color: C.text }}>
                       <SelectValue placeholder="Sélectionner le format..." />
                     </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="woocommerce-fr">🇫🇷 WooCommerce FR (recommandé)</SelectItem>
-                      <SelectItem value="woocommerce-en">🇬🇧 WooCommerce EN (international)</SelectItem>
+                    <SelectContent style={{ background: C.surface, borderColor: C.border, color: C.text }}>
+                      <SelectItem value="woocommerce-fr" className="focus:bg-[var(--ls-bg-alt)]">🇫🇷 WooCommerce FR (recommandé)</SelectItem>
+                      <SelectItem value="woocommerce-en" className="focus:bg-[var(--ls-bg-alt)]">🇬🇧 WooCommerce EN (international)</SelectItem>
                     </SelectContent>
                   </Select>
                 )}
-                <p className="text-xs text-muted-foreground mt-2">
+                <p className="text-xs mt-2" style={{ color: C.muted }}>
                   {csvFormat === 'woocommerce-fr' && "👉 WooCommerce Admin → Produits → Importer → glissez ce fichier CSV"}
                   {csvFormat === 'woocommerce-en' && "👉 WooCommerce Admin → Products → Import → upload this CSV file"}
                   {csvFormat === 'shopify' && "👉 Shopify Admin → Produits → Importer → glissez ce fichier CSV"}
@@ -577,7 +601,7 @@ const ResultColumn: React.FC<ResultColumnProps> = ({
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
-                <Button size="lg" variant="outline" onClick={handleDownloadCsv}>
+                <Button size="lg" variant="outline" onClick={handleDownloadCsv} style={{ borderColor: C.border, color: C.text }}>
                   <Download className="mr-2 h-4 w-4" />
                   Télécharger le CSV
                 </Button>
@@ -585,7 +609,7 @@ const ResultColumn: React.FC<ResultColumnProps> = ({
                   size="lg"
                   onClick={handlePublish}
                   disabled={isPublishing || (exportPlatform === 'woocommerce' && !canPublish) || (exportPlatform === 'shopify')}
-                  className={publishStep === 'success' ? 'bg-green-600 hover:bg-green-700' : publishStep === 'error' ? 'bg-destructive hover:bg-destructive/90' : ''}
+                  className={publishStep === 'success' ? 'bg-green-600 hover:bg-green-700 text-white' : publishStep === 'error' ? 'bg-destructive hover:bg-destructive/90 text-white' : 'bg-[#C2553B] hover:bg-[#A23F29] text-white'}
                 >
                   {isPublishing ? (
                     <Loader2 className="mr-2 h-4 w-4 animate-spin" />
@@ -614,7 +638,7 @@ const ResultColumn: React.FC<ResultColumnProps> = ({
                       variant={publishStep === 'success' ? 'default' : 'secondary'}
                       disabled={!targetUrl}
                       onClick={() => targetUrl && window.open(targetUrl, '_blank')}
-                      className={publishStep === 'success' ? 'animate-pulse bg-green-600 hover:bg-green-700 hover:animate-none' : ''}
+                      className={publishStep === 'success' ? 'animate-pulse bg-green-600 hover:bg-green-700 hover:animate-none text-white' : ''}
                     >
                       <ExternalLink className="mr-2 h-4 w-4" />
                       {publishStep === 'success' ? 'Voir sur ma boutique ✨' : 'Voir ma boutique'}
@@ -626,21 +650,21 @@ const ResultColumn: React.FC<ResultColumnProps> = ({
               {/* Barre de progression publication */}
               {isPublishing && (
                 <div className="space-y-2 pt-1">
-                  <div className="flex items-center justify-between text-xs text-muted-foreground">
-                    <span className={publishStep === 'connecting' ? 'text-primary font-medium' : ''}>
+                  <div className="flex items-center justify-between text-xs" style={{ color: C.muted }}>
+                    <span style={publishStep === 'connecting' ? { color: C.terra, fontWeight: 500 } : undefined}>
                       {publishStep === 'connecting' ? '⏳' : '✅'} Connexion à WooCommerce
                     </span>
-                    <span className={publishStep === 'sending' ? 'text-primary font-medium' : ''}>
+                    <span style={publishStep === 'sending' ? { color: C.terra, fontWeight: 500 } : undefined}>
                       {publishStep === 'sending' ? '⏳' : publishStep === 'success' ? '✅' : '○'} Envoi du produit
                     </span>
-                    <span className={publishStep === 'success' ? 'text-green-600 font-medium' : 'text-muted-foreground/50'}>
+                    <span className={publishStep === 'success' ? 'text-green-600 font-medium' : ''} style={publishStep !== 'success' ? { color: C.muted, opacity: 0.6 } : undefined}>
                       {publishStep === 'success' ? '✅' : '○'} Publié en ligne
                     </span>
                   </div>
-                  <div className="h-1.5 w-full bg-muted rounded-full overflow-hidden">
+                  <div className="h-1.5 w-full rounded-full overflow-hidden" style={{ background: C.bgAlt }}>
                     <div
-                      className="h-full bg-primary rounded-full transition-all duration-700"
-                      style={{ width: publishStep === 'connecting' ? '33%' : publishStep === 'sending' ? '66%' : '100%' }}
+                      className="h-full rounded-full transition-all duration-700"
+                      style={{ width: publishStep === 'connecting' ? '33%' : publishStep === 'sending' ? '66%' : '100%', background: C.terra }}
                     />
                   </div>
                 </div>
@@ -678,13 +702,13 @@ const ResultColumn: React.FC<ResultColumnProps> = ({
 
   // Placeholder for the result column
   return (
-    <Card className="h-full flex flex-col items-center justify-center bg-muted/50 border-dashed">
+    <Card className="h-full flex flex-col items-center justify-center border-dashed" style={{ background: C.bgAlt, borderColor: C.border }}>
       <CardContent className="text-center">
-        <div className="p-6 rounded-full bg-background/50 inline-block mb-4">
-          <FileText className="h-12 w-12 text-muted-foreground" />
+        <div className="p-6 rounded-full inline-block mb-4" style={{ background: C.surface }}>
+          <FileText className="h-12 w-12" style={{ color: C.muted }} />
         </div>
-        <h3 className="font-headline text-xl font-semibold text-muted-foreground">La fiche produit générée apparaîtra ici</h3>
-        <p className="text-muted-foreground mt-2">Remplissez le formulaire et lancez la génération.</p>
+        <h3 className="font-headline text-xl font-semibold" style={{ color: C.muted }}>La fiche produit générée apparaîtra ici</h3>
+        <p className="mt-2" style={{ color: C.muted }}>Remplissez le formulaire et lancez la génération.</p>
       </CardContent>
     </Card>
   );
@@ -1053,7 +1077,7 @@ export default function GeneratePage() {
         <AlertDialogFooter>
           <AlertDialogCancel>Annuler</AlertDialogCancel>
           <AlertDialogAction asChild>
-            <Link href="/pricing" className="bg-primary hover:bg-primary/90">
+            <Link href="/pricing" className="bg-[#C2553B] hover:bg-[#A23F29]">
               <Rocket className="mr-2 h-4 w-4" />
               Voir les plans
             </Link>
@@ -1069,12 +1093,12 @@ export default function GeneratePage() {
       <div className="flex flex-col gap-6">
         <div className="flex items-center justify-between">
           <div>
-            <Badge variant="outline" className="mb-2 border-primary/30 text-primary bg-primary/5">
+            <Badge variant="outline" className="mb-2 border-[#C2553B]/30 text-[#C2553B] bg-[#C2553B]/5">
               <Bot className="mr-2 h-3 w-3" /> Studio Créatif v2
             </Badge>
-            <h1 className="font-headline text-3xl font-bold text-white">Création de Produit</h1>
+            <h1 className="font-headline text-3xl font-bold" style={{ color: C.text }}>Création de Produit</h1>
           </div>
-          <div className="flex items-center gap-2 text-sm text-muted-foreground bg-muted/50 px-3 py-1.5 rounded-full">
+          <div className="flex items-center gap-2 text-sm px-3 py-1.5 rounded-full" style={{ color: C.muted, background: C.surface, border: `1px solid ${C.border}` }}>
             <ShieldCheck className="h-4 w-4 text-green-500" />
             <span>Mode Agent IA Actif</span>
           </div>

@@ -406,7 +406,7 @@ export default function ProductPage() {
                         <CardContent className="relative group">
                             {isUploading && (
                                 <div className="absolute inset-0 bg-background/80 flex flex-col items-center justify-center rounded-lg z-10 p-4 text-center">
-                                     <Loader2 className="h-8 w-8 animate-spin text-primary mb-4" />
+                                     <Loader2 className="h-8 w-8 animate-spin text-[#C2553B] mb-4" />
                                      <Progress value={uploadProgress} className="w-full" />
                                     <p className="text-sm text-muted-foreground mt-2">{uploadProgress < 30 ? "Analyse IA..." : "Téléversement..."}</p>
                                 </div>

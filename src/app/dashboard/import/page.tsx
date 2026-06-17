@@ -940,7 +940,7 @@ export default function ImportPage() {
                 <CardDescription>
                     Saisissez vos produits, importez depuis WooCommerce ou uploadez un CSV.
                     {!isSuperAdmin && <> — Crédits : <span className="font-bold">{availableCredits}</span></>}
-                    {isSuperAdmin && <> — <span className="font-bold text-primary">Admin — limites désactivées.</span></>}
+                    {isSuperAdmin && <> — <span className="font-bold text-[#C2553B]">Admin — limites désactivées.</span></>}
                 </CardDescription>
             </CardHeader>
             <CardContent className="space-y-6">
@@ -966,7 +966,7 @@ export default function ImportPage() {
                 {/* ── Panel : Parfums (mode ultra-simple) ── */}
                 {uploadTab === 'parfums' && (
                     <div className="space-y-4">
-                        <div className="rounded-lg border-2 border-primary/20 bg-primary/5 p-4">
+                        <div className="rounded-lg border-2 border-[#C2553B]/20 bg-[#C2553B]/5 p-4">
                             <p className="font-semibold text-sm">Colle juste les noms de tes parfums — un par ligne</p>
                             <p className="text-xs text-muted-foreground mt-1">
                                 La marque est détectée automatiquement. Ajoute une image en option avec un <code className="bg-black/10 px-1 rounded">|</code> après le nom.
@@ -1002,7 +1002,7 @@ export default function ImportPage() {
                                     <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">Aperçu — tu peux ajouter/corriger les images ici</p>
                                     <button
                                         onClick={() => setShowImageTuto(v => !v)}
-                                        className="text-xs text-primary underline flex items-center gap-1"
+                                        className="text-xs text-[#C2553B] underline flex items-center gap-1"
                                     >
                                         {showImageTuto ? 'Masquer' : '📷 Comment trouver l\'URL d\'une image ?'}
                                     </button>
@@ -1161,9 +1161,9 @@ export default function ImportPage() {
                             onDragOver={handleWooDragOver}
                             onDragLeave={handleWooDragLeave}
                             onDrop={handleWooDrop}
-                            className={`flex flex-col items-center justify-center p-12 border-2 border-dashed rounded-lg cursor-pointer transition-colors ${isDraggingWoo ? 'border-primary bg-primary/5' : 'hover:bg-muted/50'}`}
+                            className={`flex flex-col items-center justify-center p-12 border-2 border-dashed rounded-lg cursor-pointer transition-colors ${isDraggingWoo ? 'border-[#C2553B] bg-[#C2553B]/5' : 'hover:bg-muted/50'}`}
                         >
-                            <ShoppingCart className={`h-12 w-12 mb-4 transition-colors ${isDraggingWoo ? 'text-primary' : 'text-muted-foreground'}`} />
+                            <ShoppingCart className={`h-12 w-12 mb-4 transition-colors ${isDraggingWoo ? 'text-[#C2553B]' : 'text-muted-foreground'}`} />
                             <p className="font-semibold">
                                 {isDraggingWoo ? 'Déposez votre export WooCommerce ici' : 'Glissez ou cliquez pour uploader votre export WooCommerce'}
                             </p>
@@ -1190,9 +1190,9 @@ export default function ImportPage() {
                             onDragOver={handleDragOver}
                             onDragLeave={handleDragLeave}
                             onDrop={handleDrop}
-                            className={`flex flex-col items-center justify-center p-12 border-2 border-dashed rounded-lg cursor-pointer transition-colors ${isDragging ? 'border-primary bg-primary/5' : 'hover:bg-muted/50'}`}
+                            className={`flex flex-col items-center justify-center p-12 border-2 border-dashed rounded-lg cursor-pointer transition-colors ${isDragging ? 'border-[#C2553B] bg-[#C2553B]/5' : 'hover:bg-muted/50'}`}
                         >
-                            <FileUp className={`h-12 w-12 mb-4 transition-colors ${isDragging ? 'text-primary' : 'text-muted-foreground'}`} />
+                            <FileUp className={`h-12 w-12 mb-4 transition-colors ${isDragging ? 'text-[#C2553B]' : 'text-muted-foreground'}`} />
                             <p className="font-semibold">{isDragging ? 'Déposez le fichier ici' : 'Glissez votre CSV ici ou cliquez pour téléverser'}</p>
                             <p className="text-sm text-muted-foreground mt-1">CSV format Woosenteur (Max 5MB)</p>
                         </div>
@@ -1235,7 +1235,7 @@ export default function ImportPage() {
                 <CardDescription>
                     {fileName && <><span className="font-semibold">{fileName}</span> — </>}
                     {!isSuperAdmin && <>Crédits disponibles : <span className="font-bold">{availableCredits}</span></>}
-                    {isSuperAdmin && <span className="font-bold text-primary">Admin — limites désactivées.</span>}
+                    {isSuperAdmin && <span className="font-bold text-[#C2553B]">Admin — limites désactivées.</span>}
                 </CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
@@ -1338,7 +1338,7 @@ export default function ImportPage() {
                             <div className="flex items-center justify-between">
                                 <span className="text-sm text-muted-foreground flex items-center gap-2">
                                     <Clock className="h-3.5 w-3.5" />
-                                    Planifié à <strong>{scheduledAt.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' })}</strong> — dans <strong className="text-primary">{countdown}</strong>
+                                    Planifié à <strong>{scheduledAt.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' })}</strong> — dans <strong className="text-[#C2553B]">{countdown}</strong>
                                 </span>
                                 <Button variant="destructive" size="sm" onClick={handleCancelSchedule}>Annuler</Button>
                             </div>
@@ -1424,11 +1424,11 @@ export default function ImportPage() {
                         <div className="mb-4 space-y-3">
                             {/* Publication directe */}
                             {!wooPublishResult ? (
-                                <div className="p-4 rounded-lg border-2 border-primary/20 bg-primary/5 space-y-3">
+                                <div className="p-4 rounded-lg border-2 border-[#C2553B]/20 bg-[#C2553B]/5 space-y-3">
                                     <div className="flex items-center justify-between gap-4">
                                         <div>
                                             <p className="font-semibold flex items-center gap-2">
-                                                <ShoppingCart className="h-4 w-4 text-primary" />
+                                                <ShoppingCart className="h-4 w-4 text-[#C2553B]" />
                                                 Publier directement sur ta boutique
                                             </p>
                                             <p className="text-sm text-muted-foreground">{successProducts.length} fiche{successProducts.length > 1 ? 's' : ''} prête{successProducts.length > 1 ? 's' : ''} — 1 clic pour publier sur WooCommerce</p>
@@ -1463,7 +1463,7 @@ export default function ImportPage() {
                                     {wooPublishResult.succeeded.length > 0 && (
                                         <a href={`${wooPublishResult.succeeded[0].permalink?.split('/wp-json')[0]}/wp-admin/edit.php?post_type=product`}
                                             target="_blank" rel="noopener noreferrer"
-                                            className="text-sm text-primary underline mt-2 inline-block">
+                                            className="text-sm text-[#C2553B] underline mt-2 inline-block">
                                             Voir les produits dans WooCommerce →
                                         </a>
                                     )}
@@ -1488,7 +1488,7 @@ export default function ImportPage() {
 
                     {/* Bouton WooCommerce enrichi (mode import WooCommerce existant) */}
                     {wooMode && successProducts.length > 0 && (
-                        <div className="mb-4 p-4 rounded-lg border-2 border-primary/20 bg-primary/5 flex items-center justify-between gap-4">
+                        <div className="mb-4 p-4 rounded-lg border-2 border-[#C2553B]/20 bg-[#C2553B]/5 flex items-center justify-between gap-4">
                             <div>
                                 <p className="font-semibold">CSV WooCommerce enrichi prêt !</p>
                                 <p className="text-sm text-muted-foreground">Réimportez ce fichier dans WooCommerce pour mettre à jour vos {successProducts.length} fiches produits.</p>

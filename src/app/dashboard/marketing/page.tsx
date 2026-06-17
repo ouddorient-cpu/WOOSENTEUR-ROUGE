@@ -655,7 +655,7 @@ const DupeModeSection: React.FC = () => {
             </div>
             {!(uploadedImage || generatedBg) ? (
               <div
-                className={`border-2 border-dashed rounded-xl flex flex-col items-center justify-center py-8 cursor-pointer transition-colors ${isDragging ? 'border-primary bg-primary/10' : 'hover:bg-muted/40'}`}
+                className={`border-2 border-dashed rounded-xl flex flex-col items-center justify-center py-8 cursor-pointer transition-colors ${isDragging ? 'border-[#C2553B] bg-[#C2553B]/10' : 'hover:bg-muted/40'}`}
                 onDragOver={(e) => { e.preventDefault(); setIsDragging(true); }}
                 onDragLeave={() => setIsDragging(false)}
                 onDrop={handleDrop}
@@ -762,13 +762,13 @@ const DupeModeSection: React.FC = () => {
               <div className="flex gap-2">
                 <button
                   onClick={() => { setDupeFormat('instagram_post'); setOverlayImages({}); setBeforeAfterImg(null); }}
-                  className={`flex-1 flex items-center justify-center gap-1.5 rounded-lg border py-2 text-xs font-medium transition-colors ${dupeFormat === 'instagram_post' ? 'border-primary bg-primary text-primary-foreground' : 'border-border hover:bg-muted'}`}
+                  className={`flex-1 flex items-center justify-center gap-1.5 rounded-lg border py-2 text-xs font-medium transition-colors ${dupeFormat === 'instagram_post' ? 'border-[#C2553B] bg-[#C2553B] text-white' : 'border-border hover:bg-muted'}`}
                 >
                   📸 Carré 1:1
                 </button>
                 <button
                   onClick={() => { setDupeFormat('instagram_story'); setOverlayImages({}); setBeforeAfterImg(null); }}
-                  className={`flex-1 flex items-center justify-center gap-1.5 rounded-lg border py-2 text-xs font-medium transition-colors ${dupeFormat === 'instagram_story' ? 'border-primary bg-primary text-primary-foreground' : 'border-border hover:bg-muted'}`}
+                  className={`flex-1 flex items-center justify-center gap-1.5 rounded-lg border py-2 text-xs font-medium transition-colors ${dupeFormat === 'instagram_story' ? 'border-[#C2553B] bg-[#C2553B] text-white' : 'border-border hover:bg-muted'}`}
                 >
                   📱 Story 9:16
                 </button>
@@ -1313,7 +1313,7 @@ const FacebookModeSection: React.FC = () => {
             <input ref={fileInputRef} type="file" accept="image/*" onChange={handleFileSelect} className="hidden" />
             {!uploadedImage ? (
               <div
-                className={`border-2 border-dashed rounded-xl flex flex-col items-center justify-center py-10 cursor-pointer transition-colors ${isDragging ? 'border-primary bg-primary/10' : 'hover:bg-muted/40'}`}
+                className={`border-2 border-dashed rounded-xl flex flex-col items-center justify-center py-10 cursor-pointer transition-colors ${isDragging ? 'border-[#C2553B] bg-[#C2553B]/10' : 'hover:bg-muted/40'}`}
                 onDragOver={(e) => { e.preventDefault(); setIsDragging(true); }}
                 onDragLeave={() => setIsDragging(false)}
                 onDrop={handleDrop}
@@ -2083,7 +2083,7 @@ export default function MarketingPage() {
     <>
       {/* Header */}
       <div className="text-center mb-6">
-        <h1 className="font-headline text-3xl font-bold text-white flex items-center justify-center gap-2">
+        <h1 className="font-headline text-3xl font-bold flex items-center justify-center gap-2" style={{ color: 'var(--ls-text)' }}>
           <Megaphone className="h-8 w-8" />
           Marketing IA
         </h1>
@@ -2173,14 +2173,14 @@ export default function MarketingPage() {
                 {!uploadedImage ? (
                   <div
                     className={`flex flex-col items-center justify-center py-8 cursor-pointer transition-colors ${
-                      isDragging ? 'bg-primary/10' : 'hover:bg-muted/50'
+                      isDragging ? 'bg-[#C2553B]/10' : 'hover:bg-muted/50'
                     }`}
                     onDragOver={handleDragOver}
                     onDragLeave={handleDragLeave}
                     onDrop={handleDrop}
                     onClick={() => fileInputRef.current?.click()}
                   >
-                    <Upload className={`h-10 w-10 mb-3 ${isDragging ? 'text-primary' : 'text-muted-foreground'}`} />
+                    <Upload className={`h-10 w-10 mb-3 ${isDragging ? 'text-[#C2553B]' : 'text-muted-foreground'}`} />
                     <p className="font-medium text-sm">
                       {isDragging ? 'Déposez l\'image ici' : 'Glissez une image ou cliquez pour télécharger'}
                     </p>
@@ -2290,14 +2290,14 @@ export default function MarketingPage() {
                       <button
                         type="button"
                         onClick={() => setProductMode('catalog')}
-                        className={`flex-1 px-4 py-2 text-sm font-medium transition-colors ${productMode === 'catalog' ? 'bg-primary text-primary-foreground' : 'bg-transparent text-muted-foreground hover:text-foreground'}`}
+                        className={`flex-1 px-4 py-2 text-sm font-medium transition-colors ${productMode === 'catalog' ? 'bg-[#C2553B] text-white' : 'bg-transparent text-muted-foreground hover:text-foreground'}`}
                       >
                         Catalogue existant
                       </button>
                       <button
                         type="button"
                         onClick={() => setProductMode('manual')}
-                        className={`flex-1 px-4 py-2 text-sm font-medium transition-colors ${productMode === 'manual' ? 'bg-primary text-primary-foreground' : 'bg-transparent text-muted-foreground hover:text-foreground'}`}
+                        className={`flex-1 px-4 py-2 text-sm font-medium transition-colors ${productMode === 'manual' ? 'bg-[#C2553B] text-white' : 'bg-transparent text-muted-foreground hover:text-foreground'}`}
                       >
                         Saisie manuelle
                       </button>
@@ -2333,7 +2333,7 @@ export default function MarketingPage() {
                           </Select>
                           <FormDescription>
                             {products.length === 0 ? (
-                              <Link href="/dashboard/generate" className="text-primary hover:underline">
+                              <Link href="/dashboard/generate" className="text-[#C2553B] hover:underline">
                                 Créez d&apos;abord un produit avec le Générateur IA
                               </Link>
                             ) : (
@@ -2410,8 +2410,8 @@ export default function MarketingPage() {
                           {STYLE_OPTIONS.map((style) => (
                             <div
                               key={style.value}
-                              className={`cursor-pointer rounded-lg border-2 p-3 text-center transition-all hover:border-primary ${
-                                field.value === style.value ? 'border-primary bg-primary/5' : 'border-muted'
+                              className={`cursor-pointer rounded-lg border-2 p-3 text-center transition-all hover:border-[#C2553B] ${
+                                field.value === style.value ? 'border-[#C2553B] bg-[#C2553B]/5' : 'border-muted'
                               }`}
                               onClick={() => field.onChange(style.value)}
                             >
@@ -2576,12 +2576,12 @@ export default function MarketingPage() {
         <div className="max-w-md mx-auto">
           <Card>
             <CardHeader className="text-center">
-              <CardTitle className="text-white">Création en cours...</CardTitle>
+              <CardTitle style={{ color: 'var(--ls-text)' }}>Création en cours...</CardTitle>
               <CardDescription>Notre IA crée vos publicités personnalisées.</CardDescription>
             </CardHeader>
             <CardContent className="space-y-6">
               <div className="flex flex-col items-center gap-4">
-                <Loader2 className="h-12 w-12 animate-spin text-primary" />
+                <Loader2 className="h-12 w-12 animate-spin text-[#C2553B]" />
                 <p className="text-sm text-muted-foreground">{progressMessage}</p>
               </div>
               <Progress value={progress} className="w-full" />
@@ -2634,7 +2634,7 @@ export default function MarketingPage() {
           <AlertDialogFooter>
             <AlertDialogCancel>Annuler</AlertDialogCancel>
             <AlertDialogAction asChild>
-              <Link href="/pricing" className="bg-primary hover:bg-primary/90">
+              <Link href="/pricing" className="bg-[#C2553B] hover:bg-[#A23F29]">
                 <Rocket className="mr-2 h-4 w-4" />
                 Voir les plans
               </Link>

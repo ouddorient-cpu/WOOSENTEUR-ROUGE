@@ -25,10 +25,10 @@ import { CoinIndicator } from '@/components/ui/coin-indicator';
 import { Badge } from '@/components/ui/badge';
 
 const StatCard = React.memo(({ title, value, icon, description, isCredits = false }: { title: string, value: string, icon: React.ReactNode, description?: string, isCredits?: boolean }) => (
-    <Card className="overflow-hidden relative group transition-[box-shadow,border-color] duration-300 hover:shadow-lg hover:border-primary/30">
+    <Card className="overflow-hidden relative group transition-[box-shadow,border-color] duration-300 hover:shadow-lg hover:border-[#C2553B]/30">
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">{title}</CardTitle>
-            <div className="p-2 bg-muted rounded-full group-hover:bg-primary/10 transition-colors">
+            <div className="p-2 bg-muted rounded-full group-hover:bg-[#C2553B]/10 transition-colors">
                 {icon}
             </div>
         </CardHeader>
@@ -84,7 +84,7 @@ function PromoCodeWidget({ user }: { user: any }) {
 
     return (
         <div className="flex items-center gap-2 bg-muted/50 border border-border rounded-xl px-4 py-3">
-            <Gift className="h-4 w-4 text-primary shrink-0" />
+            <Gift className="h-4 w-4 text-[#C2553B] shrink-0" />
             <Input
                 placeholder="Code promo (ex: BETA50)"
                 value={code}
@@ -131,7 +131,7 @@ export default function DashboardHomePage() {
     if (isLoading || !user) {
         return (
             <div className="flex h-full items-center justify-center">
-                <Loader2 className="h-8 w-8 animate-spin text-primary" />
+                <Loader2 className="h-8 w-8 animate-spin text-[#C2553B]" />
             </div>
         );
     }
@@ -143,11 +143,11 @@ export default function DashboardHomePage() {
         <div className="space-y-8 relative">
             {/* Background Decorations */}
             <div className="absolute top-0 left-0 w-full h-full bg-dots opacity-30 pointer-events-none -z-10" />
-            <div className="absolute top-[-5%] right-[-5%] w-[30%] h-[30%] bg-primary/5 blur-[100px] rounded-full pointer-events-none -z-10" />
+            <div className="absolute top-[-5%] right-[-5%] w-[30%] h-[30%] bg-[#C2553B]/5 blur-[100px] rounded-full pointer-events-none -z-10" />
 
             <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
                 <div>
-                    <Badge variant="outline" className="mb-2 border-primary/30 text-primary bg-accent">
+                    <Badge variant="outline" className="mb-2 border-[#C2553B]/30 text-[#C2553B] bg-accent">
                         <Sparkles className="mr-2 h-3 w-3" /> Woosenteur
                     </Badge>
                     <h1 className="font-headline text-3xl md:text-4xl font-bold text-foreground text-balance">Mon espace</h1>
@@ -157,7 +157,7 @@ export default function DashboardHomePage() {
                     <Button asChild variant="outline" size="sm">
                         <Link href="/dashboard/import"><FileUp className="mr-2 h-4 w-4" />Bulk Import</Link>
                     </Button>
-                    <Button asChild size="sm" className="shadow-lg shadow-primary/20">
+                    <Button asChild size="sm" className="shadow-lg shadow-[#C2553B]/20">
                         <Link href="/dashboard/generate"><Sparkles className="mr-2 h-4 w-4" />Nouveau Produit</Link>
                     </Button>
                 </div>
@@ -177,7 +177,7 @@ export default function DashboardHomePage() {
                     description={userProfile?.isUnlimited ? "Accès total" : "Pour le cycle en cours"}
                     isCredits={!userProfile?.isUnlimited}
                 />
-                <Card className="col-span-1 lg:col-span-2 overflow-hidden border border-primary/25 bg-accent">
+                <Card className="col-span-1 lg:col-span-2 overflow-hidden border border-[#C2553B]/25 bg-accent">
                     <CardHeader className="pb-4 relative z-10">
                         <CardTitle className="text-lg">Prêt à créer ?</CardTitle>
                         <CardDescription>Lancez une nouvelle génération ou importez vos produits WooCommerce.</CardDescription>
@@ -190,7 +190,7 @@ export default function DashboardHomePage() {
                             <Link href="/dashboard/import"><FileUp className="mr-2 h-5 w-5" />Importer</Link>
                         </Button>
                     </CardContent>
-                    <div className="absolute right-[-20%] top-[-20%] w-64 h-64 rounded-full blur-3xl" style={{ background: 'rgba(37,99,235,0.12)' }} />
+                    <div className="absolute right-[-20%] top-[-20%] w-64 h-64 rounded-full blur-3xl" style={{ background: 'rgba(194,85,59,0.12)' }} />
                 </Card>
             </div>
 
@@ -202,7 +202,7 @@ export default function DashboardHomePage() {
             <div className="space-y-4">
                 <div className="flex items-center justify-between">
                     <h2 className="text-xl font-bold flex items-center gap-2">
-                        <Clock className="h-5 w-5 text-primary" />
+                        <Clock className="h-5 w-5 text-[#C2553B]" />
                         Récentes Créations
                     </h2>
                     <Button asChild size="sm" variant="ghost">
@@ -215,7 +215,7 @@ export default function DashboardHomePage() {
                 {recentProducts && recentProducts.length > 0 ? (
                     <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
                         {recentProducts.map(product => (
-                            <Card key={product.id} className="group overflow-hidden border border-border hover:border-primary/30 transition-[transform,box-shadow,border-color] duration-300 hover:shadow-xl hover:-translate-y-1">
+                            <Card key={product.id} className="group overflow-hidden border border-border hover:border-[#C2553B]/30 transition-[transform,box-shadow,border-color] duration-300 hover:shadow-xl hover:-translate-y-1">
                                 <div className="aspect-[16/10] relative bg-muted flex items-center justify-center overflow-hidden">
                                     {product.imageUrl ? (
                                         <Image
@@ -239,13 +239,13 @@ export default function DashboardHomePage() {
                                     </Badge>
                                 </div>
                                 <CardContent className="p-4">
-                                    <h3 className="font-bold line-clamp-1 group-hover:text-primary transition-colors">{product.name}</h3>
+                                    <h3 className="font-bold line-clamp-1 group-hover:text-[#C2553B] transition-colors">{product.name}</h3>
                                     <p className="text-sm text-muted-foreground">{product.brand}</p>
                                     <div className="mt-4 flex items-center justify-between pt-4 border-t border-border">
                                         <span className="text-xs text-muted-foreground">
                                             {product.createdAt ? new Date(product.createdAt.seconds * 1000).toLocaleDateString() : 'N/A'}
                                         </span>
-                                        <Link href={`/dashboard/products/${product.id}`} className="text-xs font-bold text-primary flex items-center gap-1">
+                                        <Link href={`/dashboard/products/${product.id}`} className="text-xs font-bold text-[#C2553B] flex items-center gap-1">
                                             Éditer <ArrowRight className="h-3 w-3" />
                                         </Link>
                                     </div>
@@ -257,7 +257,7 @@ export default function DashboardHomePage() {
                     <Card className="border-dashed h-48 flex flex-col items-center justify-center bg-muted/30">
                         <Package className="h-10 w-10 text-muted-foreground/30 mb-2" />
                         <p className="text-muted-foreground text-sm">Aucun produit récent.</p>
-                        <Button variant="link" asChild className="text-primary"><Link href="/dashboard/generate">Créer ma première fiche</Link></Button>
+                        <Button variant="link" asChild className="text-[#C2553B]"><Link href="/dashboard/generate">Créer ma première fiche</Link></Button>
                     </Card>
                 )}
             </div>

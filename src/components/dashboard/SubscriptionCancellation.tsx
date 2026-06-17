@@ -128,7 +128,7 @@ export function SubscriptionCancellation({
           <>
             <AlertDialogHeader>
                 <div className="flex items-center gap-2">
-                    <Tag className="h-6 w-6 text-primary" />
+                    <Tag className="h-6 w-6 text-[#C2553B]" />
                     <AlertDialogTitle className="text-2xl">Une dernière offre avant de partir !</AlertDialogTitle>
                 </div>
                 <AlertDialogDescription>
@@ -136,9 +136,9 @@ export function SubscriptionCancellation({
                 </AlertDialogDescription>
             </AlertDialogHeader>
             
-            <div className="my-6 p-8 bg-primary/10 rounded-lg text-center">
+            <div className="my-6 p-8 bg-[#C2553B]/10 rounded-lg text-center">
                 <p className="text-lg">Bénéficiez de</p>
-                <p className="text-6xl font-bold text-primary my-2">25% de réduction</p>
+                <p className="text-6xl font-bold text-[#C2553B] my-2">25% de réduction</p>
                 <p className="text-lg">sur votre abonnement actuel pendant <span className="font-semibold">1 an</span>.</p>
             </div>
 

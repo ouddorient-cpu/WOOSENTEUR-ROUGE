@@ -100,7 +100,7 @@ export default function ProfilePage() {
   if (isLoading || !user) {
     return (
       <div className="flex h-full items-center justify-center">
-        <Loader2 className="h-8 w-8 animate-spin text-primary" />
+        <Loader2 className="h-8 w-8 animate-spin text-[#C2553B]" />
       </div>
     );
   }
@@ -219,7 +219,7 @@ export default function ProfilePage() {
                               <p className="text-sm font-medium">Crédits restants</p>
                           </div>
                           <div className="flex items-center gap-2 font-bold text-lg">
-                              <CreditCard className="h-5 w-5 text-primary" />
+                              <CreditCard className="h-5 w-5 text-[#C2553B]" />
                               <span>{isSuperAdmin ? '∞' : userProfile?.creditBalance ?? 0}</span>
                           </div>
                       </div>

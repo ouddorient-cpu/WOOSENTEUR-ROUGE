@@ -48,8 +48,13 @@ export default function TestimonialsSection() {
             <p className="text-sm font-semibold tracking-widest uppercase mb-4" style={{ color: '#C2553B' }}>
               Ce qu&apos;ils disent
             </p>
-            <h2 className="font-bold tracking-tight text-foreground" style={{ fontSize: 'clamp(2rem,5vw,3rem)', lineHeight: 1.15 }}>
-              Ils ont essayé. Ils ne reviennent pas en arrière.
+            <h2
+              style={{
+                fontFamily: 'var(--font-cormorant), Georgia, serif', fontWeight: 600,
+                fontSize: 'clamp(2rem,5vw,3rem)', lineHeight: 1.15, color: 'var(--ls-text)',
+              }}
+            >
+              Ils ont essayé. <em style={{ fontStyle: 'italic', color: 'var(--ls-accent)' }}>Ils ne reviennent pas en arrière.</em>
             </h2>
           </motion.div>
 

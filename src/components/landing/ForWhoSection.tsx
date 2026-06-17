@@ -33,8 +33,13 @@ export default function ForWhoSection() {
             <p className="text-sm font-semibold tracking-widest uppercase mb-4" style={{ color: '#C2553B' }}>
               Pour qui ?
             </p>
-            <h2 className="font-bold tracking-tight text-foreground" style={{ fontSize: 'clamp(2rem,5vw,3rem)', lineHeight: 1.15 }}>
-              Fait pour les e-commerçants<br />qui gèrent tout seuls.
+            <h2
+              style={{
+                fontFamily: 'var(--font-cormorant), Georgia, serif', fontWeight: 600,
+                fontSize: 'clamp(2rem,5vw,3rem)', lineHeight: 1.15, color: 'var(--ls-text)',
+              }}
+            >
+              Fait pour les e-commerçants<br /><em style={{ fontStyle: 'italic', color: 'var(--ls-accent)' }}>qui gèrent tout seuls.</em>
             </h2>
           </motion.div>
 

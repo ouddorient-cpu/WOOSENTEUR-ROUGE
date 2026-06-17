@@ -1,5 +1,6 @@
 'use client';
 
+import { MotionConfig } from 'framer-motion';
 import Footer from '@/components/footer';
 import Faq from '@/components/landing/Faq';
 import Pricing from '@/components/landing/Pricing';
@@ -18,6 +19,9 @@ import CtaSection from '@/components/landing/CtaSection';
 
 export default function HomePage() {
   return (
+    // reducedMotion="user" : si le système demande moins d'animations,
+    // Framer Motion les neutralise automatiquement sur toute la landing.
+    <MotionConfig reducedMotion="user">
     <div className="relative min-h-screen" style={{ background: 'var(--ls-bg)' }}>
       <HeaderLanding />
       <main className="flex flex-col gap-0">
@@ -57,5 +61,6 @@ export default function HomePage() {
       </main>
       <Footer />
     </div>
+    </MotionConfig>
   );
 }

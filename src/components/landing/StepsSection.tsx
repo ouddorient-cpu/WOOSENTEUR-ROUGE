@@ -44,8 +44,13 @@ export default function StepsSection() {
             <p className="text-sm font-semibold tracking-widest uppercase mb-4" style={{ color: '#C2553B' }}>
               Comment ça marche
             </p>
-            <h2 className="font-bold tracking-tight text-foreground" style={{ fontSize: 'clamp(2rem,5vw,3rem)', lineHeight: 1.15 }}>
-              Trois étapes. C&apos;est tout.
+            <h2
+              style={{
+                fontFamily: 'var(--font-cormorant), Georgia, serif', fontWeight: 600,
+                fontSize: 'clamp(2rem,5vw,3rem)', lineHeight: 1.15, color: 'var(--ls-text)',
+              }}
+            >
+              Trois étapes. <em style={{ fontStyle: 'italic', color: 'var(--ls-accent)' }}>C&apos;est tout.</em>
             </h2>
           </motion.div>
 

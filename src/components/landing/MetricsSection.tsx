@@ -36,8 +36,13 @@ export default function MetricsSection() {
             <p className="text-sm font-semibold tracking-widest uppercase mb-4" style={{ color: '#C2553B' }}>
               Les résultats
             </p>
-            <h2 className="font-bold tracking-tight text-foreground" style={{ fontSize: 'clamp(2rem,5vw,3rem)', lineHeight: 1.15 }}>
-              Des chiffres qui parlent.
+            <h2
+              style={{
+                fontFamily: 'var(--font-cormorant), Georgia, serif', fontWeight: 600,
+                fontSize: 'clamp(2rem,5vw,3rem)', lineHeight: 1.15, color: 'var(--ls-text)',
+              }}
+            >
+              Des chiffres <em style={{ fontStyle: 'italic', color: 'var(--ls-accent)' }}>qui parlent.</em>
             </h2>
           </motion.div>
 

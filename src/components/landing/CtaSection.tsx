@@ -41,10 +41,13 @@ export default function CtaSection() {
           transition={{ duration: 0.6 }}
         >
           <h2
-            className="font-extrabold tracking-tight text-foreground mb-5"
-            style={{ fontSize: 'clamp(2.2rem,6vw,3.8rem)', lineHeight: 1.1 }}
+            className="mb-5"
+            style={{
+              fontFamily: 'var(--font-cormorant), Georgia, serif', fontWeight: 600,
+              fontSize: 'clamp(2.2rem,6vw,3.8rem)', lineHeight: 1.1, color: 'var(--ls-text)',
+            }}
           >
-            Arrêtez de perdre<br />des ventes.
+            Arrêtez de perdre<br /><em style={{ fontStyle: 'italic', color: 'var(--ls-accent)' }}>des ventes.</em>
           </h2>
           <p
             className="mx-auto mb-10 leading-relaxed"

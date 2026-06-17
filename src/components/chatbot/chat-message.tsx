@@ -16,11 +16,11 @@ export function ChatMessage({ role, content, isLoading }: ChatMessageProps) {
     <div
       className={cn(
         'flex gap-3 p-3 rounded-lg',
-        isAssistant ? 'bg-muted' : 'bg-primary/10 ml-8'
+        isAssistant ? 'bg-muted' : 'bg-[#C2553B]/10 ml-8'
       )}
     >
       {isAssistant && (
-        <div className="flex-shrink-0 w-8 h-8 rounded-full bg-primary flex items-center justify-center">
+        <div className="flex-shrink-0 w-8 h-8 rounded-full bg-[#C2553B] flex items-center justify-center">
           <Bot className="w-5 h-5 text-primary-foreground" />
         </div>
       )}

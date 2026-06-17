@@ -44,7 +44,7 @@ function SignupPageContent() {
     <div className="flex flex-col min-h-screen bg-muted/50 relative">
         {isLoading && (
             <div className="absolute inset-0 bg-background/80 flex items-center justify-center z-10">
-                <Loader2 className="h-12 w-12 animate-spin text-primary" />
+                <Loader2 className="h-12 w-12 animate-spin text-[#C2553B]" />
             </div>
         )}
         <main className="flex-grow flex items-center justify-center p-4">
@@ -68,7 +68,7 @@ function SignupPageContent() {
                  <CardFooter className="flex-col gap-2 text-center text-sm text-muted-foreground">
                     <div className="mt-4">
                         Vous avez déjà un compte ?{' '}
-                        <Link href="/login" className="underline font-semibold text-primary">
+                        <Link href="/login" className="underline font-semibold text-[#C2553B]">
                             Se connecter
                         </Link>
                     </div>

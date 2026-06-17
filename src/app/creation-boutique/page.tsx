@@ -27,8 +27,8 @@ import Footer from '@/components/footer';
 
 const FeatureItem = ({ text }: { text: string }) => (
     <div className="flex items-center gap-2">
-        <div className="flex-shrink-0 w-5 h-5 rounded-full bg-primary/10 flex items-center justify-center">
-            <Check className="h-3 w-3 text-primary" />
+        <div className="flex-shrink-0 w-5 h-5 rounded-full bg-[#C2553B]/10 flex items-center justify-center">
+            <Check className="h-3 w-3 text-[#C2553B]" />
         </div>
         <span className="text-sm text-muted-foreground">{text}</span>
     </div>
@@ -47,10 +47,10 @@ const PricingCard = ({
     features: string[],
     highlight?: boolean
 }) => (
-    <Card className={`relative flex flex-col h-full studio-card ${highlight ? 'border-primary ring-1 ring-primary/20 scale-105 z-10' : ''}`}>
+    <Card style={{ background: 'var(--ls-surface)', borderColor: 'var(--ls-border-color)' }} className={`relative flex flex-col h-full ${highlight ? 'border-[#C2553B] ring-1 ring-[#C2553B]/20 scale-105 z-10' : ''}`}>
         {highlight && (
             <div className="absolute top-0 right-0 left-0 -translate-y-1/2 flex justify-center">
-                <Badge className="bg-primary text-white px-3 py-1">Plus populaire</Badge>
+                <Badge className="bg-[#C2553B] text-white px-3 py-1">Plus populaire</Badge>
             </div>
         )}
         <CardHeader>
@@ -67,7 +67,7 @@ const PricingCard = ({
             ))}
         </CardContent>
         <CardFooter>
-            <Button asChild className="w-full" variant={highlight ? 'default' : 'outline'}>
+            <Button asChild className={`w-full ${highlight ? 'bg-[#C2553B] hover:bg-[#A23F29] text-white' : ''}`} variant={highlight ? 'default' : 'outline'}>
                 <Link href="https://wa.me/212699245542?text=Bonjour,%20je%20souhaite%20discuter%20de%20mon%20projet%20de%20boutique%20WooCommerce" target="_blank">
                     <MessageCircle className="mr-2 h-4 w-4" /> Choisir ce pack
                 </Link>
@@ -83,8 +83,8 @@ export default function ShopCreationPage() {
 
             {/* Hero Section */}
             <section className="relative overflow-hidden pt-24 pb-8 lg:pt-32 lg:pb-12 bg-dots">
-                <div className="absolute top-[-10%] right-[-10%] w-[40%] h-[40%] bg-primary/10 blur-[120px] rounded-full pointer-events-none" />
-                <div className="absolute bottom-[10%] left-[-5%] w-[30%] h-[30%] bg-secondary/10 blur-[100px] rounded-full pointer-events-none" />
+                <div className="absolute top-[-10%] right-[-10%] w-[40%] h-[40%] bg-[#C2553B]/10 blur-[120px] rounded-full pointer-events-none" />
+                <div className="absolute bottom-[10%] left-[-5%] w-[30%] h-[30%] bg-[#C9B8D6]/15 blur-[100px] rounded-full pointer-events-none" />
 
                 <div className="container mx-auto px-4 relative z-10 text-center">
                     <motion.div
@@ -92,19 +92,19 @@ export default function ShopCreationPage() {
                         animate={{ opacity: 1 }}
                         transition={{ duration: 0.4 }}
                     >
-                        <Badge variant="outline" className="mb-4 border-primary/30 text-primary bg-primary/5 px-4 py-1.5 rounded-full text-sm font-medium">
+                        <Badge variant="outline" className="mb-4 border-[#C2553B]/30 text-[#C2553B] bg-[#C2553B]/5 px-4 py-1.5 rounded-full text-sm font-medium">
                             <ShoppingBag className="mr-2 h-4 w-4" /> Service Premium
                         </Badge>
                         <h1 className="font-headline text-4xl md:text-6xl font-bold tracking-tight text-foreground max-w-4xl mx-auto mb-4">
                             Votre boutique WooCommerce <br />
-                            <span className="text-primary text-gradient">clé en main en quelques jours</span>
+                            <span className="text-gradient">clé en main en quelques jours</span>
                         </h1>
                         <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto mb-8 leading-relaxed">
                             Je m'occupe de tout : du nom de domaine à la configuration finale. <br className="hidden md:block" />
                             Lancez votre marque avec un site professionnel, performant et optimisé.
                         </p>
                         <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-                            <Button asChild size="lg" className="h-14 px-8 text-lg font-bold shadow-lg shadow-primary/20">
+                            <Button asChild size="lg" className="h-14 px-8 text-lg font-bold shadow-lg shadow-[#C2553B]/20">
                                 <Link href="#tarifs">Lancer mon projet</Link>
                             </Button>
                             <Button asChild variant="outline" size="lg" className="h-14 px-8 text-lg font-bold bg-background/50 backdrop-blur-sm">
@@ -126,9 +126,9 @@ export default function ShopCreationPage() {
                     </div>
 
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-                        <Card className="studio-card p-6">
-                            <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center mb-6">
-                                <Globe className="h-6 w-6 text-primary" />
+                        <Card className="p-6" style={{ background: 'var(--ls-surface)', borderColor: 'var(--ls-border-color)' }}>
+                            <div className="w-12 h-12 rounded-xl bg-[#C2553B]/10 flex items-center justify-center mb-6">
+                                <Globe className="h-6 w-6 text-[#C2553B]" />
                             </div>
                             <h3 className="text-xl font-bold mb-3">Fondation Solide</h3>
                             <p className="text-muted-foreground text-sm mb-4 leading-relaxed">
@@ -136,9 +136,9 @@ export default function ShopCreationPage() {
                             </p>
                         </Card>
 
-                        <Card className="studio-card p-6">
-                            <div className="w-12 h-12 rounded-xl bg-secondary/10 flex items-center justify-center mb-6">
-                                <Zap className="h-6 w-6 text-secondary" />
+                        <Card className="p-6" style={{ background: 'var(--ls-surface)', borderColor: 'var(--ls-border-color)' }}>
+                            <div className="w-12 h-12 rounded-xl bg-[#C9B8D6]/20 flex items-center justify-center mb-6">
+                                <Zap className="h-6 w-6 text-[#7A6385]" />
                             </div>
                             <h3 className="text-xl font-bold mb-3">Design Optimisé</h3>
                             <p className="text-muted-foreground text-sm mb-4 leading-relaxed">
@@ -146,9 +146,9 @@ export default function ShopCreationPage() {
                             </p>
                         </Card>
 
-                        <Card className="studio-card p-6">
-                            <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center mb-6">
-                                <Coffee className="h-6 w-6 text-primary" />
+                        <Card className="p-6" style={{ background: 'var(--ls-surface)', borderColor: 'var(--ls-border-color)' }}>
+                            <div className="w-12 h-12 rounded-xl bg-[#C2553B]/10 flex items-center justify-center mb-6">
+                                <Coffee className="h-6 w-6 text-[#C2553B]" />
                             </div>
                             <h3 className="text-xl font-bold mb-3">Accompagnement Humain</h3>
                             <p className="text-muted-foreground text-sm mb-4 leading-relaxed">
@@ -231,7 +231,7 @@ export default function ShopCreationPage() {
             <section className="py-24 relative overflow-hidden bg-background">
                 <div className="container mx-auto px-4 relative z-10">
                     <div className="text-center mb-16">
-                        <Badge variant="outline" className="mb-4 border-primary/30 text-primary bg-primary/5 px-4 py-1.5 rounded-full text-sm font-medium">
+                        <Badge variant="outline" className="mb-4 border-[#C2553B]/30 text-[#C2553B] bg-[#C2553B]/5 px-4 py-1.5 rounded-full text-sm font-medium">
                             Success Stories
                         </Badge>
                         <h2 className="text-3xl md:text-5xl font-bold mb-4">Ils m'ont fait confiance</h2>
@@ -257,7 +257,7 @@ export default function ShopCreationPage() {
                                 />
                             </div>
                             {/* Decorative background for the image */}
-                            <div className="absolute -inset-4 bg-gradient-to-tr from-primary/20 to-secondary/20 blur-2xl -z-10 rounded-3xl opacity-50" />
+                            <div className="absolute -inset-4 bg-gradient-to-tr from-[#C2553B]/20 to-[#C9B8D6]/20 blur-2xl -z-10 rounded-3xl opacity-50" />
                         </motion.div>
 
                         {/* Testimonials Cards */}
@@ -285,17 +285,17 @@ export default function ShopCreationPage() {
                                     viewport={{ once: true }}
                                     transition={{ duration: 0.5, delay: idx * 0.2 }}
                                 >
-                                    <Card className="studio-card p-6 border-l-4 border-l-primary group">
+                                    <Card className="p-6 border-l-4 border-l-[#C2553B] group" style={{ background: 'var(--ls-surface)', borderColor: 'var(--ls-border-color)' }}>
                                         <div className="flex justify-between items-start mb-4">
                                             <div>
                                                 <div className="flex items-center gap-2 mb-1">
                                                     <h3 className="text-xl font-bold text-foreground">{client.name}</h3>
-                                                    <Badge variant="secondary" className="text-[10px] h-5 bg-primary/10 text-primary border-none">Propriété de {client.owner}</Badge>
+                                                    <Badge variant="secondary" className="text-[10px] h-5 bg-[#C2553B]/10 text-[#C2553B] border-none">Propriété de {client.owner}</Badge>
                                                 </div>
                                                 <Link
                                                     href={client.url}
                                                     target="_blank"
-                                                    className="text-xs text-primary hover:underline flex items-center gap-1 mb-2 w-fit"
+                                                    className="text-xs text-[#C2553B] hover:underline flex items-center gap-1 mb-2 w-fit"
                                                 >
                                                     {client.url.replace('https://', '')} <ExternalLink className="h-3 w-3" />
                                                 </Link>
@@ -305,7 +305,7 @@ export default function ShopCreationPage() {
                                                     ))}
                                                 </div>
                                             </div>
-                                            <Button variant="ghost" size="sm" asChild className="group-hover:text-primary transition-colors">
+                                            <Button variant="ghost" size="sm" asChild className="group-hover:text-[#C2553B] transition-colors">
                                                 <Link href={client.url} target="_blank" className="flex items-center gap-1.5">
                                                     Voir le site <ExternalLink className="h-3 w-3" />
                                                 </Link>
@@ -318,9 +318,9 @@ export default function ShopCreationPage() {
                                 </motion.div>
                             ))}
 
-                            <div className="p-6 bg-primary/5 rounded-2xl border border-primary/20 mt-8">
+                            <div className="p-6 bg-[#C2553B]/5 rounded-2xl border border-[#C2553B]/20 mt-8">
                                 <p className="text-sm font-medium text-foreground mb-2 flex items-center gap-2">
-                                    <Zap className="h-4 w-4 text-primary" /> Pourquoi eux ?
+                                    <Zap className="h-4 w-4 text-[#C2553B]" /> Pourquoi eux ?
                                 </p>
                                 <p className="text-xs text-muted-foreground leading-relaxed">
                                     Ces partenaires utilisent désormais nos outils IA pour la maintenance de leurs fiches produits, assurant un SEO toujours au top.
@@ -347,16 +347,16 @@ export default function ShopCreationPage() {
                             Une fois le site livré, je propose une option de **maintenance mensuelle** pour s'occuper des mises à jour WordPress, des plugins, et de la sécurité. <br className="hidden md:block" />
                             Chaque mois, vous recevez un **rapport simplifié** (visites, pages vues, produits stars) pour suivre votre progression.
                         </p>
-                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-left p-6 studio-card max-w-2xl mx-auto">
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-left p-6 max-w-2xl mx-auto rounded-xl border" style={{ background: 'var(--ls-surface)', borderColor: 'var(--ls-border-color)' }}>
                             <div>
                                 <h4 className="font-bold flex items-center gap-2 mb-2">
-                                    <BarChart3 className="h-4 w-4 text-primary" /> Suivi Performance
+                                    <BarChart3 className="h-4 w-4 text-[#C2553B]" /> Suivi Performance
                                 </h4>
                                 <p className="text-xs text-muted-foreground">Rapport mensuel sur vos visiteurs et ventes.</p>
                             </div>
                             <div>
                                 <h4 className="font-bold flex items-center gap-2 mb-2">
-                                    <ShieldCheck className="h-4 w-4 text-primary" /> Sécurité & Updates
+                                    <ShieldCheck className="h-4 w-4 text-[#C2553B]" /> Sécurité & Updates
                                 </h4>
                                 <p className="text-xs text-muted-foreground">Mises à jour pro actives et sauvegardes.</p>
                             </div>

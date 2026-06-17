@@ -74,9 +74,9 @@ function UploadZone({
           </div>
         </div>
       ) : (
-        <div className="border-2 border-dashed border-primary/30 rounded-xl p-5 text-center bg-primary/3 hover:bg-primary/6 hover:border-primary/50 transition-all h-36 flex flex-col items-center justify-center gap-2">
-          <div className="w-9 h-9 rounded-xl bg-primary/10 flex items-center justify-center group-hover:bg-primary/20 transition-colors">
-            <ImageIcon className="h-4 w-4 text-primary" />
+        <div className="border-2 border-dashed border-[#C2553B]/30 rounded-xl p-5 text-center bg-[#C2553B]/3 hover:bg-[#C2553B]/6 hover:border-[#C2553B]/50 transition-all h-36 flex flex-col items-center justify-center gap-2">
+          <div className="w-9 h-9 rounded-xl bg-[#C2553B]/10 flex items-center justify-center group-hover:bg-[#C2553B]/20 transition-colors">
+            <ImageIcon className="h-4 w-4 text-[#C2553B]" />
           </div>
           <p className="text-sm font-semibold text-foreground/70">{hint ?? 'Clique pour ajouter une photo'}</p>
           <p className="text-xs text-muted-foreground/60">JPG, PNG, WEBP</p>
@@ -93,7 +93,7 @@ function LineInput({ value, onChange, placeholder }: { value: string; onChange: 
       value={value}
       onChange={e => onChange(e.target.value)}
       placeholder={placeholder}
-      className="w-full h-10 rounded-lg border border-border bg-background px-3 text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary/50 transition-all"
+      className="w-full h-10 rounded-lg border border-border bg-background px-3 text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-[#C2553B]/30 focus:border-[#C2553B]/50 transition-all"
     />
   );
 }
@@ -382,8 +382,8 @@ export default function GenerateurPubVisuelPage() {
                 onClick={() => setActiveTab(id)}
                 className={`flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-semibold transition-all border ${
                   activeTab === id
-                    ? 'bg-primary text-primary-foreground border-primary shadow-lg shadow-primary/20'
-                    : 'bg-card text-muted-foreground border-border hover:border-primary/40 hover:text-foreground'
+                    ? 'bg-[#C2553B] text-white border-[#C2553B] shadow-lg shadow-[#C2553B]/20'
+                    : 'bg-card text-muted-foreground border-border hover:border-[#C2553B]/40 hover:text-foreground'
                 }`}
               >
                 <Icon className="h-4 w-4" />
@@ -423,8 +423,8 @@ export default function GenerateurPubVisuelPage() {
                           onClick={() => setSocialFormat(f.value)}
                           className={`flex-1 py-1.5 rounded-lg text-xs font-semibold border transition-all ${
                             socialFormat === f.value
-                              ? 'bg-primary/10 text-primary border-primary/40'
-                              : 'bg-background text-muted-foreground border-border hover:border-primary/30'
+                              ? 'bg-[#C2553B]/10 text-[#C2553B] border-[#C2553B]/40'
+                              : 'bg-background text-muted-foreground border-border hover:border-[#C2553B]/30'
                           }`}
                         >
                           {f.label}
@@ -447,25 +447,25 @@ export default function GenerateurPubVisuelPage() {
                       <label className="text-xs font-semibold text-muted-foreground mb-1.5 block">Produit original</label>
                       <input type="text" value={socialOrigName} onChange={e => setSocialOrigName(e.target.value)}
                         placeholder="ex: Tuxedo YSL"
-                        className="w-full h-9 rounded-lg border border-border bg-background px-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary/30 transition-all" />
+                        className="w-full h-9 rounded-lg border border-border bg-background px-3 text-sm focus:outline-none focus:ring-2 focus:ring-[#C2553B]/30 transition-all" />
                     </div>
                     <div>
                       <label className="text-xs font-semibold text-muted-foreground mb-1.5 block">Son prix (€)</label>
                       <input type="text" value={socialOrigPrice} onChange={e => setSocialOrigPrice(e.target.value)}
                         placeholder="ex: 300"
-                        className="w-full h-9 rounded-lg border border-border bg-background px-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary/30 transition-all" />
+                        className="w-full h-9 rounded-lg border border-border bg-background px-3 text-sm focus:outline-none focus:ring-2 focus:ring-[#C2553B]/30 transition-all" />
                     </div>
                     <div>
                       <label className="text-xs font-semibold text-muted-foreground mb-1.5 block">Ton équivalent</label>
                       <input type="text" value={socialDupeName} onChange={e => setSocialDupeName(e.target.value)}
                         placeholder="ex: Tudor Pendora"
-                        className="w-full h-9 rounded-lg border border-border bg-background px-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary/30 transition-all" />
+                        className="w-full h-9 rounded-lg border border-border bg-background px-3 text-sm focus:outline-none focus:ring-2 focus:ring-[#C2553B]/30 transition-all" />
                     </div>
                     <div>
                       <label className="text-xs font-semibold text-muted-foreground mb-1.5 block">Ton prix (€)</label>
                       <input type="text" value={socialDupePrice} onChange={e => setSocialDupePrice(e.target.value)}
                         placeholder="ex: 49"
-                        className="w-full h-9 rounded-lg border border-border bg-background px-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary/30 transition-all" />
+                        className="w-full h-9 rounded-lg border border-border bg-background px-3 text-sm focus:outline-none focus:ring-2 focus:ring-[#C2553B]/30 transition-all" />
                     </div>
                   </div>
 
@@ -642,25 +642,25 @@ export default function GenerateurPubVisuelPage() {
                       <label className="text-xs font-semibold text-muted-foreground mb-1.5 block">Parfum original</label>
                       <input type="text" value={splitOrigName} onChange={e => setSplitOrigName(e.target.value)}
                         placeholder="ex: Tuxedo YSL"
-                        className="w-full h-9 rounded-lg border border-border bg-background px-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary/30 transition-all" />
+                        className="w-full h-9 rounded-lg border border-border bg-background px-3 text-sm focus:outline-none focus:ring-2 focus:ring-[#C2553B]/30 transition-all" />
                     </div>
                     <div>
                       <label className="text-xs font-semibold text-muted-foreground mb-1.5 block">Prix original (€)</label>
                       <input type="text" value={splitOrigPrice} onChange={e => setSplitOrigPrice(e.target.value)}
                         placeholder="ex: 300"
-                        className="w-full h-9 rounded-lg border border-border bg-background px-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary/30 transition-all" />
+                        className="w-full h-9 rounded-lg border border-border bg-background px-3 text-sm focus:outline-none focus:ring-2 focus:ring-[#C2553B]/30 transition-all" />
                     </div>
                     <div>
                       <label className="text-xs font-semibold text-muted-foreground mb-1.5 block">Ton équivalent</label>
                       <input type="text" value={splitDupeName} onChange={e => setSplitDupeName(e.target.value)}
                         placeholder="ex: Tudor Pendora"
-                        className="w-full h-9 rounded-lg border border-border bg-background px-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary/30 transition-all" />
+                        className="w-full h-9 rounded-lg border border-border bg-background px-3 text-sm focus:outline-none focus:ring-2 focus:ring-[#C2553B]/30 transition-all" />
                     </div>
                     <div>
                       <label className="text-xs font-semibold text-muted-foreground mb-1.5 block">Marque équivalent</label>
                       <input type="text" value={splitDupeBrand} onChange={e => setSplitDupeBrand(e.target.value)}
                         placeholder="ex: Pendora Scents"
-                        className="w-full h-9 rounded-lg border border-border bg-background px-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary/30 transition-all" />
+                        className="w-full h-9 rounded-lg border border-border bg-background px-3 text-sm focus:outline-none focus:ring-2 focus:ring-[#C2553B]/30 transition-all" />
                     </div>
                   </div>
 
@@ -810,25 +810,25 @@ export default function GenerateurPubVisuelPage() {
                       <label className="text-xs font-semibold text-muted-foreground mb-1.5 block">Produit original</label>
                       <input type="text" value={fbOrigName} onChange={e => setFbOrigName(e.target.value)}
                         placeholder="ex: Bleu de Chanel"
-                        className="w-full h-9 rounded-lg border border-border bg-background px-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary/30 transition-all" />
+                        className="w-full h-9 rounded-lg border border-border bg-background px-3 text-sm focus:outline-none focus:ring-2 focus:ring-[#C2553B]/30 transition-all" />
                     </div>
                     <div>
                       <label className="text-xs font-semibold text-muted-foreground mb-1.5 block">Son prix (€)</label>
                       <input type="text" value={fbOrigPrice} onChange={e => setFbOrigPrice(e.target.value)}
                         placeholder="ex: 120"
-                        className="w-full h-9 rounded-lg border border-border bg-background px-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary/30 transition-all" />
+                        className="w-full h-9 rounded-lg border border-border bg-background px-3 text-sm focus:outline-none focus:ring-2 focus:ring-[#C2553B]/30 transition-all" />
                     </div>
                     <div>
                       <label className="text-xs font-semibold text-muted-foreground mb-1.5 block">Ton équivalent</label>
                       <input type="text" value={fbDupeName} onChange={e => setFbDupeName(e.target.value)}
                         placeholder="ex: Lattafa Asad"
-                        className="w-full h-9 rounded-lg border border-border bg-background px-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary/30 transition-all" />
+                        className="w-full h-9 rounded-lg border border-border bg-background px-3 text-sm focus:outline-none focus:ring-2 focus:ring-[#C2553B]/30 transition-all" />
                     </div>
                     <div>
                       <label className="text-xs font-semibold text-muted-foreground mb-1.5 block">Ton prix (€)</label>
                       <input type="text" value={fbDupePrice} onChange={e => setFbDupePrice(e.target.value)}
                         placeholder="ex: 39"
-                        className="w-full h-9 rounded-lg border border-border bg-background px-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary/30 transition-all" />
+                        className="w-full h-9 rounded-lg border border-border bg-background px-3 text-sm focus:outline-none focus:ring-2 focus:ring-[#C2553B]/30 transition-all" />
                     </div>
                   </div>
 
@@ -860,7 +860,7 @@ export default function GenerateurPubVisuelPage() {
                         value={fbHook}
                         onChange={e => setFbHook(e.target.value)}
                         rows={2}
-                        className="w-full rounded-lg border border-border bg-background px-3 py-2 text-sm font-bold focus:outline-none focus:ring-2 focus:ring-primary/30 transition-all resize-none"
+                        className="w-full rounded-lg border border-border bg-background px-3 py-2 text-sm font-bold focus:outline-none focus:ring-2 focus:ring-[#C2553B]/30 transition-all resize-none"
                         placeholder="ex: T'as déjà voulu sentir le luxe sans te ruiner ?"
                       />
                     </div>
@@ -870,7 +870,7 @@ export default function GenerateurPubVisuelPage() {
                         value={fbProp}
                         onChange={e => setFbProp(e.target.value)}
                         rows={2}
-                        className="w-full rounded-lg border border-border bg-background px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary/30 transition-all resize-none"
+                        className="w-full rounded-lg border border-border bg-background px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#C2553B]/30 transition-all resize-none"
                         placeholder="Notre sélection de dupes haut de gamme..."
                       />
                     </div>
@@ -881,7 +881,7 @@ export default function GenerateurPubVisuelPage() {
                         value={fbCta}
                         onChange={e => setFbCta(e.target.value)}
                         placeholder="ex: Découvrir maintenant →"
-                        className="w-full h-9 rounded-lg border border-border bg-background px-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary/30 transition-all"
+                        className="w-full h-9 rounded-lg border border-border bg-background px-3 text-sm focus:outline-none focus:ring-2 focus:ring-[#C2553B]/30 transition-all"
                       />
                     </div>
                   </div>
@@ -960,13 +960,13 @@ export default function GenerateurPubVisuelPage() {
                       <label className="text-xs font-semibold text-muted-foreground mb-1.5 block">Parfum / marque originale</label>
                       <input type="text" value={liOrigName} onChange={e => setLiOrigName(e.target.value)}
                         placeholder="ex: Bleu de Chanel"
-                        className="w-full h-9 rounded-lg border border-border bg-background px-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary/30 transition-all" />
+                        className="w-full h-9 rounded-lg border border-border bg-background px-3 text-sm focus:outline-none focus:ring-2 focus:ring-[#C2553B]/30 transition-all" />
                     </div>
                     <div>
                       <label className="text-xs font-semibold text-muted-foreground mb-1.5 block">Ton équivalent</label>
                       <input type="text" value={liDupeName} onChange={e => setLiDupeName(e.target.value)}
                         placeholder="ex: Lattafa Asad"
-                        className="w-full h-9 rounded-lg border border-border bg-background px-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary/30 transition-all" />
+                        className="w-full h-9 rounded-lg border border-border bg-background px-3 text-sm focus:outline-none focus:ring-2 focus:ring-[#C2553B]/30 transition-all" />
                     </div>
                   </div>
 
@@ -1000,7 +1000,7 @@ export default function GenerateurPubVisuelPage() {
                         value={liTitle}
                         onChange={e => setLiTitle(e.target.value)}
                         placeholder="ex: Le parfum de luxe est-il vraiment supérieur ?"
-                        className="w-full h-9 rounded-lg border border-border bg-background px-3 text-sm font-bold focus:outline-none focus:ring-2 focus:ring-primary/30 transition-all"
+                        className="w-full h-9 rounded-lg border border-border bg-background px-3 text-sm font-bold focus:outline-none focus:ring-2 focus:ring-[#C2553B]/30 transition-all"
                       />
                     </div>
                     <div>
@@ -1013,7 +1013,7 @@ export default function GenerateurPubVisuelPage() {
                         onChange={e => setLiBody(e.target.value)}
                         rows={8}
                         placeholder="L'article généré par l'IA apparaîtra ici. Tu peux aussi écrire directement."
-                        className="w-full rounded-lg border border-border bg-background px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary/30 transition-all resize-none"
+                        className="w-full rounded-lg border border-border bg-background px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#C2553B]/30 transition-all resize-none"
                       />
                     </div>
                     <div>
@@ -1026,7 +1026,7 @@ export default function GenerateurPubVisuelPage() {
                         value={liCaption}
                         onChange={e => setLiCaption(e.target.value)}
                         placeholder="ex: Lattafa Asad — la réponse au luxe accessible."
-                        className="w-full h-9 rounded-lg border border-border bg-background px-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary/30 transition-all"
+                        className="w-full h-9 rounded-lg border border-border bg-background px-3 text-sm focus:outline-none focus:ring-2 focus:ring-[#C2553B]/30 transition-all"
                       />
                     </div>
                   </div>

@@ -14,8 +14,8 @@ export function WelcomeBanner() {
     }
 
     return (
-        <Alert className="max-w-2xl mx-auto mb-12 text-left bg-primary/10 border-primary/30">
-            <Sparkles className="h-4 w-4 text-primary" />
+        <Alert className="max-w-2xl mx-auto mb-12 text-left bg-[#C2553B]/10 border-[#C2553B]/30">
+            <Sparkles className="h-4 w-4 text-[#C2553B]" />
             <AlertTitle className="font-bold">Bienvenue sur Woosenteur v2 !</AlertTitle>
             <AlertDescription>
                 Pour commencer, choisissez un plan ci-dessous. Sélectionnez le plan "Gratuit" pour obtenir vos 5 crédits offerts et accéder au générateur.

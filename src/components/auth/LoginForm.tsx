@@ -94,11 +94,11 @@ const LoginForm: React.FC<LoginFormProps> = ({ onSuccess, onFailure, onLoading }
             )}
           />
           <div className="flex justify-end">
-            <Link href="/forgot-password" className="text-sm text-muted-foreground underline hover:text-primary">
+            <Link href="/forgot-password" className="text-sm text-muted-foreground underline hover:text-[#C2553B]">
               Mot de passe oublié ?
             </Link>
           </div>
-          <Button type="submit" className="w-full" disabled={isSubmitting}>
+          <Button type="submit" className="w-full bg-[#C2553B] hover:bg-[#A23F29] text-white" disabled={isSubmitting}>
              {isSubmitting && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
             Se connecter
           </Button>

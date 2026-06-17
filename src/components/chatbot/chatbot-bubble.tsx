@@ -162,7 +162,7 @@ export function ChatbotBubble({ user, userProfile }: ChatbotBubbleProps) {
       {isOpen && (
         <Card className="fixed bottom-24 right-4 sm:right-6 w-[calc(100vw-2rem)] sm:w-[380px] h-[500px] max-h-[70vh] z-50 shadow-2xl flex flex-col animate-in slide-in-from-bottom-5 duration-300">
           {/* Header */}
-          <CardHeader className="py-3 px-4 border-b bg-gradient-to-r from-blue-500 to-primary text-primary-foreground rounded-t-lg flex-shrink-0">
+          <CardHeader className="py-3 px-4 border-b bg-gradient-to-r from-[#C2553B] to-[#A23F29] text-white rounded-t-lg flex-shrink-0">
             <div className="flex items-center justify-between">
               <CardTitle className="text-base font-semibold flex items-center gap-2">
                 <Image

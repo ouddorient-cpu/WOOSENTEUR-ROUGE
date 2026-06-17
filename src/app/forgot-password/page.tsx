@@ -84,8 +84,8 @@ export default function ForgotPasswordPage() {
           <CardContent>
             {emailSent ? (
               <div className="flex flex-col items-center gap-4 py-4">
-                <div className="rounded-full bg-primary/10 p-4">
-                  <Mail className="h-8 w-8 text-primary" />
+                <div className="rounded-full bg-[#C2553B]/10 p-4">
+                  <Mail className="h-8 w-8 text-[#C2553B]" />
                 </div>
                 <p className="text-sm text-muted-foreground text-center">
                   Vérifiez votre boîte mail (et vos spams).
@@ -111,7 +111,7 @@ export default function ForgotPasswordPage() {
                       </FormItem>
                     )}
                   />
-                  <Button type="submit" className="w-full" disabled={isSubmitting}>
+                  <Button type="submit" className="w-full bg-[#C2553B] hover:bg-[#A23F29] text-white" disabled={isSubmitting}>
                     {isSubmitting && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
                     Envoyer le lien
                   </Button>
@@ -122,7 +122,7 @@ export default function ForgotPasswordPage() {
           <CardFooter className="justify-center">
             <Link
               href="/login"
-              className="flex items-center gap-1 text-sm text-muted-foreground hover:text-primary"
+              className="flex items-center gap-1 text-sm text-muted-foreground hover:text-[#C2553B]"
             >
               <ArrowLeft className="h-4 w-4" />
               Retour à la connexion

@@ -143,11 +143,11 @@ const SignupForm: React.FC<SignupFormProps> = ({ onSuccess, onFailure, onLoading
                 <div className="space-y-1 leading-none">
                   <FormLabel className="text-xs font-normal text-muted-foreground cursor-pointer">
                     J'accepte les{' '}
-                    <Link href="/legal/terms" className="underline hover:text-primary" target="_blank">
+                    <Link href="/legal/terms" className="underline hover:text-[#C2553B]" target="_blank">
                       CGU
                     </Link>{' '}
                     et la{' '}
-                    <Link href="/legal/privacy" className="underline hover:text-primary" target="_blank">
+                    <Link href="/legal/privacy" className="underline hover:text-[#C2553B]" target="_blank">
                       Politique de confidentialité
                     </Link>
                   </FormLabel>
@@ -156,7 +156,7 @@ const SignupForm: React.FC<SignupFormProps> = ({ onSuccess, onFailure, onLoading
               </FormItem>
             )}
           />
-          <Button type="submit" className="w-full" disabled={isSubmitting}>
+          <Button type="submit" className="w-full bg-[#C2553B] hover:bg-[#A23F29] text-white" disabled={isSubmitting}>
              {isSubmitting && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
             Créer un compte
           </Button>

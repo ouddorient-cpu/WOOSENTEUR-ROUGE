@@ -59,7 +59,7 @@ export default function EssaiPage() {
             <Star className="h-3 w-3 mr-1" /> 1 fiche gratuite · Sans inscription
           </Badge>
           <h1 className="text-3xl md:text-4xl font-bold font-headline mb-3">
-            Testez le générateur <span className="text-primary">en direct</span>
+            Testez le générateur <span className="text-[#C2553B]">en direct</span>
           </h1>
           <p className="text-muted-foreground text-lg">
             Entrez le nom de votre produit — l'IA génère une fiche SEO professionnelle en quelques secondes.
@@ -104,7 +104,7 @@ export default function EssaiPage() {
                 <div className="text-center py-4 space-y-3">
                   <p className="text-muted-foreground text-sm">Vous avez déjà utilisé votre essai gratuit.</p>
                   <Link href="/signup">
-                    <Button className="w-full" size="lg">
+                    <Button className="w-full bg-[#C2553B] hover:bg-[#A23F29] text-white" size="lg">
                       Créer mon compte — 5 fiches gratuites <ArrowRight className="ml-2 h-4 w-4" />
                     </Button>
                   </Link>
@@ -113,7 +113,7 @@ export default function EssaiPage() {
                 <Button
                   onClick={handleGenerate}
                   disabled={isLoading || !productName.trim()}
-                  className="w-full"
+                  className="w-full bg-[#C2553B] hover:bg-[#A23F29] text-white"
                   size="lg"
                 >
                   {isLoading ? (
@@ -130,7 +130,7 @@ export default function EssaiPage() {
         {/* Result */}
         {result && (
           <div className="space-y-6">
-            <Card className="shadow-lg border-primary/20">
+            <Card className="shadow-lg border-[#C2553B]/20">
               <CardHeader className="pb-3">
                 <div className="flex items-center gap-2">
                   <Check className="h-5 w-5 text-green-600" />
@@ -177,14 +177,14 @@ export default function EssaiPage() {
                 <div className="h-3 bg-muted rounded w-4/5" />
               </div>
               <div className="absolute inset-0 flex flex-col items-center justify-center bg-background/80 backdrop-blur-sm gap-2 p-4 text-center">
-                <Lock className="h-6 w-6 text-primary" />
+                <Lock className="h-6 w-6 text-[#C2553B]" />
                 <p className="font-semibold text-sm">Slug URL · Tags · FAQ Schema · JSON-LD · Méta-description complète</p>
                 <p className="text-xs text-muted-foreground">Disponibles dans la version complète</p>
               </div>
             </div>
 
             {/* CTA inscription */}
-            <Card className="bg-gradient-to-br from-primary/10 to-secondary/10 border-primary/30 shadow-lg">
+            <Card className="bg-gradient-to-br from-[#C2553B]/10 to-[#A23F29]/10 border-[#C2553B]/30 shadow-lg">
               <CardContent className="pt-6 text-center space-y-4">
                 <div className="text-4xl">🎉</div>
                 <h2 className="text-xl font-bold font-headline">Continuez avec 5 fiches gratuites</h2>
@@ -201,7 +201,7 @@ export default function EssaiPage() {
                   ))}
                 </ul>
                 <Link href="/signup">
-                  <Button size="lg" className="w-full text-base font-semibold">
+                  <Button size="lg" className="w-full text-base font-semibold bg-[#C2553B] hover:bg-[#A23F29] text-white">
                     Créer mon compte gratuit <ArrowRight className="ml-2 h-4 w-4" />
                   </Button>
                 </Link>

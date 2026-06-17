@@ -86,7 +86,7 @@ function ThankYouContent() {
             case 'loading':
                 return (
                     <>
-                        <Loader2 className="h-16 w-16 text-primary animate-spin mb-4" />
+                        <Loader2 className="h-16 w-16 text-[#C2553B] animate-spin mb-4" />
                         <CardTitle className="text-2xl">Vérification de votre paiement...</CardTitle>
                         <CardDescription>
                             Veuillez patienter pendant que nous ajoutons les crédits à votre compte.

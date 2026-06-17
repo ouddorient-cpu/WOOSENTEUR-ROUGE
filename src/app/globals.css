@@ -179,10 +179,10 @@ html {
    UTILITY CLASSES — Dark Electric SaaS
    ────────────────────────────────────────────── */
 @layer utilities {
-  /* Gradient text: electric blue */
+  /* Gradient text: terracotta Atelier */
   .text-gradient {
     @apply bg-clip-text text-transparent;
-    background-image: linear-gradient(110deg, #2563EB 20%, #60A5FA 50%, #0EA5E9 90%);
+    background-image: linear-gradient(110deg, #C2553B 20%, #D98C5F 50%, #A23F29 90%);
     background-size: 200% auto;
     animation: text-shimmer 4s linear infinite;
   }

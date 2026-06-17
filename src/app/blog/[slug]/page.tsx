@@ -114,7 +114,7 @@ export default function BlogPostPage({ params }: { params: { slug: string } }) {
           {/* ── Header article ── */}
           <header className="mb-10">
             <div className="flex items-center gap-3 mb-4">
-              <span className="text-xs font-bold text-primary bg-primary/10 border border-primary/20 px-3 py-1 rounded-full">
+              <span className="text-xs font-bold text-[#C2553B] bg-[#C2553B]/10 border border-[#C2553B]/20 px-3 py-1 rounded-full">
                 {post.category}
               </span>
               <span className="text-xs text-muted-foreground flex items-center gap-1.5">
@@ -158,7 +158,7 @@ export default function BlogPostPage({ params }: { params: { slug: string } }) {
               prose-p:text-foreground/80 prose-p:leading-relaxed
               prose-li:text-foreground/80
               prose-strong:text-foreground
-              prose-a:text-primary prose-a:no-underline hover:prose-a:underline
+              prose-a:text-[#C2553B] prose-a:no-underline hover:prose-a:underline
               prose-ul:my-4 prose-li:my-1"
             dangerouslySetInnerHTML={{ __html: post.content }}
           />
@@ -179,8 +179,8 @@ export default function BlogPostPage({ params }: { params: { slug: string } }) {
           </div>
 
           {/* ── CTA dans l'article ── */}
-          <div className="mt-12 bg-gradient-to-br from-primary/8 to-violet-500/8 border border-primary/20 rounded-3xl p-8 text-center">
-            <p className="text-xs font-bold text-primary uppercase tracking-widest mb-2">Testez par vous-même</p>
+          <div className="mt-12 bg-gradient-to-br from-[#C2553B]/8 to-[#A23F29]/8 border border-[#C2553B]/20 rounded-3xl p-8 text-center">
+            <p className="text-xs font-bold text-[#C2553B] uppercase tracking-widest mb-2">Testez par vous-même</p>
             <h3 className="font-headline text-2xl font-bold text-foreground mb-3">
               5 fiches produits gratuites —{' '}
               <span className="text-gradient">sans carte bancaire</span>
@@ -190,7 +190,7 @@ export default function BlogPostPage({ params }: { params: { slug: string } }) {
             </p>
             <Link
               href="/signup"
-              className="inline-flex items-center gap-2 bg-primary text-white px-8 py-3.5 rounded-full font-semibold hover:bg-primary/90 transition-colors shadow-lg shadow-primary/20"
+              className="inline-flex items-center gap-2 bg-[#C2553B] text-white px-8 py-3.5 rounded-full font-semibold hover:bg-[#A23F29] transition-colors shadow-lg shadow-[#C2553B]/20"
             >
               Générer ma première fiche
               <ArrowRight className="h-4 w-4" />
@@ -206,11 +206,11 @@ export default function BlogPostPage({ params }: { params: { slug: string } }) {
               <div className="grid md:grid-cols-2 gap-5">
                 {related.map((r) => (
                   <Link key={r.slug} href={`/blog/${r.slug}`} className="group block">
-                    <article className="h-full bg-white dark:bg-card border border-border rounded-2xl p-6 hover:border-primary/40 hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300">
-                      <span className="text-xs font-semibold text-primary uppercase tracking-widest">
+                    <article className="h-full bg-white dark:bg-card border border-border rounded-2xl p-6 hover:border-[#C2553B]/40 hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300">
+                      <span className="text-xs font-semibold text-[#C2553B] uppercase tracking-widest">
                         {r.category}
                       </span>
-                      <h3 className="font-headline text-lg font-bold text-foreground mt-1.5 mb-2 leading-snug group-hover:text-primary transition-colors">
+                      <h3 className="font-headline text-lg font-bold text-foreground mt-1.5 mb-2 leading-snug group-hover:text-[#C2553B] transition-colors">
                         {r.title}
                       </h3>
                       <p className="text-sm text-muted-foreground line-clamp-2 mb-3">{r.excerpt}</p>

@@ -45,7 +45,7 @@ function LoginPageContent() {
     <div className="flex flex-col min-h-screen bg-muted/50 relative">
         {isLoading && (
             <div className="absolute inset-0 bg-background/80 flex items-center justify-center z-10">
-                <Loader2 className="h-12 w-12 animate-spin text-primary" />
+                <Loader2 className="h-12 w-12 animate-spin text-[#C2553B]" />
             </div>
         )}
         <main className="flex-grow flex items-center justify-center p-4">
@@ -69,10 +69,10 @@ function LoginPageContent() {
                 <CardFooter className="flex-col gap-4 justify-center text-center text-sm">
                    <p className="text-muted-foreground">
                      Vous n'avez pas de compte ?{' '}
-                     <Link href="/signup" className="underline font-semibold text-primary">S'inscrire</Link>
+                     <Link href="/signup" className="underline font-semibold text-[#C2553B]">S'inscrire</Link>
                    </p>
                    <p className="text-muted-foreground text-xs">
-                     En vous connectant, vous acceptez nos <Link href="/legal/terms" className="underline hover:text-primary">Conditions d'utilisation</Link> et notre <Link href="/legal/privacy" className="underline hover:text-primary">Politique de confidentialité</Link>.
+                     En vous connectant, vous acceptez nos <Link href="/legal/terms" className="underline hover:text-[#C2553B]">Conditions d'utilisation</Link> et notre <Link href="/legal/privacy" className="underline hover:text-[#C2553B]">Politique de confidentialité</Link>.
                    </p>
                 </CardFooter>
             </Card>

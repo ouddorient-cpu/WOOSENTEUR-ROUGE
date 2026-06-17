@@ -12,7 +12,7 @@ const TimelineItem = ({ icon, title, children }: { icon: React.ReactNode, title:
         <div className="relative flex items-start group">
              <div className="absolute w-0.5 h-full bg-border top-0 left-6 -translate-x-1/2"></div>
             {/* Icon */}
-            <div className="flex items-center justify-center w-12 h-12 rounded-full bg-primary text-primary-foreground shadow-md shrink-0 z-10">
+            <div className="flex items-center justify-center w-12 h-12 rounded-full bg-[#C2553B] text-white shadow-md shrink-0 z-10">
                 {icon}
             </div>
 
@@ -55,7 +55,7 @@ const AboutPage = () => {
             <p>
                 En 2024, j'ai suivi avec un immense intérêt l'arrivée des intelligences artificielles comme ChatGPT et Gemini. En autodidacte, j'ai pris le train en marche pour intégrer ces outils à mon travail. C'est là que le déclic s'est produit.
             </p>
-            <blockquote className="border-l-4 border-primary pl-4 italic my-4 text-left">
+            <blockquote className="border-l-4 border-[#C2553B] pl-4 italic my-4 text-left">
                 "Pourquoi ne pas créer un agent intelligent pour automatiser cette tâche répétitive et chronophage ?"
             </blockquote>
         </TimelineItem>

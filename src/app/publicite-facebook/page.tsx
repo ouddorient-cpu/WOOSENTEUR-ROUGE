@@ -57,7 +57,7 @@ function TextInput({ value, onChange, placeholder }: { value: string; onChange: 
       value={value}
       onChange={e => onChange(e.target.value)}
       placeholder={placeholder}
-      className="w-full h-10 rounded-lg border border-border bg-background px-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary/50 transition-all"
+      className="w-full h-10 rounded-lg border border-border bg-background px-3 text-sm focus:outline-none focus:ring-2 focus:ring-[#C2553B]/30 focus:border-[#C2553B]/50 transition-all"
     />
   );
 }
@@ -68,7 +68,7 @@ function SelectInput({ value, onChange, options }: { value: string; onChange: (v
       <select
         value={value}
         onChange={e => onChange(e.target.value)}
-        className="w-full h-10 rounded-lg border border-border bg-background px-3 text-sm appearance-none focus:outline-none focus:ring-2 focus:ring-primary/30 cursor-pointer pr-8"
+        className="w-full h-10 rounded-lg border border-border bg-background px-3 text-sm appearance-none focus:outline-none focus:ring-2 focus:ring-[#C2553B]/30 cursor-pointer pr-8"
       >
         {options.map(o => <option key={o} value={o}>{o}</option>)}
       </select>
@@ -230,7 +230,7 @@ function PostsTab() {
         </Field>
 
         <Button onClick={handleGenerate} disabled={loading || !productName.trim()}
-          className="w-full h-11 rounded-full bg-blue-600 hover:bg-blue-700 text-white font-semibold shadow-lg shadow-blue-500/20 disabled:opacity-50">
+          className="w-full h-11 rounded-full bg-[#C2553B] hover:bg-[#A23F29] text-white font-semibold shadow-lg shadow-[#C2553B]/20 disabled:opacity-50">
           {loading ? <><Loader2 className="mr-2 h-4 w-4 animate-spin" />Génération en cours…</>
                    : <><Sparkles className="mr-2 h-4 w-4" />Générer mes 3 posts Facebook</>}
         </Button>
@@ -319,7 +319,7 @@ function SondageTab() {
         </Field>
 
         <Button onClick={handleGenerate} disabled={loading || !productName.trim()}
-          className="w-full h-11 rounded-full bg-blue-600 hover:bg-blue-700 text-white font-semibold shadow-lg shadow-blue-500/20 disabled:opacity-50">
+          className="w-full h-11 rounded-full bg-[#C2553B] hover:bg-[#A23F29] text-white font-semibold shadow-lg shadow-[#C2553B]/20 disabled:opacity-50">
           {loading ? <><Loader2 className="mr-2 h-4 w-4 animate-spin" />Génération en cours…</>
                    : <><BarChart2 className="mr-2 h-4 w-4" />Générer mon sondage</>}
         </Button>
@@ -425,7 +425,7 @@ function FlashTab() {
             <input
               type="number" min={5} max={80} value={discountPercent}
               onChange={e => setDiscountPercent(e.target.value)}
-              className="w-full h-10 rounded-lg border border-border bg-background px-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary/30 transition-all"
+              className="w-full h-10 rounded-lg border border-border bg-background px-3 text-sm focus:outline-none focus:ring-2 focus:ring-[#C2553B]/30 transition-all"
             />
           </Field>
           <Field label="Prix original" hint="optionnel">
@@ -530,7 +530,7 @@ export default function PubFacebookPage() {
                   activeTab === tab.id
                     ? tab.id === 'flash'
                       ? 'bg-orange-600 text-white shadow-md shadow-orange-500/20'
-                      : 'bg-blue-600 text-white shadow-md shadow-blue-500/20'
+                      : 'bg-[#C2553B] text-white shadow-md shadow-[#C2553B]/20'
                     : 'text-muted-foreground hover:text-foreground hover:bg-muted/60'
                 }`}
               >

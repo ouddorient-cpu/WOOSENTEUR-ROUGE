@@ -258,7 +258,7 @@ export default function TrialGenerator() {
   };
 
   return (
-    <section id="essai-gratuit" className="py-16 sm:py-20 relative overflow-hidden" style={{ background: C.bgAlt }}>
+    <section id="essai-gratuit" className="py-16 sm:py-20 relative overflow-hidden scroll-mt-24" style={{ background: C.bgAlt }}>
       <div className="container mx-auto px-4 md:px-6">
 
         {/* Section Header */}

@@ -28,7 +28,7 @@ export default function CtaSection() {
       <div
         className="absolute inset-0 pointer-events-none"
         style={{
-          background: 'radial-gradient(ellipse 70% 50% at 50% 60%, rgba(37,99,235,0.18) 0%, transparent 70%)',
+          background: 'radial-gradient(ellipse 70% 50% at 50% 60%, rgba(162,63,41,0.18) 0%, transparent 70%)',
         }}
         aria-hidden="true"
       />
@@ -60,8 +60,8 @@ export default function CtaSection() {
             whileTap={{ scale: 0.97 }}
             className="inline-flex items-center gap-3 font-bold text-white rounded-full px-9 py-4 text-base"
             style={{
-              background: 'linear-gradient(135deg,#2563EB,#1D4ED8)',
-              boxShadow: '0 6px 30px rgba(37,99,235,0.5)',
+              background: 'linear-gradient(135deg,#A23F29,#8A3220)',
+              boxShadow: '0 6px 30px rgba(162,63,41,0.5)',
             }}
           >
             Générer ma première fiche — Gratuit
@@ -73,7 +73,7 @@ export default function CtaSection() {
               const Icon = g.icon;
               return (
                 <div key={i} className="flex items-center gap-2">
-                  <Icon size={15} style={{ color: '#3B82F6' }} />
+                  <Icon size={15} style={{ color: '#C2553B' }} />
                   <span style={{ color: 'var(--ls-muted)', fontSize: '0.875rem' }}>{g.label}</span>
                 </div>
               );

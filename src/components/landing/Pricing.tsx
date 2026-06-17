@@ -11,8 +11,8 @@ import { useT } from '@/lib/i18n/useT';
 const C = {
   bg: 'var(--ls-bg)', bgAlt: 'var(--ls-bg-alt)', surface: 'var(--ls-surface)',
   text: 'var(--ls-text)', muted: 'var(--ls-muted)', border: 'var(--ls-border-color)',
-  sage: '#3B82F6', sagePale: 'rgba(59,130,246,0.10)',
-  terra: '#2563EB', terraDark: '#1D4ED8',
+  sage: '#C2553B', sagePale: 'rgba(194,85,59,0.10)',
+  terra: '#A23F29', terraDark: '#8A3220',
 };
 
 const Pricing = () => {

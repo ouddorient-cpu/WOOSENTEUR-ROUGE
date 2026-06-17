@@ -34,7 +34,7 @@ export default function PainSection() {
             transition={{ duration: 0.55 }}
             className="text-center mb-16"
           >
-            <p className="text-sm font-semibold tracking-widest uppercase mb-4" style={{ color: '#3B82F6' }}>
+            <p className="text-sm font-semibold tracking-widest uppercase mb-4" style={{ color: '#C2553B' }}>
               Le vrai problème
             </p>
             <h2 className="font-bold tracking-tight text-foreground" style={{ fontSize: 'clamp(2rem,5vw,3rem)', lineHeight: 1.15 }}>

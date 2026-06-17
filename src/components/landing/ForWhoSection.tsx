@@ -30,7 +30,7 @@ export default function ForWhoSection() {
             transition={{ duration: 0.5 }}
             className="text-center mb-16"
           >
-            <p className="text-sm font-semibold tracking-widest uppercase mb-4" style={{ color: '#3B82F6' }}>
+            <p className="text-sm font-semibold tracking-widest uppercase mb-4" style={{ color: '#C2553B' }}>
               Pour qui ?
             </p>
             <h2 className="font-bold tracking-tight text-foreground" style={{ fontSize: 'clamp(2rem,5vw,3rem)', lineHeight: 1.15 }}>
@@ -46,7 +46,7 @@ export default function ForWhoSection() {
               viewport={{ once: true }}
               transition={{ duration: 0.5 }}
               className="rounded-2xl p-7"
-              style={{ background: 'rgba(59,130,246,0.06)', border: '1px solid rgba(59,130,246,0.15)' }}
+              style={{ background: 'rgba(194,85,59,0.06)', border: '1px solid rgba(194,85,59,0.15)' }}
             >
               <p className="font-bold text-foreground mb-5" style={{ fontSize: '1rem' }}>
                 ✓ Woosenteur est fait pour vous si…
@@ -54,7 +54,7 @@ export default function ForWhoSection() {
               <ul className="space-y-3">
                 {forWho.map((item, i) => (
                   <li key={i} className="flex items-start gap-3">
-                    <CheckCircle2 size={17} className="flex-shrink-0 mt-0.5" style={{ color: '#3B82F6' }} />
+                    <CheckCircle2 size={17} className="flex-shrink-0 mt-0.5" style={{ color: '#C2553B' }} />
                     <span style={{ color: '#CBD5E1', fontSize: '0.9375rem', lineHeight: 1.55 }}>{item}</span>
                   </li>
                 ))}

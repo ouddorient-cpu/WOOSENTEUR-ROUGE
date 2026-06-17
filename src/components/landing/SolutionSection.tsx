@@ -18,7 +18,7 @@ export default function SolutionSection() {
             {/* Pill */}
             <div
               className="inline-flex items-center gap-2 rounded-full px-4 py-1.5 mb-8 text-sm font-semibold"
-              style={{ background: 'rgba(59,130,246,0.1)', color: '#60A5FA', border: '1px solid rgba(59,130,246,0.2)' }}
+              style={{ background: 'rgba(194,85,59,0.1)', color: '#D98F73', border: '1px solid rgba(194,85,59,0.2)' }}
             >
               <Sparkles size={14} />
               La solution
@@ -31,7 +31,7 @@ export default function SolutionSection() {
             >
               Décrivez votre produit en 3 mots.
               <br />
-              <span style={{ background: 'linear-gradient(110deg,#3B82F6,#60A5FA,#0EA5E9)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>
+              <span style={{ background: 'linear-gradient(110deg,#C2553B,#D98F73,#8C7C99)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>
                 Woosenteur rédige tout.
               </span>
             </h2>
@@ -57,9 +57,9 @@ export default function SolutionSection() {
               <span style={{ color: '#334155', fontWeight: 700, fontSize: '1.2rem' }}>→</span>
               <div
                 className="flex items-center gap-3 rounded-xl px-5 py-3.5 w-full sm:w-auto"
-                style={{ background: 'rgba(59,130,246,0.07)', border: '1px solid rgba(59,130,246,0.2)' }}
+                style={{ background: 'rgba(194,85,59,0.07)', border: '1px solid rgba(194,85,59,0.2)' }}
               >
-                <span style={{ color: '#60A5FA', fontWeight: 700 }}>Après</span>
+                <span style={{ color: '#D98F73', fontWeight: 700 }}>Après</span>
                 <span style={{ color: '#94A3B8' }}>30 s · fiche pro prête à publier</span>
               </div>
             </div>

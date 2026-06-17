@@ -41,7 +41,7 @@ export default function StepsSection() {
             transition={{ duration: 0.5 }}
             className="text-center mb-16"
           >
-            <p className="text-sm font-semibold tracking-widest uppercase mb-4" style={{ color: '#3B82F6' }}>
+            <p className="text-sm font-semibold tracking-widest uppercase mb-4" style={{ color: '#C2553B' }}>
               Comment ça marche
             </p>
             <h2 className="font-bold tracking-tight text-foreground" style={{ fontSize: 'clamp(2rem,5vw,3rem)', lineHeight: 1.15 }}>
@@ -53,7 +53,7 @@ export default function StepsSection() {
             {/* Connector line (desktop) */}
             <div
               className="hidden md:block absolute top-10 left-[calc(16.66%+1.5rem)] right-[calc(16.66%+1.5rem)] h-px"
-              style={{ background: 'linear-gradient(to right, transparent, rgba(59,130,246,0.3), rgba(59,130,246,0.3), transparent)' }}
+              style={{ background: 'linear-gradient(to right, transparent, rgba(194,85,59,0.3), rgba(194,85,59,0.3), transparent)' }}
               aria-hidden="true"
             />
 
@@ -72,16 +72,16 @@ export default function StepsSection() {
                   {/* Number */}
                   <div
                     className="absolute -top-4 left-1/2 -translate-x-1/2 w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold"
-                    style={{ background: '#3B82F6', color: '#fff', boxShadow: '0 0 16px rgba(59,130,246,0.5)' }}
+                    style={{ background: '#C2553B', color: '#fff', boxShadow: '0 0 16px rgba(194,85,59,0.5)' }}
                   >
                     {step.number}
                   </div>
 
                   <div
                     className="w-12 h-12 rounded-2xl flex items-center justify-center mb-5 mt-4"
-                    style={{ background: 'rgba(59,130,246,0.1)' }}
+                    style={{ background: 'rgba(194,85,59,0.1)' }}
                   >
-                    <Icon size={22} strokeWidth={1.6} style={{ color: '#60A5FA' }} />
+                    <Icon size={22} strokeWidth={1.6} style={{ color: '#D98F73' }} />
                   </div>
 
                   <h3 className="font-semibold text-foreground mb-2.5" style={{ fontSize: '1.0625rem' }}>
@@ -105,7 +105,7 @@ export default function StepsSection() {
             <button
               onClick={scrollToTrial}
               className="inline-flex items-center gap-2 font-semibold px-7 py-3 rounded-full text-white transition-all duration-200 hover:-translate-y-0.5"
-              style={{ background: '#2563EB', boxShadow: '0 4px 20px rgba(37,99,235,0.4)' }}
+              style={{ background: '#A23F29', boxShadow: '0 4px 20px rgba(162,63,41,0.4)' }}
             >
               Essayer maintenant — Gratuit
             </button>

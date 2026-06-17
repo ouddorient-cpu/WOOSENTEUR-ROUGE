@@ -55,7 +55,7 @@ export default function HeaderLanding() {
             <Link
               href="/dashboard"
               className="text-sm font-semibold px-4 py-2 rounded-lg transition-colors"
-              style={{ background: 'rgba(59,130,246,0.12)', color: '#60A5FA' }}
+              style={{ background: 'rgba(194,85,59,0.12)', color: '#D98F73' }}
             >
               Mon espace →
             </Link>
@@ -71,7 +71,7 @@ export default function HeaderLanding() {
               <button
                 onClick={scrollToTrial}
                 className="text-sm font-semibold px-5 py-2.5 rounded-xl text-white transition-all duration-200 hover:-translate-y-0.5"
-                style={{ background: '#2563EB', boxShadow: '0 3px 12px rgba(37,99,235,0.35)' }}
+                style={{ background: '#A23F29', boxShadow: '0 3px 12px rgba(162,63,41,0.35)' }}
               >
                 Essayer gratuitement
               </button>
@@ -116,7 +116,7 @@ export default function HeaderLanding() {
               <button
                 onClick={scrollToTrial}
                 className="text-sm font-semibold px-5 py-3 rounded-xl text-white text-center"
-                style={{ background: '#2563EB' }}
+                style={{ background: '#A23F29' }}
               >
                 Essayer gratuitement
               </button>

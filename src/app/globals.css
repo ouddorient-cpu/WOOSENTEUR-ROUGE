@@ -100,16 +100,20 @@ html {
     --sidebar-border: 214 32% 91%;
     --sidebar-ring: 217 91% 60%;
 
-    /* Landing section palette — light */
-    --ls-bg: #F8FAFF;
-    --ls-bg-alt: #F0F4FF;
-    --ls-surface: #FFFFFF;
-    --ls-text: #0F172A;
-    --ls-muted: #64748B;
-    --ls-border-color: #E2E8F0;
-    --ls-card-border: rgba(0, 0, 0, 0.06);
-    --ls-header-bg: rgba(248, 250, 255, 0.92);
-    --ls-header-border: #E2E8F0;
+    /* Landing section palette — Atelier (ivoire/prune/corail) */
+    --ls-bg: #FBF7F2;
+    --ls-bg-alt: #F5EEE6;
+    --ls-surface: #FFFDF9;
+    --ls-text: #2B1F2E;
+    --ls-muted: #5C4F5E;
+    --ls-border-color: rgba(43,31,46,0.12);
+    --ls-card-border: rgba(43,31,46,0.10);
+    --ls-header-bg: rgba(251,247,242,0.92);
+    --ls-header-border: rgba(43,31,46,0.10);
+    --ls-accent: #C2553B;
+    --ls-accent-soft: rgba(194,85,59,0.10);
+    --ls-lavender: #C9B8D6;
+    --ls-lavender-soft: rgba(201,184,214,0.22);
   }
 
   .dark {
@@ -145,16 +149,20 @@ html {
     --sidebar-border: 217 30% 18%;
     --sidebar-ring: 217 91% 60%;
 
-    /* Landing section palette — dark */
-    --ls-bg: #0F172A;
-    --ls-bg-alt: #131D2E;
-    --ls-surface: #1E293B;
-    --ls-text: #E2EAF8;
-    --ls-muted: #6B7FAD;
-    --ls-border-color: #253352;
-    --ls-card-border: rgba(255, 255, 255, 0.06);
-    --ls-header-bg: rgba(15, 23, 42, 0.88);
-    --ls-header-border: #253352;
+    /* Landing section palette — Atelier dark (prune profond) */
+    --ls-bg: #1E1620;
+    --ls-bg-alt: #261C29;
+    --ls-surface: #2D2230;
+    --ls-text: #F2E9E4;
+    --ls-muted: #B5A2B0;
+    --ls-border-color: rgba(242,233,228,0.10);
+    --ls-card-border: rgba(242,233,228,0.08);
+    --ls-header-bg: rgba(30,22,32,0.88);
+    --ls-header-border: rgba(242,233,228,0.10);
+    --ls-accent: #E07A5F;
+    --ls-accent-soft: rgba(224,122,95,0.14);
+    --ls-lavender: #C9B8D6;
+    --ls-lavender-soft: rgba(201,184,214,0.16);
   }
 }
 

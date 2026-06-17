@@ -1,6 +1,6 @@
 
 import type { Metadata } from 'next';
-import { PT_Sans, Poppins, Cormorant_Garamond } from 'next/font/google';
+import { PT_Sans, Poppins, Cormorant_Garamond, IBM_Plex_Mono } from 'next/font/google';
 import Script from 'next/script';
 import './globals.css';
 import { cn } from '@/lib/utils';
@@ -32,6 +32,13 @@ const cormorant = Cormorant_Garamond({
   weight: ['600', '700'],
   style: ['normal', 'italic'],
   variable: '--font-cormorant',
+});
+
+const plexMono = IBM_Plex_Mono({
+  subsets: ['latin'],
+  weight: ['400', '500'],
+  style: ['normal', 'italic'],
+  variable: '--font-plex-mono',
 });
 
 const URL_BASE = 'https://woosenteur.fr';
@@ -154,7 +161,8 @@ export default function RootLayout({
           'font-body antialiased min-h-screen bg-background',
           ptSans.variable,
           poppins.variable,
-          cormorant.variable
+          cormorant.variable,
+          plexMono.variable
         )}
       >
         <LangProvider>

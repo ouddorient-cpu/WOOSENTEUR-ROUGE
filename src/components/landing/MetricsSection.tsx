@@ -33,7 +33,7 @@ export default function MetricsSection() {
             transition={{ duration: 0.5 }}
             className="text-center mb-16"
           >
-            <p className="text-sm font-semibold tracking-widest uppercase mb-4" style={{ color: '#3B82F6' }}>
+            <p className="text-sm font-semibold tracking-widest uppercase mb-4" style={{ color: '#C2553B' }}>
               Les résultats
             </p>
             <h2 className="font-bold tracking-tight text-foreground" style={{ fontSize: 'clamp(2rem,5vw,3rem)', lineHeight: 1.15 }}>
@@ -57,7 +57,7 @@ export default function MetricsSection() {
                   style={{
                     fontSize: 'clamp(3rem,7vw,4.5rem)',
                     lineHeight: 1,
-                    background: 'linear-gradient(135deg,#60A5FA,#3B82F6)',
+                    background: 'linear-gradient(135deg,#D98F73,#C2553B)',
                     WebkitBackgroundClip: 'text',
                     WebkitTextFillColor: 'transparent',
                     backgroundClip: 'text',

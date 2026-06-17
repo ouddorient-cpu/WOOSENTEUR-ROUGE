@@ -251,10 +251,10 @@ export default function TrialGenerator() {
     text:      'var(--ls-text)',
     muted:     'var(--ls-muted)',
     border:    'var(--ls-border-color)',
-    sage:      '#3B82F6',
-    sagePale:  'rgba(59,130,246,0.10)',
-    terra:     '#2563EB',
-    terraDark: '#1D4ED8',
+    sage:      '#C2553B',
+    sagePale:  'rgba(194,85,59,0.10)',
+    terra:     '#A23F29',
+    terraDark: '#8A3220',
   };
 
   return (
@@ -346,7 +346,7 @@ export default function TrialGenerator() {
                           <FormLabel style={{ color: C.text }} className="font-medium">Nom du produit</FormLabel>
                           <FormControl>
                             <Input placeholder="ex: Bougie à la lavande" {...field} autoComplete="off"
-                              style={{ background: 'var(--ls-bg-alt)', borderColor: 'var(--ls-border-color)', color: 'var(--ls-text)' }} className="focus-visible:ring-[#2563EB]/30"
+                              style={{ background: 'var(--ls-bg-alt)', borderColor: 'var(--ls-border-color)', color: 'var(--ls-text)' }} className="focus-visible:ring-[#A23F29]/30"
                             />
                           </FormControl>
                           <FormMessage className="text-red-500" />
@@ -363,7 +363,7 @@ export default function TrialGenerator() {
                             <Input
                               placeholder={isMonProduit ? 'ex: Ma Boutique, ou laisser vide' : 'ex: Lancôme'}
                               {...field} value={field.value ?? ''} autoComplete="off"
-                              style={{ background: 'var(--ls-bg-alt)', borderColor: 'var(--ls-border-color)', color: 'var(--ls-text)' }} className="focus-visible:ring-[#2563EB]/30"
+                              style={{ background: 'var(--ls-bg-alt)', borderColor: 'var(--ls-border-color)', color: 'var(--ls-text)' }} className="focus-visible:ring-[#A23F29]/30"
                             />
                           </FormControl>
                           <FormMessage className="text-red-500" />
@@ -378,7 +378,7 @@ export default function TrialGenerator() {
                             <FormControl>
                               <Textarea rows={4}
                                 placeholder="Ex: Bougie 150g à la vraie lavande de Provence. Faite main, 40h de combustion, sans colorants."
-                                style={{ background: 'var(--ls-bg-alt)', borderColor: 'var(--ls-border-color)', color: 'var(--ls-text)' }} className="resize-none text-sm focus-visible:ring-[#2563EB]/30"
+                                style={{ background: 'var(--ls-bg-alt)', borderColor: 'var(--ls-border-color)', color: 'var(--ls-text)' }} className="resize-none text-sm focus-visible:ring-[#A23F29]/30"
                                 {...field}
                               />
                             </FormControl>
@@ -659,7 +659,7 @@ export default function TrialGenerator() {
                 value={emailInput}
                 onChange={e => setEmailInput(e.target.value)}
                 placeholder="vous@email.fr"
-                className="w-full px-4 py-3 rounded-xl text-sm outline-none focus:ring-2 focus:ring-[#3B82F6]/40"
+                className="w-full px-4 py-3 rounded-xl text-sm outline-none focus:ring-2 focus:ring-[#C2553B]/40"
                 style={{ background: C.bg, border: `1px solid ${C.border}`, color: C.text }}
               />
               <button

@@ -28,7 +28,7 @@ const testimonials = [
 const Stars = () => (
   <div className="flex gap-0.5 mb-4">
     {Array.from({ length: 5 }).map((_, i) => (
-      <Star key={i} size={14} fill="#3B82F6" style={{ color: '#3B82F6' }} />
+      <Star key={i} size={14} fill="#C2553B" style={{ color: '#C2553B' }} />
     ))}
   </div>
 );
@@ -45,7 +45,7 @@ export default function TestimonialsSection() {
             transition={{ duration: 0.5 }}
             className="text-center mb-16"
           >
-            <p className="text-sm font-semibold tracking-widest uppercase mb-4" style={{ color: '#3B82F6' }}>
+            <p className="text-sm font-semibold tracking-widest uppercase mb-4" style={{ color: '#C2553B' }}>
               Ce qu&apos;ils disent
             </p>
             <h2 className="font-bold tracking-tight text-foreground" style={{ fontSize: 'clamp(2rem,5vw,3rem)', lineHeight: 1.15 }}>
@@ -74,7 +74,7 @@ export default function TestimonialsSection() {
                 <div className="flex items-center gap-3">
                   <div
                     className="w-9 h-9 rounded-full flex items-center justify-center text-xs font-bold text-white flex-shrink-0"
-                    style={{ background: 'linear-gradient(135deg,#2563EB,#0EA5E9)' }}
+                    style={{ background: 'linear-gradient(135deg,#A23F29,#8C7C99)' }}
                   >
                     {t.initials}
                   </div>

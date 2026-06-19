@@ -160,11 +160,15 @@ const publishToWooCommerceFlow = ai.defineFlow(
         
         let errorMessage = responseData.message || `Erreur de l'API WooCommerce (${response.status})`;
         
-        // Improve error message for the most common permission issue
+        const PERMISSION_MSG = `Clés API en lecture seule. Dans WooCommerce Admin → Réglages → Avancé → REST API, modifiez vos clés et passez les permissions sur "Lecture/Écriture".`;
         if (responseData.code === 'woocommerce_rest_cannot_create') {
-             errorMessage = `Publication échouée. Vos clés API n'ont pas les droits d'écriture. Veuillez vérifier dans WooCommerce que les permissions sont sur "Lecture/Écriture".`;
-        } else if (responseData.code === 'woocommerce_rest_authentication_error') {
-            errorMessage = "Erreur d'authentification. Veuillez vérifier que vos clés API WooCommerce sont correctes dans votre profil.";
+          errorMessage = PERMISSION_MSG;
+        } else if (responseData.code === 'woocommerce_rest_cannot_view') {
+          errorMessage = PERMISSION_MSG;
+        } else if (responseData.code === 'woocommerce_rest_authentication_error' || response.status === 401) {
+          errorMessage = "Erreur d'authentification. Vérifiez que la Clé client et la Clé secrète sont correctes dans votre profil Woosenteur.";
+        } else if (response.status === 404) {
+          errorMessage = "URL introuvable. Vérifiez que l'URL de votre boutique est correcte et que WooCommerce est bien activé.";
         }
 
 

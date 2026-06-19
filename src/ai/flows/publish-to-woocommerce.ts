@@ -58,12 +58,23 @@ export type PublishToWooCommerceOutput = z.infer<
 // 3. Define the main function that components will call
 // The 'product' parameter is typed as 'any' to accept the full Firestore Product object.
 // The schema validation will happen inside the flow.
+const CATEGORY_MAP: Record<string, 'Homme' | 'Femme' | 'Unisexe'> = {
+  'féminin': 'Femme', 'feminin': 'Femme', 'feminine': 'Femme', 'femme': 'Femme', 'women': 'Femme', 'woman': 'Femme',
+  'masculin': 'Homme', 'masculine': 'Homme', 'homme': 'Homme', 'man': 'Homme', 'men': 'Homme',
+  'mixte': 'Unisexe', 'unisexe': 'Unisexe', 'unisex': 'Unisexe', 'tous': 'Unisexe', 'all': 'Unisexe',
+};
+
 export async function publishToWooCommerce(
   input: { product: any, credentials: any }
 ): Promise<PublishToWooCommerceOutput> {
-  // **Robust URL cleaning happens here, BEFORE the flow is called.**
+  // Normalize URL
   if (input.credentials && typeof input.credentials.storeUrl === 'string') {
     input.credentials.storeUrl = input.credentials.storeUrl.trim().replace(/\/+$/, '');
+  }
+  // Normalize category — AI may return "Féminin"/"Masculin"/"Mixte" but schema expects "Femme"/"Homme"/"Unisexe"
+  if (input.product?.seo?.category) {
+    const raw = input.product.seo.category.trim().toLowerCase();
+    input.product.seo.category = CATEGORY_MAP[raw] ?? 'Unisexe';
   }
   // Never throw across the Server Action boundary — Next.js strips error messages in production.
   // Always return { success: false, message } so the client gets the real error.

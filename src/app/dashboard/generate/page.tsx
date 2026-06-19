@@ -405,6 +405,8 @@ interface ResultColumnProps {
   setCsvFormat: (format: CsvFormat) => void;
   externalImageUrl: string;
   setExternalImageUrl: (url: string) => void;
+  wooCategory: string;
+  setWooCategory: (v: string) => void;
   resultColumnRef: React.RefObject<HTMLDivElement>;
   exportCardRef: React.RefObject<HTMLDivElement>;
   triggerFileInput: () => void;
@@ -429,6 +431,8 @@ const ResultColumn: React.FC<ResultColumnProps> = ({
   setCsvFormat,
   externalImageUrl,
   setExternalImageUrl,
+  wooCategory,
+  setWooCategory,
   resultColumnRef,
   exportCardRef,
   triggerFileInput,
@@ -600,6 +604,25 @@ const ResultColumn: React.FC<ResultColumnProps> = ({
                 </p>
               </div>
 
+              {exportPlatform === 'woocommerce' && (
+                <div>
+                  <Label className="text-sm font-medium mb-1 block" style={{ color: C.text }}>
+                    Catégorie WooCommerce <span style={{ color: C.muted }} className="font-normal">(optionnel)</span>
+                  </Label>
+                  <Input
+                    placeholder="ex: Parfums Femme, Lattafa, Oud Oriental…"
+                    value={wooCategory}
+                    onChange={(e) => setWooCategory(e.target.value)}
+                    style={{ background: C.bgAlt, borderColor: C.border, color: C.text }}
+                    className="text-sm"
+                  />
+                  <p className="text-xs mt-1" style={{ color: C.muted }}>
+                    Doit correspondre exactement à une catégorie existante dans votre boutique.
+                    {!wooCategory && <span> Si vide, la valeur IA ({generatedProduct?.seo?.category ?? '—'}) sera utilisée.</span>}
+                  </p>
+                </div>
+              )}
+
               <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
                 <Button size="lg" variant="outline" onClick={handleDownloadCsv} style={{ borderColor: C.border, color: C.text }}>
                   <Download className="mr-2 h-4 w-4" />
@@ -735,6 +758,7 @@ export default function GeneratePage() {
   const [exportPlatform, setExportPlatform] = useState<ExportPlatform>('woocommerce');
   const [csvFormat, setCsvFormat] = useState<CsvFormat>('woocommerce-fr');
   const [externalImageUrl, setExternalImageUrl] = useState<string>('');
+  const [wooCategory, setWooCategory] = useState<string>('');
 
   const fileInputRef = React.useRef<HTMLInputElement>(null);
   const resultColumnRef = React.useRef<HTMLDivElement>(null);
@@ -896,8 +920,12 @@ export default function GeneratePage() {
       await new Promise(r => setTimeout(r, 800));
       setPublishStep('sending');
 
+      const productToPublish = wooCategory.trim() && generatedProduct.seo
+        ? { ...generatedProduct, seo: { ...generatedProduct.seo, category: wooCategory.trim() } }
+        : generatedProduct;
+
       const result = await publishToWooCommerce({
-        product: generatedProduct,
+        product: productToPublish,
         credentials: userProfile.wooCommerce,
       });
 
@@ -930,16 +958,20 @@ export default function GeneratePage() {
     } finally {
       setIsPublishing(false);
     }
-  }, [generatedProduct, userProfile, toast, imageChangedAfterValidation]);
+  }, [generatedProduct, userProfile, toast, imageChangedAfterValidation, wooCategory]);
 
   const handleDownloadCsv = useCallback(async () => {
     if (!generatedProduct) return;
     try {
       // Use external URL if provided, otherwise use the product's imageUrl
-      const productWithImage = externalImageUrl.trim()
-        ? { ...generatedProduct, imageUrl: externalImageUrl.trim() }
-        : generatedProduct;
-      const result = await generateProductCsv({ product: productWithImage, format: csvFormat });
+      const productWithOverrides = {
+        ...generatedProduct,
+        ...(externalImageUrl.trim() ? { imageUrl: externalImageUrl.trim() } : {}),
+        ...(wooCategory.trim() && generatedProduct.seo
+          ? { seo: { ...generatedProduct.seo, category: wooCategory.trim() } }
+          : {}),
+      };
+      const result = await generateProductCsv({ product: productWithOverrides, format: csvFormat });
       const { csvData, imageUploaded, imageUploadError } = result;
 
       const blob = new Blob([csvData], { type: 'text/csv;charset=utf-8;' });
@@ -980,7 +1012,7 @@ export default function GeneratePage() {
       console.error("CSV Generation error:", error);
       toast({ variant: 'destructive', title: 'Erreur CSV', description: "Impossible de générer le fichier CSV." });
     }
-  }, [generatedProduct, csvFormat, externalImageUrl, toast]);
+  }, [generatedProduct, csvFormat, externalImageUrl, wooCategory, toast]);
 
   const onSubmit = useCallback(async (data: ProductFormValues) => {
     if (!user) return;
@@ -1141,6 +1173,8 @@ export default function GeneratePage() {
               setCsvFormat={setCsvFormat}
               externalImageUrl={externalImageUrl}
               setExternalImageUrl={setExternalImageUrl}
+              wooCategory={wooCategory}
+              setWooCategory={setWooCategory}
               resultColumnRef={resultColumnRef}
               exportCardRef={exportCardRef}
               triggerFileInput={triggerFileInput}

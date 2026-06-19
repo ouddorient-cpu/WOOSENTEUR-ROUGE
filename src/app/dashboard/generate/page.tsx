@@ -901,6 +901,10 @@ export default function GeneratePage() {
         credentials: userProfile.wooCommerce,
       });
 
+      if (!result.success) {
+        throw new Error(result.message);
+      }
+
       setPublishStep('success');
       setPublishedProductUrl(result.productUrl || null);
       toast({

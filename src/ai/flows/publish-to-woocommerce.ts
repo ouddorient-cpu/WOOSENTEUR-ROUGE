@@ -65,7 +65,16 @@ export async function publishToWooCommerce(
   if (input.credentials && typeof input.credentials.storeUrl === 'string') {
     input.credentials.storeUrl = input.credentials.storeUrl.trim().replace(/\/+$/, '');
   }
-  return publishToWooCommerceFlow(input);
+  // Never throw across the Server Action boundary — Next.js strips error messages in production.
+  // Always return { success: false, message } so the client gets the real error.
+  try {
+    return await publishToWooCommerceFlow(input);
+  } catch (error: any) {
+    return {
+      success: false,
+      message: error.message || 'Une erreur inattendue est survenue lors de la publication.',
+    };
+  }
 }
 
 

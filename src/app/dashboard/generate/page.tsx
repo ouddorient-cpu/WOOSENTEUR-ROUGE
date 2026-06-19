@@ -36,7 +36,7 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { useToast } from '@/hooks/use-toast';
-import { Sparkles, Loader2, Upload, Bot, FileText, AlertCircle, Image as ImageIcon, Download, UploadCloud, Rocket, ShieldCheck, Globe, PenLine, CheckCircle2, ExternalLink } from 'lucide-react';
+import { Sparkles, Loader2, Upload, Bot, FileText, AlertCircle, Image as ImageIcon, Download, UploadCloud, Rocket, ShieldCheck, Globe, PenLine, CheckCircle2 } from 'lucide-react';
 import { Textarea } from '@/components/ui/textarea';
 import { Checkbox } from '@/components/ui/checkbox';
 import { cn } from '@/lib/utils';
@@ -623,7 +623,7 @@ const ResultColumn: React.FC<ResultColumnProps> = ({
                 </div>
               )}
 
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+              <div className="grid grid-cols-1 gap-3">
                 <Button size="lg" variant="outline" onClick={handleDownloadCsv} style={{ borderColor: C.border, color: C.text }}>
                   <Download className="mr-2 h-4 w-4" />
                   Télécharger le CSV
@@ -649,25 +649,6 @@ const ResultColumn: React.FC<ResultColumnProps> = ({
                     : publishStep === 'error' ? 'Échec — réessayer'
                     : 'Publier sur ma boutique WooCommerce'}
                 </Button>
-                {(() => {
-                  const targetUrl = publishedProductUrl || (() => {
-                    const base = userProfile?.wooCommerce?.storeUrl?.replace(/\/$/, '');
-                    const slug = generatedProduct?.seo?.slug;
-                    return base && slug ? `${base}/produit/${slug}` : null;
-                  })();
-                  return (
-                    <Button
-                      size="lg"
-                      variant={publishStep === 'success' ? 'default' : 'secondary'}
-                      disabled={!targetUrl}
-                      onClick={() => targetUrl && window.open(targetUrl, '_blank')}
-                      className={publishStep === 'success' ? 'animate-pulse bg-green-600 hover:bg-green-700 hover:animate-none text-white' : ''}
-                    >
-                      <ExternalLink className="mr-2 h-4 w-4" />
-                      {publishStep === 'success' ? 'Voir sur ma boutique ✨' : 'Voir ma boutique'}
-                    </Button>
-                  );
-                })()}
               </div>
 
               {/* Barre de progression publication */}
@@ -1045,7 +1026,7 @@ export default function GeneratePage() {
         language: 'French',
       });
       if (!result.success) {
-        throw new Error(result.error);
+        throw new Error((result as { success: false; error: string }).error);
       }
       const seoData = result.data;
 

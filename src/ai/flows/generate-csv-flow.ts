@@ -11,7 +11,7 @@ import { z } from 'genkit';
 import { processImageUrl, needsUpload } from '@/lib/image-upload';
 
 // CSV Format types
-export type CsvFormat = 'woocommerce-fr' | 'woocommerce-en' | 'shopify';
+export type CsvFormat = 'woocommerce-fr' | 'shopify';
 
 // Define the input schema, accepting a partial product object.
 // We make most fields optional as they might not all be present.
@@ -253,89 +253,6 @@ const generateWooCommerceFrCsv = (product: any): { headers: string[]; row: strin
   return { headers, row };
 };
 
-// WooCommerce English Export Format (matches user's export file structure)
-const generateWooCommerceEnCsv = (product: any): { headers: string[]; row: string[] } => {
-  const headers = [
-    'post_title','post_name','post_parent','ID','post_content','post_excerpt','post_status',
-    'post_password','menu_order','post_date','post_author','comment_status','sku','parent_sku',
-    'children','downloadable','virtual','stock','regular_price','sale_price','weight','length',
-    'width','height','tax_class','visibility','stock_status','backorders','sold_individually',
-    'low_stock_amount','manage_stock','tax_status','upsell_ids','crosssell_ids','purchase_note',
-    'sale_price_dates_from','sale_price_dates_to','download_limit','download_expiry','product_url',
-    'button_text','images','downloadable_files','product_page_url','meta:total_sales',
-    'meta:_global_unique_id','tax:product_brand','tax:product_type','tax:product_visibility',
-    'tax:product_cat','tax:product_tag','tax:product_shipping_class',
-    'attribute:Notes Olfactives','attribute_data:Notes Olfactives',
-    'attribute:Contenance','attribute_data:Contenance'
-  ];
-
-  const cleanedImageUrl = cleanImageUrl(product.imageUrl);
-  const imageWithAlt = cleanedImageUrl
-    ? `${cleanedImageUrl} ! alt : ${product.seo?.imageAltText || product.name || ''} ! title : ${product.name || ''} ! desc :  ! caption : `
-    : '';
-
-  const row = [
-    product.seo?.productTitle ?? product.name ?? '', // post_title
-    product.seo?.slug ?? '', // post_name
-    '', // post_parent
-    product.id ?? '', // ID
-    product.seo?.longDescription ?? '', // post_content
-    product.seo?.shortDescription ?? '', // post_excerpt
-    'publish', // post_status
-    '', // post_password
-    '0', // menu_order
-    new Date().toISOString().replace('T', ' ').substring(0, 19), // post_date
-    '1', // post_author
-    'open', // comment_status
-    product.seo?.slug ?? product.id ?? '', // sku
-    '', // parent_sku
-    '', // children
-    'no', // downloadable
-    'no', // virtual
-    '', // stock
-    product.price ?? '', // regular_price
-    '', // sale_price
-    product.weight ?? '', // weight
-    '', // length
-    '', // width
-    '', // height
-    '', // tax_class
-    '', // visibility
-    'instock', // stock_status
-    'no', // backorders
-    'no', // sold_individually
-    '', // low_stock_amount
-    'no', // manage_stock
-    'taxable', // tax_status
-    '', // upsell_ids
-    '', // crosssell_ids
-    '', // purchase_note
-    '', // sale_price_dates_from
-    '', // sale_price_dates_to
-    '-1', // download_limit
-    '-1', // download_expiry
-    '', // product_url
-    '', // button_text
-    imageWithAlt, // images
-    '', // downloadable_files
-    '', // product_page_url
-    '0', // meta:total_sales
-    '', // meta:_global_unique_id
-    product.brand ?? '', // tax:product_brand
-    'simple', // tax:product_type
-    '', // tax:product_visibility
-    product.seo?.category ?? '', // tax:product_cat
-    '', // tax:product_tag
-    '', // tax:product_shipping_class
-    product.seo?.mainNotes ?? '', // attribute:Notes Olfactives
-    '', // attribute_data:Notes Olfactives
-    product.seo?.contenance ?? '', // attribute:Contenance
-    '', // attribute_data:Contenance
-  ];
-
-  return { headers, row };
-};
-
 // Shopify CSV Format
 const generateShopifyCsv = (product: any): { headers: string[]; row: string[] } => {
   const headers = [
@@ -420,7 +337,7 @@ const generateCsvFlow = ai.defineFlow(
     name: 'generateCsvFlow',
     inputSchema: z.object({
       product: CsvProductInputSchema,
-      format: z.enum(['woocommerce-fr', 'woocommerce-en', 'shopify']).default('woocommerce-fr')
+      format: z.enum(['woocommerce-fr', 'shopify']).default('woocommerce-fr')
     }),
     outputSchema: GenerateCsvOutputSchema,
   },
@@ -449,9 +366,6 @@ const generateCsvFlow = ai.defineFlow(
     }
 
     switch (format) {
-      case 'woocommerce-en':
-        ({ headers, row } = generateWooCommerceEnCsv(product));
-        break;
       case 'shopify':
         ({ headers, row } = generateShopifyCsv(product));
         break;

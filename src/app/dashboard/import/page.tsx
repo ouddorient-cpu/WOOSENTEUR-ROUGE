@@ -724,7 +724,7 @@ export default function ImportPage() {
                 language: 'French',
                 productMode: product.brand?.trim() ? 'marque-connue' : 'mon-produit',
             });
-            if (!seoResult.success) throw new Error(seoResult.error);
+            if (!seoResult.success) throw new Error((seoResult as { success: false; error: string }).error);
             const seoData = seoResult.data;
             const newProductData: any = {
                 name: product.productName,

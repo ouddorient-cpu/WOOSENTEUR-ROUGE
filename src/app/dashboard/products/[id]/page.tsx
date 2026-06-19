@@ -192,7 +192,7 @@ export default function ProductPage() {
             const link = document.createElement('a');
             const url = URL.createObjectURL(blob);
             link.setAttribute('href', url);
-            const formatSuffix = csvFormat === 'shopify' ? '-shopify' : csvFormat === 'woocommerce-en' ? '-woo-en' : '';
+            const formatSuffix = csvFormat === 'shopify' ? '-shopify' : '';
             const fileName = product.seo?.slug ? `${product.seo.slug}${formatSuffix}.csv` : `product${formatSuffix}.csv`;
             link.setAttribute('download', fileName);
             link.style.visibility = 'hidden';
@@ -476,7 +476,6 @@ export default function ProductPage() {
                                         </SelectTrigger>
                                         <SelectContent>
                                             <SelectItem value="woocommerce-fr">WooCommerce Import (FR)</SelectItem>
-                                            <SelectItem value="woocommerce-en">WooCommerce Export (EN)</SelectItem>
                                             <SelectItem value="shopify">Shopify CSV</SelectItem>
                                         </SelectContent>
                                     </Select>

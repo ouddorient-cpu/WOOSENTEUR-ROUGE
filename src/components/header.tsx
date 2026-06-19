@@ -15,7 +15,7 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { getAuth, signOut } from 'firebase/auth';
 import { usePathname, useRouter } from 'next/navigation';
-import { LogOut, LayoutDashboard, Shield, Menu, Sparkles, Megaphone, Database, Zap, ShoppingBag } from 'lucide-react';
+import { LogOut, LayoutDashboard, Shield, Menu, Sparkles, Database, Zap, ShoppingBag } from 'lucide-react';
 import { useDoc } from '@/firebase';
 import type { UserProfile } from '@/lib/types';
 import { useMemo, useState } from 'react';
@@ -170,13 +170,6 @@ const Header = () => {
                                             {t.nav.createShop}
                                         </Link>
                                     </SheetClose>
-                                    <SheetClose asChild>
-                                        <Link href="/publicite-facebook" className="text-lg font-medium text-white/60 flex items-center gap-2 hover:text-white transition-colors">
-                                            <Megaphone className="h-5 w-5" />
-                                            {t.nav.fbAds}
-                                            <span className="text-[9px] font-bold bg-blue-500/15 text-blue-400 px-1.5 py-0.5 rounded-full uppercase tracking-wide">{t.nav.soon}</span>
-                                        </Link>
-                                    </SheetClose>
                                     {navLinks.map(link => (
                                         <SheetClose asChild key={link.href}>
                                             <Link href={link.href} className="text-lg font-medium text-white/60 hover:text-white transition-colors">
@@ -230,14 +223,6 @@ const Header = () => {
                                                 desc: t.nav.seoGeneratorDesc,
                                             },
                                             {
-                                                href: "/publicite-facebook",
-                                                icon: <Megaphone className="h-5 w-5 text-blue-400" />,
-                                                iconBg: "bg-blue-500/10 group-hover:bg-blue-500/20",
-                                                label: t.nav.fbAds,
-                                                desc: t.nav.fbAdsDesc,
-                                                badge: t.nav.soon,
-                                            },
-                                            {
                                                 href: "/dashboard/import",
                                                 icon: <Database className="h-5 w-5 text-indigo-400" />,
                                                 iconBg: "bg-indigo-500/10 group-hover:bg-indigo-500/20",
@@ -265,9 +250,6 @@ const Header = () => {
                                                             <div>
                                                                 <div className="text-sm font-bold text-white leading-none flex items-center gap-1.5">
                                                                     {item.label}
-                                                                    {item.badge && (
-                                                                        <span className="text-[9px] font-bold bg-blue-500/15 text-blue-400 px-1.5 py-0.5 rounded-full uppercase tracking-wide">{item.badge}</span>
-                                                                    )}
                                                                 </div>
                                                                 <p className="line-clamp-2 text-xs leading-snug text-white/45 mt-1">{item.desc}</p>
                                                             </div>

@@ -111,7 +111,6 @@ export const PRICING_PLANS: PricingPlan[] = [
       'Import de produits en masse (CSV)',
       'Publication 1-clic WooCommerce + export Shopify',
       'Support prioritaire par email',
-      'Accès aux outils Marketing IA',
     ],
     isPopular: true,
     cta: 'Choisir Standard',

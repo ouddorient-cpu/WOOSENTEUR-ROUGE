@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { getAuth, signOut } from 'firebase/auth';
-import { Home, Package, Sparkles, FileUp, User as UserIcon, LogOut, CreditCard, PanelLeft, Shield, Users, Megaphone, Flame, Share2 } from 'lucide-react';
+import { Home, Package, Sparkles, FileUp, User as UserIcon, LogOut, CreditCard, PanelLeft, Shield, Users } from 'lucide-react';
 import Logo from './logo';
 import { Button } from './ui/button';
 import { cn } from '@/lib/utils';
@@ -72,12 +72,6 @@ const navItems = [
     { href: "/dashboard/import", icon: <FileUp className="h-5 w-5" />, label: "Import/Export" },
 ];
 
-const marketingNavItems = [
-    { href: "/dashboard/marketing?mode=campaign", icon: <Megaphone className="h-5 w-5" />, label: "Campagne Pub." },
-    { href: "/dashboard/marketing?mode=dupe", icon: <Flame className="h-5 w-5 text-orange-500" />, label: "Dupe Viral" },
-    { href: "/dashboard/marketing?mode=facebook", icon: <Share2 className="h-5 w-5 text-blue-500" />, label: "Posts Facebook" },
-];
-
 const adminNavItems = [
     { href: "/dashboard/admin", icon: <Users className="h-5 w-5" />, label: "Utilisateurs" },
 ]
@@ -114,10 +108,6 @@ export const MobileNav = () => {
                             <span className="font-headline text-xl">Woosenteur v2</span>
                         </Link>
                         {navItems.map(item => <NavLink key={item.href} {...item} isMobile />)}
-
-                        <Separator className="my-2" />
-                        <div className="px-4 text-xs font-semibold text-muted-foreground uppercase tracking-wider">Marketing</div>
-                        {marketingNavItems.map(item => <NavLink key={item.href} {...item} isMobile />)}
 
                         {isSuperAdmin && (
                             <>
@@ -198,11 +188,6 @@ export default function DashboardSidebar() {
             {/* Main nav */}
             <nav className="flex flex-col gap-1 px-3 py-4 flex-1 overflow-y-auto">
                 {navItems.map(item => <NavLink key={item.href} {...item} />)}
-
-                <div className="mt-3 mb-1 px-3">
-                    <p className="text-[10px] font-semibold text-muted-foreground uppercase tracking-wider">Marketing</p>
-                </div>
-                {marketingNavItems.map(item => <NavLink key={item.href} {...item} />)}
 
                 {isSuperAdmin && (
                     <>

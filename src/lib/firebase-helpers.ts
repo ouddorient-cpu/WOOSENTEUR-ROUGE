@@ -3,7 +3,7 @@
 'use client';
 import { getFirestore, collection, addDoc, serverTimestamp, Timestamp, doc, setDoc, getDoc, updateDoc, increment, getDocs, query, orderBy, limit } from 'firebase/firestore';
 import { getStorage, ref, uploadBytesResumable, getDownloadURL, UploadTaskSnapshot } from 'firebase/storage';
-import { Product, SeoData, UserProfile, MarketingCampaign, MarketingBrief, MarketingGeneration, ImportRecord } from './types';
+import { Product, SeoData, UserProfile, ImportRecord } from './types';
 import { errorEmitter } from '@/firebase/error-emitter';
 import { FirestorePermissionError } from '@/firebase/errors';
 import { PlaceHolderImages } from './placeholder-images';
@@ -184,100 +184,6 @@ export async function decrementCredits(userId: string): Promise<void> {
     }
 }
 
-// ============================================
-// Marketing Campaign Helper Functions
-// ============================================
-
-type CampaignInput = Omit<MarketingCampaign, 'id' | 'createdAt' | 'updatedAt'>;
-
-/**
- * Creates a new marketing campaign in Firestore
- */
-export async function saveCampaign(userId: string, campaignData: Omit<CampaignInput, 'status'> & { status?: MarketingCampaign['status'] }): Promise<string> {
-    const db = getFirestore();
-    const campaignsCollectionRef = collection(db, 'users', userId, 'campaigns');
-
-    const newCampaignRef = doc(campaignsCollectionRef);
-    const newCampaignId = newCampaignRef.id;
-
-    const docData = {
-        ...campaignData,
-        id: newCampaignId,
-        status: campaignData.status || 'draft',
-        createdAt: serverTimestamp(),
-        updatedAt: serverTimestamp(),
-    };
-
-    return new Promise((resolve, reject) => {
-        setDoc(newCampaignRef, docData)
-            .then(() => {
-                resolve(newCampaignId);
-            })
-            .catch(error => {
-                const permissionError = new FirestorePermissionError({
-                    path: newCampaignRef.path,
-                    operation: 'create',
-                    requestResourceData: docData,
-                });
-                errorEmitter.emit('permission-error', permissionError);
-                reject(error);
-            });
-    });
-}
-
-/**
- * Get all campaigns for a user
- */
-export async function getCampaigns(userId: string, maxResults: number = 50): Promise<MarketingCampaign[]> {
-    const db = getFirestore();
-    const campaignsRef = collection(db, 'users', userId, 'campaigns');
-    const q = query(campaignsRef, orderBy('createdAt', 'desc'), limit(maxResults));
-
-    const snapshot = await getDocs(q);
-    return snapshot.docs.map(doc => doc.data() as MarketingCampaign);
-}
-
-/**
- * Get a single campaign by ID
- */
-export async function getCampaignById(userId: string, campaignId: string): Promise<MarketingCampaign | null> {
-    const db = getFirestore();
-    const campaignRef = doc(db, 'users', userId, 'campaigns', campaignId);
-    const campaignSnap = await getDoc(campaignRef);
-
-    if (campaignSnap.exists()) {
-        return campaignSnap.data() as MarketingCampaign;
-    }
-    return null;
-}
-
-/**
- * Update a campaign (e.g., add generations, update status)
- */
-export async function updateCampaign(
-    userId: string,
-    campaignId: string,
-    updates: Partial<Omit<MarketingCampaign, 'id' | 'createdAt'>>
-): Promise<void> {
-    const db = getFirestore();
-    const campaignRef = doc(db, 'users', userId, 'campaigns', campaignId);
-
-    try {
-        await updateDoc(campaignRef, {
-            ...updates,
-            updatedAt: serverTimestamp(),
-        });
-    } catch (error) {
-        const permissionError = new FirestorePermissionError({
-            path: campaignRef.path,
-            operation: 'update',
-            requestResourceData: updates,
-        });
-        errorEmitter.emit('permission-error', permissionError);
-        throw error;
-    }
-}
-
 /**
  * Get all products for a user (for the product selector)
  */
@@ -366,37 +272,3 @@ export async function getImportHistory(userId: string): Promise<ImportRecord[]> 
     return snapshot.docs.map(d => d.data() as ImportRecord);
 }
 
-/**
- * Decrement credits by a specific amount (for marketing campaigns that cost 2 credits)
- */
-export async function decrementCreditsBy(userId: string, amount: number): Promise<void> {
-    const db = getFirestore();
-    const userRef = doc(db, 'users', userId);
-
-    const profile = await getUserProfile(userId);
-
-    if(profile?.isUnlimited || profile?.role === 'superadmin') {
-        console.log("✅ Admin user detected, credit decrement skipped.");
-        return;
-    }
-
-    if ((profile?.creditBalance ?? 0) < amount) {
-        throw new Error(`Crédits insuffisants. Vous avez besoin de ${amount} crédits pour cette action.`);
-    }
-
-    try {
-        await updateDoc(userRef, {
-            creditBalance: increment(-amount),
-        });
-    } catch (error) {
-        const permissionError = new FirestorePermissionError({
-            path: userRef.path,
-            operation: 'update',
-            requestResourceData: { creditBalance: `increment(-${amount})` },
-        });
-        errorEmitter.emit('permission-error', permissionError);
-        throw error;
-    }
-}
-
-    

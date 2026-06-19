@@ -52,9 +52,9 @@ Il permet de **générer automatiquement des fiches produits optimisées SEO** �
 
 ✅ FONCTIONNALITÉS PRINCIPALES :
 - Génération automatique de descriptions produits optimisées SEO (Rank Math score 80+)
-- Création de titres, atouts, et fiches marketing complètes avec ton de marque
+- Création de titres, atouts, et descriptions complètes avec ton de marque
 - Génération de slug, meta title, meta description
-- Export CSV compatible WooCommerce (FR et EN) et Shopify
+- Export CSV compatible WooCommerce (FR) et Shopify
 - Publication directe 1-clic sur WooCommerce (via API)
 - Validation d'images produits par IA
 - Tableau de bord personnel pour gérer, modifier, copier ou exporter les contenus

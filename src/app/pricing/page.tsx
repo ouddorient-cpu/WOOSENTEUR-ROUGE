@@ -146,7 +146,6 @@ function PricingPageContent() {
         'Score Rank Math 88%+ garanti',
         'Publication 1-clic WooCommerce + Shopify',
         'Import produits en masse (CSV)',
-        'Accès aux outils Marketing IA',
         'Résiliable en 1 clic',
       ],
     },

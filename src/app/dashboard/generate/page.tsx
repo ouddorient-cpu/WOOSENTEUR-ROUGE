@@ -587,19 +587,12 @@ const ResultColumn: React.FC<ResultColumnProps> = ({
                     <span className="text-xs" style={{ color: C.muted }}>— Format officiel Shopify Products Import</span>
                   </div>
                 ) : (
-                  <Select value={csvFormat} onValueChange={(value) => setCsvFormat(value as CsvFormat)}>
-                    <SelectTrigger style={{ background: C.bgAlt, borderColor: C.border, color: C.text }}>
-                      <SelectValue placeholder="Sélectionner le format..." />
-                    </SelectTrigger>
-                    <SelectContent style={{ background: C.surface, borderColor: C.border, color: C.text }}>
-                      <SelectItem value="woocommerce-fr" className="focus:bg-[var(--ls-bg-alt)]">🇫🇷 WooCommerce FR (recommandé)</SelectItem>
-                      <SelectItem value="woocommerce-en" className="focus:bg-[var(--ls-bg-alt)]">🇬🇧 WooCommerce EN (international)</SelectItem>
-                    </SelectContent>
-                  </Select>
+                  <div className="rounded-md border px-4 py-3 text-sm flex items-center gap-2" style={{ borderColor: C.border, background: C.bgAlt, color: C.text }}>
+                    <span className="font-medium">🇫🇷 WooCommerce FR</span>
+                  </div>
                 )}
                 <p className="text-xs mt-2" style={{ color: C.muted }}>
                   {csvFormat === 'woocommerce-fr' && "👉 WooCommerce Admin → Produits → Importer → glissez ce fichier CSV"}
-                  {csvFormat === 'woocommerce-en' && "👉 WooCommerce Admin → Products → Import → upload this CSV file"}
                   {csvFormat === 'shopify' && "👉 Shopify Admin → Produits → Importer → glissez ce fichier CSV"}
                 </p>
               </div>
@@ -959,7 +952,7 @@ export default function GeneratePage() {
       const link = document.createElement('a');
       const url = URL.createObjectURL(blob);
       link.setAttribute('href', url);
-      const formatSuffix = csvFormat === 'shopify' ? '-shopify' : csvFormat === 'woocommerce-en' ? '-woo-en' : '';
+      const formatSuffix = csvFormat === 'shopify' ? '-shopify' : '';
       const fileName = generatedProduct.seo?.slug ? `${generatedProduct.seo.slug}${formatSuffix}.csv` : `product${formatSuffix}.csv`;
       link.setAttribute('download', fileName);
       link.style.visibility = 'hidden';

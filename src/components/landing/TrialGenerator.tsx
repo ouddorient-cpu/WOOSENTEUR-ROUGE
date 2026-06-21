@@ -273,7 +273,8 @@ export default function TrialGenerator() {
             Essai gratuit — Aucune inscription requise
           </span>
           <h2 className="font-bold mt-2" style={{ fontFamily: 'var(--font-cormorant), Georgia, serif', fontSize: 'clamp(1.6rem,4vw,2.4rem)', color: C.text }}>
-            Décrivez votre produit en quelques mots — on rédige la fiche à votre place.
+            Pas besoin de rédacteur à 500 €.<br />
+            Pas besoin de jongler avec ChatGPT. Une fiche prête à vendre — direct publier sur ton site.
           </h2>
           {isHydrated && (
             <div className="mt-4 inline-flex items-center gap-2">

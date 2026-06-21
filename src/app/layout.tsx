@@ -14,6 +14,7 @@ import { CookieConsent } from '@/components/CookieConsent';
 import { GlobalChatbot } from '@/components/chatbot/global-chatbot';
 import { AuroraBg } from '@/components/ui/aurora-bg';
 import { LangProvider } from '@/lib/i18n/LangContext';
+import { GoogleAnalytics } from '@/components/GoogleAnalytics';
 
 const ptSans = PT_Sans({
   subsets: ['latin'],
@@ -165,6 +166,7 @@ export default function RootLayout({
           plexMono.variable
         )}
       >
+        <GoogleAnalytics />
         <LangProvider>
         <FirebaseClientProvider>
           <ThemeProvider

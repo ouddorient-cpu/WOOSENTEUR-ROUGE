@@ -37,10 +37,10 @@ export default function HeroAnimated() {
               color: 'var(--ls-text)',
             }}
           >
-            Un brouillon de 3 mots.
+            Vos fiches produits en 5 minutes.
             <br />
             <em style={{ fontStyle: 'italic', fontWeight: 700, color: 'var(--ls-accent)' }}>
-              Une fiche prête à vendre.
+              Sans rédacteur, sans stress.
             </em>
           </h1>
 

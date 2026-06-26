@@ -13,3 +13,7 @@ build
 .aidesigner/*
 !.aidesigner/.gitkeep
 backends.json
+
+# Artefacts de build Capacitor/Android (régénérés via npm run cap:*)
+*.apk
+*.aab

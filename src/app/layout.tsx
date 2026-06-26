@@ -10,9 +10,7 @@ import { FirebaseErrorListener } from '@/components/FirebaseErrorListener';
 import { ThemeProvider } from '@/components/theme-provider';
 import { Suspense } from 'react';
 import { NProgress } from '@/components/ui/nprogress';
-import { CookieConsent } from '@/components/CookieConsent';
-import { GlobalChatbot } from '@/components/chatbot/global-chatbot';
-import { AuroraBg } from '@/components/ui/aurora-bg';
+import { ChromeAuroraBg, ChromeFooterWidgets } from '@/components/ChromeGate';
 import { LangProvider } from '@/lib/i18n/LangContext';
 import { GoogleAnalytics } from '@/components/GoogleAnalytics';
 
@@ -175,15 +173,14 @@ export default function RootLayout({
             enableSystem={false}
             disableTransitionOnChange
           >
-            <AuroraBg />
+            <ChromeAuroraBg />
             <FirebaseErrorListener />
             <Suspense fallback={null}>
               <NProgress />
             </Suspense>
             {children}
             <Toaster />
-            <CookieConsent />
-            <GlobalChatbot />
+            <ChromeFooterWidgets />
           </ThemeProvider>
         </FirebaseClientProvider>
         </LangProvider>

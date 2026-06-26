@@ -2,6 +2,7 @@
 'use client';
 
 import { getAuth, signInWithPopup, GoogleAuthProvider, User } from 'firebase/auth';
+import { Capacitor } from '@capacitor/core';
 import { Button } from '@/components/ui/button';
 import { useToast } from '@/hooks/use-toast';
 import { createUser } from '@/lib/firebase/users';
@@ -16,6 +17,13 @@ interface GoogleSignInButtonProps {
 
 const GoogleSignInButton: React.FC<GoogleSignInButtonProps> = ({ onSuccess, onFailure, onLoading, text = 'Continuer avec Google' }) => {
   const { toast } = useToast();
+
+  // Google bloque les popups OAuth dans les WebView natives (Android/iOS) avec une erreur
+  // "disallowed_useragent". Dans l'app Capacitor, on masque ce bouton plutôt que d'afficher
+  // une erreur Google peu compréhensible pour l'utilisateur.
+  if (Capacitor.isNativePlatform()) {
+    return null;
+  }
 
   const handleGoogleSignIn = async () => {
     onLoading(true);

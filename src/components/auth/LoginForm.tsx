@@ -18,6 +18,7 @@ import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { useToast } from '@/hooks/use-toast';
 import { Loader2 } from 'lucide-react';
+import { Capacitor } from '@capacitor/core';
 import GoogleSignInButton from './GoogleSignInButton';
 
 const loginSchema = z.object({
@@ -107,7 +108,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ onSuccess, onFailure, onLoading, 
         </form>
       </Form>
       
-      {!hideGoogle && (
+      {!hideGoogle && !Capacitor.isNativePlatform() && (
         <>
           <div className="relative">
               <div className="absolute inset-0 flex items-center">

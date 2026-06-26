@@ -19,6 +19,7 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { useToast } from '@/hooks/use-toast';
 import { Loader2 } from 'lucide-react';
 import Link from 'next/link';
+import { Capacitor } from '@capacitor/core';
 import GoogleSignInButton from './GoogleSignInButton';
 import { createUser } from '@/lib/firebase/users';
 
@@ -163,16 +164,20 @@ const SignupForm: React.FC<SignupFormProps> = ({ onSuccess, onFailure, onLoading
         </form>
       </Form>
       
-      <div className="relative">
-          <div className="absolute inset-0 flex items-center">
-              <span className="w-full border-t" />
+      {!Capacitor.isNativePlatform() && (
+        <>
+          <div className="relative">
+              <div className="absolute inset-0 flex items-center">
+                  <span className="w-full border-t" />
+              </div>
+              <div className="relative flex justify-center text-xs uppercase">
+                  <span className="bg-background px-2 text-muted-foreground">Ou</span>
+              </div>
           </div>
-          <div className="relative flex justify-center text-xs uppercase">
-              <span className="bg-background px-2 text-muted-foreground">Ou</span>
-          </div>
-      </div>
 
-      <GoogleSignInButton text="S'inscrire avec Google" onSuccess={onSuccess} onFailure={onFailure} onLoading={onLoading} />
+          <GoogleSignInButton text="S'inscrire avec Google" onSuccess={onSuccess} onFailure={onFailure} onLoading={onLoading} />
+        </>
+      )}
     </div>
   );
 };

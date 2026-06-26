@@ -12,7 +12,7 @@ export default {
     extend: {
       fontFamily: {
         body: ['var(--font-pt-sans)', 'Inter', 'sans-serif'],
-        headline: ['var(--font-poppins)', 'Inter', 'sans-serif'],
+        headline: ['var(--font-cormorant)', 'Georgia', 'serif'],
         code: ['monospace'],
         mono: ['monospace'],
       },

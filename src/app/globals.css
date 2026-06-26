@@ -51,27 +51,27 @@ html {
   :root {
     color-scheme: light;
 
-    /* Light mode */
-    --background: 0 0% 98%;
-    --foreground: 222 47% 11%;
+    /* Light mode — alignée sur la palette Atelier (--ls-*) de l'accueil */
+    --background: 33 53% 97%;
+    --foreground: 288 19% 15%;
 
-    --card: 0 0% 100%;
-    --card-foreground: 222 47% 11%;
+    --card: 40 100% 99%;
+    --card-foreground: 288 19% 15%;
 
-    --popover: 0 0% 100%;
-    --popover-foreground: 222 47% 11%;
+    --popover: 40 100% 99%;
+    --popover-foreground: 288 19% 15%;
 
-    --primary: 217 91% 60%;
+    --primary: 12 53% 50%;
     --primary-foreground: 0 0% 100%;
 
-    --secondary: 199 89% 48%;
+    --secondary: 12 53% 50%;
     --secondary-foreground: 0 0% 100%;
 
-    --muted: 210 40% 96%;
-    --muted-foreground: 215 16% 47%;
+    --muted: 32 43% 93%;
+    --muted-foreground: 292 9% 34%;
 
-    --accent: 213 100% 97%;
-    --accent-foreground: 217 91% 60%;
+    --accent: 12 60% 95%;
+    --accent-foreground: 12 53% 50%;
 
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 0 0% 98%;
@@ -79,26 +79,26 @@ html {
     --warning: 38 96% 58%;
     --warning-foreground: 38 96% 20%;
 
-    --border: 214 32% 91%;
-    --input: 214 32% 91%;
-    --ring: 217 91% 60%;
+    --border: 288 15% 88%;
+    --input: 288 15% 88%;
+    --ring: 12 53% 50%;
 
     --radius: 0.75rem;
 
-    --chart-1: 217 91% 60%;
-    --chart-2: 199 89% 48%;
+    --chart-1: 12 53% 50%;
+    --chart-2: 292 9% 34%;
     --chart-3: 263 89% 64%;
     --chart-4: 217 70% 45%;
     --chart-5: 199 70% 38%;
 
-    --sidebar-background: 0 0% 98%;
-    --sidebar-foreground: 222 47% 11%;
-    --sidebar-primary: 217 91% 60%;
+    --sidebar-background: 32 43% 93%;
+    --sidebar-foreground: 288 19% 15%;
+    --sidebar-primary: 12 53% 50%;
     --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 213 100% 97%;
-    --sidebar-accent-foreground: 217 91% 60%;
-    --sidebar-border: 214 32% 91%;
-    --sidebar-ring: 217 91% 60%;
+    --sidebar-accent: 12 60% 95%;
+    --sidebar-accent-foreground: 12 53% 50%;
+    --sidebar-border: 288 15% 88%;
+    --sidebar-ring: 12 53% 50%;
 
     /* Landing section palette — Atelier (ivoire/prune/corail) */
     --ls-bg: #FBF7F2;
@@ -119,35 +119,36 @@ html {
   .dark {
     color-scheme: dark;
 
-    --background: 222 47% 11%;
-    --foreground: 210 40% 92%;
-    --card: 217 33% 17%;
-    --card-foreground: 210 40% 92%;
-    --popover: 217 33% 17%;
-    --popover-foreground: 210 40% 92%;
-    --primary: 217 91% 60%;
+    /* Dark mode — alignée sur la palette Atelier dark (--ls-*) de l'accueil */
+    --background: 288 19% 11%;
+    --foreground: 21 35% 92%;
+    --card: 287 17% 16%;
+    --card-foreground: 21 35% 92%;
+    --popover: 287 17% 16%;
+    --popover-foreground: 21 35% 92%;
+    --primary: 13 68% 63%;
     --primary-foreground: 0 0% 100%;
-    --secondary: 199 89% 48%;
+    --secondary: 13 68% 63%;
     --secondary-foreground: 0 0% 100%;
-    --muted: 217 33% 17%;
-    --muted-foreground: 215 20% 55%;
-    --accent: 217 60% 18%;
-    --accent-foreground: 217 91% 75%;
+    --muted: 286 19% 14%;
+    --muted-foreground: 316 11% 67%;
+    --accent: 13 40% 20%;
+    --accent-foreground: 13 68% 63%;
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 0 0% 98%;
     --warning: 38 96% 58%;
     --warning-foreground: 38 96% 88%;
-    --border: 217 30% 24%;
-    --input: 217 30% 24%;
-    --ring: 217 91% 60%;
-    --sidebar-background: 222 47% 9%;
-    --sidebar-foreground: 210 40% 88%;
-    --sidebar-primary: 217 91% 60%;
+    --border: 288 15% 24%;
+    --input: 288 15% 24%;
+    --ring: 13 68% 63%;
+    --sidebar-background: 288 19% 9%;
+    --sidebar-foreground: 21 35% 88%;
+    --sidebar-primary: 13 68% 63%;
     --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 217 60% 15%;
-    --sidebar-accent-foreground: 217 91% 75%;
-    --sidebar-border: 217 30% 18%;
-    --sidebar-ring: 217 91% 60%;
+    --sidebar-accent: 13 40% 16%;
+    --sidebar-accent-foreground: 13 68% 63%;
+    --sidebar-border: 288 15% 18%;
+    --sidebar-ring: 13 68% 63%;
 
     /* Landing section palette — Atelier dark (prune profond) */
     --ls-bg: #1E1620;

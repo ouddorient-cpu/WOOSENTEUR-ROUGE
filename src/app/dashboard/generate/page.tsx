@@ -36,7 +36,7 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { useToast } from '@/hooks/use-toast';
-import { Sparkles, Loader2, Upload, Bot, FileText, AlertCircle, Image as ImageIcon, Download, UploadCloud, Rocket, ShieldCheck, Globe, PenLine, CheckCircle2 } from 'lucide-react';
+import { Sparkles, Loader2, Upload, FileText, AlertCircle, Image as ImageIcon, Download, UploadCloud, Rocket, Globe, PenLine, CheckCircle2 } from 'lucide-react';
 import { Textarea } from '@/components/ui/textarea';
 import { Checkbox } from '@/components/ui/checkbox';
 import { cn } from '@/lib/utils';
@@ -1103,14 +1103,7 @@ export default function GeneratePage() {
       <div className="flex flex-col gap-6">
         <div className="flex items-center justify-between">
           <div>
-            <Badge variant="outline" className="mb-2 border-[#C2553B]/30 text-[#C2553B] bg-[#C2553B]/5">
-              <Bot className="mr-2 h-3 w-3" /> Studio Créatif v2
-            </Badge>
             <h1 className="font-headline text-3xl font-bold" style={{ color: C.text }}>Création de Produit</h1>
-          </div>
-          <div className="flex items-center gap-2 text-sm px-3 py-1.5 rounded-full" style={{ color: C.muted, background: C.surface, border: `1px solid ${C.border}` }}>
-            <ShieldCheck className="h-4 w-4 text-green-500" />
-            <span>Mode Agent IA Actif</span>
           </div>
         </div>
 

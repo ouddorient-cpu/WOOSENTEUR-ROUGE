@@ -18,8 +18,6 @@ import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { useToast } from '@/hooks/use-toast';
 import { Loader2 } from 'lucide-react';
-import { Capacitor } from '@capacitor/core';
-import GoogleSignInButton from './GoogleSignInButton';
 
 const loginSchema = z.object({
   email: z.string().email({ message: 'Veuillez entrer une adresse e-mail valide.' }),
@@ -32,11 +30,9 @@ interface LoginFormProps {
   onSuccess: (user: User) => void;
   onFailure: (error: any) => void;
   onLoading: (loading: boolean) => void;
-  /** Masque le bouton de connexion Google (popups OAuth peu fiables en WebView Android). */
-  hideGoogle?: boolean;
 }
 
-const LoginForm: React.FC<LoginFormProps> = ({ onSuccess, onFailure, onLoading, hideGoogle = false }) => {
+const LoginForm: React.FC<LoginFormProps> = ({ onSuccess, onFailure, onLoading }) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { toast } = useToast();
 
@@ -57,7 +53,9 @@ const LoginForm: React.FC<LoginFormProps> = ({ onSuccess, onFailure, onLoading, 
       toast({
         variant: 'destructive',
         title: 'Erreur de connexion',
-        description: error.code === 'auth/invalid-credential' ? 'Email ou mot de passe incorrect.' : error.message,
+        description: error.code === 'auth/invalid-credential'
+          ? "Email ou mot de passe incorrect. Si tu t'es inscrit avec Google, clique sur \"Mot de passe oublié ?\" pour définir un mot de passe et te connecter ainsi sur mobile et sur le web."
+          : error.message,
       });
       onFailure(error);
     } finally {
@@ -107,21 +105,6 @@ const LoginForm: React.FC<LoginFormProps> = ({ onSuccess, onFailure, onLoading, 
           </Button>
         </form>
       </Form>
-      
-      {!hideGoogle && !Capacitor.isNativePlatform() && (
-        <>
-          <div className="relative">
-              <div className="absolute inset-0 flex items-center">
-                  <span className="w-full border-t" />
-              </div>
-              <div className="relative flex justify-center text-xs uppercase">
-                  <span className="bg-background px-2 text-muted-foreground">Ou continuer avec</span>
-              </div>
-          </div>
-
-          <GoogleSignInButton onSuccess={onSuccess} onFailure={onFailure} onLoading={onLoading} />
-        </>
-      )}
     </div>
   );
 };

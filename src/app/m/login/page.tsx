@@ -42,7 +42,6 @@ export default function MobileLoginPage() {
             onSuccess={handleLoginSuccess}
             onFailure={handleLoginFailure}
             onLoading={setIsLoading}
-            hideGoogle
           />
           <p className="text-center text-sm text-muted-foreground">
             Pas encore de compte ?{' '}

@@ -26,6 +26,9 @@ env:
   - variable: NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY
     value: pk_live_51SjlzeAIq9NC7F5auCgm8m2QD3aQ3myNockeSayCfDDut8wZeqTxitT7g50gR9zfXLU4BFeESt5qGBAcjCGqCMfB00EnOdP7H7
 
+  - variable: NEXT_PUBLIC_GA_ID
+    value: G-52C49PGVTY
+
   - variable: GOOGLE_GENAI_API_KEY
     secret: GOOGLE_GENAI_API_KEY
 

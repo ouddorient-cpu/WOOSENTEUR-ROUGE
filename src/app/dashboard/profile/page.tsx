@@ -218,9 +218,16 @@ export default function ProfilePage() {
                           <div>
                               <p className="text-sm font-medium">Crédits restants</p>
                           </div>
-                          <div className="flex items-center gap-2 font-bold text-lg">
-                              <CreditCard className="h-5 w-5 text-[#C2553B]" />
-                              <span>{isSuperAdmin ? '∞' : userProfile?.creditBalance ?? 0}</span>
+                          <div className="flex items-center gap-3">
+                              <div className="flex items-center gap-2 font-bold text-lg">
+                                  <CreditCard className="h-5 w-5 text-[#C2553B]" />
+                                  <span>{isSuperAdmin ? '∞' : userProfile?.creditBalance ?? 0}</span>
+                              </div>
+                              {!isSuperAdmin && (
+                                  <Button asChild size="sm" className="bg-green-600 hover:bg-green-700 text-white">
+                                      <Link href="/pricing">Changer de plan</Link>
+                                  </Button>
+                              )}
                           </div>
                       </div>
                        <div className="flex items-center justify-between rounded-lg border p-3">

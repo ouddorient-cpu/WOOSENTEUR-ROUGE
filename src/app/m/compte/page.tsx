@@ -46,7 +46,14 @@ export default function MobileComptePage() {
             </div>
             <div className="flex items-center justify-between">
               <p className="text-xs text-muted-foreground">Crédits</p>
-              <CreditsBadge profile={profile} loading={profileLoading} />
+              <div className="flex items-center gap-2">
+                <CreditsBadge profile={profile} loading={profileLoading} />
+                {!isSuperAdmin && (
+                  <Button asChild size="sm" className="bg-green-600 hover:bg-green-700 text-white">
+                    <Link href="/pricing">Changer de plan</Link>
+                  </Button>
+                )}
+              </div>
             </div>
           </CardContent>
         </Card>

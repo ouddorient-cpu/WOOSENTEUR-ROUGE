@@ -3,16 +3,12 @@
 import Link from 'next/link';
 import Logo from '@/components/logo';
 import { useUser } from '@/firebase/auth/use-user';
-import { useState, useEffect } from 'react';
-import { Menu, X, Sun, Moon } from 'lucide-react';
-import { useTheme } from 'next-themes';
+import { useState } from 'react';
+import { Menu, X } from 'lucide-react';
 
 export default function HeaderLanding() {
   const { user } = useUser();
   const [open, setOpen] = useState(false);
-  const { theme, setTheme } = useTheme();
-  const [mounted, setMounted] = useState(false);
-  useEffect(() => setMounted(true), []);
 
   const scrollToTrial = () => {
     setOpen(false);
@@ -76,21 +72,6 @@ export default function HeaderLanding() {
                 Essayer gratuitement
               </button>
             </>
-          )}
-
-          {/* Theme toggle */}
-          {mounted && (
-            <button
-              onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
-              className="p-2 rounded-lg transition-colors hover:bg-black/5"
-              aria-label="Changer le thème"
-              title={theme === 'dark' ? 'Passer en mode clair' : 'Passer en mode sombre'}
-            >
-              {theme === 'dark'
-                ? <Sun className="h-4 w-4" style={{ color: 'var(--ls-muted)' }} />
-                : <Moon className="h-4 w-4" style={{ color: 'var(--ls-muted)' }} />
-              }
-            </button>
           )}
 
           {/* Mobile burger */}

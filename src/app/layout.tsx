@@ -185,6 +185,14 @@ export default function RootLayout({
         </FirebaseClientProvider>
         </LangProvider>
 
+        {/* Google AdSense */}
+        <Script
+          async
+          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8287820739614627"
+          crossOrigin="anonymous"
+          strategy="afterInteractive"
+        />
+
         {/* Meta Pixel */}
         {process.env.NEXT_PUBLIC_META_PIXEL_ID && (
           <Script id="meta-pixel" strategy="afterInteractive">{`

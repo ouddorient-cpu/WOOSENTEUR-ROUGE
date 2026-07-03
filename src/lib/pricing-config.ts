@@ -10,7 +10,8 @@ export interface PricingPlan {
   features: string[];
   isPopular: boolean;
   cta: string;
-  paymentLink?: { monthly: string; annually: string };
+  paymentLink?: { monthly?: string; annually?: string };
+  priceId?: { monthly?: string; annually?: string };
 }
 
 export interface CreditPack {
@@ -134,9 +135,9 @@ export const PRICING_PLANS: PricingPlan[] = [
     ],
     isPopular: false,
     cta: 'Choisir Premium',
-    paymentLink: {
-      monthly: 'https://buy.stripe.com/8x2bJ096x6963ejdMT2VG03',
-      annually: 'https://buy.stripe.com/00w00ifuV1SQ3ej1072VG04',
+    priceId: {
+      monthly: 'price_1TiAUAAIq9NC7F5a3yNLs6CW',
+      annually: 'price_1TiAVmAIq9NC7F5a4q8mlGgk',
     },
   },
 ];

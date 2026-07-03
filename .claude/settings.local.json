@@ -21,7 +21,12 @@
       "Bash(git -C \"d:/Woosenteur/woosenteur-main/WOOSENTEUR-ROUGE\" commit -m \"fix: upgrade firebase to v12 and firebase-admin to v13 \\(genkit compat\\)\")",
       "Bash(git -C \"d:/Woosenteur/woosenteur-main/WOOSENTEUR-ROUGE\" add src/ai/genkit.ts)",
       "Bash(git -C \"d:/Woosenteur/woosenteur-main/WOOSENTEUR-ROUGE\" commit -m \"fix: use gemini-2.0-flash instead of 2.5-flash for stability\")",
-      "Bash(git -C \"d:/Woosenteur/woosenteur-main/WOOSENTEUR-ROUGE\" pull --rebase origin main)"
+      "Bash(git -C \"d:/Woosenteur/woosenteur-main/WOOSENTEUR-ROUGE\" pull --rebase origin main)",
+      "Bash(git add *)",
+      "Bash(git push *)",
+      "Bash(git commit -m ' *)",
+      "Skill(run)",
+      "Skill(run:*)"
     ]
   }
 }

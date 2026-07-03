@@ -87,24 +87,42 @@ function PricingPageContent() {
     }
   };
 
-  const handlePaidPlan = (plan: typeof PRICING_PLANS[0]) => {
+  const handlePaidPlan = async (plan: typeof PRICING_PLANS[0]) => {
     if (!user) { router.push('/signup?redirect=/pricing'); return; }
-    if (!('paymentLink' in plan) || !plan.paymentLink) {
-      toast({ variant: 'destructive', title: 'Erreur', description: 'Plan de paiement non configuré.' });
+    setLoadingPriceId(plan.id);
+
+    // Priorité : Stripe Checkout Session via priceId
+    if (plan.priceId?.[billingCycle]) {
+      try {
+        const idToken = await user.getIdToken(true);
+        const res = await fetch('/api/checkout/subscription', {
+          method: 'POST',
+          headers: { Authorization: `Bearer ${idToken}`, 'Content-Type': 'application/json' },
+          body: JSON.stringify({ planId: plan.id, billingCycle }),
+        });
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.error);
+        window.location.assign(data.url);
+      } catch (err: any) {
+        setLoadingPriceId(null);
+        toast({ variant: 'destructive', title: 'Erreur', description: err.message || 'Impossible de lancer le paiement.' });
+      }
       return;
     }
-    const link = plan.paymentLink[billingCycle];
+
+    // Fallback : payment link statique
+    const link = plan.paymentLink?.[billingCycle];
     if (!link) {
+      setLoadingPriceId(null);
       toast({ variant: 'destructive', title: 'Erreur', description: 'Lien de paiement indisponible pour ce cycle.' });
       return;
     }
-    setLoadingPriceId(plan.id);
     try {
       const url = new URL(link);
       url.searchParams.set('prefilled_email', user.email || '');
       url.searchParams.set('client_reference_id', user.uid);
       window.location.assign(url.toString());
-    } catch (err: any) {
+    } catch {
       setLoadingPriceId(null);
       toast({ variant: 'destructive', title: 'Erreur de redirection', description: 'Impossible de vous rediriger. Veuillez réessayer.' });
     }

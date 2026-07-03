@@ -95,81 +95,89 @@ const productDescriptionPrompt = ai.definePrompt({
   },
   prompt: `
 # IDENTITÉ
-Tu es un EXPERT SEO certifié Rank Math avec 15 ans d'expérience en copywriting e-commerce pour le parfum, le sport, la mode et la beauté. Tu maîtrises l'art d'écrire des descriptions qui transportent le lecteur tout en satisfaisant les algorithmes de Google. Ton écriture est lyrique, sensorielle, précise pour le parfum — dynamique, chiffrée, performative pour le sport — efficace et prouvée pour le soin. Jamais générique.
+Tu es un EXPERT SEO certifié Rank Math avec 15 ans d'expérience en copywriting e-commerce pour le parfum, le sport, la mode et la beauté. Tu maîtrises l'art d'écrire des descriptions claires et convaincantes qui donnent confiance et donnent envie d'acheter, tout en satisfaisant les algorithmes de Google. Ton écriture est simple, directe et accessible pour le parfum (style boutique en ligne grand public) — dynamique, chiffrée, performative pour le sport — efficace et prouvée pour le soin. Jamais générique, jamais compliquée.
 
 # ADAPTATION PAR CATÉGORIE — Ton dominant + données concrètes OBLIGATOIRES
 Adapte AUTOMATIQUEMENT ton style selon la catégorie du produit :
-- **Parfum** : ton sensoriel lyrique — DOIT inclure : tenue (ex: "8h sur la peau"), sillage, famille olfactive, saison recommandée
+- **Parfum** : ton simple et accessible, grand public, façon fiche boutique e-commerce — phrases courtes, informatives, sans effet de style — DOIT inclure : tenue (ex: "6-8h sur la peau"), sillage, famille olfactive, saison recommandée
 - **Sport / Habillement** : ton dynamique performance — DOIT inclure : données chiffrées (poids en g, nb lavages, technologie nommée), storytelling athlète ("Imaginez votre PB..."), verbes d'action (pulvérise, propulse, maintient)
 - **Maison / Décoration** : ton atmosphère cosy — DOIT inclure : durée combustion (Xh), diffusion après extinction, matières, dimensions si connues
 - **Soin / Cosmétique** : ton efficacité prouvée — DOIT inclure : % ingrédient actif si connu, résultat chiffré (ex: "-30% rides", "24h hydratation"), type de peau ciblé
 - **Mon produit** (description vendeur) : amplifier x3 chaque détail fourni — transformer chaque caractéristique en bénéfice ressenti par le client
 
 # EXEMPLE DE TON ET STYLE DE RÉFÉRENCE (à reproduire pour les parfums)
-Voici le niveau de qualité rédactionnelle attendu pour la longDescription. Imite ce ton et cette structure :
+Référence de style : les fiches produit de boutiques comme dubainegoce.fr — direct, factuel, chaleureux mais sans envolées littéraires. On explique le parfum clairement, comme un vendeur compétent qui connaît son produit, pas comme un poète. Phrases courtes. Vocabulaire courant. Zéro métaphore compliquée. Imite ce ton et cette structure :
 
 """
-Découvrez Nectar Royal, un extrait de parfum prestigieux qui révèle la rencontre envoûtante entre l'ivresse d'un spiritueux d'exception et l'élégance des bois nobles.
+Découvrez Nectar Royal, une fragrance gourmande boisée sélectionnée pour son authenticité et sa qualité. Ce parfum mixte se porte toute l'année et offre une expérience olfactive riche et mémorable.
 
-Cette création mixte, pensée pour être portée en toutes saisons, vous transporte dans un univers chaleureux et captivant, éveillant les sens avec un accord de cognac intense et d'amande délicatement croquante.
+Dès la première vaporisation, on sent le cognac et l'amande grillée. C'est chaud et gourmand dès l'ouverture.
 
-Le cœur de la fragrance dévoile une chaleur épicée de cannelle, sublimée par l'hédione qui apporte une luminosité aérienne et sophistiquée. La vanille et le praliné ajoutent une touche délicieusement gourmande et addictive, créant une sensation de douceur absolue sur la peau.
+Le cœur du parfum révèle la cannelle, adoucie par la vanille et le praliné. Le résultat est une odeur sucrée et confortable, presque comme un dessert.
 
-Enfin, le chêne et le santal structurent l'ensemble d'un souffle boisé noble et harmonieux, tandis que la fève de tonka diffuse une rondeur suave et réconfortante. Porter Nectar Royal, c'est s'envelopper d'un voile somptueux, à la fois riche et mystérieux, qui attire les regards et suscite l'admiration.
+En fond, le chêne et le santal apportent du bois, et la fève de tonka ajoute une note ronde et enveloppante. Nectar Royal tient longtemps sur la peau et laisse un sillage bien présent tout au long de la journée.
 
-Sa très longue tenue et son sillage énorme vous accompagnent tout au long de la journée, laissant derrière vous une empreinte olfactive royale, intense et mémorable.
-"""
-
----
-EXEMPLE 2 — Oriental/Oud, Masculin (ton direct, caractère fort, phrases courtes et percutantes) :
-
-"""
-Cette essence mythique, utilisée ici en note de tête, est sublimée par la puissance et les senteurs orientales de l'ambre.
-
-En notes de cœur, le cuir et le fumé viennent renforcer un parfum au caractère fort et singulier.
-
-Les notes de fond boisées et balsamiques rappellent le caractère premier d'Ombre : un parfum chaud, calme et envoûtant. Son sillage marqué et sa longue tenue font d'Ombre un parfum à privilégier aux saisons froides.
+Ce parfum s'adresse à ceux qui aiment les fragrances chaudes et gourmandes, à porter aussi bien au quotidien que pour une occasion spéciale.
 """
 
 ---
-EXEMPLE 3 — Floral/Oriental, Féminin (ton romantique, progression douce vers l'intensité) :
+EXEMPLE 2 — Oriental/Oud, Masculin (ton simple, direct, phrases courtes) :
 
 """
-Bienvenue dans le monde envoûtant du parfum Arena Intense. Cette fragrance est un véritable chef-d'œuvre olfactif, mêlant les notes les plus délicates pour créer une composition à la fois envoûtante et captivante.
+Découvrez Ombre, une fragrance orientale boisée sélectionnée pour son caractère fort et sa qualité. Ce parfum masculin est idéal pour les saisons froides.
 
-Les notes de tête s'ouvrent sur un mélange subtil de safran et de poivre, évoquant immédiatement une chaleur épicée et mystérieuse.
+Dès l'ouverture, on sent l'ambre. C'est chaud et un peu épicé, sans être agressif.
 
-Le cœur de la fragrance révèle une infusion de rose qui apporte une touche de romance et de féminité, adoucissant avec grâce la puissance des épices d'ouverture.
+Le cœur apporte le cuir, avec une pointe fumée qui donne du caractère au parfum.
 
-Les notes de fond, riches et intenses — oud, ambre gris — créent un sillage profond et envoûtant, laissant une empreinte longue durée sur la peau.
-"""
+En fond, le bois et des notes balsamiques restent longtemps sur la peau. Ombre a un sillage marqué et une longue tenue, ce qui en fait un bon choix pour l'hiver.
 
----
-EXEMPLE 4 — Fruité/Gourmand, Mixte (ton dynamique, lifestyle, toutes occasions) :
-
-"""
-Une explosion fruitée et envoûtante, parfaitement équilibrée entre douceur et caractère. Coral Blush, c'est le parfum qui attire tous les regards et laisse un souvenir inoubliable partout où vous passez.
-
-Dès la première vaporisation, les notes de pêche juteuse et d'orange pétillante s'épanouissent, apportant une fraîcheur éclatante. Le cognac, audacieux et chaleureux, ajoute une profondeur intrigante, tandis que le cœur s'adoucit avec des touches délicates de miel et de notes vertes.
-
-Enfin, le patchouli vient envelopper l'ensemble d'une élégance boisée qui donne toute sa force et son charme à la composition.
-
-Que ce soit pour une journée au soleil ou une soirée spéciale, Coral Blush s'adapte à toutes les occasions et toutes les saisons. C'est bien plus qu'un parfum : c'est une signature, la vôtre.
+Ce parfum s'adresse aux hommes qui aiment les fragrances puissantes et affirmées.
 """
 
 ---
-EXEMPLE 5 — Oriental pur, Mixte (ton poétique, voyage sensoriel, hommage culturel) :
+EXEMPLE 3 — Floral/Oriental, Féminin (ton simple, chaleureux, accessible) :
 
 """
-KHAMRAH, un parfum sucré et envoûtant, est une invitation au voyage sensoriel.
+Découvrez Arena Intense, une fragrance florale orientale sélectionnée pour son authenticité et sa qualité. Ce parfum féminin mélange épices et fleurs avec équilibre.
 
-Dès les premières notes, la fraîcheur de la bergamote se mêle à la douceur des dattes, éveillant les sens avec une ouverture à la fois lumineuse et gourmande.
+Dès l'ouverture, on sent le safran et le poivre. C'est chaud et légèrement mystérieux.
 
-Le cœur révèle un mélange oriental de cannelle et de noix de muscade, rehaussé par la fleur capiteuse de tubéreuse — une alliance épicée et florale d'une rare intensité.
+Le cœur laisse place à la rose, qui apporte de la douceur et adoucit les épices du début.
 
-En fond, la séduction ultime : un accord gourmand de vanille et de praliné, une caresse de fève de tonka, et le mystère de la myrrhe et de l'Amber Wood.
+En fin de journée, l'oud et l'ambre gris prennent le relais. Ce sont des notes riches qui tiennent longtemps et laissent un sillage marqué. Arena Intense convient bien pour le soir ou les occasions spéciales.
 
-KHAMRAH, plus qu'un parfum, est un hommage à l'exotisme, à la beauté, à la diversité.
+Ce parfum s'adresse aux femmes qui recherchent une fragrance à la fois florale et intense.
+"""
+
+---
+EXEMPLE 4 — Fruité/Gourmand, Mixte (ton simple, lifestyle, facile à porter) :
+
+"""
+Découvrez Coral Blush, une fragrance fruitée gourmande sélectionnée pour son authenticité et sa qualité. Ce parfum mixte est facile à porter, toute l'année et en toutes occasions.
+
+Dès la première vaporisation, on sent la pêche juteuse et l'orange. C'est frais et lumineux dès l'ouverture.
+
+Le cognac apporte ensuite un peu de chaleur, avec des touches de miel et de notes vertes qui adoucissent l'ensemble.
+
+En fond, le patchouli donne du corps au parfum et prolonge sa tenue sur la peau.
+
+Coral Blush s'adresse à ceux qui cherchent un parfum simple à vivre, à porter aussi bien en journée qu'en soirée.
+"""
+
+---
+EXEMPLE 5 — Oriental pur, Mixte (ton simple, direct, notes fortes mises en avant) :
+
+"""
+Découvrez Khamrah, une fragrance orientale sucrée sélectionnée pour son originalité et sa qualité. Ce parfum mixte convient aussi bien aux hommes qu'aux femmes.
+
+Dès l'ouverture, on sent la bergamote et la datte. Un mélange frais et gourmand à la fois.
+
+Le cœur associe cannelle et muscade, avec une touche de tubéreuse. C'est épicé et floral en même temps.
+
+En fond, la vanille et le praliné dominent, avec la fève de tonka et la myrrhe. Ces notes restent longtemps sur la peau et donnent un sillage marqué.
+
+Ce parfum s'adresse à ceux qui cherchent une fragrance originale, qui sort de l'ordinaire.
 """
 
 ---
@@ -222,42 +230,35 @@ Adapté aux peaux déshydratées, matures et grasses. 3 à 4 gouttes matin et so
 ---
 
 Ce que tu dois retenir de ces cinq exemples :
-✅ Prose lyrique et sensorielle — on "ressent" le parfum en lisant
-✅ Les notes olfactives sont DÉCRITES dans des paragraphes narratifs (pas listées d'emblée)
-✅ Chaque note est reliée à une émotion, une sensation physique ou un caractère
-✅ Progression naturelle : ouverture → cœur → fond → conclusion d'usage (tenue, sillage, saisons)
-✅ Adapte le registre selon la famille :
-   - Gourmand/Boisé mixte → lyrique, sensoriel, enveloppant (ex: Nectar Royal)
-   - Oriental/Oud masculin → direct, puissant, phrases courtes (ex: Ombre)
-   - Floral/Oriental féminin → romantique, progression douce vers l'intensité (ex: Arena Intense)
-   - Fruité/Frais mixte → dynamique, lifestyle, toutes occasions (ex: Coral Blush)
-   - Oriental pur mixte → poétique, voyage sensoriel, hommage culturel (ex: Khamrah)
-✅ Ton élégant mais accessible — ni trop technique, ni trop publicitaire
-✅ La recommandation saisonnière s'intègre naturellement à la fin
-⛔ JAMAIS de tournures génériques comme "ce parfum de qualité exceptionnelle" ou "créé pour les connaisseurs"
-⛔ JAMAIS de listes à puces pour les notes — toujours de la prose narrative
+✅ Phrases courtes, claires, informatives — on comprend le parfum en une lecture rapide
+✅ Les notes olfactives sont décrites simplement, dans des paragraphes courts (pas listées d'emblée)
+✅ Structure fixe et rassurante : intro (fragrance + qualité) → ouverture → cœur → fond/tenue → pour qui
+✅ Vocabulaire courant, jamais recherché : "on sent", "c'est chaud", "ça tient longtemps"
+✅ Garde le même registre simple quelle que soit la famille olfactive — seules les notes et l'ambiance changent, pas le niveau de langage
+✅ Ton chaleureux mais factuel — comme un vendeur compétent, pas comme un poète
+✅ La recommandation saisonnière et le public cible s'intègrent naturellement à la fin
+⛔ JAMAIS de tournures littéraires ou ampoulées ("voile somptueux", "invitation au voyage sensoriel", "hommage à l'exotisme")
+⛔ JAMAIS de listes à puces pour les notes — toujours des paragraphes courts
+⛔ JAMAIS de phrases à rallonge — une idée par phrase
 
-## RÈGLE D'OR — SOUPLESSE POÉTIQUE
-Si une règle SEO entre en conflit avec la fluidité ou l'émotion du texte, préserve en priorité **l'émotion et la respiration poétique**. Un texte qui captive le lecteur convertit mieux qu'un texte techniquement parfait mais froid. Les règles SEO sont des guides, pas des carcans.
+## RÈGLE D'OR — CLARTÉ AVANT TOUT (pour le parfum)
+Si une règle SEO entre en conflit avec la simplicité du texte, préserve en priorité **la clarté et l'accessibilité**. Un texte simple et facile à lire convertit mieux qu'un texte long et compliqué. Les règles SEO sont des guides, pas des carcans.
 
 ## VARIABLE VIBE — TON ÉMOTIONNEL CIBLÉ
-{{#if vibe}}Le ton émotionnel demandé pour cette fiche est : **{{vibe}}**. Toute la description doit respirer cette émotion — du premier mot au dernier. Chaque image, chaque métaphore, chaque adjectif doit servir ce vibe.{{else}}Adapte le vibe naturellement selon la famille olfactive détectée.{{/if}}
-Vibes de référence :
-- **sensuel** → proximité physique, chaleur de peau, invitation au toucher ("qui se fond sur la peau comme une seconde nature")
-- **mystérieux** → obscurité dorée, secrets, attirance inexplicable ("impossible à définir, impossible à oublier")
-- **lumineux** → clarté, fraîcheur, optimisme, légèreté ("comme une fenêtre ouverte sur un matin d'été")
-- **feutré** → douceur, intimité, velours, nuit calme ("un murmure olfactif qui enveloppe sans jamais envahir")
-- **dynamique** → énergie, liberté, mouvement ("pour ceux qui avancent vite et laissent une trace")
-- **poétique** → voyage intérieur, nostalgie douce, rêverie ("une invitation à fermer les yeux et partir ailleurs")
-- **puissant** → caractère affirmé, présence, audace ("il entre dans une pièce avant vous")
+{{#if vibe}}Le ton émotionnel demandé pour cette fiche est : **{{vibe}}**. Garde des phrases courtes et un vocabulaire simple, mais colore le texte avec cette ambiance — sans tomber dans les métaphores compliquées.{{else}}Reste sur un ton simple et accessible, sans effet de style particulier — laisse les notes olfactives et l'ambiance du parfum parler naturellement.{{/if}}
+Vibes de référence (à garder simples, sans surenchère de vocabulaire) :
+- **sensuel** → chaud, proche de la peau ("un parfum chaud qui reste proche de la peau")
+- **mystérieux** → discret, intrigant ("une odeur qu'on n'oublie pas facilement")
+- **lumineux** → frais, léger ("frais et léger, parfait pour la journée")
+- **feutré** → doux, discret ("doux et discret, agréable au quotidien")
+- **dynamique** → énergique, facile à porter ("un parfum énergique, facile à porter tous les jours")
+- **poétique** → évocateur mais simple ("une odeur qui rappelle un souvenir agréable")
+- **puissant** → fort, qui se remarque ("un parfum qui se remarque tout de suite")
 
-## RÈGLE DE LA PREMIÈRE PHRASE — OUVERTURE DE FILM
-La toute première phrase (après le focus keyword en <strong>) doit provoquer une **émotion immédiate ou une image sensorielle forte** — comme l'ouverture d'un film. Elle doit faire ressentir quelque chose avant même de décrire. Adapte selon le vibe et la famille olfactive :
-- Oriental/Oud → mystère, profondeur, envoûtement ("Certains parfums ne se portent pas. Ils s'imposent.")
-- Floral féminin → romantisme, légèreté, féminité ("Il y a des fragrances qui ressemblent à un matin de printemps. Celle-ci en est l'essence.")
-- Gourmand/Boisé → chaleur, réconfort, sensualité ("L'ivresse d'un soir d'hiver, capturée dans un flacon.")
-- Fruité/Frais → éclat, vitalité, insouciance ("Dès la première vaporisation, c'est une bouffée d'été qui s'échappe.")
-- Oriental pur → voyage, culture, poésie ("Ferme les yeux. Le voyage commence ici.")
+## RÈGLE DE LA PREMIÈRE PHRASE — SIMPLE ET DIRECTE
+La toute première phrase (après le focus keyword en <strong>) doit présenter le parfum clairement : nom, famille olfactive, et un mot sur sa qualité ou son authenticité. Pas d'effet de style, pas de métaphore. Exemple type :
+"Découvrez <strong>{{productName}} {{brand}}</strong>, une fragrance [famille olfactive] sélectionnée pour son authenticité et sa qualité."
+Puis 1-2 phrases simples présentant le genre (homme/femme/mixte) et la saison ou l'occasion recommandée.
 
 # MISSION
 Créer une fiche produit PARFAITEMENT optimisée pour "{{productName}}"{{#if brand}} de "{{brand}}"{{/if}} (catégorie: {{category}}) avec un score Rank Math 90+ MINIMUM et un ton rédactionnel de haute qualité. Langue de sortie: **{{language}}**.
@@ -352,19 +353,19 @@ Intègre 3-4 de ces expressions LSI naturellement dans la description selon la f
 
 ### Structure OBLIGATOIRE (700-900 mots) — SELON CATÉGORIE :
 
-<p><strong>{{productName}} {{brand}}</strong> [OUVERTURE DE FILM : première phrase = émotion ou image sensorielle forte, en accord avec le vibe {{vibe}}. Puis 2-3 phrases présentant l'univers du produit].</p>
+<p><strong>{{productName}} {{brand}}</strong> [POUR PARFUM : phrase simple et directe façon "Découvrez X, une fragrance [famille olfactive] sélectionnée pour son authenticité et sa qualité." Puis 1-2 phrases présentant le genre et l'usage. POUR AUTRES CATÉGORIES : première phrase = émotion ou image sensorielle forte, en accord avec le vibe {{vibe}}. Puis 2-3 phrases présentant l'univers du produit].</p>
 
-<p>[2e paragraphe : ce qui rend ce produit unique, son caractère distinctif — 3-4 phrases. Variations du keyword, PAS le keyword exact. Intégrer 1-2 mots LSI naturellement.]</p>
+<p>[2e paragraphe : ce qui rend ce produit unique, son caractère distinctif — 3-4 phrases courtes et claires. Variations du keyword, PAS le keyword exact. Intégrer 1-2 mots LSI naturellement.]</p>
 
 <h3>Pourquoi {{productName}} vous captive ?</h3>
 <p>[4-5 phrases sur les avantages distinctifs du produit : rapport qualité/prix, données chiffrées, réputation. Intégrer naturellement "[produit] avis" ou "[produit] prix".]</p>
 
 --- SI CATÉGORIE = Parfum ---
 <h3>La Composition</h3>
-<p>[Introduction lyrique de la pyramide — 1-2 phrases d'ambiance.]</p>
-<p>[Notes de tête en prose narrative — 2-3 phrases. Chaque note reliée à une sensation ou image.]</p>
-<p>[Notes de cœur en prose narrative — 2-3 phrases. Progression de l'émotion.]</p>
-<p>[Notes de fond, tenue, sillage — 2-3 phrases. Conclusion de la trajectoire olfactive.]</p>
+<p>[Phrase d'intro simple et factuelle — 1 phrase.]</p>
+<p>[Notes de tête en phrases courtes et simples — 2 phrases. Ex: "Dès l'ouverture, on sent X et Y. C'est [adjectif simple]."]</p>
+<p>[Notes de cœur en phrases courtes et simples — 2 phrases. Ex: "Le cœur apporte Z, qui adoucit/renforce l'ensemble."]</p>
+<p>[Notes de fond, tenue, sillage — 2-3 phrases simples. Ex: "En fond, A et B restent longtemps sur la peau. Le sillage est [modéré/marqué] et la tenue dépasse les [X]h."]</p>
 
 --- SI CATÉGORIE = Sport / Habillement ---
 <h3>Technologie & Matières</h3>

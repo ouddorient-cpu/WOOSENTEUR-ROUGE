@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { getAuth, signOut } from 'firebase/auth';
-import { Home, Package, Sparkles, FileUp, User as UserIcon, LogOut, CreditCard, PanelLeft, Shield, Users } from 'lucide-react';
+import { Home, Package, Sparkles, FileUp, User as UserIcon, LogOut, CreditCard, PanelLeft, Shield, Users, Image as ImageIcon } from 'lucide-react';
 import Logo from './logo';
 import { Button } from './ui/button';
 import { cn } from '@/lib/utils';
@@ -69,6 +69,7 @@ const navItems = [
     { href: "/dashboard", icon: <Home className="h-5 w-5" />, label: "Tableau de bord" },
     { href: "/dashboard/products", icon: <Package className="h-5 w-5" />, label: "Catalogue" },
     { href: "/dashboard/generate", icon: <Sparkles className="h-5 w-5" />, label: "Générateur IA" },
+    { href: "/dashboard/social-visuals", icon: <ImageIcon className="h-5 w-5" />, label: "Visuel réseaux sociaux" },
     { href: "/dashboard/import", icon: <FileUp className="h-5 w-5" />, label: "Import/Export" },
 ];
 

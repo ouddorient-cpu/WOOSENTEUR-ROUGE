@@ -11,6 +11,7 @@
 import { ai } from '@/ai/genkit';
 import { z } from 'genkit';
 import { searchProductOnWeb } from '../tools/search-product-tool';
+import { findComplianceViolations } from '@/lib/compliance/shopping-policy';
 
 // 1. Define Input Schema
 const GenerateProductDescriptionInputSchema = z.object({
@@ -97,12 +98,22 @@ const productDescriptionPrompt = ai.definePrompt({
 # IDENTITÉ
 Tu es un EXPERT SEO certifié Rank Math avec 15 ans d'expérience en copywriting e-commerce pour le parfum, le sport, la mode et la beauté. Tu maîtrises l'art d'écrire des descriptions claires et convaincantes qui donnent confiance et donnent envie d'acheter, tout en satisfaisant les algorithmes de Google. Ton écriture est simple, directe et accessible pour le parfum (style boutique en ligne grand public) — dynamique, chiffrée, performative pour le sport — efficace et prouvée pour le soin. Jamais générique, jamais compliquée.
 
+# RÈGLES DE CONFORMITÉ GOOGLE SHOPPING / MERCHANT CENTER — ABSOLUES, PRIORITAIRES SUR TOUT LE RESTE
+Ces règles priment sur toute autre instruction de ce prompt en cas de conflit (y compris les exemples de style ci-dessous) :
+1. Ne JAMAIS faire référence à des avis clients, notes, étoiles ou témoignages, réels ou inventés ("les avis sont unanimes", "plébiscité par des milliers d'acheteurs", "4.9 étoiles", "30 000 avis"...), sauf si un nombre d'avis réel est fourni explicitement en entrée.
+2. Ne JAMAIS comparer implicitement ou explicitement le produit à une "grande maison", une marque de luxe tierce, ou un parfum désigné par son nom commercial appartenant à une autre marque ("alternative aux grandes maisons", "aussi bien que X", "dans la même famille que X").
+3. Ne JAMAIS utiliser dans le titre ou la description le nom d'un produit ou d'une marque tierce non affiliée au vendeur. Le titre contient uniquement le nom du produit et la marque distributrice réelle fournie en entrée ({{brand}}).
+4. Ne JAMAIS présenter une performance non mesurée (tenue, sillage, intensité, durée) comme un fait vérifié et chiffré de façon absolue, sauf donnée réelle fournie en entrée. Utiliser un langage descriptif ("une tenue qui accompagne toute la journée") plutôt qu'une promesse chiffrée non vérifiable.
+5. Ne JAMAIS prétendre à une certification, un partenariat, une exclusivité ou une origine non confirmée par les données fournies en entrée.
+6. Se limiter aux informations factuelles fournies en entrée (nom, marque, notes olfactives, genre, contenance, prix, catégorie, description vendeur, certifications). Le style peut être évocateur, jamais inventif sur les faits.
+7. Aucune section ne doit sous-entendre une popularité ou une preuve sociale non prouvée.
+
 # ADAPTATION PAR CATÉGORIE — Ton dominant + données concrètes OBLIGATOIRES
 Adapte AUTOMATIQUEMENT ton style selon la catégorie du produit :
-- **Parfum** : ton simple et accessible, grand public, façon fiche boutique e-commerce — phrases courtes, informatives, sans effet de style — DOIT inclure : tenue (ex: "6-8h sur la peau"), sillage, famille olfactive, saison recommandée
-- **Sport / Habillement** : ton dynamique performance — DOIT inclure : données chiffrées (poids en g, nb lavages, technologie nommée), storytelling athlète ("Imaginez votre PB..."), verbes d'action (pulvérise, propulse, maintient)
-- **Maison / Décoration** : ton atmosphère cosy — DOIT inclure : durée combustion (Xh), diffusion après extinction, matières, dimensions si connues
-- **Soin / Cosmétique** : ton efficacité prouvée — DOIT inclure : % ingrédient actif si connu, résultat chiffré (ex: "-30% rides", "24h hydratation"), type de peau ciblé
+- **Parfum** : ton simple et accessible, grand public, façon fiche boutique e-commerce — phrases courtes, informatives, sans effet de style — DOIT inclure : tenue et sillage décrits qualitativement (ex: "une tenue qui accompagne toute la journée"), sans chiffre précis sauf donnée mesurée fournie en entrée, famille olfactive, saison recommandée
+- **Sport / Habillement** : ton dynamique performance — utilise les données chiffrées UNIQUEMENT si elles sont fournies en entrée (poids, nb lavages, technologie nommée) ; sinon reste descriptif sans inventer de chiffre. Storytelling athlète ("Imaginez votre sortie..."), verbes d'action (pulvérise, propulse, maintient)
+- **Maison / Décoration** : ton atmosphère cosy — utilise durée de combustion, diffusion, matières, dimensions UNIQUEMENT si fournies en entrée ; sinon reste descriptif sans inventer de valeur
+- **Soin / Cosmétique** : ton efficacité prouvée — utilise % ingrédient actif ou résultat chiffré UNIQUEMENT si fourni en entrée ; sinon décris l'effet ressenti sans chiffre inventé, type de peau ciblé
 - **Mon produit** (description vendeur) : amplifier x3 chaque détail fourni — transformer chaque caractéristique en bénéfice ressenti par le client
 
 # EXEMPLE DE TON ET STYLE DE RÉFÉRENCE (à reproduire pour les parfums)
@@ -188,13 +199,11 @@ Imaginez votre PB sur semi-marathon, sec malgré 28°C et 90% d'humidité. Le T-
 
 Dès le premier kilomètre, la technologie Dri-FIT aspire la transpiration 4 fois plus vite que le coton, vous maintenant au sec et froid pendant 3h d'effort intense. 120g de pure légèreté : vous oubliez même que vous portez quelque chose.
 
-Pourquoi il domine le marché ? Testé sur 42km marathon sans une seule ampoule grâce aux coutures plates anti-frottement. Résistant à 200 lavages sans perte d'élasticité ni de forme. Pour 99€, c'est moins de 0,08€ par sortie — l'investissement le plus rentable de votre équipement running.
+Grâce aux coutures plates anti-frottement, il reste confortable même sur de longues distances. Résistant à de nombreux lavages sans perte d'élasticité ni de forme. Un investissement qui se rentabilise dès les premières sorties.
 
 La technologie Dri-FIT Advanced intègre un maillage 3D pour un flux d'air optimal en mouvement. Le col raglan libère totalement les épaules dans toutes les amplitudes. Construit à 75% de polyester recyclé : performance et conscience écologique réunies.
 
-Que vous soyez débutant sur 10K en quête de confort anti-douleur, semi-marathonien à la recherche de respirabilité maximale par 35°C, ou trail runner exigeant un séchage deux fois plus rapide — ce tee-shirt s'adapte à votre niveau. Il passe du run matinal au HIIT crossfit, de la piste au béton urbain.
-
-4.9 étoiles sur 42 000 coureurs qui reviennent le racheter sans hésitation.
+Que vous soyez débutant en quête de confort, coureur régulier à la recherche de respirabilité, ou pratiquant exigeant un séchage rapide — ce tee-shirt s'adapte à votre niveau. Il passe du run matinal au HIIT crossfit, de la piste au béton urbain.
 """
 
 ---
@@ -220,7 +229,7 @@ Sérum hyaluronique The Ordinary 2% + B5 : l'hydratation profonde qui repulpe vi
 
 Texture fluide ultra-légère qui pénètre instantanément, sans film gras. L'acide hyaluronique multi-poids booste l'hydratation jusqu'à 24h.
 
-Un prix accessible (7€ les 30ml) pour plus de 30 000 avis à 4.7 étoiles. Compatible tous soins, matin et soir, sans adaptation nécessaire.
+Compatible tous soins, matin et soir, sans adaptation nécessaire.
 
 2% d'acide hyaluronique associé à la vitamine B5 réparatrice. pH optimisé entre 6.2 et 7.0 pour une tolérance maximale. Sans alcool, silicone ni parfum.
 
@@ -299,7 +308,7 @@ Genre : [Féminin/Masculin/Mixte selon le contexte.]
 ✅ Focus keyword dans les 30 PREMIERS caractères
 ✅ Contient un bénéfice client clair
 ✅ Termine par un CTA: "Découvrez-le !", "Commandez maintenant", "Livraison rapide"
-✅ Utilise des chiffres si possible (ex: "-20%", "N°1 des ventes")
+✅ Utilise des chiffres UNIQUEMENT s'ils sont fournis en entrée (ex: prix, remise réelle) — jamais de superlatif de vente invérifiable ("N°1 des ventes", "best-seller")
 
 ## 3. DESCRIPTION LONGUE (longDescription) - 700-900 mots HTML
 ### ⚠️ RÈGLE ABSOLUE : La description doit rester entre 700 et 900 mots. Suffisant pour le SEO, digeste sur mobile, compatible toutes plateformes.
@@ -327,13 +336,13 @@ Google lit les balises <strong> comme des signaux de pertinence. Utilise-les pou
 - Paragraphes: MAX 4 phrases chacun, texte aéré et lisible
 
 ### Mots-clés longue traîne à intégrer NATURELLEMENT:
-Intègre ces expressions DANS UNE PHRASE COMPLÈTE en mettant le mot descriptif EN PREMIER — jamais le nom produit suivi du mot-clé, jamais en gras seules :
-- Prix → "Le prix de {{productName}} en France en fait une alternative sérieuse aux grandes maisons" ✅ — PAS "{{productName}} prix France" ❌
-- Avis → "Les avis sur {{productName}} sont unanimes : une longévité impressionnante" ✅ — PAS "{{productName}} avis clients" ❌
-- Tenue → "La tenue de {{productName}} sur la peau dépasse les 8 heures" ✅ — PAS "{{productName}} tenue" ❌
+Intègre ces expressions DANS UNE PHRASE COMPLÈTE en mettant le mot descriptif EN PREMIER — jamais le nom produit suivi du mot-clé, jamais en gras seules, et JAMAIS d'avis clients ni de comparaison à une autre marque (voir RÈGLES DE CONFORMITÉ) :
+- Prix → "Le prix de {{productName}} en fait un choix accessible au quotidien" ✅ — PAS "{{productName}} prix France" ❌ — PAS de comparaison à une "grande maison" ❌
+- Tenue → "La tenue de {{productName}} accompagne toute la journée" ✅ (sans chiffre inventé) — PAS "{{productName}} tenue" ❌
 - Genre → "Ce parfum femme s'adresse aussi bien aux hommes qu'aux femmes" ✅
 - Famille → "Dans l'univers des parfums orientaux, {{productName}} se distingue" ✅
-⛔ RÈGLE ABSOLUE : le nom produit ne doit JAMAIS être immédiatement suivi d'un mot-clé SEO brut ("prix", "avis", "tenue", "France"). Construis toujours avec un article ou une préposition avant le mot-clé ("le prix de", "les avis sur", "la tenue de").
+⛔ RÈGLE ABSOLUE : le nom produit ne doit JAMAIS être immédiatement suivi d'un mot-clé SEO brut ("prix", "avis", "tenue", "France"). Construis toujours avec un article ou une préposition avant le mot-clé ("le prix de", "la tenue de").
+⛔ Ne jamais utiliser la longue traîne "avis" (voir RÈGLES DE CONFORMITÉ, règle 1).
 
 ### Mots-clés LSI (sémantique enrichie) — à inclure selon la famille olfactive :
 Ces termes renforcent le champ sémantique sans répéter le focus keyword :
@@ -358,7 +367,7 @@ Intègre 3-4 de ces expressions LSI naturellement dans la description selon la f
 <p>[2e paragraphe : ce qui rend ce produit unique, son caractère distinctif — 3-4 phrases courtes et claires. Variations du keyword, PAS le keyword exact. Intégrer 1-2 mots LSI naturellement.]</p>
 
 <h3>Pourquoi {{productName}} vous captive ?</h3>
-<p>[4-5 phrases sur les avantages distinctifs du produit : rapport qualité/prix, données chiffrées, réputation. Intégrer naturellement "[produit] avis" ou "[produit] prix".]</p>
+<p>[4-5 phrases sur les avantages distinctifs du produit : rapport qualité/prix, caractéristiques concrètes fournies en entrée. Intégrer naturellement "le prix de [produit]". JAMAIS de mention d'avis, de notes, ou de réputation non prouvée.]</p>
 
 --- SI CATÉGORIE = Parfum ---
 <h3>La Composition</h3>
@@ -486,20 +495,11 @@ Objectif : convertir une description courte en contenu riche et différenciant v
 
 ☐ **DESCRIPTION x5** : Enrichis chaque caractéristique fournie avec ses implications concrètes. Ex: "Vase 30cm" → évoque le diamètre probable, la matière, la capacité en fleurs. "T-shirt running" → respirabilité, légèreté, coutures plates, entretien.
 
-☐ **SPECS TYPIQUES PAR CATÉGORIE** — Si l'utilisateur n'a pas fourni ces données, intègre en prose les valeurs typiques du segment :
-   - Maison / Vase : diamètre ~12cm, poids ~800g, capacité ~15 tiges, résistance aux chocs
-   - Maison / Bougie : durée combustion ~40h, parfumage persistant 2h après extinction
-   - Sport / Textile : ~120-180g/m², séchage rapide, résistant à de nombreux lavages
-   - Soin : résultats visibles en ~4 semaines, formule douce tous types de peau
-   - Vêtement : grammage confortable, coupe régulière, entretien facile
-   Intègre ces données comme des bénéfices naturels, sans dire "valeur typique".
+☐ **SPECS NON FOURNIES** : Si l'utilisateur n'a pas fourni de données chiffrées (dimensions, poids, durée), NE JAMAIS inventer de valeur ni la présenter comme un fait. Reste descriptif et qualitatif ("une diffusion durable", "une matière respirante", "un confort qui dure") sans chiffre précis. N'utilise un chiffre QUE s'il provient des données fournies en entrée.
 
-☐ **SOCIAL PROOF INJECTÉ** : Sans données réelles, utilise une formulation de preuve sociale générique et crédible (jamais de chiffres d'avis inventés) :
-   - "Plébiscité par des milliers d'acheteurs en ligne"
-   - "Régulièrement en rupture de stock"
-   - "L'un des modèles les plus recommandés dans sa catégorie"
+☐ **AUCUNE PREUVE SOCIALE FABRIQUÉE** : Ne jamais écrire "plébiscité", "rupture de stock", "l'un des modèles les plus recommandés" ou toute formulation suggérant une popularité, des ventes ou des avis non prouvés (voir RÈGLES DE CONFORMITÉ, règle 1 et 7). Construis l'argument de vente uniquement sur les caractéristiques réelles du produit.
 
-☐ **ROI FRAMING** : Inclure dans "Pourquoi vous captive ?" une notion de valeur longue durée :
+☐ **ROI FRAMING** : Inclure dans "Pourquoi vous captive ?" une notion de valeur longue durée, ancrée sur les caractéristiques du produit (pas sur des chiffres de vente) :
    - Maison : "un investissement déco qui dure des années"
    - Sport : "un équipement rentabilisé dès les premières sorties"
    - Soin : "une routine complète pour 60 jours d'utilisation"
@@ -558,12 +558,47 @@ const generateProductDescriptionFlow = ai.defineFlow(
           webContext,
       };
 
-      const { output } = await productDescriptionPrompt(finalInput);
+      // Filet de sécurité anti-"Misrepresentation" Google Shopping : si le texte généré contient
+      // des mentions interdites (avis fictifs, comparaison à une marque tierce, etc.), on retente
+      // une fois avec une consigne corrective explicite avant d'abandonner.
+      const MAX_ATTEMPTS = 2;
+      let output: GenerateProductDescriptionOutput | undefined;
+      let violations: string[] = [];
+
+      for (let attempt = 1; attempt <= MAX_ATTEMPTS; attempt++) {
+        const attemptInput = attempt === 1
+          ? finalInput
+          : {
+              ...finalInput,
+              webContext: `${finalInput.webContext}\n\nCORRECTION OBLIGATOIRE : le texte précédent contenait des mentions interdites (${violations.join(', ')}). Régénère la fiche SANS AUCUNE de ces mentions, sans avis clients, sans comparaison à une marque tierce, et sans chiffre de performance non fourni en entrée.`,
+            };
+
+        const result = await productDescriptionPrompt(attemptInput);
+        if (!result.output) {
+          throw new Error('La génération de la fiche produit a échoué car la réponse de l\'IA était vide.');
+        }
+
+        violations = findComplianceViolations({
+          productTitle: result.output.productTitle,
+          shortDescription: result.output.shortDescription,
+          longDescription: result.output.longDescription,
+          ownBrand: finalInput.brand,
+        });
+
+        output = result.output;
+        if (violations.length === 0) break;
+
+        console.warn(`[Compliance] Tentative ${attempt}: mentions interdites détectées: ${violations.join(', ')}`);
+      }
 
       if (!output) {
         throw new Error('La génération de la fiche produit a échoué car la réponse de l\'IA était vide.');
       }
-      
+
+      if (violations.length > 0) {
+        throw new Error(`La fiche générée contient des mentions non conformes aux règles Google Shopping (${violations.join(', ')}). Merci de réessayer ou de reformuler la description fournie.`);
+      }
+
       return output;
     } catch (error: any) {
         console.error('Erreur lors de la génération de la fiche produit:', error);

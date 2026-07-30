@@ -76,6 +76,17 @@ export default function HeroAnimated() {
           <p className="mt-3 text-xs" style={{ color: 'var(--ls-muted)' }}>
             Aucune carte bancaire requise · résultat en 30 secondes
           </p>
+
+          <p
+            className="mt-6 text-sm leading-snug max-w-md border-l-2 pl-4"
+            style={{ color: 'var(--ls-muted)', borderColor: 'var(--ls-accent)' }}
+          >
+            <em style={{ fontStyle: 'italic' }}>
+              &ldquo;+40% de trafic organique en 3 semaines, juste avec mes nouvelles fiches.&rdquo;
+            </em>
+            <br />
+            <span className="font-semibold" style={{ color: 'var(--ls-text)' }}>Sophie M.</span> — bien-être &amp; cosmétiques
+          </p>
         </motion.div>
 
         {/* ── Colonne signature : la fiche qui se transforme ── */}
@@ -83,7 +94,7 @@ export default function HeroAnimated() {
           initial={{ opacity: 0, y: 24 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7, delay: 0.15 }}
-          className="relative h-[360px] sm:h-[420px]"
+          className="relative h-[420px] sm:h-[480px]"
         >
           {/* Brouillon */}
           <div
@@ -163,11 +174,29 @@ export default function HeroAnimated() {
               Une chaleur gourmande qui enveloppe la pièce. Cire végétale, mèche coton, jusqu&apos;à 45h de diffusion.
             </p>
             <span
-              className="ml-6 inline-flex items-center gap-1.5 text-xs font-semibold px-2.5 py-1 rounded-full"
+              className="ml-6 inline-flex items-center gap-1.5 text-xs font-semibold px-2.5 py-1 rounded-full mb-3"
               style={{ background: 'var(--ls-accent-soft)', color: 'var(--ls-accent)' }}
             >
               ✓ SEO optimisé
             </span>
+
+            <div
+              className="ml-6 rounded-md px-3 py-2"
+              style={{ background: 'var(--ls-bg)', border: '1px solid var(--ls-border-color)' }}
+            >
+              <p
+                className="truncate"
+                style={{ fontFamily: 'var(--font-plex-mono), monospace', fontSize: '0.7rem', color: 'var(--ls-accent)' }}
+              >
+                Bougie Vanille Bourbon 200g — Cire Végétale
+              </p>
+              <p
+                className="truncate mt-0.5"
+                style={{ fontFamily: 'var(--font-plex-mono), monospace', fontSize: '0.65rem', color: 'var(--ls-muted)' }}
+              >
+                votreboutique.fr/bougie-vanille-bourbon-200g
+              </p>
+            </div>
           </div>
         </motion.div>
       </div>

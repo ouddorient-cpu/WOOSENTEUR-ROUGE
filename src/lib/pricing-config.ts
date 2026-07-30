@@ -59,7 +59,7 @@ export const CREDIT_PACKS: CreditPack[] = [
       'Export CSV inclus',
       'Paiement unique · sans abonnement',
     ],
-    isPopular: true,
+    isPopular: false,
     cta: 'Acheter le Pack M',
   },
 ];
@@ -89,7 +89,7 @@ export const PRICING_PLANS: PricingPlan[] = [
     credits: { monthly: 50, annually: 600 },
     features: [
       '<span class="font-bold">50 fiches produits / mois</span>',
-      'Score Rank Math 88%+ garanti',
+      '<span class="font-bold">Score Rank Math 88%+ garanti</span>',
       'Publication 1-clic WooCommerce',
       'Export CSV',
       'Sans engagement · résiliez quand vous voulez',

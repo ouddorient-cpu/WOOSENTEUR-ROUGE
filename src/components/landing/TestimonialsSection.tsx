@@ -6,6 +6,12 @@ import SectionDivider from '@/components/ui/section-divider';
 
 const testimonials = [
   {
+    quote: "Mes produits remontent maintenant sur Google. En 3 semaines j'ai eu 40% de trafic organique en plus. Je ne savais même pas que c'était lié aux fiches produit.",
+    name: 'Sophie M.',
+    role: 'Boutique bien-être & cosmétiques',
+    initials: 'SM',
+  },
+  {
     quote: "J'ai enfin des fiches dont je suis fière. En 5 minutes, j'avais quelque chose de vrai et de professionnel. Je ne pensais pas que c'était possible pour moi.",
     name: 'Marie-Claire D.',
     role: 'Boutique de savons artisanaux',
@@ -16,12 +22,6 @@ const testimonials = [
     name: 'Karim B.',
     role: 'E-commerce mode homme',
     initials: 'KB',
-  },
-  {
-    quote: "Mes produits remontent maintenant sur Google. En 3 semaines j'ai eu 40% de trafic organique en plus. Je ne savais même pas que c'était lié aux fiches produit.",
-    name: 'Sophie M.',
-    role: 'Boutique bien-être & cosmétiques',
-    initials: 'SM',
   },
 ];
 

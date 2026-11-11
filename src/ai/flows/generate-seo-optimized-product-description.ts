@@ -43,9 +43,9 @@ export type GenerateProductDescriptionInput = z.infer<
 
 // 2. Define Output Schema
 const GenerateProductDescriptionOutputSchema = z.object({
-  focusKeyword: z.string().describe("Le mot-clé principal pour le SEO (ex: 'T-shirt Coton Bio')."),
+  focusKeyword: z.string().describe("Le mot-clé principal pour le SEO, strictement la somme du nom du produit et de la marque : '[productName] [brand]'."),
   productTitle: z.string().describe('Le titre SEO optimisé (50-60 caractères max).'),
-  shortDescription: z.string().describe('Pour les PARFUMS : liste structurée des notes olfactives (tête/cœur/fond) et le genre. Pour les autres catégories : méta-description SEO (150-160 caractères).'),
+  shortDescription: z.string().describe("L'extrait / description courte du produit (150-160 caractères ou notes olfactives). DOIT IMPÉRATIVEMENT COMMENCER par le mot-clé principal exact [productName] [brand] pour valider le critère Rank Math."),
   longDescription: z.string().describe('La description longue et détaillée du produit (500-700 mots) au format HTML avec FAQ intégrée.'),
   category: z.string()
     .describe('Le public cible du produit : "Homme", "Femme", ou "Unisexe".'),
@@ -273,7 +273,7 @@ Puis 1-2 phrases simples présentant le genre (homme/femme/mixte) et la saison o
 Créer une fiche produit PARFAITEMENT optimisée pour "{{productName}}"{{#if brand}} de "{{brand}}"{{/if}} (catégorie: {{category}}) avec un score Rank Math 90+ MINIMUM et un ton rédactionnel de haute qualité. Langue de sortie: **{{language}}**.
 
 # MOT-CLÉ PRINCIPAL (FOCUS KEYWORD)
-{{#if brand}}**"{{productName}} {{brand}}"** - Ce mot-clé DOIT apparaître EXACTEMENT comme écrit.{{else}}**"{{productName}}"** - Pas de marque établie. Le focus keyword est UNIQUEMENT le nom du produit. Ne jamais écrire "Sans marque" dans la fiche.{{/if}}
+{{#if brand}}**"{{productName}} {{brand}}"** - Ce mot-clé DOIT être EXACTEMENT la somme du nom du produit et de la marque (Nom du produit + Marque). Il DOIT apparaître EXACTEMENT comme écrit pour le mappage Rank Math.{{else}}**"{{productName}}"** - Pas de marque établie. Le focus keyword est UNIQUEMENT le nom du produit. Ne jamais écrire "Sans marque" dans la fiche.{{/if}}
 
 ---
 
@@ -289,10 +289,13 @@ Créer une fiche produit PARFAITEMENT optimisée pour "{{productName}}"{{#if bra
 ✅ Format: "{{productName}} {{brand}} | [Power Word] [Bénéfice]"
 ✅ Exemple: "La Vie Est Belle Lancôme | Parfum Iconique Femme"
 
-## 2. DESCRIPTION COURTE (shortDescription)
+## 2. DESCRIPTION COURTE / EXTRAIT (shortDescription)
+⚠️ RÈGLE ABSOLUE RANK MATH SEO :
+L'extrait (shortDescription) DOIT OBLIGATOIREMENT COMMENCER AU TOUT DÉBUT par le FOCUS KEYWORD EXACT ("{{#if brand}}{{productName}} {{brand}}{{else}}{{productName}}{{/if}}"). Rank Math valide l'extrait uniquement si le mot-clé se trouve au début.
 
-### 🌸 SI catégorie = "Parfum" — Format NOTES OLFACTIVES OBLIGATOIRE :
-Génère EXACTEMENT ce format (PAS de méta-description, PAS de phrase SEO) :
+### 🌸 SI catégorie = "Parfum" :
+Génère EXACTEMENT ce format (le mot-clé ouvre l'extrait) :
+{{#if brand}}{{productName}} {{brand}}{{else}}{{productName}}{{/if}} : une fragrance captivante et raffinée.
 Notes olfactives :
 • Notes de tête : [notes extraites du contexte web ou tes connaissances générales]
 • Notes de cœur : [notes extraites du contexte web ou tes connaissances générales]
@@ -305,7 +308,7 @@ Genre : [Féminin/Masculin/Mixte selon le contexte.]
 ✅ Termine "Genre :" par un point
 
 ### 📝 POUR TOUTES LES AUTRES CATÉGORIES — Méta-description SEO (150-160 caractères EXACT) :
-✅ Focus keyword dans les 30 PREMIERS caractères
+✅ COMMENCE OBLIGATOIREMENT par le focus keyword dans les 30 PREMIERS caractères (ex: "{{#if brand}}{{productName}} {{brand}}{{else}}{{productName}}{{/if}} : [bénéfice client et descriptif].")
 ✅ Contient un bénéfice client clair
 ✅ Termine par un CTA: "Découvrez-le !", "Commandez maintenant", "Livraison rapide"
 ✅ Utilise des chiffres UNIQUEMENT s'ils sont fournis en entrée (ex: prix, remise réelle) — jamais de superlatif de vente invérifiable ("N°1 des ventes", "best-seller")
@@ -599,6 +602,27 @@ const generateProductDescriptionFlow = ai.defineFlow(
         throw new Error(`La fiche générée contient des mentions non conformes aux règles Google Shopping (${violations.join(', ')}). Merci de réessayer ou de reformuler la description fournie.`);
       }
 
+      // --- MAPPAGE RANK MATH & EXTRAIT GARANTI ---
+      // 1. Le mot-clé (focus keyword) est STRICTEMENT la somme du nom du produit et de la marque
+      const computedFocusKeyword = [input.productName.trim(), effectiveBrand].filter(Boolean).join(' ');
+      output.focusKeyword = computedFocusKeyword;
+
+      // 2. L'extrait (shortDescription) DOIT commencer par le focus keyword exact
+      if (output.shortDescription) {
+        const trimmedShortDesc = output.shortDescription.trim();
+        const lowerDesc = trimmedShortDesc.toLowerCase();
+        const lowerKeyword = computedFocusKeyword.toLowerCase();
+
+        if (!lowerDesc.startsWith(lowerKeyword)) {
+          if (trimmedShortDesc.startsWith('Notes olfactives')) {
+            output.shortDescription = `${computedFocusKeyword} : une fragrance captivante.\n${trimmedShortDesc}`;
+          } else {
+            output.shortDescription = `${computedFocusKeyword} : ${trimmedShortDesc}`;
+          }
+        }
+      } else {
+        output.shortDescription = `${computedFocusKeyword} : découvrez ce produit d'exception.`;
+      }
       return output;
     } catch (error: any) {
         console.error('Erreur lors de la génération de la fiche produit:', error);

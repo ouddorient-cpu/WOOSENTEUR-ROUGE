@@ -24,12 +24,12 @@ function SignupPageContent() {
   const { toast } = useToast();
 
   const handleSignupSuccess = useCallback((user: User) => {
-    // Redirect to a specific onboarding page or dashboard
-    const redirectUrl = searchParams.get('redirect') || '/dashboard/onboarding';
+    // Redirect directly to workspace dashboard home
+    const redirectUrl = searchParams.get('redirect') || '/dashboard';
     
     toast({
         title: 'Inscription réussie !',
-        description: `Bienvenue, ${user.displayName || user.email} ! Configurez votre compte.`,
+        description: `Bienvenue, ${user.displayName || user.email} ! Votre atelier est prêt.`,
     });
 
     router.push(redirectUrl);

@@ -224,8 +224,8 @@ export default function ProfilePage() {
                                   <span>{isSuperAdmin ? '∞' : userProfile?.creditBalance ?? 0}</span>
                               </div>
                               {!isSuperAdmin && (
-                                  <Button asChild size="sm" className="bg-green-600 hover:bg-green-700 text-white">
-                                      <Link href="/pricing">Changer de plan</Link>
+                                  <Button asChild size="sm" className="bg-[#C2553B] hover:bg-[#A23F29] text-white">
+                                      <Link href="/dashboard/billing">Facturation & Crédits</Link>
                                   </Button>
                               )}
                           </div>

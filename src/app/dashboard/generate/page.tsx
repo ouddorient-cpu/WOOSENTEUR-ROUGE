@@ -36,7 +36,7 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { useToast } from '@/hooks/use-toast';
-import { Sparkles, Loader2, Upload, FileText, AlertCircle, Image as ImageIcon, Download, UploadCloud, Rocket, Globe, PenLine, CheckCircle2 } from 'lucide-react';
+import { Sparkles, Loader2, Upload, FileText, AlertCircle, Image as ImageIcon, Download, UploadCloud, Rocket, Globe, PenLine, CheckCircle2, Zap } from 'lucide-react';
 import { Textarea } from '@/components/ui/textarea';
 import { Checkbox } from '@/components/ui/checkbox';
 import { cn } from '@/lib/utils';
@@ -1079,17 +1079,20 @@ export default function GeneratePage() {
     <AlertDialog open={showUpgradePopup} onOpenChange={setShowUpgradePopup}>
       <AlertDialogContent>
         <AlertDialogHeader>
-          <AlertDialogTitle>Crédits épuisés !</AlertDialogTitle>
+          <AlertDialogTitle className="flex items-center gap-2">
+            <Sparkles className="h-5 w-5 text-[#C2553B]" />
+            Crédits épuisés !
+          </AlertDialogTitle>
           <AlertDialogDescription>
-            Vous avez utilisé tous vos crédits. Pour continuer à générer des fiches produits, veuillez passer à un plan supérieur.
+            Vous avez utilisé vos crédits disponibles. Rechargez immédiatement avec un pack à l'usage (dès 4,90 € sans engagement) ou passez à une formule mensuelle pour continuer à créer.
           </AlertDialogDescription>
         </AlertDialogHeader>
-        <AlertDialogFooter>
-          <AlertDialogCancel>Annuler</AlertDialogCancel>
+        <AlertDialogFooter className="flex-col sm:flex-row gap-2">
+          <AlertDialogCancel>Fermer</AlertDialogCancel>
           <AlertDialogAction asChild>
-            <Link href="/pricing" className="bg-[#C2553B] hover:bg-[#A23F29]">
-              <Rocket className="mr-2 h-4 w-4" />
-              Voir les plans
+            <Link href="/dashboard/billing#recharge-packs" className="bg-[#C2553B] hover:bg-[#A23F29] text-white">
+              <Zap className="mr-2 h-4 w-4 fill-current" />
+              Recharger en 1 clic
             </Link>
           </AlertDialogAction>
         </AlertDialogFooter>

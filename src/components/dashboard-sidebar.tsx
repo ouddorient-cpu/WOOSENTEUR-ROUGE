@@ -126,7 +126,6 @@ const primaryNav = [
   { href: '/dashboard/social-visuals', icon: <ImageIcon className="h-4 w-4" />, label: 'Visuel réseaux sociaux' },
   { href: '/dashboard/import', icon: <FileUp className="h-4 w-4" />, label: 'Import / Export CSV' },
 ];
-];
 
 const integrationNav = [
   { href: '/dashboard/profile#api', icon: <Key className="h-4 w-4" />, label: 'Clés API Développeurs', badge: 'NOUVEAU' },

@@ -25,6 +25,7 @@ const nextConfig = {
       '@opentelemetry/exporter-jaeger',
       'require-in-the-middle',
       'shimmer',
+      'sharp',
     ],
   },
   webpack: (config, { isServer }) => {

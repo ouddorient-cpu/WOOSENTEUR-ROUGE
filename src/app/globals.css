@@ -339,14 +339,21 @@ html {
   }
 
   .studio-input {
-    background: rgba(10, 15, 28, 0.8);
-    border-color: rgba(59,130,246,0.15);
+    background: #FFFFFF;
+    color: var(--ls-text, #2B1F2E);
+    border: 1px solid rgba(43, 31, 46, 0.15);
     transition: border-color 0.2s, box-shadow 0.2s;
   }
 
+  .dark .studio-input {
+    background: rgba(255, 255, 255, 0.05);
+    color: #F3F4F6;
+    border-color: rgba(255, 255, 255, 0.15);
+  }
+
   .studio-input:focus {
-    border-color: rgba(59,130,246,0.45);
-    box-shadow: 0 0 0 3px rgba(37,99,235,0.12);
+    border-color: #E55625;
+    box-shadow: 0 0 0 3px rgba(229, 86, 37, 0.15);
   }
 
   /* CTA button */

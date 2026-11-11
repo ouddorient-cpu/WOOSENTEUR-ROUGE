@@ -27,7 +27,7 @@ import {
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { useToast } from '@/hooks/use-toast';
-import { Plug, Save, Loader2, CreditCard, ExternalLink, Settings, XCircle } from 'lucide-react';
+import { Plug, Save, Loader2, CreditCard, ExternalLink, Settings, XCircle, Eye, EyeOff } from 'lucide-react';
 import { useDoc } from '@/firebase';
 import type { UserProfile } from '@/lib/types';
 import { saveWooCommerceCredentials } from '@/lib/firebase-helpers';
@@ -50,6 +50,8 @@ export default function ProfilePage() {
   const { toast } = useToast();
   const [isSaving, setIsSaving] = useState(false);
   const [isCancellationFlowOpen, setIsCancellationFlowOpen] = useState(false);
+  const [showConsumerKey, setShowConsumerKey] = useState(false);
+  const [showConsumerSecret, setShowConsumerSecret] = useState(false);
 
   const userProfilePath = user ? `users/${user.uid}` : null;
   const { data: userProfile, loading: profileLoading } = useDoc<UserProfile>(userProfilePath);
@@ -159,7 +161,23 @@ export default function ProfilePage() {
                               <FormItem>
                                   <FormLabel>Clé Client (CK)</FormLabel>
                                   <FormControl>
-                                  <Input placeholder="ck_xxxxxxxxxxxxxxxxxxxxxxxx" {...field} type="password" />
+                                  <div className="relative">
+                                    <Input
+                                      placeholder="ck_xxxxxxxxxxxxxxxxxxxxxxxx"
+                                      {...field}
+                                      type={showConsumerKey ? 'text' : 'password'}
+                                      className="pr-10"
+                                    />
+                                    <button
+                                      type="button"
+                                      onClick={() => setShowConsumerKey((prev) => !prev)}
+                                      className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground focus:outline-none"
+                                      tabIndex={-1}
+                                      aria-label={showConsumerKey ? 'Masquer la clé' : 'Afficher la clé'}
+                                    >
+                                      {showConsumerKey ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                                    </button>
+                                  </div>
                                   </FormControl>
                                   <FormMessage />
                               </FormItem>
@@ -172,7 +190,23 @@ export default function ProfilePage() {
                               <FormItem>
                                   <FormLabel>Clé Secrète (CS)</FormLabel>
                                   <FormControl>
-                                  <Input placeholder="cs_xxxxxxxxxxxxxxxxxxxxxxxx" {...field} type="password" />
+                                  <div className="relative">
+                                    <Input
+                                      placeholder="cs_xxxxxxxxxxxxxxxxxxxxxxxx"
+                                      {...field}
+                                      type={showConsumerSecret ? 'text' : 'password'}
+                                      className="pr-10"
+                                    />
+                                    <button
+                                      type="button"
+                                      onClick={() => setShowConsumerSecret((prev) => !prev)}
+                                      className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground focus:outline-none"
+                                      tabIndex={-1}
+                                      aria-label={showConsumerSecret ? 'Masquer la clé' : 'Afficher la clé'}
+                                    >
+                                      {showConsumerSecret ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                                    </button>
+                                  </div>
                                   </FormControl>
                                   <FormMessage />
                               </FormItem>
